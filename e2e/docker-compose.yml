@@ -3,14 +3,14 @@ version: '3'
 services:
   prereqmap:
     restart: always
-    container_name: app_name_e2e
+    container_name: pathways_e2e
     build: ../
     env_file:
       - ../.env
     volumes:
-      - ../app_name:/app/app_name
+      - ../pathways:/app/pathways
   cypress:
-    container_name: app_name_cypress
+    container_name: pathways_cypress
     build:
       context: .
       args:

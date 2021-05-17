@@ -12,26 +12,26 @@ module.exports = (_env, options) => {
   }
 
   const config = {
-    
+
     //context: __dirname,
-    
+
     entry: {
-      main: './app_name_vue/main.js'
+      main: './pathways_vue/main.js'
     },
-    
+
     optimization: {
       minimizer: [new TerserJSPlugin({})],
       splitChunks: {
         chunks: 'all',
       },
     },
-    
+
     output: {
-      path: '/static/app_name/',
+      path: '/static/pathways/',
       filename: "[name]-[contenthash].js",
       publicPath: '',
     },
-    
+
     plugins: [
       new webpack.EnvironmentPlugin(['VUE_DEVTOOLS']),
       new CleanWebpackPlugin(),
@@ -41,7 +41,7 @@ module.exports = (_env, options) => {
       }),
       new DjangoBridgePlugin(),
     ],
-    
+
     module: {
       rules: [
         {
@@ -84,7 +84,7 @@ module.exports = (_env, options) => {
         },
       ]
     },
-    
+
     resolve: {
       extensions: ['.js', '.vue'],
       alias: {
@@ -100,6 +100,6 @@ module.exports = (_env, options) => {
       })
     );
   }
-  
+
   return config;
-} 
+}
