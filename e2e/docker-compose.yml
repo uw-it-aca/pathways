@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  prereqmap:
+    restart: always
+    container_name: app_name_e2e
+    build: ../
+    env_file:
+      - ../.env
+    volumes:
+      - ../app_name:/app/app_name
+  cypress:
+    container_name: app_name_cypress
+    build:
+      context: .
+      args:
+        curr_uid: ${USERID:-1000}
+        curr_gid: ${GROUPID:-1000}
+    depends_on:
+      - prereqmap
+    volumes:
+      - ./cypress:/home/node/e2e/cypress
+      - ./cypress.json:/home/node/e2e/cypress.json
+      - ./docker-compose.yml:/home/node/e2e/docker-compose.yml
+      - ./package-lock.json:/home/node/e2e/package-lock.json
+      - ./package.json:/home/node/e2e/package.json
+    working_dir: /home/node/e2e
+    command: ./node_modules/.bin/cypress run --browser chrome --env updateSnapshots=$UPDATE_SNAPSHOTS

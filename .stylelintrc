@@ -1,0 +1,8 @@
+{
+  "extends" : "stylelint-config-sass-guidelines",
+  "rules" : {
+    "indentation" : [ 2, { "baseIndentLevel" : 1 } ],
+    "scss/at-import-no-partial-leading-underscore" : null,
+    "scss/at-import-partial-extension-blacklist": null
+  }
+}
