@@ -6,11 +6,11 @@ services:
       context: .
       target: app-container
     restart: always
-    container_name: app_name_app
+    container_name: pathways_app
     environment:
       - GOOGLE_ANALYTICS_KEY=${GOOGLE_ANALYTICS_KEY}
     volumes:
-      - ./app_name:/app/app_name
+      - ./pathways:/app/pathways
       - statics-volume:/static
     ports:
       - "${RUNSERVER_PORT:-8000}:8000"
@@ -21,14 +21,14 @@ services:
       context: .
       target: wpack
     restart: always
-    container_name: app_name_devtools
+    container_name: pathways_devtools
     ports:
       - "${BUNDLE_ANALYZER_PORT:-8888}:8888" # Required when environment.BUNDLE_ANALYZER is true
     environment:
       VUE_DEVTOOLS: "True"
       BUNDLE_ANALYZER: "True"
     volumes:
-      - ./app_name_vue:/app/app_name_vue
+      - ./pathways_vue:/app/pathways_vue
       - statics-volume:/static
     command: npx webpack --watch --mode=development
     stdin_open: true
