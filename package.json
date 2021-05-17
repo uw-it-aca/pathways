@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/uw-it-aca/pathways#readme",
   "dependencies": {
-    "axdd-components": "git+https://github.com/uw-it-aca/axdd-components.git#root-index"
+    "axdd-components": "git+https://github.com/uw-it-aca/axdd-components.git"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",

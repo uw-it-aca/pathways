@@ -44,7 +44,7 @@
 import { Topbar } from 'axdd-components';
 
 export default {
-  name: 'MyApp',
+  name: 'Pathways',
   components: {
     topbar: Topbar,
   },
@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       // minimum application setup overrides
-      appName: 'MyApp',
+      appName: 'Pathways',
       userName: 'javerage',
       signOutUrl: '/signout',
 
