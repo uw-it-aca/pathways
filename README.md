@@ -19,7 +19,7 @@ Replace this description for your new application... lorem ipsum dolor sit amet,
 
 Go to your repository
 
-        $ cd new-repo
+        $ cd pathways
 
 Docker/Docker Compose is used to containerize your local build environment and deploy it to an 'app' container which is exposed to your localhost so you can view your application. Docker Compose creates a 'devtools' container - which is used for local development. Changes made locally are automatically syncd to the 'app' container.
 
