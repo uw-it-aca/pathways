@@ -85,35 +85,41 @@ export default {
     this.updateForces();
 
     this.selections.svg = d3.select(this.$el.querySelector('svg'));
-    const svg = this.selections.svg
+    const svg = this.selections.svg;
 
-      // Define the arrow marker
-      svg.append("svg:defs").selectAll("marker")
-            .data(["end"])     // Different link/path types can be defined here
-          .enter().append("svg:marker")    // This section adds in the arrows
-            .attr("id", String)
-            .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 43)              // Prevents arrowhead from being covered by circle
-            .attr("refY", 0)
-            .attr("markerWidth", 6)
-            .attr("markerHeight", 6)
-            .attr("orient", "auto")
-          .append("svg:path")
-            .attr("d", "M0,-5L10,0L0,5");
+    // Define the arrow marker
+    svg
+      .append('svg:defs')
+      .selectAll('marker')
+      .data(['end']) // Different link/path types can be defined here
+      .enter()
+      .append('svg:marker') // This section adds in the arrows
+      .attr('id', String)
+      .attr('viewBox', '0 -5 10 10')
+      .attr('refX', 43) // Prevents arrowhead from being covered by circle
+      .attr('refY', 0)
+      .attr('markerWidth', 6)
+      .attr('markerHeight', 6)
+      .attr('orient', 'auto')
+      .append('svg:path')
+      .attr('d', 'M0,-5L10,0L0,5');
 
-      // Define arrow for self-links
-      svg.append("svg:defs").selectAll("marker")
-            .data(["end-self"])
-          .enter().append("svg:marker")    // This section adds in the arrows
-            .attr("id", String)
-            .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 40)
-            .attr("refY", -15)
-            .attr("markerWidth", 6)
-            .attr("markerHeight", 6)
-            .attr("orient", 285)
-          .append("svg:path")
-            .attr("d", "M0,-5L10,0L0,5");
+    // Define arrow for self-links
+    svg
+      .append('svg:defs')
+      .selectAll('marker')
+      .data(['end-self'])
+      .enter()
+      .append('svg:marker') // This section adds in the arrows
+      .attr('id', String)
+      .attr('viewBox', '0 -5 10 10')
+      .attr('refX', 40)
+      .attr('refY', -15)
+      .attr('markerWidth', 6)
+      .attr('markerHeight', 6)
+      .attr('orient', 285)
+      .append('svg:path')
+      .attr('d', 'M0,-5L10,0L0,5');
 
     this.selections.graph = this.selections.svg.append('g');
     const graph = this.selections.graph;
@@ -203,12 +209,14 @@ export default {
         .text(d => d.name);
 
       // Add 'marker-end' attribute to each path
-        const svg = d3.select(this.$el.querySelector("svg"))
-        svg.selectAll("g").selectAll("path").attr("marker-end", d => {
+      const svg = d3.select(this.$el.querySelector('svg'));
+      svg
+        .selectAll('g')
+        .selectAll('path')
+        .attr('marker-end', d => {
           // Caption items doesn't have source and target
-          if (d.source && d.target &&
-            d.source.index === d.target.index) return "url(#end-self)";
-          else return "url(#end)";
+          if (d.source && d.target && d.source.index === d.target.index) return 'url(#end-self)';
+          else return 'url(#end)';
         });
 
       simulation.alpha(1).restart();
