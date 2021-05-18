@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="">
+      <h2>D3 Arc Example</h2>
       <h3 class="">Countries in 2018 with the highest GDP</h3>
       <p>
         Gross domestic product by country allows you to compare the economies of the nations. It
@@ -9,6 +10,7 @@
         <a href="https://www.thebalance.com/gdp-by-country-3-ways-to-compare-3306012">The Balance</a
         >.
       </p>
+      <p>Source: https://alligator.io/vuejs/visualization-vue-d3/</p>
     </div>
 
     <div id="arc" />
@@ -19,7 +21,7 @@
 import * as d3 from 'd3';
 
 export default {
-  name: 'D3Test',
+  name: 'D3Arc',
   data() {
     return {
       gdp: [
