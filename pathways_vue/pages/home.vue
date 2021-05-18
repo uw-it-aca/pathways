@@ -24,16 +24,23 @@
           </div>
         </div>
       </div>
+      <div class="card mb-3 bg-light">
+        <div class="card-body">
+          <d3-test />
+        </div>
+      </div>
     </template>
   </layout>
 </template>
 
 <script>
 import Layout from '../layout.vue';
+import D3Test from '../components/d3-test.vue';
 
 export default {
   components: {
     layout: Layout,
+    'd3-test': D3Test,
   },
   data() {
     return {
