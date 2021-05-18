@@ -5,7 +5,7 @@
     <template #title>{{ pageTitle }}</template>
     <template #content>
       <div class="card mb-3 bg-light">
-        <div class="card-body">asldkjfas</div>
+        <div class="card-body"><hello-world /></div>
       </div>
       <div class="row">
         <div class="col-md-4">
@@ -35,11 +35,13 @@
 
 <script>
 import Layout from '../layout.vue';
+import HelloWorld from '../components/hello-world.vue';
 import D3Test from '../components/d3-test.vue';
 
 export default {
   components: {
     layout: Layout,
+    'hello-world': HelloWorld,
     'd3-test': D3Test,
   },
   data() {

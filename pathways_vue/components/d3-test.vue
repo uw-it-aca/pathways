@@ -19,7 +19,7 @@
 import * as d3 from 'd3';
 
 export default {
-  name: 'd3',
+  name: 'D3Test',
   data() {
     return {
       gdp: [
