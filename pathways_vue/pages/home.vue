@@ -26,11 +26,6 @@
       </div>
       <div class="card mb-3 bg-light">
         <div class="card-body">
-          <d3-dependency />
-        </div>
-      </div>
-      <div class="card mb-3 bg-light">
-        <div class="card-body">
           <d3-arc />
         </div>
       </div>
@@ -42,13 +37,11 @@
 import Layout from '../layout.vue';
 import HelloWorld from '../components/hello-world.vue';
 import D3Arc from '../components/d3-arc.vue';
-import D3Dependency from '../components/d3-dependency.vue';
 
 export default {
   components: {
     layout: Layout,
     'hello-world': HelloWorld,
-    'd3-dependency': D3Dependency,
     'd3-arc': D3Arc,
   },
   data() {
