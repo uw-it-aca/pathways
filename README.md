@@ -15,6 +15,12 @@ Replace this description for your new application... lorem ipsum dolor sit amet,
 - Webpack (4.x)
 - Bootstrap (4.6.x)
 
+## Cloning
+
+Clone this template repo as a new repo (command line)
+
+        $ git clone git@github.com:uw-it-aca/pathways.git
+
 ## Development (using Docker)
 
 Go to your repository
