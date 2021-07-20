@@ -1,29 +1,18 @@
-@import "~/node_modules/bootstrap/scss/functions";
-@import "~/node_modules/bootstrap/scss/variables";
-
 // override variables
 $nav-height: 52px;
 $bar-height: 40px;
 $link-color: #0069d9; //a11y blue
 
-// custom color theming
-$custom-colors: (
-  // override bootstrap colors
-  "warning":    #f5d300,
-  "danger":     #a94442,
+@use "sass:map";
+@import 'axdd-components/src/assets/css/custom.scss';
 
-  'purple': #4d307f, // uw purple
-  'dark-purple': #452a78, // thin bar
-  'beige': #e8e3d3, // tan
-  'dark-beige': #85754d, // headers
-  'gold': #ffbc24, //uw gold
-  'teal': #4c7286, // uw teal
+$custom-colors: (
+  "test": red,
 );
 
-// merge the maps
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
-@import "~/node_modules/bootstrap/scss/bootstrap";
+@import "bootstrap/scss/bootstrap.scss";
 
 // additional non-bootstrap styles
 

@@ -18,7 +18,7 @@
     </template>
     <template #footer>
       <!-- footer section overrixe -->
-      <div class="text-white font-weight-light">
+      <div class="text-test font-weight-light">
         this is my custom footer<br />
         Copyright &copy; {{ new Date().getFullYear() }} University of Washington
       </div>
