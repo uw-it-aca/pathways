@@ -10,8 +10,14 @@ $bar-height: 40px;
 $theme-colors: (
 
   // override bootstrap colors
-  'danger': #a94442,
-  'warning': #f5d300,
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    #f5d300,
+  "danger":     #a94442,
+  "light":      $light,
+  "dark":       $dark,
 
   // custom colors
   'purple': #4d307f, // uw purple

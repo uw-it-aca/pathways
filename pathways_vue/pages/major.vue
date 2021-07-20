@@ -1,17 +1,10 @@
-// home.vue
+// major.vue
 <template>
   <layout :page-title="pageTitle">
     <!-- page content -->
     <template #title>{{ pageTitle }}</template>
     <template #content>
-      <p>search component goes here</p>
-      <p>modal goes here</p>
-
-      <ul>
-        <li><router-link to="/course">Go to Course</router-link></li>
-        <li><router-link to="/major">Go to Major</router-link></li>
-      </ul>
-
+      <d3-boxplot />
     </template>
   </layout>
 </template>
@@ -25,13 +18,11 @@ import D3BoxPlot from '../components/d3-boxplot.vue';
 export default {
   components: {
     layout: Layout,
-    'hello-world': HelloWorld,
-    'd3-arc': D3Arc,
     'd3-boxplot': D3BoxPlot
   },
   data() {
     return {
-      pageTitle: 'Home',
+      pageTitle: 'Major',
     };
   },
   methods: {},
