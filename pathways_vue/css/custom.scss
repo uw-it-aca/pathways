@@ -6,10 +6,12 @@ $link-color: #0069d9; //a11y blue
 @use "sass:map";
 @import 'axdd-components/src/assets/css/custom.scss';
 
+// pathways custom colors
 $custom-colors: (
   "test": red,
 );
 
+// axdd-components + pathways custom colors
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
 @import "bootstrap/scss/bootstrap.scss";

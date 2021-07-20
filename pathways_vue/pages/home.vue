@@ -4,14 +4,51 @@
     <!-- page content -->
     <template #title>{{ pageTitle }}</template>
     <template #content>
-      <p>search component goes here</p>
-      <p>modal goes here</p>
+      <div class="mb-5">search component goes here</div>
+
+      <!-- Button trigger modal -->
+      <button
+        type="button"
+        class="btn btn-primary mb-5"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Launch demo modal
+      </button>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-body">
+              <h2 class="modal-title" id="exampleModalLabel">Modal title</h2>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+
+              <div>asdfasdfasdf</div>
+
+              <button type="button" class="btn btn-purple" data-bs-dismiss="modal">
+                OK, got it
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <ul>
-        <li><router-link to="/course">Go to Course</router-link></li>
         <li><router-link to="/major">Go to Major</router-link></li>
+        <li><router-link to="/course">Go to Course</router-link></li>
       </ul>
-
     </template>
   </layout>
 </template>
@@ -26,8 +63,6 @@ export default {
   components: {
     layout: Layout,
     'hello-world': HelloWorld,
-    'd3-arc': D3Arc,
-    'd3-boxplot': D3BoxPlot
   },
   data() {
     return {

@@ -4,6 +4,15 @@
     <!-- page content -->
     <template #title>{{ pageTitle }}</template>
     <template #content>
+      <div>
+        <h2>CHEM 162: General Chemistry</h2>
+        <div>Credits: 5</div>
+      </div>
+
+      <div class="card mb-5">
+        <div class="card-body">Course Grade Distribution</div>
+      </div>
+
       <d3-arc />
     </template>
   </layout>
