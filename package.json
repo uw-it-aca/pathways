@@ -20,7 +20,7 @@
     "@popperjs/core": "^2.9.2",
     "axdd-components": "git+https://github.com/uw-it-aca/axdd-components.git#develop",
     "bootstrap": "^5.0.2",
-    "d3": "^6.7.0",
+    "d3": "^7.0.0",
     "jquery": "^3.6.0",
     "vue": "^3.1.4",
     "vue-loader": "^16.3.2",

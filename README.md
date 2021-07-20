@@ -11,9 +11,9 @@ Replace this description for your new application... lorem ipsum dolor sit amet,
 ## Development Stack
 
 - Django (2.1 - 2.3)
-- Vue (2.x)
-- Webpack (4.x)
-- Bootstrap (4.6.x)
+- Vue (3.x)
+- Webpack (5.x)
+- Bootstrap (5.x)
 
 ## Cloning
 
