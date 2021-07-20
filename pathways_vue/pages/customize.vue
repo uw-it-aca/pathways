@@ -55,12 +55,11 @@
             following 'b-card' component is the default card styled with it's primary variant.
           </p>
 
-          <b-card bg-variant="primary" text-variant="white">
-            <b-card-text>
+          <div>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget pulvinar est.
               Sed gravida neque justo, pellentesque finibus velit scelerisque eu.
-            </b-card-text>
-          </b-card>
+          </div>
+
         </div>
         <div class="col-md-6">
           <h3 class="h5 text-muted">

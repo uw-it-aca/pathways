@@ -9,17 +9,11 @@
     <template #header></template>
     <template #navigation>
       <!-- navigation menu override -->
-      <b-nav vertical>
-        <b-nav-item
-          v-for="item in navItems"
-          :key="item.title"
-          class="mb-2"
-          :href="item.href"
-          :link-classes="'d-block px-2 py-1'"
-        >
-          {{ item.title }}
-        </b-nav-item>
-      </b-nav>
+      <ul class="nav flex-column">
+        <li v-for="item in navItems" :key="item.title" class="nav-item mb-2">
+          <a class="nav-link d-block px-2 py-1" :href="item.href">{{ item.title }}</a>
+        </li>
+      </ul>
     </template>
     <template #main>
       <!-- main section override -->
