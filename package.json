@@ -18,7 +18,7 @@
   "homepage": "https://github.com/uw-it-aca/pathways#readme",
   "dependencies": {
     "@popperjs/core": "^2.9.2",
-    "axdd-components": "git+https://github.com/uw-it-aca/axdd-components.git#task/fix-deps",
+    "axdd-components": "git+https://github.com/uw-it-aca/axdd-components.git#develop",
     "bootstrap": "^5.0.2",
     "jquery": "^3.6.0",
     "vue": "^3.1.4",
