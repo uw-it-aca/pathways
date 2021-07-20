@@ -52,9 +52,8 @@
     "stylelint-config-sass-guidelines": "^8.0.0",
     "stylelint-scss": "^3.19.0",
     "terser-webpack-plugin": "^5.1.1",
-    "vue-cookies": "^1.7.4",
-    "vue-gtag": "^1.14.0",
-    "vue-underscore": "^0.1.4",
+    "vue-gtag-next": "^1.14.0",
+    "vue3-cookies": "^1.0.1",
     "webpack": "^5.45.1",
     "webpack-bundle-analyzer": "^4.4.1",
     "webpack-cli": "^4.7.2"

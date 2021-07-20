@@ -3,7 +3,7 @@ import App from './app.vue';
 import router from './router';
 import store from './store';
 
-import VueGtag from 'vue-gtag';
+import VueGtag from 'vue-gtag-next';
 import VueMq from 'vue3-mq';
 
 // bootstrap js
