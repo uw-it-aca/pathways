@@ -34,6 +34,10 @@ module.exports = (_env, options) => {
 
     plugins: [
       new webpack.EnvironmentPlugin(['VUE_DEVTOOLS']),
+      new webpack.DefinePlugin({
+        __VUE_OPTIONS_API__: true,
+        __VUE_PROD_DEVTOOLS__: false,
+      }),
       new CleanWebpackPlugin(),
       new VueLoaderPlugin(),
       new MiniCssExtractPlugin({
@@ -88,7 +92,7 @@ module.exports = (_env, options) => {
     resolve: {
       extensions: ['.js', '.vue'],
       alias: {
-        'vue$': 'vue/dist/vue.esm.js'
+        'Vue': 'vue/dist/vue.esm-bundler.js',
       }
     }
   };

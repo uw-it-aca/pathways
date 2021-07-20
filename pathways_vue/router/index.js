@@ -4,8 +4,6 @@ import { createWebHistory, createRouter } from "vue-router";
 import Home from '../pages/home.vue';
 import Customize from '../pages/customize.vue';
 
-Vue.use(VueRouter);
-
 const routes = [
   {
     path: "/",
