@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import { createWebHistory, createRouter } from "vue-router";
 
 // page components
 import Home from '../pages/home.vue';
@@ -14,14 +13,15 @@ const routes = [
     component: Home
   },
   {
-    path: "/customize/",
+    path: "/customize",
     name: "Customize",
     component: Customize,
+    pathToRegexpOptions: { strict: true }
   },
 ];
 
-const router = new VueRouter({
-  mode: 'history',
+const router = createRouter({
+  history: createWebHistory(),
   routes,
 });
 
