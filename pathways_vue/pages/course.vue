@@ -6,18 +6,28 @@
     <template #content>
 
       <div class="mb-5">
+        <search-course />
+      </div>
+
+      <div class="mb-5">
+
         <h2>CHEM 162: General Chemistry</h2>
-        <div>Credits: 5</div>
-        <div>Offered <span class="badge bg-info text-dark">Info</span> <span class="badge bg-info text-dark">Info</span></div>
+        <div><strong>Credits:</strong> 5</div>
+        <div>
+          <strong>Offered</strong>
+          <ul class="ms-2 d-inline list-inline">
+            <li class="list-inline-item"><span class="badge bg-danger text-dark">Info</span></li>
+            <li class="list-inline-item"><span class="badge bg-info text-dark">Info</span></li>
+            <li class="list-inline-item"><span class="badge bg-success text-dark">Info</span></li>
+          </ul>
+        </div>
+
         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque numquam a maxime delectus tempora, ad molestiae rerum voluptate commodi cupiditate at quo fuga praesentium dicta repellendus quia et accusantium ab</p>
         <p><a href="#">View CHEM 162 course details and schedule on MyPlan</a></p>
       </div>
 
       <grade-distribution />
-
-      <div class="card mb-5">
-        <div class="card-body">Course Difficulty Index (CDI)</div>
-      </div>
+      <difficulty-index />
 
       <div class="card mb-5">
         <div class="card-body">Prerequisite Map</div>
@@ -37,14 +47,18 @@
 
 <script>
 import Layout from '../layout.vue';
+import SearchCourse from '../components/search/course.vue';
 import GradeDistribution from '../components/course/grade-distribution.vue';
+import DifficultyIndex from '../components/course/difficulty-index.vue';
 import ContactAdviser from '../components/course/contact-adviser.vue';
 import D3Arc from '../components/d3-arc.vue';
 
 export default {
   components: {
-    layout: Layout,
+    'layout': Layout,
+    'search-course': SearchCourse,
     'grade-distribution': GradeDistribution,
+    'difficulty-index': DifficultyIndex,
     'contact-adviser': ContactAdviser,
     'd3-arc': D3Arc,
   },

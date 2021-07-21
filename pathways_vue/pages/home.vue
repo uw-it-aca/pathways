@@ -4,7 +4,6 @@
     <!-- page content -->
     <template #title>{{ pageTitle }}</template>
     <template #content>
-      <div class="mb-5">search component goes here</div>
 
       <!-- Button trigger modal -->
       <button
@@ -49,18 +48,24 @@
         <li><router-link to="/major">Go to Major</router-link></li>
         <li><router-link to="/course">Go to Course</router-link></li>
       </ul>
+
+      <search-chooser />
+
     </template>
   </layout>
 </template>
 
 <script>
 import Layout from '../layout.vue';
+import SearchChooser from '../components/search/chooser.vue';
+
 import D3Arc from '../components/d3-arc.vue';
 import D3BoxPlot from '../components/d3-boxplot.vue';
 
 export default {
   components: {
-    layout: Layout
+    'layout': Layout,
+    'search-chooser': SearchChooser
   },
   data() {
     return {

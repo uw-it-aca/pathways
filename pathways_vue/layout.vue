@@ -33,7 +33,7 @@ import { Topbar } from 'axdd-components';
 export default {
   name: 'Pathways',
   components: {
-    topbar: Topbar,
+    'topbar': Topbar,
   },
   props: {
     pageTitle: {
@@ -76,4 +76,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+</style>
