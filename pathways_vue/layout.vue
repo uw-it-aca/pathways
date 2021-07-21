@@ -10,7 +10,7 @@
     <template #header></template>
     <template #main>
       <!-- main section override -->
-      <h1>
+      <h1 class="visually-hidden">
         <slot name="title">
           {{ pageTitle }}
         </slot>

@@ -11,7 +11,6 @@
 
 <script>
 import Layout from '../layout.vue';
-import HelloWorld from '../components/hello-world.vue';
 import D3Arc from '../components/d3-arc.vue';
 import D3BoxPlot from '../components/d3-boxplot.vue';
 

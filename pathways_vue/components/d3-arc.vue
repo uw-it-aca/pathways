@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card mb-5">
     <div class="card-body">
       <h2>D3 Arc Example</h2>
       <h3 class="">Countries in 2018 with the highest GDP</h3>
