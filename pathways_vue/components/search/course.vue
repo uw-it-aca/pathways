@@ -3,7 +3,7 @@
 <template>
   <div class="input-group">
     <input type="text" class="form-control" aria-label="" placeholder="Enter a course code" />
-    <button type="button" class="btn btn-purple">Search</button>
+    <button type="button" class="btn btn-purple" @click="searchCourse">Search</button>
   </div>
 </template>
 
@@ -14,7 +14,12 @@ export default {
   data() {
     return {};
   },
-  methods: {}
+  methods: {
+    searchCourse(event) {
+      // TODO: wire up submit for course search
+      alert('wire me up!')
+    }
+  }
 };
 </script>
 
