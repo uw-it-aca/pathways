@@ -48,7 +48,9 @@ export default {
   data() {
     return {};
   },
-  methods: {}
+  methods: {
+    // TODO: create method to handle toggling of major and course search comps
+  }
 };
 </script>
 
