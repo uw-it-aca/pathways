@@ -2,22 +2,15 @@
   <!-- layout.vue: this is where you override the layout -->
   <topbar
     :app-name="appName"
+    :app-root-url="appRootUrl"
     :page-title="pageTitle"
     :user-name="userName"
     :sign-out-url="signOutUrl"
   >
     <template #header></template>
-    <template #navigation>
-      <!-- navigation menu override -->
-      <ul class="nav flex-column">
-        <li v-for="item in navItems" :key="item.title" class="nav-item mb-2">
-          <a class="nav-link d-block px-2 py-1" :href="item.href">{{ item.title }}</a>
-        </li>
-      </ul>
-    </template>
     <template #main>
       <!-- main section override -->
-      <h1>
+      <h1 class="visually-hidden">
         <slot name="title">
           {{ pageTitle }}
         </slot>
@@ -26,7 +19,7 @@
     </template>
     <template #footer>
       <!-- footer section overrixe -->
-      <div class="text-white font-weight-light">
+      <div class="text-test font-weight-light">
         this is my custom footer<br />
         Copyright &copy; {{ new Date().getFullYear() }} University of Washington
       </div>
@@ -40,7 +33,7 @@ import { Topbar } from 'axdd-components';
 export default {
   name: 'Pathways',
   components: {
-    topbar: Topbar,
+    'topbar': Topbar,
   },
   props: {
     pageTitle: {
@@ -52,6 +45,7 @@ export default {
     return {
       // minimum application setup overrides
       appName: 'Pathways',
+      appRootUrl: '/',
       userName: 'javerage',
       signOutUrl: '/signout',
 
@@ -82,4 +76,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+</style>

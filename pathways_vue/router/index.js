@@ -2,7 +2,8 @@ import { createWebHistory, createRouter } from "vue-router";
 
 // page components
 import Home from '../pages/home.vue';
-import Customize from '../pages/customize.vue';
+import Course from '../pages/course.vue';
+import Major from '../pages/major.vue';
 
 const routes = [
   {
@@ -11,11 +12,17 @@ const routes = [
     component: Home
   },
   {
-    path: "/customize",
-    name: "Customize",
-    component: Customize,
+    path: "/course",
+    name: "Course",
+    component: Course,
     pathToRegexpOptions: { strict: true }
   },
+  {
+    path: "/major",
+    name: "Major",
+    component: Major,
+    pathToRegexpOptions: { strict: true }
+  }
 ];
 
 const router = createRouter({

@@ -1,10 +1,9 @@
 <template>
-  <div>
-    <div class="">
+  <div class="card mb-5">
+    <div class="card-body">
       <h2>D3 Box Plot</h2>
       <p>Source: https://www.d3-graph-gallery.com/graph/boxplot_basic.html</p>
     </div>
-
     <div id="boxplot"></div>
   </div>
 </template>

@@ -4,56 +4,72 @@
     <!-- page content -->
     <template #title>{{ pageTitle }}</template>
     <template #content>
-      <div class="card mb-3 bg-light">
-        <div class="card-body"><hello-world /></div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="card mb-3 bg-light">
-            <div class="card-body">asldkjfas</div>
+
+      <!-- Button trigger modal -->
+      <button
+        type="button"
+        class="btn btn-primary mb-5"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Launch demo modal
+      </button>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-body">
+              <h2 class="modal-title" id="exampleModalLabel">Modal title</h2>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+
+              <div>asdfasdfasdf</div>
+
+              <button type="button" class="btn btn-purple" data-bs-dismiss="modal">
+                OK, got it
+              </button>
+            </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card mb-3">
-            <div class="card-body">asldkjfas</div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-3 border-white">
-            <div class="card-body">asldkjfas</div>
-          </div>
-        </div>
       </div>
-      <div class="card mb-3 bg-light">
-        <div class="card-body">
-          <d3-arc />
-        </div>
-      </div>
-      <div class="card mb-3 bg-light">
-        <div class="card-body">
-          <d3-boxplot />
-        </div>
-      </div>
+
+      <ul>
+        <li><router-link to="/major">Go to Major</router-link></li>
+        <li><router-link to="/course">Go to Course</router-link></li>
+      </ul>
+
+      <search-chooser />
+
     </template>
   </layout>
 </template>
 
 <script>
 import Layout from '../layout.vue';
-import HelloWorld from '../components/hello-world.vue';
+import SearchChooser from '../components/search/chooser.vue';
+
 import D3Arc from '../components/d3-arc.vue';
 import D3BoxPlot from '../components/d3-boxplot.vue';
 
 export default {
   components: {
-    layout: Layout,
-    'hello-world': HelloWorld,
-    'd3-arc': D3Arc,
-    'd3-boxplot': D3BoxPlot
+    'layout': Layout,
+    'search-chooser': SearchChooser
   },
   data() {
     return {
-      pageTitle: 'My Home Page',
+      pageTitle: 'Home',
     };
   },
   methods: {},
