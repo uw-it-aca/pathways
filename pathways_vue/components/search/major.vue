@@ -3,7 +3,7 @@
 <template>
   <div class="input-group">
     <input type="text" class="form-control" aria-label="" placeholder="Enter a major" />
-    <button type="button" class="btn btn-purple">Search</button>
+    <button type="button" class="btn btn-purple" @click="searchMajor">Search</button>
   </div>
 </template>
 
@@ -14,7 +14,12 @@ export default {
   data() {
     return {};
   },
-  methods: {}
+  methods: {
+    searchMajor(event) {
+      // TODO: wire up submit for major search
+      alert('wire me up!')
+    }
+  }
 };
 </script>
 

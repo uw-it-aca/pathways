@@ -5,32 +5,37 @@
     <div class="card-body">
       <p>Search for a...</p>
 
-      <div class="form-check form-check-inline">
-        <input
-          class="form-check-input"
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault1"
-        />
-        <label class="form-check-label" for="flexRadioDefault1">
-          Major
-        </label>
+      <div class="mb-2">
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="flexRadioDefault"
+            id="flexRadioDefault1"
+            v-model="selectedRadio"
+            value="major"
+            selected
+          />
+          <label class="form-check-label" for="flexRadioDefault1">
+            Major
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="flexRadioDefault"
+            id="flexRadioDefault2"
+            v-model="selectedRadio"
+            value="course"
+          />
+          <label class="form-check-label" for="flexRadioDefault2">
+            Course
+          </label>
+        </div>
       </div>
-      <div class="form-check form-check-inline">
-        <input
-          class="form-check-input"
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault2"
-          checked
-        />
-        <label class="form-check-label" for="flexRadioDefault2">
-          Course
-        </label>
-      </div>
-
-      <search-major />
-      <search-course />
+      <search-major v-if="selectedRadio === 'major'" />
+      <search-course v-if="selectedRadio === 'course'" />
     </div>
   </div>
 </template>
@@ -46,11 +51,11 @@ export default {
     'search-course': SearchCourse
   },
   data() {
-    return {};
+    return {
+      selectedRadio: 'major',
+    };
   },
-  methods: {
-    // TODO: create method to handle toggling of major and course search comps
-  }
+  methods: {}
 };
 </script>
 
