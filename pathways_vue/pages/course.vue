@@ -50,7 +50,7 @@ import Layout from '../layout.vue';
 import SearchCourse from '../components/search/course.vue';
 import GradeDistribution from '../components/course/grade-distribution.vue';
 import DifficultyIndex from '../components/course/difficulty-index.vue';
-import ContactAdviser from '../components/course/contact-adviser.vue';
+import ContactAdviser from '../components/_common/contact-adviser.vue';
 import D3Arc from '../components/d3-arc.vue';
 
 export default {
