@@ -68,8 +68,7 @@
           <button
             type="button"
             class="btn btn-link mb-5"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
+            @click="showWelcomeModal"
           >
             About this app
           </button>
@@ -86,6 +85,8 @@ import SearchChooser from '../components/search/chooser.vue';
 import D3Arc from '../components/d3-arc.vue';
 import D3BoxPlot from '../components/d3-boxplot.vue';
 
+import { Modal } from 'bootstrap';
+
 export default {
   components: {
     layout: Layout,
@@ -94,9 +95,19 @@ export default {
   data() {
     return {
       pageTitle: 'Home',
+      welcomeModal: null
     };
   },
-  methods: {},
+  mounted() {
+    // show the welcome modal when the component is mounted
+    this.showWelcomeModal();
+  },
+  methods: {
+    showWelcomeModal(event){
+        this.welcomeModal = new Modal(document.getElementById('exampleModal'), {})
+        this.welcomeModal.show()
+    },
+  },
 };
 </script>
 
