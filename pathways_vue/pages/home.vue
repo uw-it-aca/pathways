@@ -5,7 +5,7 @@
     <template #title>{{ pageTitle }}</template>
     <template #content>
 
-      <div class="align-center"><i class="bi-alarm"></i>aasdf</div>
+      <div class="align-center mb-5"><i class="bi-alarm text-danger"></i> here is my clock icon</div>
 
       <!-- Button trigger modal -->
       <button
