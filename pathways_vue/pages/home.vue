@@ -5,6 +5,8 @@
     <template #title>{{ pageTitle }}</template>
     <template #content>
 
+      <div class="align-center"><i class="bi-alarm"></i>aasdf</div>
+
       <!-- Button trigger modal -->
       <button
         type="button"
