@@ -10,7 +10,7 @@
       </div>
 
       <d3-boxplot />
-
+      <contact-adviser />
     </template>
   </layout>
 </template>
@@ -20,12 +20,14 @@ import Layout from '../layout.vue';
 import SearchMajor from '../components/search/major.vue';
 import D3Arc from '../components/d3-arc.vue';
 import D3BoxPlot from '../components/d3-boxplot.vue';
+import ContactAdviser from '../components/_common/contact-adviser.vue';
 
 export default {
   components: {
     'layout': Layout,
     'search-major': SearchMajor,
-    'd3-boxplot': D3BoxPlot
+    'd3-boxplot': D3BoxPlot,
+    'contact-adviser': ContactAdviser,
   },
   data() {
     return {

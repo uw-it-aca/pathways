@@ -1,7 +1,7 @@
 // chooser.vue
 
 <template>
-  <div class="card bg-light mb-5">
+  <div class="card bg-light">
     <div class="card-body">
       <p>Search for a...</p>
 
@@ -16,9 +16,7 @@
             value="major"
             selected
           />
-          <label class="form-check-label" for="flexRadioDefault1">
-            Major
-          </label>
+          <label class="form-check-label" for="flexRadioDefault1"> Major </label>
         </div>
         <div class="form-check form-check-inline">
           <input
@@ -29,9 +27,7 @@
             v-model="selectedRadio"
             value="course"
           />
-          <label class="form-check-label" for="flexRadioDefault2">
-            Course
-          </label>
+          <label class="form-check-label" for="flexRadioDefault2"> Course </label>
         </div>
       </div>
       <search-major v-if="selectedRadio === 'major'" />
@@ -45,17 +41,17 @@ import SearchMajor from './major.vue';
 import SearchCourse from './course.vue';
 
 export default {
-  name: "SearchChooser",
+  name: 'SearchChooser',
   components: {
     'search-major': SearchMajor,
-    'search-course': SearchCourse
+    'search-course': SearchCourse,
   },
   data() {
     return {
       selectedRadio: 'major',
     };
   },
-  methods: {}
+  methods: {},
 };
 </script>
 
