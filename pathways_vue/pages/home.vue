@@ -30,7 +30,6 @@
                         Grades are just one of the factors considered for admission to a
                         capacity-constrained major. Reach out to your adviser to learn more.
                       </li>
-
                       <li>
                         The median course grade and GPA data are only included for those students
                         who had declared for the major (median grade for Chem 142, only includes
@@ -70,7 +69,7 @@
             class="btn btn-link mb-5"
             @click="showWelcomeModal"
           >
-            About this app
+            About this app <div class="align-center mb-5"><i class="bi-alarm text-danger"></i> here is my clock icon</div>
           </button>
         </div>
       </div>
