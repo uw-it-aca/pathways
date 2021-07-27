@@ -9,6 +9,7 @@ $link-color: #0069d9; //a11y blue
 // pathways custom colors
 $custom-colors: (
   "test": red,
+  "link-color": $link-color,
 );
 
 // axdd-components + pathways custom colors
