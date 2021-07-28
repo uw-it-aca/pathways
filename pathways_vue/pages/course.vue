@@ -28,10 +28,7 @@
 
       <grade-distribution />
       <difficulty-index />
-
-      <div class="card mb-5">
-        <div class="card-body">Prerequisite Map</div>
-      </div>
+      <prereq-map />
 
       <div class="card mb-5">
         <div class="card-body">Concurrent Courses</div>
@@ -52,6 +49,7 @@ import GradeDistribution from '../components/course/grade-distribution.vue';
 import DifficultyIndex from '../components/course/difficulty-index.vue';
 import ContactAdviser from '../components/_common/contact-adviser.vue';
 import D3Arc from '../components/d3-arc.vue';
+import PrereqMap from '../components/course/prereq-map.vue';
 
 export default {
   components: {
@@ -61,6 +59,7 @@ export default {
     'difficulty-index': DifficultyIndex,
     'contact-adviser': ContactAdviser,
     'd3-arc': D3Arc,
+    'prereq-map': PrereqMap,
   },
   data() {
     return {
