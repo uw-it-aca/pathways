@@ -66,10 +66,10 @@
           <!-- Button trigger modal -->
           <button
             type="button"
-            class="btn btn-link mb-5"
+            class="btn btn-outline-primary mt-2 btn-sm"
             @click="showWelcomeModal"
           >
-            About this app <div class="align-center mb-5"><i class="bi-alarm text-danger"></i> here is my clock icon</div>
+            About this app <i class="bi bi-info-circle"></i>
           </button>
         </div>
       </div>
