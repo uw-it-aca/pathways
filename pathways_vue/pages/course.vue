@@ -25,14 +25,18 @@
         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque numquam a maxime delectus tempora, ad molestiae rerum voluptate commodi cupiditate at quo fuga praesentium dicta repellendus quia et accusantium ab</p>
         <p><a href="#">View CHEM 162 course details and schedule on MyPlan</a></p>
       </div>
+      <div class="row">
+        <div class="col">
+          <grade-distribution />
+        </div>
+        <div class="col">
+          <outcome-index />
+        </div>
+      </div>
 
-      <grade-distribution />
-      <difficulty-index />
       <prereq-map />
 
-      <div class="card mb-5">
-        <div class="card-body">Concurrent Courses</div>
-      </div>
+      <concurrent-courses />
 
       <contact-adviser />
 
@@ -46,20 +50,22 @@
 import Layout from '../layout.vue';
 import SearchCourse from '../components/search/course.vue';
 import GradeDistribution from '../components/course/grade-distribution.vue';
-import DifficultyIndex from '../components/course/difficulty-index.vue';
+import OutcomeIndex from '../components/course/outcome-index.vue';
 import ContactAdviser from '../components/_common/contact-adviser.vue';
 import D3Arc from '../components/d3-arc.vue';
 import PrereqMap from '../components/course/prereq-map.vue';
+import ConcurrentCourses from '../components/course/concurrent-courses.vue';
 
 export default {
   components: {
     'layout': Layout,
     'search-course': SearchCourse,
     'grade-distribution': GradeDistribution,
-    'difficulty-index': DifficultyIndex,
+    'outcome-index': OutcomeIndex,
     'contact-adviser': ContactAdviser,
     'd3-arc': D3Arc,
     'prereq-map': PrereqMap,
+    'concurrent-courses': ConcurrentCourses,
   },
   data() {
     return {
