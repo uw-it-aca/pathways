@@ -40,8 +40,6 @@
 
       <contact-adviser />
 
-      <d3-arc />
-
     </template>
   </layout>
 </template>
@@ -52,7 +50,6 @@ import SearchCourse from '../components/search/course.vue';
 import GradeDistribution from '../components/course/grade-distribution.vue';
 import OutcomeIndex from '../components/course/outcome-index.vue';
 import ContactAdviser from '../components/_common/contact-adviser.vue';
-import D3Arc from '../components/d3-arc.vue';
 import PrereqMap from '../components/course/prereq-map.vue';
 import ConcurrentCourses from '../components/course/concurrent-courses.vue';
 
@@ -63,7 +60,6 @@ export default {
     'grade-distribution': GradeDistribution,
     'outcome-index': OutcomeIndex,
     'contact-adviser': ContactAdviser,
-    'd3-arc': D3Arc,
     'prereq-map': PrereqMap,
     'concurrent-courses': ConcurrentCourses,
   },
