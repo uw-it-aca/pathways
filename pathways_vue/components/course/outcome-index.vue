@@ -20,12 +20,10 @@ export default {
   name: 'OutcomeIndex',
   data() {
     return {
-      gdp: [
-        { coi: 'CHEM 162', value: 8.5 },
-        { coi: 'All CHEM', value: 7.9 },
-        { coi: 'ALL UW', value: 6.9 },
-        //{ country: 'Japan', value: 4.9 },
-        //{ country: 'France', value: 2.8 },
+      coi: [
+        { outcome: 'CHEM 162', value: 8.5 },
+        { outcome: 'All CHEM', value: 7.9 },
+        { outcome: 'ALL UW', value: 6.9 },
       ],
     };
   },
@@ -43,14 +41,14 @@ export default {
         .attr('width', w)
         .attr('height', h);
 
-      const sortedGDP = this.gdp.sort((a, b) => (a.value > b.value ? 1 : -1));
+      const sortedCOI = this.coi.sort((a, b) => (a.value > b.value ? 1 : -1));
       const color = d3.scaleOrdinal(d3.schemeSet1);
 
-      const max_gdp = d3.max(sortedGDP, o => o.value);
+      const max_coi = d3.max(sortedCOI, o => o.value);
 
       const angleScale = d3
         .scaleLinear()
-        .domain([0, max_gdp])
+        .domain([0, max_coi])
         .range([0, 1.5 * Math.PI]);
 
       const arc = d3
@@ -63,7 +61,7 @@ export default {
       const g = svg.append('g');
 
       g.selectAll('path')
-        .data(sortedGDP)
+        .data(sortedCOI)
         .enter()
         .append('path')
         .attr('d', arc)
@@ -84,10 +82,10 @@ export default {
         });
 
       g.selectAll('text')
-        .data(this.gdp)
+        .data(this.coi)
         .enter()
         .append('text')
-        .text(d => `${d.coi} -  ${d.value} COI`)
+        .text(d => `${d.outcome} -  ${d.value} COI`)
         .attr('x', -150)
         .attr('dy', -8)
         .attr('y', (d, i) => -(i + 1) * 25);
