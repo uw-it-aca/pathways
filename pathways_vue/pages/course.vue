@@ -16,9 +16,9 @@
         <div>
           <strong>Offered</strong>
           <ul class="ms-2 d-inline list-inline">
-            <li class="list-inline-item"><span class="badge bg-danger text-dark">Info</span></li>
-            <li class="list-inline-item"><span class="badge bg-info text-dark">Info</span></li>
-            <li class="list-inline-item"><span class="badge bg-success text-dark">Info</span></li>
+            <li class="list-inline-item"><span class="badge bg-teal-200 text-dark">SPR</span></li>
+            <li class="list-inline-item"><span class="badge bg-orange-200 text-dark">AUT</span></li>
+            <li class="list-inline-item"><span class="badge bg-blue-200 text-dark">WIN</span></li>
           </ul>
         </div>
 

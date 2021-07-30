@@ -6,7 +6,7 @@
       <h3>Course Outcome Index (COI)</h3>
       <p>
         Using prior course data, this index compares estimated fail/withdrawal rates against actual
-        fail/withdrawal rates.
+        fail/withdrawal rates. <a href="#"><i class="bi bi-info-circle"></i></a>
       </p>
       <div id="arc" />
     </div>
@@ -23,7 +23,7 @@ export default {
       coi: [
         { outcome: 'CHEM 162', value: 8.5 },
         { outcome: 'All CHEM', value: 7.9 },
-        { outcome: 'ALL UW', value: 6.9 },
+        { outcome: 'All UW', value: 6.9 },
       ],
     };
   },
@@ -35,16 +35,15 @@ export default {
       const w = 500;
       const h = 300;
 
-      const svg = d3
-        .select('#arc')
-        .append('svg')
-        .attr('width', w)
-        .attr('height', h);
+      const svg = d3.select('#arc').append('svg').attr('width', w).attr('height', h);
 
       const sortedCOI = this.coi.sort((a, b) => (a.value > b.value ? 1 : -1));
-      const color = d3.scaleOrdinal(d3.schemeSet1);
+      const color = d3
+        .scaleSequential()
+        .interpolator(d3.interpolateRgb('purple', 'blue'))
+        .domain([0, 3]);
 
-      const max_coi = d3.max(sortedCOI, o => o.value);
+      const max_coi = d3.max(sortedCOI, (o) => o.value);
 
       const angleScale = d3
         .scaleLinear()
@@ -56,7 +55,7 @@ export default {
         .innerRadius((d, i) => (i + 1) * 25)
         .outerRadius((d, i) => (i + 2) * 25)
         .startAngle(angleScale(0))
-        .endAngle(d => angleScale(d.value));
+        .endAngle((d) => angleScale(d.value));
 
       const g = svg.append('g');
 
@@ -68,24 +67,18 @@ export default {
         .attr('fill', (d, i) => color(i))
         .attr('stroke', '#FFF')
         .attr('stroke-width', '1px')
-        .on('mouseenter', function() {
-          d3.select(this)
-            .transition()
-            .duration(200)
-            .attr('opacity', 0.5);
+        .on('mouseenter', function () {
+          d3.select(this).transition().duration(200).attr('opacity', 0.5);
         })
-        .on('mouseout', function() {
-          d3.select(this)
-            .transition()
-            .duration(200)
-            .attr('opacity', 1);
+        .on('mouseout', function () {
+          d3.select(this).transition().duration(200).attr('opacity', 1);
         });
 
       g.selectAll('text')
         .data(this.coi)
         .enter()
         .append('text')
-        .text(d => `${d.outcome} -  ${d.value} COI`)
+        .text((d) => `${d.outcome} -  ${d.value} COI`)
         .attr('x', -150)
         .attr('dy', -8)
         .attr('y', (d, i) => -(i + 1) * 25);
