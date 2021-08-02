@@ -5,10 +5,23 @@
     <div class="card-body">
       <h3>Declared major cumulative GPA distribution</h3>
       <div class="alert alert-secondary" role="alert">
-      <p>Remember that GPA is just one of many factors that goes into admissions decisions.</p>
+        <p>Remember that GPA is just one of many factors that goes into admissions decisions.</p>
       </div>
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Last 2 Years</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Last 5 Years</a>
+        </li>
+      </ul>
+
+      <div id="histogram" class="m-3"></div>
+      <small
+        >Every student’s cumulative GPA at time of major declaration over the last 5 years. Number
+        of students in this sample: 467</small
+      >
     </div>
-    <div id="histogram"></div>
   </div>
 </template>
 
