@@ -4,7 +4,7 @@
   <div class="mb-5">
     <h2>Chemistry (BS)</h2>
     <p class="text-uppercase mb-1">College of Arts & Sciences - Seattle</p>
-    <p><strong>Admission type:</strong> <a href="#">capacity-contrained</a></p>
+    <p><strong>Admission type:</strong> capacity-contrained <a href="#"><i class="bi bi-info-circle-fill"></i></a></p>
     <div class="major-info">
       <div class="major-description">
         <p>
