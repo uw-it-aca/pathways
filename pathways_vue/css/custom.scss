@@ -25,3 +25,9 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 // additional non-bootstrap styles
 
 .blah { color: purple; }
+
+// global pathways colors
+
+.pw-orange { background-color: $orange-200; }
+.pw-green { background-color: $teal-200; }
+.pw-blue { background-color: $blue-200; }

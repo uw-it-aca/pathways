@@ -16,7 +16,7 @@
         <div>
           <strong>Offered</strong>
           <ul class="ms-2 d-inline list-inline">
-            <li class="list-inline-item"><span class="badge bg-teal-200 text-dark">SPR</span></li>
+            <li class="list-inline-item"><span class="badge pw-green text-dark">SPR</span></li>
             <li class="list-inline-item"><span class="badge creamcicle text-dark">AUT</span></li>
             <li class="list-inline-item"><span class="badge bg-blue-200 text-dark">WIN</span></li>
           </ul>
