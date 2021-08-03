@@ -10,6 +10,9 @@ $link-color: #0069d9; //a11y blue
 $custom-colors: (
   "test": red,
   "link-color": $link-color,
+  "blue-200":   $blue-200,
+  "orange-200": $orange-200,
+  "teal-200":   $teal-200,
 );
 
 // axdd-components + pathways custom colors
@@ -22,3 +25,9 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 // additional non-bootstrap styles
 
 .blah { color: purple; }
+
+// global pathways colors
+
+.pw-orange { background-color: $orange-200; }
+.pw-green { background-color: $teal-200; }
+.pw-blue { background-color: $blue-200; }

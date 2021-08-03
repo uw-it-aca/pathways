@@ -16,7 +16,7 @@
         <common-courses />
       </div>
       
-      <d3-boxplot />
+      <d3-histogram />
       <contact-adviser />
     </template>
   </layout>
@@ -30,6 +30,7 @@ import CommonCourses from '../components/major/common-courses.vue';
 import SearchMajor from '../components/search/major.vue';
 import D3Arc from '../components/d3-arc.vue';
 import D3BoxPlot from '../components/d3-boxplot.vue';
+import D3Histogram from '../components/d3-histogram.vue';
 import ContactAdviser from '../components/_common/contact-adviser.vue';
 
 export default {
@@ -37,6 +38,7 @@ export default {
     'layout': Layout,
     'search-major': SearchMajor,
     'd3-boxplot': D3BoxPlot,
+    'd3-histogram': D3Histogram,
     'contact-adviser': ContactAdviser,
     'major-details': MajorDetails,
     'explore-major': ExploreMajor,
