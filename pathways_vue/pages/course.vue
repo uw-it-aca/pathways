@@ -17,7 +17,7 @@
           <strong>Offered</strong>
           <ul class="ms-2 d-inline list-inline">
             <li class="list-inline-item"><span class="badge bg-teal-200 text-dark">SPR</span></li>
-            <li class="list-inline-item"><span class="badge bg-orange-200 text-dark">AUT</span></li>
+            <li class="list-inline-item"><span class="badge creamcicle text-dark">AUT</span></li>
             <li class="list-inline-item"><span class="badge bg-blue-200 text-dark">WIN</span></li>
           </ul>
         </div>
@@ -72,4 +72,9 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+@import "../css/custom.scss";
+
+.creamcicle { background-color: $orange-200; }
+
+</style>
