@@ -23,7 +23,7 @@ setup(
     author="UW-IT AXDD",
     author_email="aca-it@uw.edu",
     include_package_data=True,
-    install_requires=["django>=2.1,<2.3", "django-webpack-bridge"],
+    install_requires=["django", "django-webpack-bridge"],
     license="Apache License, Version 2.0",
     description="A tool for visually displaying UW course prerequisites",
     long_description=README,

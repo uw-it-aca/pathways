@@ -10,7 +10,7 @@ Replace this description for your new application... lorem ipsum dolor sit amet,
 
 ## Development Stack
 
-- Django (2.1 - 2.3)
+- Django (3.x)
 - Vue (3.x)
 - Webpack (5.x)
 - Bootstrap (5.x)
