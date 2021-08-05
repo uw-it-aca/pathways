@@ -4,6 +4,7 @@
     inner-id="majors"
     :options="majorListSearchable"
     placeholder="Enter a major"
+    route-path="major"
     sync-query-param="name"
     v-model:selected="selected"
   />

@@ -31,6 +31,10 @@ export default {
       type: String,
       default: '',
     },
+    routePath: {
+      type: String,
+      default: null,
+    },
     syncQueryParam: {
       default: null,
       type: String,
@@ -57,6 +61,7 @@ export default {
     onSelected() {
       if (this.syncQueryParam) {
         this.$router.push({
+          path: this.routePath,
           query: { [this.syncQueryParam]: this.selectedKey }
         });
       }

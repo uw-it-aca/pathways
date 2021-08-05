@@ -5,6 +5,7 @@
     inner-id="courses"
     :options="courseListSearchable"
     placeholder="Enter a course code"
+    route-path="course"
     sync-query-param="name"
     v-model:selected="selected"
   />
