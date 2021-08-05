@@ -1,4 +1,4 @@
-// course-details.
+// course-details.vue
 
 <template>
   <div class="mb-5">
