@@ -37,7 +37,7 @@ export default {
       );
     },
     goToSelectedMajor() {
-      this.$router.push({query: { name: this.majorName }});
+      this.$router.push({path: '/major/', query: { name: this.majorName }});
       this.syncSelectedMajor();
     }
   }
