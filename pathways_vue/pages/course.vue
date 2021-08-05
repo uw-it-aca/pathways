@@ -5,8 +5,10 @@
     <template #title>{{ pageTitle }}</template>
     <template #content>
 
-      <div class="mb-5">
-        <search-course :course-list="courseList"/>
+      <div class="row justify-content-center mb-5">
+        <div class="col-md-9">
+          <search-course :course-list="courseList"/>
+        </div>
       </div>
 
       <div class="mb-5">
