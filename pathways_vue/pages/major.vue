@@ -5,8 +5,10 @@
     <template #title>{{ pageTitle }}</template>
     <template #content>
 
-      <div class="mb-5">
-        <search-major v-model:selectedMajor="selectedMajor" :major-list="majorSeaList"/>
+      <div class="row justify-content-center mb-5">
+        <div class="col-md-9">
+          <search-major v-model:selectedMajor="selectedMajor" :major-list="majorSeaList"/>
+        </div>
       </div>
       <div v-if="selectedMajor">
         <div class="row">

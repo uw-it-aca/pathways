@@ -1,4 +1,4 @@
-// explore-major.vue 
+// explore-major.vue
 
 <template>
   <div class="card mb-5">
@@ -7,7 +7,7 @@
       <ul>
         <!-- TODO: improve this to have proper capitalization and key/value mapping -->
         <li v-for="(field, i) in fields" :key="i">
-          <a :href="major[field]">{{ field }}</a>
+          <a :href="major[field]" target="_blank">{{ field }}</a>
         </li>
         <li><a href="#">MyPlan Program Page</a></li>
       </ul>
