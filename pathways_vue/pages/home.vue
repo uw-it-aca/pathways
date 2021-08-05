@@ -62,7 +62,7 @@
             <li><router-link to="/course">Go to Course</router-link></li>
           </ul>
 
-          <search-chooser />
+          <search-chooser :course-list="courseList" :major-list="majorSeaList"/>
           <!-- Button trigger modal -->
           <button
             type="button"
@@ -78,6 +78,11 @@
 </template>
 
 <script>
+import courseList from '../data/courses.json';
+import majorSeaData from '../data/majors-sea.json';
+
+import { proccessSeaMajors } from '../helpers/major';
+
 import Layout from '../layout.vue';
 import SearchChooser from '../components/search/chooser.vue';
 
@@ -94,7 +99,9 @@ export default {
   data() {
     return {
       pageTitle: 'Home',
-      welcomeModal: null
+      welcomeModal: null,
+      courseList,
+      majorSeaList: proccessSeaMajors(majorSeaData),
     };
   },
   mounted() {

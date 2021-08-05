@@ -5,7 +5,10 @@
     <div class="card-body explore-major">
       <h3>Explore this Major</h3>
       <ul>
-        <li><a href="#">Admission Requirements</a></li>
+        <!-- TODO: improve this to have proper capitalization and key/value mapping -->
+        <li v-for="(field, i) in fields" :key="i">
+          <a :href="major[field]">{{ field }}</a>
+        </li>
         <li><a href="#">MyPlan Program Page</a></li>
       </ul>
     </div>
@@ -16,8 +19,23 @@
 <script>
 export default {
   name: 'ExploreMajor',
+  props: {
+    major: {
+      type: Object,
+      required: true,
+    }
+  },
   data() {
     return {};
+  },
+  computed: {
+    fields() {
+      let wantedFields = [
+        'Degree requirements',
+      ];
+
+      return wantedFields.filter((field) => field in this.major);
+    },
   },
   methods: {},
 };

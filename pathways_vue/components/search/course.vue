@@ -13,19 +13,23 @@
     <button type="button" class="btn btn-purple" @click="searchCourse">Search</button>
   </div>
   <datalist id="courses">
-    <option v-for="(course, i) in courses" :key="i">{{ course }}</option>
+    <option v-for="(course, i) in courseList" :key="i">{{ course }}</option>
   </datalist>
 </template>
 
 <script>
-import courseData from "./courses.json";
 
 export default {
   name: 'SearchMajor',
+  props: {
+    courseList: {
+      type: Array,
+      required: true,
+    }
+  },
   data() {
     return {
       course: '',
-      courses: courseData
     };
   },
   methods: {
