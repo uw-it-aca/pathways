@@ -3,11 +3,17 @@
 <template>
   <div class="p-3">
     <div class="form-check form-switch">
-      <label class="form-check-label" for="ViewCourseList">View as a list</label>
-      <input class="form-check-input" type="checkbox" id="ViewCourseList" />
+      <input 
+        class="form-check-input" 
+        type="checkbox" 
+        v-model="viewCurrList" 
+        id="ToggleCurrList" 
+      />
+      <label class="form-check-label" for="ToggleCurrList">View as a list</label>
     </div>
   </div>
-  <div class="card shadow-sm">
+  <prereq-curr-list v-if="viewCurrList" />
+  <div class="card shadow-sm" id="ViewCurrMap" v-else>
     <div class="text-dark p-3 bg-light rounded-top rounded-sm">
       <small>Use the scroll function on your mouse or touchpad to zoom in and out</small>
     </div>
@@ -15,10 +21,17 @@
 </template>
 
 <script>
+import PrereqCurrList from './prereq-curr-list.vue';
+
 export default {
   name: 'PrereqCurriculum',
+  components: {
+    'prereq-curr-list': PrereqCurrList,
+  },
   data() {
-    return {};
+    return { 
+      viewCurrList: false, 
+    };
   },
   methods: {},
 };
