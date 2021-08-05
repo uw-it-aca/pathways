@@ -24,7 +24,7 @@ export default {
       type: Array,
       required: true,
     },
-    selected: Object,
+    selected: String,
   },
   emits: ['update:selected'],
   computed: {

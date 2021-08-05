@@ -39,11 +39,10 @@ export default {
       default: null,
       type: String,
     },
-    selected: Object,
+    selected: {},
   },
   emits: ['update:selected'],
   data() {
-    console.log(this.options);
     return {
       selectedKey: '',
     };
