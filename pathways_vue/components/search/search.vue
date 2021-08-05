@@ -1,0 +1,74 @@
+<template>
+  <div class="input-group">
+    <input
+      type="text"
+      v-model="selectedKey"
+      class="form-control"
+      aria-label=""
+      :placeholder="placeholder"
+      :list="innerId"
+    />
+    <button type="button" class="btn btn-purple" @click="onSelected">Search</button>
+  </div>
+  <datalist :id="innerId">
+    <option v-for="(option, i) in renderableOptions" :key="i">{{ option }}</option>
+  </datalist>
+</template>
+
+<script>
+export default {
+  name: "SearchBar",
+  props: {
+    innerId: {
+      type: String,
+      required: true,
+    },
+    options: {
+      type: Object,
+      required: true,
+    },
+    placeholder: {
+      type: String,
+      default: '',
+    },
+    syncQueryParam: {
+      default: null,
+      type: String,
+    },
+    selected: Object,
+  },
+  emits: ['update:selected'],
+  data() {
+    console.log(this.options);
+    return {
+      selectedKey: '',
+    };
+  },
+  mounted() {
+    if (this.syncQueryParam && this.$route.query[this.syncQueryParam]) {
+      this.selectedKey = this.$route.query[this.syncQueryParam];
+      this.syncSelected();
+    }
+  },
+  methods: {
+    syncSelected() {
+      this.$emit('update:selected', this.options[this.selectedKey]);
+    },
+    onSelected() {
+      if (this.syncQueryParam) {
+        this.$router.push({
+          query: { [this.syncQueryParam]: this.selectedKey }
+        });
+      }
+      this.syncSelected();
+    }
+  },
+  computed: {
+    renderableOptions() {
+      return Object.keys(this.options);
+    }
+  },
+};
+</script>
+
+<style lang="scss"></style>
