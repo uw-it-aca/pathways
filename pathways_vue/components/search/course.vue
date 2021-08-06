@@ -1,12 +1,12 @@
 // course.vue
 
 <template>
-  <search 
+  <search
     inner-id="courses"
     :options="courseListSearchable"
     placeholder="Enter a course code"
     route-path="course"
-    sync-query-param="name"
+    sync-query-param="code"
     v-model:selected="selected"
   />
 </template>
