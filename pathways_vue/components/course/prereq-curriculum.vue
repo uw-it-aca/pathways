@@ -9,7 +9,7 @@
         v-model="viewCurrList" 
         id="ToggleCurrList" 
       />
-      <label class="form-check-label" for="ToggleCurrList">View as a list</label>
+      <label class="form-check-label" for="ToggleCurrList">View CHEM curriculum as a list</label>
     </div>
   </div>
   <prereq-curr-list v-if="viewCurrList" />

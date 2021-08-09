@@ -9,7 +9,7 @@
         v-model="viewCourseList"
         id="ToggleCourseList"
       />
-      <label class="form-check-label" for="ToggleCourseList">View as a list</label>
+      <label class="form-check-label" for="ToggleCourseList">View CHEM 162 prereqs as a list</label>
     </div>
   </div>
   <prereq-course-list v-if="viewCourseList" />

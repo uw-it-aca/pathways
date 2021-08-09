@@ -62,4 +62,9 @@ li {
   list-style-type: none;
   padding-bottom: 0.5rem;
 }
+
+.rounded-pill {
+  font-size: 55%;
+  vertical-align: middle;
+}
 </style>
