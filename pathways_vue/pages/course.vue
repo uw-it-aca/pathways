@@ -26,7 +26,7 @@
 
       <concurrent-courses />
 
-      <contact-adviser />
+      <contact-adviser-course />
 
     </template>
   </layout>
@@ -39,9 +39,9 @@ import GradeDistribution from '../components/course/grade-distribution.vue';
 import CourseDetails from '../components/course/course-details.vue';
 import ExploreCourse from '../components/course/explore-course.vue'
 import OutcomeIndex from '../components/course/outcome-index.vue';
-import ContactAdviser from '../components/_common/contact-adviser.vue';
 import PrereqMap from '../components/course/prereq-map.vue';
 import ConcurrentCourses from '../components/course/concurrent-courses.vue';
+import ContactAdviserCourse from '../components/course/contact-adviser-course.vue';
 
 export default {
   components: {
@@ -51,7 +51,7 @@ export default {
     'explore-course': ExploreCourse,
     'grade-distribution': GradeDistribution,
     'outcome-index': OutcomeIndex,
-    'contact-adviser': ContactAdviser,
+    'contact-adviser-course': ContactAdviserCourse,
     'prereq-map': PrereqMap,
     'concurrent-courses': ConcurrentCourses,
   },
