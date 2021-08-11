@@ -1,0 +1,102 @@
+ingress:
+  enabled: true
+  tls:
+    pathways:
+      secretName: test.pathways.uw.edu-ingress-cert
+      hosts:
+        - test.pathways.uw.edu
+  hosts:
+    pathways:
+      host: test.pathways.uw.edu
+      paths:
+        - "/"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "16K"
+
+lifecycle:
+  enabled: true
+  preStop:
+    enabled: true
+affinity:
+  podsSpanNodes: true
+readiness:
+  enabled: true
+securityPolicy:
+  enabled: false
+
+externalService:
+  enabled: true
+  name: pathways-db-service
+  type: ClusterIP
+  serviceAddress:
+  servicePort: 5432
+database:
+  engine: postgres
+  name: pathways_test
+  hostname: pathways-db-service
+  secretName: test.pathways.uw.edu-sql-secrets
+
+repo: pathways
+instance: test
+image:
+  repository: gcr.io/uwit-mci-axdd/pathways
+  tag: IMAGE_TAG
+
+memcached:
+  enabled: false
+
+environmentVariables:
+  - name: ENV
+    value: test
+  - name: AUTH
+    value: SAML
+  - name: SAML_ENTITY_ID
+    value:
+  - name: CLUSTER_CNAME
+    value:
+
+externalSecrets:
+  enabled: true
+  - name: test.pathways.uw.edu-secrets
+      externalKey: axdd/kv/data/pathways/test/secrets
+      data:
+        - name: django-secret
+          property: django-secret
+        - name: access-group-id
+          property: access-group-id
+  - name: test.pathways.uw.edu-sql-secrets
+      externalKey: axdd/kv/data/pathways/shared/sql-secrets
+      data:
+        - name: username
+          property: username
+        - name: password
+          property: password
+  - name: test.pathways.uw.edu-ic-certs
+      externalKey: axdd/kv/data/pathways/test/ic-certs
+      data:
+        - name: test.pathways.uw.edu-ic.cert
+          property: test.pathways.uw.edu-ic.cert
+    - name: test.pathways.uw.edu-uw-idp-cert
+      externalKey: axdd/kv/data/idp-cert
+      data:
+        - name: uw-idp-cert
+          property: cert
+
+environmentVariablesSecrets:
+  djangoSecret:
+    name: DJANGO_SECRET
+    secretName: test.pathways.uw.edu-secrets
+    secretKey: django-secret
+  samlSPCert:
+    name: SP_CERT
+    secretName: test.pathways.uw.edu-ic-certs
+    secretKey: test.pathways.uw.edu-ic.cert
+  samlIDPCert:
+    name: IDP_CERT
+    secretName: test.pathways.uw.edu-uw-idp-cert
+    secretKey: uw-idp-cert
+  accessGroup:
+    name: ACCESS_GROUP
+    secretName: test.pathways.uw.edu-shared-secrets
+    secretKey: access-group-id
