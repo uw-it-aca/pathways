@@ -1,2 +1,8 @@
 [run]
 source = pathways
+parallel = True
+
+[paths]
+source =
+  pathways/
+  /app/pathways/

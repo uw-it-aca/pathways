@@ -1,10 +1,9 @@
 from .base_settings import *
-
-ALLOWED_HOSTS = ['*']
+import os
 
 INSTALLED_APPS += [
     'webpack_bridge',
-    'pathways'
+    'pathways.apps.PathwaysConfig'
 ]
 
 STATICFILES_DIRS = [

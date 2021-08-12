@@ -11,6 +11,9 @@ ADD --chown=acait:acait requirements.txt /app/
 RUN . /app/bin/activate && pip install -r requirements.txt
 RUN . /app/bin/activate && pip install psycopg2
 
+ADD --chown=acait:acait . /app/
+ADD --chown=acait:acait docker/ project/
+
 FROM node:14.6.0-stretch AS wpack
 
 ADD ./package.json /app/
@@ -26,9 +29,6 @@ RUN npx webpack --mode=production
 FROM app-prewebpack-container as app-container
 
 COPY --chown=acait:acait --from=wpack /static /static
-
-ADD --chown=acait:acait . /app/
-ADD --chown=acait:acait docker/ project/
 
 RUN . /app/bin/activate && python manage.py collectstatic --noinput
 
