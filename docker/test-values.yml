@@ -65,6 +65,8 @@ externalSecrets:
           property: django-secret
         - name: access-group-id
           property: access-group-id
+        - name: google-analytics-key
+          property: google-analytics-key
   - name: test.pathways.uw.edu-sql-secrets
       externalKey: axdd/kv/data/pathways/shared/sql-secrets
       data:
@@ -100,3 +102,7 @@ environmentVariablesSecrets:
     name: ACCESS_GROUP
     secretName: test.pathways.uw.edu-shared-secrets
     secretKey: access-group-id
+  googleAnalyticsKey:
+    name: GOOGLE_ANALYTICS_KEY
+    secretName: test.pathways.uw.edu-secrets
+    secretKey: google-analytics-key

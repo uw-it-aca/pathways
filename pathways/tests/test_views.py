@@ -4,7 +4,7 @@
 from django.test import RequestFactory, TestCase
 from django.contrib.auth.models import User
 from django.contrib.sessions.middleware import SessionMiddleware
-from pathways.views import PageView
+from pathways.views.pages import DefaultPageView
 
 
 class PagesViewTest(TestCase):
@@ -15,6 +15,7 @@ class PagesViewTest(TestCase):
         self.request.session.save()
 
     def test_context(self):
-        response = PageView.as_view()(self.request)
+        response = DefaultPageView.as_view()(self.request)
         self.assertIsInstance(response.context_data, dict)
-        # Add tests for context values
+        self.assertEqual(response.context_data.get('ga_key'), ' ')
+        self.assertEqual(response.context_data.get('django_debug'), False)
