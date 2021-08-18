@@ -6,7 +6,7 @@
     <template #content>
 
       <div class="mb-5">
-        <search-course />
+        <search-course :course-list="courseList"/>
       </div>
       <div class="row">
           <div class="col-8"><course-details /></div>
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import courseList from '../data/courses.json';
+
 import Layout from '../layout.vue';
 import SearchCourse from '../components/search/course.vue';
 import GradeDistribution from '../components/course/grade-distribution.vue';
@@ -58,6 +60,7 @@ export default {
   data() {
     return {
       pageTitle: 'Course',
+      courseList,
     };
   },
   methods: {},
