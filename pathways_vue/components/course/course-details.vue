@@ -2,8 +2,8 @@
 
 <template>
   <div class="mb-5">
-    <h2>{{ courseCode }}</h2>
-    <div><strong>Credits:</strong> 5</div>
+    <h2>{{ course.title }}</h2>
+    <div><strong>Credits:</strong> {{ course.credits }}</div>
     <div class="mb-2">
       <strong>Offered</strong>
       <ul class="ms-2 d-inline list-inline">
@@ -14,7 +14,7 @@
     </div>
 
     <p>
-      Molecular bonding theories, liquids, solids, solutions, and introduction to organic and transition metal chemistry. Includes laboratory.
+      {{ course.description }}
     </p>
   </div>
 </template>
@@ -23,8 +23,8 @@
 export default {
   name: 'CourseDetails',
   props: {
-    courseCode: {
-      type: String,
+    course: {
+      type: Object,
       required: true,
     }
   },

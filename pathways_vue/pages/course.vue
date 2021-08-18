@@ -12,7 +12,7 @@
 
       <div v-if="selectedCourse">
         <div class="row">
-          <div class="col-8"><course-details :course-code="selectedCourse" /></div>
+          <div class="col-8"><course-details :course="courseData" /></div>
           <div class="col-4"><explore-course /></div>
         </div>
         <div class="row">
@@ -25,9 +25,7 @@
         </div>
 
         <prereq-map />
-
         <concurrent-courses />
-
         <contact-adviser-course />
       </div>
       <div v-else>PLACEHOLDER: select something</div>
@@ -66,6 +64,16 @@ export default {
       courseList,
       selectedCourse: '',
     };
+  },
+  computed: {
+    courseData() {
+      return {
+        title:'',
+        description: '',
+        credits: 2,
+        offered: []
+      }
+    }
   },
   methods: {},
 };
