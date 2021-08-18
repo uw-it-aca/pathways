@@ -7,14 +7,13 @@
 
       <div class="row justify-content-center mb-5">
         <div class="col-md-9">
-          <search-course :course-list="courseList"/>
+          <search-course v-model:selected="selectedCourse" :course-list="courseList"/>
         </div>
       </div>
       <div class="row">
           <div class="col-8"><course-details /></div>
           <div class="col-4"><explore-course /></div>
-        </div>
-
+      </div>
       <div class="row">
         <div class="col">
           <grade-distribution />
@@ -63,6 +62,7 @@ export default {
     return {
       pageTitle: 'Course',
       courseList,
+      selectedCourse: '',
     };
   },
   methods: {},

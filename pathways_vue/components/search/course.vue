@@ -1,42 +1,46 @@
 // course.vue
 
 <template>
-  <div class="input-group">
-    <input
-      type="text"
-      list="courses"
-      v-model="course"
-      class="form-control"
-      aria-label=""
-      placeholder="Enter a course code"
-    />
-    <button type="button" class="btn btn-purple" @click="searchCourse">Search</button>
-  </div>
-  <datalist id="courses">
-    <option v-for="(course, i) in courseList" :key="i">{{ course }}</option>
-  </datalist>
+  <search 
+    inner-id="courses"
+    :options="courseListSearchable"
+    placeholder="Enter a course code"
+    sync-query-param="name"
+    v-model:selected="selected"
+  />
 </template>
 
 <script>
+import Search from './search.vue';
 
 export default {
-  name: 'SearchMajor',
+  name: 'SearchCourse',
+  components: {
+    'search': Search,
+  },
   props: {
     courseList: {
       type: Array,
       required: true,
+    },
+    selected: Object,
+  },
+  emits: ['update:selected'],
+  computed: {
+    courseListSearchable() {
+      let selectable = {};
+
+      this.courseList.forEach((course) => {
+        selectable[course.trim()] = course;
+      });
+
+      return selectable;
     }
   },
-  data() {
-    return {
-      course: '',
-    };
-  },
-  methods: {
-    searchCourse(event) {
-      // TODO: wire up submit for course search
-      alert('wire me up!');
-    },
+  watch: {
+    selected(newValue) {
+      this.$emit('update:selected', newValue);
+    }
   },
 };
 </script>
