@@ -4,31 +4,33 @@
     <!-- page content -->
     <template #title>{{ pageTitle }}</template>
     <template #content>
-
       <div class="row justify-content-center mb-5">
         <div class="col-md-9">
-          <search-course v-model:selected="selectedCourse" :course-list="courseList"/>
+          <search-course v-model:selected="selectedCourse" :course-list="courseList" />
         </div>
       </div>
-      <div class="row">
+
+      <div v-if="selectedCourse">
+        <div class="row">
           <div class="col-8"><course-details :course-code="selectedCourse" /></div>
           <div class="col-4"><explore-course /></div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <grade-distribution />
         </div>
-        <div class="col">
-          <outcome-index />
+        <div class="row">
+          <div class="col">
+            <grade-distribution />
+          </div>
+          <div class="col">
+            <outcome-index />
+          </div>
         </div>
+
+        <prereq-map />
+
+        <concurrent-courses />
+
+        <contact-adviser-course />
       </div>
-
-      <prereq-map />
-
-      <concurrent-courses />
-
-      <contact-adviser-course />
-
+      <div v-else>PLACEHOLDER: select something</div>
     </template>
   </layout>
 </template>
@@ -40,7 +42,7 @@ import Layout from '../layout.vue';
 import SearchCourse from '../components/search/course.vue';
 import GradeDistribution from '../components/course/grade-distribution.vue';
 import CourseDetails from '../components/course/course-details.vue';
-import ExploreCourse from '../components/course/explore-course.vue'
+import ExploreCourse from '../components/course/explore-course.vue';
 import OutcomeIndex from '../components/course/outcome-index.vue';
 import PrereqMap from '../components/course/prereq-map.vue';
 import ConcurrentCourses from '../components/course/concurrent-courses.vue';
@@ -48,7 +50,7 @@ import ContactAdviserCourse from '../components/course/contact-adviser-course.vu
 
 export default {
   components: {
-    'layout': Layout,
+    layout: Layout,
     'search-course': SearchCourse,
     'course-details': CourseDetails,
     'explore-course': ExploreCourse,
@@ -69,6 +71,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
