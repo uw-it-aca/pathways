@@ -67,12 +67,19 @@ export default {
   },
   computed: {
     courseData() {
+      let title = courseList
+        .find((title) => title.split(':')[0] === this.selectedCourse);
+
       return {
-        title:'',
-        description: '',
+        title: title,
+        description: 'TODO '.repeat(100),
         credits: 2,
-        offered: []
-      }
+        offered: [
+          { quarter: 'SPR', class: 'pw-green' },
+          { quarter: 'AUT', class: 'creamcicle' },
+          { quarter: 'WIN', class: 'bg-blue-200' },
+        ],
+      };
     }
   },
   methods: {},

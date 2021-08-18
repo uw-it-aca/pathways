@@ -7,9 +7,9 @@
     <div class="mb-2">
       <strong>Offered</strong>
       <ul class="ms-2 d-inline list-inline">
-        <li class="list-inline-item"><span class="badge pw-green text-dark">SPR</span></li>
-        <li class="list-inline-item"><span class="badge creamcicle text-dark">AUT</span></li>
-        <li class="list-inline-item"><span class="badge bg-blue-200 text-dark">WIN</span></li>
+        <li class="list-inline-item" v-for="(term, i) in course.offered" :key="i">
+          <span class="badge text-dark" :class="term.class">{{term.quarter}}</span>
+        </li>
       </ul>
     </div>
 

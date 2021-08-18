@@ -49,9 +49,7 @@ export default {
   },
   mounted() {
     if (this.syncQueryParam && this.$route.query[this.syncQueryParam]) {
-      this.selectedLabel = this.options[
-        decodeURIComponent(this.$route.query[this.syncQueryParam])
-      ]?.label ?? '';
+      this.selectedLabel = this.options[this.$route.query[this.syncQueryParam]]?.label ?? '';
       this.syncSelected();
     }
   },
@@ -63,7 +61,7 @@ export default {
       if (this.syncQueryParam) {
         this.$router.push({
           path: this.routePath,
-          query: { [this.syncQueryParam]: encodeURIComponent(this.selectedKey) }
+          query: { [this.syncQueryParam]: this.selectedKey }
         });
       }
       this.syncSelected();
