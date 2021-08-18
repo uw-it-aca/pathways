@@ -1,9 +1,9 @@
-// contact-adviser.vue
+// contact-adviser-course.vue
 
 <template>
   <div class="card mb-5">
     <div class="card-body">
-      <h3>Are you considering this major or course?</h3>
+      <h3>Are you considering this course?</h3>
       <p>
         We understand this can be a challenging process with many sources of information to
         consider. This webpage is designed to be a useful tool but not a replacement for meeting
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: 'ContactAdviser',
+  name: 'ContactAdviserCourse',
   data() {
     return {};
   },

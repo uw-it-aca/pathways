@@ -6,7 +6,7 @@
       <h3>Course Outcome Index (COI)</h3>
       <p>
         Using prior course data, this index compares estimated fail/withdrawal rates against actual
-        fail/withdrawal rates. <a href="#"><i class="bi bi-info-circle"></i></a>
+        fail/withdrawal rates. <a href="#"><i class="bi bi-info-circle-fill"></i></a>
       </p>
       <div id="arc" />
     </div>
