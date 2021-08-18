@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="row">
-          <div class="col-8"><course-details /></div>
+          <div class="col-8"><course-details :course-code="selectedCourse" /></div>
           <div class="col-4"><explore-course /></div>
       </div>
       <div class="row">

@@ -32,7 +32,10 @@ export default {
       let selectable = {};
 
       this.courseList.forEach((course) => {
-        selectable[course.trim()] = course;
+        selectable[course.split(':')[0].trim()] = {
+          label: course.trim(),
+          data: course.split(':')[0].trim(),
+        };
       });
 
       return selectable;

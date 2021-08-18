@@ -31,7 +31,10 @@ export default {
       let selectable = {};
 
       this.majorList.forEach((major) => {
-        selectable[major["Major"].trim()] = major;
+        selectable[major["Major"].trim()] = {
+          label: major["Major"].trim(),
+          data: major,
+        };
       });
 
       return selectable;

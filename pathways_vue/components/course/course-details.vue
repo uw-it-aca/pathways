@@ -2,7 +2,7 @@
 
 <template>
   <div class="mb-5">
-    <h2>CHEM 162: General Chemistry</h2>
+    <h2>{{ courseCode }}</h2>
     <div><strong>Credits:</strong> 5</div>
     <div class="mb-2">
       <strong>Offered</strong>
@@ -22,6 +22,12 @@
 <script>
 export default {
   name: 'CourseDetails',
+  props: {
+    courseCode: {
+      type: String,
+      required: true,
+    }
+  },
   data() {
     return {};
   },

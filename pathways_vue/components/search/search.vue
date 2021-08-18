@@ -2,7 +2,7 @@
   <div class="input-group">
     <input
       type="text"
-      v-model="selectedKey"
+      v-model="selectedLabel"
       class="form-control"
       aria-label=""
       :placeholder="placeholder"
@@ -44,32 +44,44 @@ export default {
   emits: ['update:selected'],
   data() {
     return {
-      selectedKey: '',
+      selectedLabel: '',
     };
   },
   mounted() {
     if (this.syncQueryParam && this.$route.query[this.syncQueryParam]) {
-      this.selectedKey = this.$route.query[this.syncQueryParam];
+      this.selectedLabel = this.options[
+        decodeURIComponent(this.$route.query[this.syncQueryParam])
+      ]?.label ?? '';
       this.syncSelected();
     }
   },
   methods: {
     syncSelected() {
-      this.$emit('update:selected', this.options[this.selectedKey]);
+      this.$emit('update:selected', this.options[this.selectedKey]?.data ?? '');
     },
     onSelected() {
       if (this.syncQueryParam) {
         this.$router.push({
           path: this.routePath,
-          query: { [this.syncQueryParam]: this.selectedKey }
+          query: { [this.syncQueryParam]: encodeURIComponent(this.selectedKey) }
         });
       }
       this.syncSelected();
-    }
+    },
+    labelToKey(label) {
+      let keyArr = Object.entries(this.options)
+        .find(([_, value]) => value.label == label);
+      return keyArr[0];
+    },
   },
   computed: {
     renderableOptions() {
-      return Object.keys(this.options);
+      return Object.entries(this.options).map(([_, value]) => value.label);
+    },
+    selectedKey() {
+      let keyArr = Object.entries(this.options)
+        .find(([_, value]) => value.label == this.selectedLabel) ?? [''];
+      return keyArr[0];
     }
   },
 };
