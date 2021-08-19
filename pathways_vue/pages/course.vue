@@ -67,8 +67,7 @@ export default {
   },
   computed: {
     courseData() {
-      let title = courseList
-        .find((title) => title.split(':')[0] === this.selectedCourse);
+      let title = courseList.find((title) => title.split(':')[0] === this.selectedCourse);
 
       return {
         title: title,
@@ -80,7 +79,7 @@ export default {
           { quarter: 'WIN', class: 'bg-blue-200' },
         ],
       };
-    }
+    },
   },
   methods: {},
 };

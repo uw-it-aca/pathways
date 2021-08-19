@@ -8,7 +8,7 @@
       <strong>Offered</strong>
       <ul class="ms-2 d-inline list-inline">
         <li class="list-inline-item" v-for="(term, i) in course.offered" :key="i">
-          <span class="badge text-dark" :class="term.class">{{term.quarter}}</span>
+          <span class="badge text-dark" :class="term.class">{{ term.quarter }}</span>
         </li>
       </ul>
     </div>
@@ -26,7 +26,7 @@ export default {
     course: {
       type: Object,
       required: true,
-    }
+    },
   },
   data() {
     return {};
