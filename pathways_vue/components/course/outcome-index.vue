@@ -8,7 +8,7 @@
         Using prior course data, this index compares estimated fail/withdrawal rates against actual
         fail/withdrawal rates. <a href="#"><i class="bi bi-info-circle-fill"></i></a>
       </p>
-      <div id="arc" />
+      <div id="coiGraph" />
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@
 import * as d3 from 'd3';
 
 export default {
-  name: 'OutcomeIndex',
+  name: 'OutcomeScore',
   data() {
     return {
       coi: [
@@ -28,16 +28,37 @@ export default {
     };
   },
   mounted() {
-    this.generateArc();
+    this.generateRect();
   },
   methods: {
-    generateArc() {
-      const w = 500;
-      const h = 300;
+    generateRect() {
+      const w = 600;
+      const h = 200;
 
-      const svg = d3.select('#arc').append('svg').attr('width', w).attr('height', h);
+      const svg = d3.select('#coiGraph').append('svg').attr('width', w).attr('height', h);
 
-      const sortedCOI = this.coi.sort((a, b) => (a.value > b.value ? 1 : -1));
+      svg
+        .append('rect')
+        .attr('x', 10)
+        .attr('y', 60)
+        .attr('width', 580)
+        .attr('height', 40)
+        //.attr('stroke', 'black')
+        .attr('fill', '#69a3b2');
+
+      // Create the scale
+      const x = d3
+        .scaleLinear()
+        .domain([0, 5.0]) // This is what is written on the Axis: from 0 to 100
+        .range([0, 580]); // This is where the axis is placed: from 100px to 800px
+
+      // Draw the axis
+      svg
+        .append('g')
+        .attr('transform', 'translate(10,100)') // This controls the vertical position of the Axis
+        .call(d3.axisBottom(x).tickValues([0, 5]));
+
+      /*const sortedCOI = this.coi.sort((a, b) => (a.value > b.value ? 1 : -1));
       const color = d3
         .scaleSequential()
         .interpolator(d3.interpolateRgb('purple', 'blue'))
@@ -83,7 +104,7 @@ export default {
         .attr('dy', -8)
         .attr('y', (d, i) => -(i + 1) * 25);
 
-      g.attr('transform', 'translate(300,155)');
+      g.attr('transform', 'translate(300,155)');*/
     },
   },
 };
