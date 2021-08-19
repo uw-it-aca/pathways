@@ -5,24 +5,35 @@
     <template #title>{{ pageTitle }}</template>
     <template #content>
 
-      <div class="mb-5">
-        <search-major />
-      </div>
-        <div class="row">
-          <div class="col-8"><major-details /></div>
-          <div class="col-4"><explore-major /></div>
+      <div class="row justify-content-center mb-5">
+        <div class="col-md-9">
+          <search-major v-model:selected="selectedMajor" :major-list="majorSeaList"/>
         </div>
-      <div class="mb-5">
-        <common-courses />
       </div>
-      
-      <d3-histogram />
-      <contact-adviser-major />
+      <div v-if="selectedMajor">
+        <div class="row">
+          <div class="col-8"><major-details :major="selectedMajor" /></div>
+          <div class="col-4"><explore-major :major="selectedMajor" /></div>
+        </div>
+        <div class="mb-5">
+          <common-courses />
+        </div>
+
+        <d3-histogram />
+        <contact-adviser />
+      </div>
+      <div v-else>
+        PLACEHOLDER: select something
+      </div>
     </template>
   </layout>
 </template>
 
 <script>
+import majorSeaData from '../data/majors-sea.json';
+
+import { proccessSeaMajors } from '../helpers/major';
+
 import Layout from '../layout.vue';
 import MajorDetails from '../components/major/major-details.vue';
 import ExploreMajor from '../components/major/explore-major.vue';
@@ -47,6 +58,8 @@ export default {
   data() {
     return {
       pageTitle: 'Major',
+      majorSeaList: proccessSeaMajors(majorSeaData),
+      selectedMajor: null,
     };
   },
   methods: {},

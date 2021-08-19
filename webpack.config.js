@@ -13,8 +13,6 @@ module.exports = (_env, options) => {
 
   const config = {
 
-    //context: __dirname,
-
     entry: {
       main: './pathways_vue/main.js'
     },
