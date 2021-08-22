@@ -1,10 +1,10 @@
+@use "sass:map";
+@import 'axdd-components/src/assets/css/custom.scss';
+
 // override variables
 $nav-height: 52px;
 $bar-height: 40px;
 $link-color: #0069d9; //a11y blue
-
-@use "sass:map";
-@import 'axdd-components/src/assets/css/custom.scss';
 
 // pathways custom colors
 $custom-colors: (
