@@ -57,15 +57,7 @@ export default {
 
       let xAxisGenerator = d3.axisBottom(x).ticks(5).tickSize(-20);
 
-      let xAxis = svg
-        .append('g')
-        .attr('transform', 'translate(10,105)')        // This controls the vertical position of the Axis
-        .call(xAxisGenerator)
-        .select('.domain')
-        .remove();
-
-      xAxis.selectAll(".tick line")
-     .attr("stroke","Blue");
+      let xAxis = svg.append('g');
 
       /*const sortedCOI = this.coi.sort((a, b) => (a.value > b.value ? 1 : -1));
       const color = d3
@@ -114,9 +106,19 @@ export default {
         .attr('y', (d, i) => -(i + 1) * 25);
 
       g.attr('transform', 'translate(300,155)');*/
+
+      xAxis
+        .attr('transform', 'translate(10,105)') // This controls the vertical position of the Axis
+        .call(xAxisGenerator)
+        .select('.domain')
+        .remove();
     },
   },
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.tick {
+  stroke-width: 1.5;
+}
+</style>
