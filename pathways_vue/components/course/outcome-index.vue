@@ -47,6 +47,15 @@ export default {
         //.attr('stroke', 'black')
         .attr('fill', '#A2D3FF');
 
+      svg
+        .append('rect')
+        .attr('x', 242)
+        .attr('y', 90)
+        .attr('width', 116)
+        .attr('height', 10)
+        //.attr('stroke', 'black')
+        .attr('fill', '#055CAA');  
+
       // Create the 5.0 COI scale
       const x = d3
         .scaleLinear()
