@@ -9,6 +9,7 @@
         fail/withdrawal rates. <a href="#"><i class="bi bi-info-circle-fill"></i></a>
       </p>
       <div id="coiGraph" />
+      <small>*53.9% of all UW courses fall within the 2-3 range</small>
     </div>
   </div>
 </template>
@@ -40,23 +41,31 @@ export default {
       svg
         .append('rect')
         .attr('x', 10)
-        .attr('y', 60)
+        .attr('y', 90)
         .attr('width', 580)
-        .attr('height', 40)
+        .attr('height', 10)
         //.attr('stroke', 'black')
-        .attr('fill', '#69a3b2');
+        .attr('fill', '#A2D3FF');
 
-      // Create the scale
+      // Create the 5.0 COI scale
       const x = d3
         .scaleLinear()
-        .domain([0, 5.0]) // This is what is written on the Axis: from 0 to 100
-        .range([0, 580]); // This is where the axis is placed: from 100px to 800px
+        .domain([0, 5]) // This is what is written on the Axis: from 0 to 100
+        .range([0, 580]); // This is where the axis is placed: from 0px to 580px
 
       // Draw the axis
-      svg
+
+      let xAxisGenerator = d3.axisBottom(x).ticks(5).tickSize(-20);
+
+      let xAxis = svg
         .append('g')
-        .attr('transform', 'translate(10,100)') // This controls the vertical position of the Axis
-        .call(d3.axisBottom(x).tickValues([0, 5]));
+        .attr('transform', 'translate(10,105)')        // This controls the vertical position of the Axis
+        .call(xAxisGenerator)
+        .select('.domain')
+        .remove();
+
+      xAxis.selectAll(".tick line")
+     .attr("stroke","Blue");
 
       /*const sortedCOI = this.coi.sort((a, b) => (a.value > b.value ? 1 : -1));
       const color = d3
