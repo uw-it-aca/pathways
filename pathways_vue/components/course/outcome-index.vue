@@ -33,40 +33,60 @@ export default {
   },
   methods: {
     generateRect() {
-      const w = 600;
-      const h = 200;
+      const margin = { top: 20, right: 10, bottom: 20, left: 10 };
+      const width = 600 - margin.left - margin.right,
+        height = 200 - margin.top - margin.bottom;
 
-      const svg = d3.select('#coiGraph').append('svg').attr('width', w).attr('height', h);
+            // Create the 5.0 COI scale
+      const x = d3
+        .scaleLinear()
+        .domain([0, 5]) // This is what is written on the Axis: from 0 to 100
+        .range([0, width]); // This is where the axis is placed: from 0px to 600px
 
+            // Append SVG to container
+      const svg = d3
+        .select('#coiGraph')
+        .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom);
+
+            // Draw the rect that expands width, light blue
       svg
         .append('rect')
-        .attr('x', 10)
+        .attr('x', margin.left)
         .attr('y', 90)
-        .attr('width', 580)
+        .attr('width', width)
         .attr('height', 10)
-        //.attr('stroke', 'black')
+        .attr('fill-opacity', '0.6')
         .attr('fill', '#A2D3FF');
 
+            // Draw the middle rect, dark blue 
       svg
         .append('rect')
         .attr('x', 242)
         .attr('y', 90)
         .attr('width', 116)
         .attr('height', 10)
-        //.attr('stroke', 'black')
-        .attr('fill', '#055CAA');  
+        .attr('fill-opacity', '0.6')
+        .attr('fill', '#055CAA');
 
-      // Create the 5.0 COI scale
-      const x = d3
-        .scaleLinear()
-        .domain([0, 5]) // This is what is written on the Axis: from 0 to 100
-        .range([0, 580]); // This is where the axis is placed: from 0px to 580px
+            // Draw the circle, pull in data to plot on line 
+      svg
+        .append('circle')
+        .attr('cx', x(4.1))
+        .attr('cy', 95)
+        .attr('r', 6)
+        .style('fill', 'black');
 
-      // Draw the axis
-
+            // Draw the axis
       let xAxisGenerator = d3.axisBottom(x).ticks(5).tickSize(-20);
-
       let xAxis = svg.append('g');
+
+      xAxis
+        .attr('transform', 'translate(' + margin.left + ',105)') // This controls the vertical position of the Axis
+        .call(xAxisGenerator)
+        .select('.domain')
+        .remove();
 
       /*const sortedCOI = this.coi.sort((a, b) => (a.value > b.value ? 1 : -1));
       const color = d3
@@ -115,12 +135,6 @@ export default {
         .attr('y', (d, i) => -(i + 1) * 25);
 
       g.attr('transform', 'translate(300,155)');*/
-
-      xAxis
-        .attr('transform', 'translate(10,105)') // This controls the vertical position of the Axis
-        .call(xAxisGenerator)
-        .select('.domain')
-        .remove();
     },
   },
 };
