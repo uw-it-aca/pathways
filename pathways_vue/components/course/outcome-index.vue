@@ -22,9 +22,9 @@ export default {
   data() {
     return {
       coi: [
-        { outcome: 'CHEM 162', value: 8.5 },
-        { outcome: 'All CHEM', value: 7.9 },
-        { outcome: 'All UW', value: 6.9 },
+        { outcome: 'CHEM 162', value: 2.7 },
+        { outcome: 'All CHEM', value: 1.9 },
+        { outcome: 'All UW', value: 4.5 },
       ],
     };
   },
@@ -53,7 +53,7 @@ export default {
             // Draw the rect that expands width, light blue
       svg
         .append('rect')
-        .attr('x', margin.left)
+        .attr('x', 0)
         .attr('y', 90)
         .attr('width', width)
         .attr('height', 10)
@@ -63,7 +63,7 @@ export default {
             // Draw the middle rect, dark blue 
       svg
         .append('rect')
-        .attr('x', 242)
+        .attr('x', 232)
         .attr('y', 90)
         .attr('width', 116)
         .attr('height', 10)
@@ -73,7 +73,7 @@ export default {
             // Draw the circle, pull in data to plot on line 
       svg
         .append('circle')
-        .attr('cx', x(4.1))
+        .attr('cx', x(4.0))
         .attr('cy', 95)
         .attr('r', 6)
         .style('fill', 'black');
@@ -83,7 +83,7 @@ export default {
       let xAxis = svg.append('g');
 
       xAxis
-        .attr('transform', 'translate(' + margin.left + ',105)') // This controls the vertical position of the Axis
+        .attr('transform', 'translate(0,105)') // This controls the vertical position of the Axis
         .call(xAxisGenerator)
         .select('.domain')
         .remove();
@@ -141,6 +141,9 @@ export default {
 </script>
 
 <style lang="scss">
+
+svg {padding-left:10px;}
+
 .tick {
   stroke-width: 1.5;
 }
