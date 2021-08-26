@@ -78,11 +78,7 @@ module.exports = (_env, options) => {
         },
         {
           test: /\.(png|jpe?g|gif)$/i,
-          use: [
-            {
-              loader: 'file-loader',
-            },
-          ],
+          type: 'asset/resource',
         },
       ]
     },
