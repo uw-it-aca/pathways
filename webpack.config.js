@@ -1,3 +1,4 @@
+const path = require("path")
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const DjangoBridgePlugin = require('django-webpack-bridge');
@@ -25,7 +26,7 @@ module.exports = (_env, options) => {
     },
 
     output: {
-      path: '/static/pathways/',
+      path: path.resolve('../static/pathways/'),
       filename: "[name]-[contenthash].js",
       publicPath: '',
     },
