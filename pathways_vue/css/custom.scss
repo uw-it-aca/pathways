@@ -27,6 +27,7 @@ $utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
 // additional non-bootstrap styles
+body { font-family: "Open Sans", sans-serif !important; }
 
 .blah { color: purple; }
 
