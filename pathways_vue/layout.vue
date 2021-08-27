@@ -8,7 +8,6 @@
     :sign-out-url="signOutUrl"
   >
     <template #header></template>
-    <template #bar></template>
     <template #main>
       <!-- main section override -->
       <h1 class="visually-hidden">
