@@ -9,8 +9,13 @@
         fail/withdrawal rates. <a href="#"><i class="bi bi-info-circle-fill"></i></a>
       </p>
       <div id="coiGraph" />
-
-      <small>*53.9% of all UW courses fall within the 2-3 range</small>
+      <div class="coi-key">
+        <p class="fw-bold">Key</p>
+        <p><i class="bi bi-triangle-fill"></i> CHEM 162</p>
+        <p><i class="bi bi-circle-fill"></i> Average course in CHEM curriculum</p>
+        <p><i class="bi bi-square-fill"></i> Average 100 Level Course at UW</p>
+        <p>*53.9% of all UW courses fall within the 2-3 range</p>
+      </div>
     </div>
   </div>
 </template>
@@ -24,7 +29,7 @@ export default {
     return {
       coi: [
         { outcome: 'course', value: 2.7 },
-        { outcome: 'curr', value: 1.9 },
+        { outcome: 'curr', value: 2.0 },
         { outcome: 'uw', value: 1.8 },
       ],
     };
@@ -55,9 +60,9 @@ export default {
       svg
         .append('rect')
         .attr('x', 0)
-        .attr('y', 50)
+        .attr('y', 52)
         .attr('width', width)
-        .attr('height', 10)
+        .attr('height', 7)
         .attr('fill-opacity', '0.6')
         .attr('fill', '#A2D3FF');
 
@@ -65,9 +70,9 @@ export default {
       svg
         .append('rect')
         .attr('x', 232)
-        .attr('y', 50)
+        .attr('y', 52)
         .attr('width', 116)
-        .attr('height', 10)
+        .attr('height', 7)
         .attr('fill-opacity', '0.6')
         .attr('fill', '#055CAA');
 
@@ -97,21 +102,18 @@ export default {
 
       const g = svg.append('g');
 
-      g  // creates a triangle symbol for course COI and plots on x axis
-        .append('path')
+      g.append('path') // creates a triangle symbol for course COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolTriangle).size(180))
-        .attr('transform','translate(' + x(CourseCOI) + ', 51) rotate(180)')
+        .attr('transform', 'translate(' + x(CourseCOI) + ', 51) rotate(180)')
         .style('fill', '#FF8C00');
 
-      g   // creates a square symbol for all uw COI and plots on x axis
-        .append('path')
+      g.append('path') // creates a square symbol for all uw COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolSquare).size(180))
-        .attr('transform','translate(' + x(UwCOI) + ', 55)');
+        .attr('transform', 'translate(' + x(UwCOI) + ', 55)');
 
-      g   // creates a circle symbol for curriculum COI and plots on x axis
-        .append('path')
+      g.append('path') // creates a circle symbol for curriculum COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolCircle).size(180))
-        .attr('transform','translate(' + x(CurrCOI) + ', 55)');
+        .attr('transform', 'translate(' + x(CurrCOI) + ', 55)');
 
       /*g.selectAll('path')
         .data(sortedCOI)
@@ -149,11 +151,13 @@ svg {
   padding-left: 10px;
 }
 
-.legend-text {
-  font-size: 12px;
+.coi-key {
+  font-size: 0.875rem;
 }
 
 .tick {
   stroke-width: 1.5;
 }
+
+.bi-triangle-fill {transform: rotate(20deg);}
 </style>
