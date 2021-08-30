@@ -9,6 +9,7 @@
         fail/withdrawal rates. <a href="#"><i class="bi bi-info-circle-fill"></i></a>
       </p>
       <div id="coiGraph" />
+
       <small>*53.9% of all UW courses fall within the 2-3 range</small>
     </div>
   </div>
@@ -22,9 +23,9 @@ export default {
   data() {
     return {
       coi: [
-        { outcome: 'CHEM 162', value: 2.7 },
-        { outcome: 'All CHEM', value: 1.9 },
-        { outcome: 'All UW', value: 4.5 },
+        { outcome: 'course', value: 2.7 },
+        { outcome: 'curr', value: 1.9 },
+        { outcome: 'uw', value: 4.5 },
       ],
     };
   },
@@ -35,82 +36,81 @@ export default {
     generateRect() {
       const margin = { top: 20, right: 10, bottom: 20, left: 10 };
       const width = 600 - margin.left - margin.right,
-        height = 200 - margin.top - margin.bottom;
+        height = 100 - margin.top - margin.bottom;
 
-            // Create the 5.0 COI scale
+      // Create the 5.0 COI scale
       const x = d3
         .scaleLinear()
         .domain([0, 5]) // This is what is written on the Axis: from 0 to 100
         .range([0, width]); // This is where the axis is placed: from 0px to 600px
 
-            // Append SVG to container
+      // Append SVG to container
       const svg = d3
         .select('#coiGraph')
         .append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom);
 
-            // Draw the rect that expands width, light blue
+      
+
+      // Draw the rect that expands width, light blue
       svg
         .append('rect')
         .attr('x', 0)
-        .attr('y', 90)
+        .attr('y', 50)
         .attr('width', width)
         .attr('height', 10)
         .attr('fill-opacity', '0.6')
         .attr('fill', '#A2D3FF');
 
-            // Draw the middle rect, dark blue 
+      // Draw the middle rect, dark blue
       svg
         .append('rect')
         .attr('x', 232)
-        .attr('y', 90)
+        .attr('y', 50)
         .attr('width', 116)
         .attr('height', 10)
         .attr('fill-opacity', '0.6')
         .attr('fill', '#055CAA');
 
-            // Draw the circle, pull in data to plot on line 
+      // Draw the circle, pull in data to plot on line
+
+      const CourseCOI = this.coi.filter(function(d){ return d.outcome === "course" })[0].value;
+
       svg
         .append('circle')
-        .attr('cx', x(4.0))
-        .attr('cy', 95)
-        .attr('r', 6)
+        .attr('cx', x(CourseCOI))
+        .attr('cy', 55)
+        .attr('r', 7)
         .style('fill', 'black');
 
-            // Draw the axis
+      // Draw the axis
       let xAxisGenerator = d3.axisBottom(x).ticks(5).tickSize(-20);
       let xAxis = svg.append('g');
 
       xAxis
-        .attr('transform', 'translate(0,105)') // This controls the vertical position of the Axis
+        .attr('transform', 'translate(0,65)') // This controls the vertical position of the Axis
         .call(xAxisGenerator)
         .select('.domain')
         .remove();
 
-      /*const sortedCOI = this.coi.sort((a, b) => (a.value > b.value ? 1 : -1));
-      const color = d3
-        .scaleSequential()
-        .interpolator(d3.interpolateRgb('purple', 'blue'))
-        .domain([0, 3]);
 
+      
+
+      /*const sortedCOI = this.coi.sort((a, b) => (a.value > b.value ? 1 : -1));
+  
       const max_coi = d3.max(sortedCOI, (o) => o.value);
 
       const angleScale = d3
         .scaleLinear()
         .domain([0, max_coi])
-        .range([0, 1.5 * Math.PI]);
+        .range([0, 1.5 * Math.PI]);*/
 
-      const arc = d3
-        .arc()
-        .innerRadius((d, i) => (i + 1) * 25)
-        .outerRadius((d, i) => (i + 2) * 25)
-        .startAngle(angleScale(0))
-        .endAngle((d) => angleScale(d.value));
+
 
       const g = svg.append('g');
 
-      g.selectAll('path')
+      /*g.selectAll('path')
         .data(sortedCOI)
         .enter()
         .append('path')
@@ -123,26 +123,32 @@ export default {
         })
         .on('mouseout', function () {
           d3.select(this).transition().duration(200).attr('opacity', 1);
-        });
+        });*/
 
       g.selectAll('text')
-        .data(this.coi)
+        //.data(this.coi)
         .enter()
         .append('text')
-        .text((d) => `${d.outcome} -  ${d.value} COI`)
+        .text((d) => `${d.outcome}  COI ${d.value}`)
+        .classed('legend-text', true)
         .attr('x', -150)
         .attr('dy', -8)
         .attr('y', (d, i) => -(i + 1) * 25);
 
-      g.attr('transform', 'translate(300,155)');*/
+      g.attr('transform', 'translate(150,235)');
     },
   },
 };
 </script>
 
 <style lang="scss">
+svg {
+  padding-left: 10px;
+}
 
-svg {padding-left:10px;}
+.legend-text {
+  font-size: 12px;
+}
 
 .tick {
   stroke-width: 1.5;
