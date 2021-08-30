@@ -25,7 +25,7 @@ export default {
       coi: [
         { outcome: 'course', value: 2.7 },
         { outcome: 'curr', value: 1.9 },
-        { outcome: 'uw', value: 4.5 },
+        { outcome: 'uw', value: 1.8 },
       ],
     };
   },
@@ -51,8 +51,6 @@ export default {
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom);
 
-      
-
       // Draw the rect that expands width, light blue
       svg
         .append('rect')
@@ -73,16 +71,19 @@ export default {
         .attr('fill-opacity', '0.6')
         .attr('fill', '#055CAA');
 
-      // Draw the circle, pull in data to plot on line
+      // Pull in data to plot on line
 
-      const CourseCOI = this.coi.filter(function(d){ return d.outcome === "course" })[0].value;
+      const CourseCOI = this.coi.filter(function (d) {
+        return d.outcome === 'course';
+      })[0].value;
 
-      svg
-        .append('circle')
-        .attr('cx', x(CourseCOI))
-        .attr('cy', 55)
-        .attr('r', 7)
-        .style('fill', 'black');
+      const CurrCOI = this.coi.filter(function (d) {
+        return d.outcome === 'curr';
+      })[0].value;
+
+      const UwCOI = this.coi.filter(function (d) {
+        return d.outcome === 'uw';
+      })[0].value;
 
       // Draw the axis
       let xAxisGenerator = d3.axisBottom(x).ticks(5).tickSize(-20);
@@ -94,21 +95,23 @@ export default {
         .select('.domain')
         .remove();
 
-
-      
-
-      /*const sortedCOI = this.coi.sort((a, b) => (a.value > b.value ? 1 : -1));
-  
-      const max_coi = d3.max(sortedCOI, (o) => o.value);
-
-      const angleScale = d3
-        .scaleLinear()
-        .domain([0, max_coi])
-        .range([0, 1.5 * Math.PI]);*/
-
-
-
       const g = svg.append('g');
+
+      g  // creates a triangle symbol for course COI and plots on x axis
+        .append('path')
+        .attr('d', d3.symbol().type(d3.symbolTriangle).size(180))
+        .attr('transform','translate(' + x(CourseCOI) + ', 51) rotate(180)')
+        .style('fill', '#FF8C00');
+
+      g   // creates a square symbol for all uw COI and plots on x axis
+        .append('path')
+        .attr('d', d3.symbol().type(d3.symbolSquare).size(180))
+        .attr('transform','translate(' + x(UwCOI) + ', 55)');
+
+      g   // creates a circle symbol for curriculum COI and plots on x axis
+        .append('path')
+        .attr('d', d3.symbol().type(d3.symbolCircle).size(180))
+        .attr('transform','translate(' + x(CurrCOI) + ', 55)');
 
       /*g.selectAll('path')
         .data(sortedCOI)
@@ -135,7 +138,7 @@ export default {
         .attr('dy', -8)
         .attr('y', (d, i) => -(i + 1) * 25);
 
-      g.attr('transform', 'translate(150,235)');
+      //g.attr('transform', 'translate(150,235)');
     },
   },
 };
