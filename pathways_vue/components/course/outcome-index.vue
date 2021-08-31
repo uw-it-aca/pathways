@@ -6,16 +6,39 @@
       <h3>Course Outcome Index (COI)</h3>
       <p>
         Using prior course data, this index compares estimated fail/withdrawal rates against actual
-        fail/withdrawal rates. <a href="#" data-bs-toggle="popover" title="What is COI?" data-bs-content="A lower number (0-2) indicates that fewer people completed the course than predicted. A middle number (2-3) indicates the course is on target with predictions. A higher (3-5) number indicates that more people completed the course than anticipated."><i class="bi bi-info-circle-fill"></i></a>
-
+        fail/withdrawal rates.
+        <a
+          href="#"
+          data-bs-toggle="popover"
+          title="What is COI?"
+          data-bs-content="A lower number (0-2) indicates that fewer people completed the course than predicted. A middle number (2-3) indicates the course is on target with predictions. A higher (3-5) number indicates that more people completed the course than anticipated."
+          ><i class="bi bi-info-circle-fill"></i
+        ></a>
       </p>
       <div id="coiGraph" />
       <div class="coi-key">
         <p class="fw-bold">Key</p>
-        <p><i style="color: #ff8c00" class="bi bi-triangle-fill"></i> CHEM 162</p>
-        <p><i class="bi bi-circle-fill"></i> Average course in CHEM curriculum</p>
-        <p><i class="bi bi-square-fill"></i> Average 100 Level Course at UW</p>
-        <p>*53.9% of all UW courses fall within the 2-3 range</p>
+
+        <dl class="row">
+          <dt class="col-sm-6">
+            <i style="color: #ff8c00" class="bi bi-triangle-fill"></i> CHEM 162
+          </dt>
+          <dd class="col-sm-6">COI: 2.7</dd>
+          <dt class="col-sm-6">
+            <i class="bi bi-circle-fill"></i> Average course in CHEM
+            curriculum
+          </dt>
+          <dd class="col-sm-6">COI: 2.3</dd>
+          <dt class="col-sm-6">
+            <i class="bi bi-square-fill"></i> Average 100 Level Course at UW
+          </dt>
+          <dd class="col-sm-6">COI: 1.9</dd>
+        </dl>
+
+        <!-- <p></p>
+        <p><i class="bi bi-circle-fill"></i> </p>
+        <p><i class="bi bi-square-fill"></i> </p>
+        <p>*53.9% of all UW courses fall within the 2-3 range</p> -->
       </div>
     </div>
   </div>
@@ -188,5 +211,8 @@ svg {
 
 .bi {
   margin-right: 1rem;
+}
+dt {
+  font-weight: 400;
 }
 </style>
