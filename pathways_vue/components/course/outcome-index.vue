@@ -6,12 +6,13 @@
       <h3>Course Outcome Index (COI)</h3>
       <p>
         Using prior course data, this index compares estimated fail/withdrawal rates against actual
-        fail/withdrawal rates. <a href="#"><i class="bi bi-info-circle-fill"></i></a>
+        fail/withdrawal rates. <a href="#" data-bs-toggle="popover" title="What is COI?" data-bs-content="A lower number (0-2) indicates that fewer people completed the course than predicted. A middle number (2-3) indicates the course is on target with predictions. A higher (3-5) number indicates that more people completed the course than anticipated."><i class="bi bi-info-circle-fill"></i></a>
+
       </p>
       <div id="coiGraph" />
       <div class="coi-key">
         <p class="fw-bold">Key</p>
-        <p><i class="bi bi-triangle-fill"></i> CHEM 162</p>
+        <p><i style="color: #ff8c00" class="bi bi-triangle-fill"></i> CHEM 162</p>
         <p><i class="bi bi-circle-fill"></i> Average course in CHEM curriculum</p>
         <p><i class="bi bi-square-fill"></i> Average 100 Level Course at UW</p>
         <p>*53.9% of all UW courses fall within the 2-3 range</p>
@@ -104,8 +105,14 @@ export default {
 
       g.append('path') // creates a triangle symbol for course COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolTriangle).size(180))
-        .attr('transform', 'translate(' + x(CourseCOI) + ', 51) rotate(180)')
-        .style('fill', '#FF8C00');
+        .attr('transform', 'translate(' + x(CourseCOI) + ', 55)')
+        .style('fill', '#FF8C00')
+        .on('mouseenter', function () {
+          d3.select(this).transition().duration(200).attr('opacity', 0.5);
+        })
+        .on('mouseout', function () {
+          d3.select(this).transition().duration(200).attr('opacity', 1);
+        });
 
       g.append('path') // creates a square symbol for all uw COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolSquare).size(180))
@@ -129,6 +136,7 @@ export default {
         .on('mouseout', function () {
           d3.select(this).transition().duration(200).attr('opacity', 1);
         });*/
+      //g.attr('transform', 'translate(150,235)');
 
       g.selectAll('text')
         //.data(this.coi)
@@ -140,7 +148,26 @@ export default {
         .attr('dy', -8)
         .attr('y', (d, i) => -(i + 1) * 25);
 
-      //g.attr('transform', 'translate(150,235)');
+      g.append('text')
+        .attr('x', -2)
+        .attr('y', 25)
+        .attr('text-anchor', 'left')
+        .style('font-size', '11px')
+        .text('fewer completions than predicted');
+
+      g.append('text')
+        .attr('x', 290)
+        .attr('y', 25)
+        .attr('text-anchor', 'middle')
+        .style('font-size', '11px')
+        .text('on target with predictions*');
+
+      g.append('text')
+        .attr('x', 425)
+        .attr('y', 25)
+        .attr('text-anchor', 'right')
+        .style('font-size', '11px')
+        .text('more completions than predicted');
     },
   },
 };
@@ -159,5 +186,7 @@ svg {
   stroke-width: 1.5;
 }
 
-.bi-triangle-fill {transform: rotate(20deg);}
+.bi {
+  margin-right: 1rem;
+}
 </style>
