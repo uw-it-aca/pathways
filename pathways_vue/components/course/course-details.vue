@@ -2,19 +2,19 @@
 
 <template>
   <div class="mb-5">
-    <h2>CHEM 162: General Chemistry</h2>
-    <div><strong>Credits:</strong> 5</div>
+    <h2>{{ course.title }}</h2>
+    <div><strong>Credits:</strong> {{ course.credits }}</div>
     <div class="mb-2">
       <strong>Offered</strong>
       <ul class="ms-2 d-inline list-inline">
-        <li class="list-inline-item"><span class="badge pw-green text-dark">SPR</span></li>
-        <li class="list-inline-item"><span class="badge creamcicle text-dark">AUT</span></li>
-        <li class="list-inline-item"><span class="badge bg-blue-200 text-dark">WIN</span></li>
+        <li class="list-inline-item" v-for="(term, i) in course.offered" :key="i">
+          <span class="badge text-dark" :class="term.class">{{ term.quarter }}</span>
+        </li>
       </ul>
     </div>
 
     <p>
-      Molecular bonding theories, liquids, solids, solutions, and introduction to organic and transition metal chemistry. Includes laboratory.
+      {{ course.description }}
     </p>
   </div>
 </template>
@@ -22,6 +22,12 @@
 <script>
 export default {
   name: 'CourseDetails',
+  props: {
+    course: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {};
   },

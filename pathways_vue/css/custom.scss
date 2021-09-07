@@ -1,10 +1,10 @@
+@use "sass:map";
+@import 'axdd-components/src/assets/css/custom.scss';
+
 // override variables
 $nav-height: 52px;
 $bar-height: 40px;
 $link-color: #0069d9; //a11y blue
-
-@use "sass:map";
-@import 'axdd-components/src/assets/css/custom.scss';
 
 // pathways custom colors
 $custom-colors: (
@@ -17,9 +17,13 @@ $custom-colors: (
 
 // axdd-components + pathways custom colors
 $theme-colors: map-merge($theme-colors, $custom-colors);
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+$utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
+$utilities-text-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
+$utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
 
 // import bootstrap and bootstrap-icons
-@import "bootstrap/scss/bootstrap.scss";
+@import "bootstrap/scss/bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
 // additional non-bootstrap styles

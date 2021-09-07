@@ -18,11 +18,16 @@
       <slot name="content"></slot>
     </template>
     <template #footer>
-      <!-- footer section overrixe -->
-      <div class="text-test font-weight-light">
-        this is my custom footer<br />
-        Copyright &copy; {{ new Date().getFullYear() }} University of Washington
-      </div>
+      <!-- footer section override -->
+      <div class="bg-dark">
+          <div class="container-xl py-3 small">
+            <div class="text-test font-weight-light">
+              this is my custom footer<br />
+              Copyright &copy; {{ new Date().getFullYear() }} University of
+              Washington
+            </div>
+          </div>
+        </div>
     </template>
   </topbar>
 </template>

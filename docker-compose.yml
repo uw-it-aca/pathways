@@ -25,6 +25,7 @@ services:
     ports:
       - "${BUNDLE_ANALYZER_PORT:-8888}:8888" # Required when environment.BUNDLE_ANALYZER is true
     environment:
+      NODE_ENV: "development"
       VUE_DEVTOOLS: "True"
       BUNDLE_ANALYZER: "True"
     volumes:
