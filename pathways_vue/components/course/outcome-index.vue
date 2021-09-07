@@ -21,24 +21,24 @@
 
         <dl class="row">
           <dt class="col-sm-6">
-            <i style="color: #ff8c00" class="bi bi-triangle-fill"></i> CHEM 162
+            <i style="color: #ff8c00" class="bi bi-triangle-fill"></i> <span  class="key-desc">CHEM 162</span>
           </dt>
-          <dd class="col-sm-6">COI: 2.7</dd>
+          <dd class="col-sm-6 key-coi">COI: 2.7</dd>
           <dt class="col-sm-6">
-            <i class="bi bi-circle-fill"></i> Average course in CHEM
-            curriculum
+            <i class="bi bi-circle-fill"></i> <span  class="key-desc">Average course in CHEM curriculum</span>
           </dt>
-          <dd class="col-sm-6">COI: 2.3</dd>
+          <dd class="col-sm-6 key-coi">COI: 2.0</dd>
           <dt class="col-sm-6">
-            <i class="bi bi-square-fill"></i> Average 100 Level Course at UW
+            <i class="bi bi-square-fill"></i> <span  class="key-desc">Average 100 Level Course at UW</span>
           </dt>
-          <dd class="col-sm-6">COI: 1.9</dd>
+          <dd class="col-sm-6 key-coi">COI: 1.8</dd>
         </dl>
+        <p>*53.9% of all UW courses fall within the 2-3 range</p>
 
         <!-- <p></p>
         <p><i class="bi bi-circle-fill"></i> </p>
         <p><i class="bi bi-square-fill"></i> </p>
-        <p>*53.9% of all UW courses fall within the 2-3 range</p> -->
+         -->
       </div>
     </div>
   </div>
@@ -212,7 +212,7 @@ svg {
 .bi {
   margin-right: 1rem;
 }
-dt {
-  font-weight: 400;
+.key-desc {
+  font-weight: normal;
 }
 </style>
