@@ -5,15 +5,15 @@
     <div class="card-body">
       <h4>Prerequesites <span class="badge rounded-pill bg-purple">1</span></h4>
       <div class="mt-3">
-        <ul class="list-unstyled">
+        <ul class="list-unstyled mb-0">
           <li>
-            <a href="#" class="router-link-active"
+            <a href="/course/?code=CSS+415" class="router-link-active"
               ><span class="badge bg-link-color text-light">CSS 415</span></a
             >
             <span class="ms-3">Preparation for General Chemistry</span>
           </li>
           <li>
-            <a href="#" class="router-link-active"
+            <a href="/course/?code=MATH+124" class="router-link-active"
               ><span class="badge bg-link-color text-light">MATH 124</span></a
             >
             <span class="ms-3">Calculus with Analytic Geometry I</span>
@@ -28,15 +28,15 @@
         Courses Available Upon Completion <span class="badge rounded-pill bg-purple">26</span>
       </h4>
       <div class="mt-3">
-        <ul class="list-unstyled">
+        <ul class="list-unstyled mb-0">
           <li>
-            <a href="#" class="router-link-active"
+            <a href="/course/?code=CSS+415" class="router-link-active"
               ><span class="badge bg-link-color text-light">CSS 415</span></a
             >
             <span class="ms-3">Preparation for General Chemistry</span>
           </li>
           <li>
-            <a href="#" class="router-link-active"
+            <a href="/course/?code=CSS+124" class="router-link-active"
               ><span class="badge bg-link-color text-light">CSS 124</span></a
             >
             <span class="ms-3">Calculus with Analytic Geometry I</span>

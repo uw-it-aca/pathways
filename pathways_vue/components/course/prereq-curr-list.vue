@@ -10,7 +10,7 @@
       <div class="card shadow-sm">
         <div class="card-body p-3">
           <strong
-            ><a href="/course/?course=ANTH%20215" class="d-block mb-3">
+            ><a href="/course/?code=ANTH+215" class="d-block mb-3">
               ANTH 215: Introduction to Medical Anthropology and Global Health</a
             ></strong
           >
@@ -37,17 +37,17 @@
                   </div>
                   <ul class="prereq-list">
                     <li>
-                      <a href="/course/" class="active-router-link"><span class="badge bg-link-color text-light"
+                      <a href="/course/?code=ANTH+303" class="active-router-link"><span class="badge bg-link-color text-light"
                         >ANTH 303</span></a
                       >
                     </li>
                     <li>
-                      <a href="/course/" class="active-router-link"><span class="badge bg-link-color text-light"
+                      <a href="/course/?code=ANTH+422" class="active-router-link"><span class="badge bg-link-color text-light"
                         >ANTH 422</span></a
                       >
                     </li>
                     <li>
-                      <a href="/course/" class="active-router-link"><span class="badge bg-link-color text-light"
+                      <a href="/course/?code=BIO+A+420" class="active-router-link"><span class="badge bg-link-color text-light"
                         >BIO A 420</span></a
                       >
                     </li>

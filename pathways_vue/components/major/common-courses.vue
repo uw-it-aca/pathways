@@ -34,7 +34,7 @@
               </div>
             </td>
             <td>
-              <a href="#" class="router-link-active"><span class="badge bg-link-color text-light">CSS 415</span></a> 
+              <a href="/course/?code=CSS+415" class="router-link-active"><span class="badge bg-link-color text-light">CSS 415</span></a> 
               Preparation for General Chemistry
             </td>
             <td>5.55</td>
@@ -54,7 +54,7 @@
               </div>
             </td>
             <td>
-              <a href="#" class="router-link-active"><span class="badge bg-link-color text-light">MATH 124</span></a> Calculus
+              <a href="/course/?code=MATH+124" class="router-link-active"><span class="badge bg-link-color text-light">MATH 124</span></a> Calculus
               with Analytic Geometry I
             </td>
             <td>3.51</td>
@@ -74,7 +74,7 @@
               </div>
             </td>
             <td>
-              <a href="#" class="router-link-active"><span class="badge bg-link-color text-light">CHEM 317</span></a> Inorganic
+              <a href="/course/?code=CHEM+317" class="router-link-active"><span class="badge bg-link-color text-light">CHEM 317</span></a> Inorganic
               Chemistry Laboratory
             </td>
             <td>7.2</td>
