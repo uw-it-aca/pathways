@@ -2,7 +2,9 @@
 <template>
   <layout :page-title="pageTitle">
     <!-- page content -->
-    <template #title>{{ pageTitle }}</template>
+    <template #title>
+      <h1 class="visually-hidden">{{ pageTitle }}</h1>
+    </template>
     <template #content>
 
       <div class="row justify-content-center mb-5">
