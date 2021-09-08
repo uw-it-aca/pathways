@@ -6,9 +6,40 @@
       <h3>Course Outcome Index (COI)</h3>
       <p>
         Using prior course data, this index compares estimated fail/withdrawal rates against actual
-        fail/withdrawal rates. <a href="#"><i class="bi bi-info-circle-fill"></i></a>
+        fail/withdrawal rates.
+        <a
+          href="#"
+          data-bs-toggle="popover"
+          title="What is COI?"
+          data-bs-content="A lower number (0-2) indicates that fewer people completed the course than predicted. A middle number (2-3) indicates the course is on target with predictions. A higher (3-5) number indicates that more people completed the course than anticipated."
+          ><i class="bi bi-info-circle-fill"></i
+        ></a>
       </p>
-      <div id="arc" />
+      <div id="coiGraph" />
+      <div class="coi-key">
+        <p class="fw-bold">Key</p>
+
+        <dl class="row">
+          <dt class="col-sm-6">
+            <i style="color: #ff8c00" class="bi bi-triangle-fill"></i> CHEM 162
+          </dt>
+          <dd class="col-sm-6">COI: 2.7</dd>
+          <dt class="col-sm-6">
+            <i class="bi bi-circle-fill"></i> Average course in CHEM
+            curriculum
+          </dt>
+          <dd class="col-sm-6">COI: 2.3</dd>
+          <dt class="col-sm-6">
+            <i class="bi bi-square-fill"></i> Average 100 Level Course at UW
+          </dt>
+          <dd class="col-sm-6">COI: 1.9</dd>
+        </dl>
+
+        <!-- <p></p>
+        <p><i class="bi bi-circle-fill"></i> </p>
+        <p><i class="bi bi-square-fill"></i> </p>
+        <p>*53.9% of all UW courses fall within the 2-3 range</p> -->
+      </div>
     </div>
   </div>
 </template>
@@ -17,49 +48,104 @@
 import * as d3 from 'd3';
 
 export default {
-  name: 'OutcomeIndex',
+  name: 'OutcomeScore',
   data() {
     return {
       coi: [
-        { outcome: 'CHEM 162', value: 8.5 },
-        { outcome: 'All CHEM', value: 7.9 },
-        { outcome: 'All UW', value: 6.9 },
+        { outcome: 'course', value: 2.7 },
+        { outcome: 'curr', value: 2.0 },
+        { outcome: 'uw', value: 1.8 },
       ],
     };
   },
   mounted() {
-    this.generateArc();
+    this.generateRect();
   },
   methods: {
-    generateArc() {
-      const w = 500;
-      const h = 300;
+    generateRect() {
+      const margin = { top: 20, right: 10, bottom: 20, left: 10 };
+      const width = 600 - margin.left - margin.right,
+        height = 100 - margin.top - margin.bottom;
 
-      const svg = d3.select('#arc').append('svg').attr('width', w).attr('height', h);
-
-      const sortedCOI = this.coi.sort((a, b) => (a.value > b.value ? 1 : -1));
-      const color = d3
-        .scaleSequential()
-        .interpolator(d3.interpolateRgb('purple', 'blue'))
-        .domain([0, 3]);
-
-      const max_coi = d3.max(sortedCOI, (o) => o.value);
-
-      const angleScale = d3
+      // Create the 5.0 COI scale
+      const x = d3
         .scaleLinear()
-        .domain([0, max_coi])
-        .range([0, 1.5 * Math.PI]);
+        .domain([0, 5]) // This is what is written on the Axis: from 0 to 100
+        .range([0, width]); // This is where the axis is placed: from 0px to 600px
 
-      const arc = d3
-        .arc()
-        .innerRadius((d, i) => (i + 1) * 25)
-        .outerRadius((d, i) => (i + 2) * 25)
-        .startAngle(angleScale(0))
-        .endAngle((d) => angleScale(d.value));
+      // Append SVG to container
+      const svg = d3
+        .select('#coiGraph')
+        .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom);
+
+      // Draw the rect that expands width, light blue
+      svg
+        .append('rect')
+        .attr('x', 0)
+        .attr('y', 52)
+        .attr('width', width)
+        .attr('height', 7)
+        .attr('fill-opacity', '0.6')
+        .attr('fill', '#A2D3FF');
+
+      // Draw the middle rect, dark blue
+      svg
+        .append('rect')
+        .attr('x', 232)
+        .attr('y', 52)
+        .attr('width', 116)
+        .attr('height', 7)
+        .attr('fill-opacity', '0.6')
+        .attr('fill', '#055CAA');
+
+      // Pull in data to plot on line
+
+      const CourseCOI = this.coi.filter(function (d) {
+        return d.outcome === 'course';
+      })[0].value;
+
+      const CurrCOI = this.coi.filter(function (d) {
+        return d.outcome === 'curr';
+      })[0].value;
+
+      const UwCOI = this.coi.filter(function (d) {
+        return d.outcome === 'uw';
+      })[0].value;
+
+      // Draw the axis
+      let xAxisGenerator = d3.axisBottom(x).ticks(5).tickSize(-20);
+      let xAxis = svg.append('g');
+
+      xAxis
+        .attr('transform', 'translate(0,65)') // This controls the vertical position of the Axis
+        .call(xAxisGenerator)
+        .select('.domain')
+        .remove();
 
       const g = svg.append('g');
 
-      g.selectAll('path')
+      g.append('path') // creates a triangle symbol for course COI and plots on x axis
+        .attr('d', d3.symbol().type(d3.symbolTriangle).size(180))
+        .attr('transform', 'translate(' + x(CourseCOI) + ', 55)')
+        .style('fill', '#FF8C00')
+        .on('mouseenter', function () {
+          d3.select(this).transition().duration(200).attr('opacity', 0.5);
+        })
+        .on('mouseout', function () {
+          d3.select(this).transition().duration(200).attr('opacity', 1);
+        });
+
+      g.append('path') // creates a square symbol for all uw COI and plots on x axis
+        .attr('d', d3.symbol().type(d3.symbolSquare).size(180))
+        .attr('transform', 'translate(' + x(UwCOI) + ', 55)');
+
+      g.append('path') // creates a circle symbol for curriculum COI and plots on x axis
+        .attr('d', d3.symbol().type(d3.symbolCircle).size(180))
+        .attr('transform', 'translate(' + x(CurrCOI) + ', 55)');
+
+      /*g.selectAll('path')
         .data(sortedCOI)
         .enter()
         .append('path')
@@ -72,21 +158,61 @@ export default {
         })
         .on('mouseout', function () {
           d3.select(this).transition().duration(200).attr('opacity', 1);
-        });
+        });*/
+      //g.attr('transform', 'translate(150,235)');
 
       g.selectAll('text')
-        .data(this.coi)
+        //.data(this.coi)
         .enter()
         .append('text')
-        .text((d) => `${d.outcome} -  ${d.value} COI`)
+        .text((d) => `${d.outcome}  COI ${d.value}`)
+        .classed('legend-text', true)
         .attr('x', -150)
         .attr('dy', -8)
         .attr('y', (d, i) => -(i + 1) * 25);
 
-      g.attr('transform', 'translate(300,155)');
+      g.append('text')
+        .attr('x', -2)
+        .attr('y', 25)
+        .attr('text-anchor', 'left')
+        .style('font-size', '11px')
+        .text('fewer completions than predicted');
+
+      g.append('text')
+        .attr('x', 290)
+        .attr('y', 25)
+        .attr('text-anchor', 'middle')
+        .style('font-size', '11px')
+        .text('on target with predictions*');
+
+      g.append('text')
+        .attr('x', 425)
+        .attr('y', 25)
+        .attr('text-anchor', 'right')
+        .style('font-size', '11px')
+        .text('more completions than predicted');
     },
   },
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+svg {
+  padding-left: 10px;
+}
+
+.coi-key {
+  font-size: 0.875rem;
+}
+
+.tick {
+  stroke-width: 1.5;
+}
+
+.bi {
+  margin-right: 1rem;
+}
+dt {
+  font-weight: 400;
+}
+</style>
