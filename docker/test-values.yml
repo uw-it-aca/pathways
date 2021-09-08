@@ -1,13 +1,13 @@
 ingress:
   enabled: true
   tls:
-    pathways:
-      secretName: test.pathways.uw.edu-ingress-cert
+    dawgpath:
+      secretName: test.dawgpath.uw.edu-ingress-cert
       hosts:
-        - test.pathways.uw.edu
+        - test.dawgpath.uw.edu
   hosts:
-    pathways:
-      host: test.pathways.uw.edu
+    dawgpath:
+      host: test.dawgpath.uw.edu
       paths:
         - "/"
   annotations:
@@ -23,24 +23,24 @@ affinity:
 readiness:
   enabled: true
 securityPolicy:
-  enabled: false
+  enabled: true
 
 externalService:
   enabled: true
-  name: pathways-db-service
+  name: dawgpath-db-service
   type: ClusterIP
-  serviceAddress:
+  serviceAddress: 172.18.1.250
   servicePort: 5432
 database:
   engine: postgres
-  name: pathways_test
-  hostname: pathways-db-service
-  secretName: test.pathways.uw.edu-sql-secrets
+  name: dawgpath-test
+  hostname: dawgpath-db-service
+  secretName: test.dawgpath.uw.edu-sql-secrets
 
 repo: pathways
 instance: test
 image:
-  repository: gcr.io/uwit-mci-axdd/pathways
+  repository: gcr.io/uwit-mci-axdd/dawgpath
   tag: IMAGE_TAG
 
 memcached:
@@ -52,14 +52,14 @@ environmentVariables:
   - name: AUTH
     value: SAML
   - name: SAML_ENTITY_ID
-    value:
+    value: https://test.dawgpath.uw.edu/saml2
   - name: CLUSTER_CNAME
-    value:
+    value: test.dawgpath.uw.edu
 
 externalSecrets:
   enabled: true
-  - name: test.pathways.uw.edu-secrets
-      externalKey: axdd/kv/data/pathways/test/secrets
+  - name: test.dawgpath.uw.edu-secrets
+      externalKey: axdd/kv/data/dawgpath/test/secrets
       data:
         - name: django-secret
           property: django-secret
@@ -67,19 +67,19 @@ externalSecrets:
           property: access-group-id
         - name: google-analytics-key
           property: google-analytics-key
-  - name: test.pathways.uw.edu-sql-secrets
-      externalKey: axdd/kv/data/pathways/shared/sql-secrets
+  - name: test.dawgpath.uw.edu-sql-secrets
+      externalKey: axdd/kv/data/dawgpath/shared/sql-secrets
       data:
         - name: username
           property: username
         - name: password
           property: password
-  - name: test.pathways.uw.edu-ic-certs
-      externalKey: axdd/kv/data/pathways/test/ic-certs
+  - name: test.dawgpath.uw.edu-ic-certs
+      externalKey: axdd/kv/data/dawgpath/test/ic-certs
       data:
-        - name: test.pathways.uw.edu-ic.cert
-          property: test.pathways.uw.edu-ic.cert
-    - name: test.pathways.uw.edu-uw-idp-cert
+        - name: test.dawgpath.uw.edu-ic.cert
+          property: test.dawgpath.uw.edu-ic.cert
+    - name: test.dawgpath.uw.edu-uw-idp-cert
       externalKey: axdd/kv/data/idp-cert
       data:
         - name: uw-idp-cert
@@ -88,21 +88,21 @@ externalSecrets:
 environmentVariablesSecrets:
   djangoSecret:
     name: DJANGO_SECRET
-    secretName: test.pathways.uw.edu-secrets
+    secretName: test.dawgpath.uw.edu-secrets
     secretKey: django-secret
   samlSPCert:
     name: SP_CERT
-    secretName: test.pathways.uw.edu-ic-certs
-    secretKey: test.pathways.uw.edu-ic.cert
+    secretName: test.dawgpath.uw.edu-ic-certs
+    secretKey: test.dawgpath.uw.edu-ic.cert
   samlIDPCert:
     name: IDP_CERT
-    secretName: test.pathways.uw.edu-uw-idp-cert
+    secretName: test.dawgpath.uw.edu-uw-idp-cert
     secretKey: uw-idp-cert
   accessGroup:
     name: ACCESS_GROUP
-    secretName: test.pathways.uw.edu-shared-secrets
+    secretName: test.dawgpath.uw.edu-secrets
     secretKey: access-group-id
   googleAnalyticsKey:
     name: GOOGLE_ANALYTICS_KEY
-    secretName: test.pathways.uw.edu-secrets
+    secretName: test.dawgpath.uw.edu-secrets
     secretKey: google-analytics-key
