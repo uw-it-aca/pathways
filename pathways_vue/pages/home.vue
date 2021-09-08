@@ -2,7 +2,9 @@
 <template>
   <layout :page-title="pageTitle">
     <!-- page content -->
-    <template #title>{{ pageTitle }}</template>
+    <template #title>
+      <h1 class="visually-hidden">{{ pageTitle }}</h1>
+    </template>
     <template #content>
       <div class="row justify-content-center">
         <div class="col-md-9">
@@ -58,6 +60,7 @@
           </div>
 
           <ul>
+            <li><router-link to="/about">Go to About</router-link></li>
             <li><router-link to="/major">Go to Major</router-link></li>
             <li><router-link to="/course">Go to Course</router-link></li>
           </ul>

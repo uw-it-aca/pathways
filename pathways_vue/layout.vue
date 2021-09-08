@@ -10,11 +10,9 @@
     <template #header></template>
     <template #main>
       <!-- main section override -->
-      <h1 class="visually-hidden">
-        <slot name="title">
-          {{ pageTitle }}
-        </slot>
-      </h1>
+      <slot name="title">
+        {{ pageTitle }}
+      </slot>
       <slot name="content"></slot>
     </template>
     <template #footer>
