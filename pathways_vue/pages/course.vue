@@ -2,7 +2,7 @@
 <template>
   <layout :page-title="pageTitle">
     <!-- page content -->
-    <template #title>{{ pageTitle }}</template>
+    <template #title><span class="visually-hidden">{{ pageTitle }}</span></template>
     <template #content>
       <div class="row justify-content-center mb-5">
         <div class="col-md-9">
