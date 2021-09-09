@@ -5,7 +5,14 @@
     <div class="card-body">
       <h3>Course Grade Distribution</h3>
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate consequuntur incidunt.
+        This graph represents the distribution of grades for every student who completed {{ course }} over the past 5 years. 
+        <a
+          href="#"
+          data-bs-toggle="popover"
+          title="What is Course Grade Distribution?"
+          data-bs-content="Description goes here."
+          ><i class="bi bi-info-circle-fill"></i
+        ></a>
       </p>
       <div id="gcd_graph" />
       <p><small>Number of grades in this sample: 6988 (5 years). Data not instructor-specific.</small></p>
