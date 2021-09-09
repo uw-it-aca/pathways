@@ -8,7 +8,6 @@
     <template #content>
       <div class="row justify-content-center">
         <div class="col-md-9">
-          <h1 class="visually-hidden">Pathways Home</h1>
 
           <!-- Modal -->
           <div
