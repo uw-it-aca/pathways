@@ -1,12 +1,12 @@
 ingress:
   enabled: true
   tls:
-    pathways:
+    dawgpath:
       secretName: test.dawgpath.uw.edu-ingress-cert
       hosts:
         - test.dawgpath.uw.edu
   hosts:
-    pathways:
+    dawgpath:
       host: test.dawgpath.uw.edu
       paths:
         - "/"
@@ -37,10 +37,10 @@ database:
   hostname: dawgpath-db-service
   secretName: test.dawgpath.uw.edu-sql-secrets
 
-repo: pathways
+repo: dawgpath
 instance: test
 image:
-  repository: gcr.io/uwit-mci-axdd/pathways
+  repository: gcr.io/uwit-mci-axdd/dawgpath
   tag: IMAGE_TAG
 
 memcached:
