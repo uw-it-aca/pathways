@@ -6,12 +6,18 @@ from django.db import models
 
 class Major(models.Model):
     major_abbr = models.CharField(max_length=12)
-    gpa_2yr = models.JSONField()
-    gpa_5yr = models.JSONField()
+    major_title = models.TextField()
+    gpa_2yr = models.JSONField(null=True)
+    gpa_5yr = models.JSONField(null=True)
 
     @staticmethod
     def get_major_list():
-        return list(Major.objects.values_list("major_abbr", flat=True))
+        majors = Major.objects.only("major_abbr", "major_title")
+        major_json = []
+        for major in majors:
+            major_json.append({"key": major.major_abbr,
+                               "value": major.major_title})
+        return major_json
 
     @staticmethod
     def get_major_data(major_abbr):

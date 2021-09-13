@@ -14,6 +14,7 @@ class Command(BaseCommand):
             data = json.load(json_file)
             for major in data:
                 gpa_data = {"gpa_2yr": data[major]['2_yr'],
-                            "gpa_5yr": data[major]['5_yr']}
+                            "gpa_5yr": data[major]['5_yr'],
+                            "major_title": data[major]['major_title']}
                 Major.objects.update_or_create(major_abbr=major,
                                                defaults=gpa_data)

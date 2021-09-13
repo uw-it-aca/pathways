@@ -7,9 +7,7 @@ from pathways.models.major import Major
 
 class MajorList(RESTDispatch):
     def get(self, request, *args, **kwargs):
-        print('foo')
         majors = Major.get_major_list()
-        print(majors)
         return self.json_response(majors)
 
 
