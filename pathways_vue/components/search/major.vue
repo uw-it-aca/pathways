@@ -5,7 +5,7 @@
     :options="major_list"
     placeholder="Enter a major"
     route-path="major"
-    sync-query-param="name"
+    sync-query-param="id"
     v-model:selected="selected"
   />
 </template>
@@ -19,11 +19,8 @@ export default {
     'search': Search,
   },
   props: {
-    majorList: {
-      type: Array,
-      required: true,
-    },
     selected: Object,
+    prefill_id: ""
   },
   data() {
     return {

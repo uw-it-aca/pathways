@@ -33,6 +33,8 @@ COPY --chown=acait:acait --from=wpack /static /static
 
 ADD --chown=acait:acait . /app/
 ADD --chown=acait:acait docker/ project/
+ADD --chown=acait:acait docker/app_start.sh /scripts
+RUN chmod u+x /scripts/app_start.sh
 
 RUN . /app/bin/activate && python manage.py collectstatic --noinput
 

@@ -7,7 +7,7 @@
       aria-label=""
       :placeholder="placeholder"
       :list="innerId"
-    />q
+    />
     <button type="button" class="btn btn-purple" @click="onSelected">Search</button>
   </div>
   <datalist :id="innerId">
@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     syncSelected() {
-      this.$emit('update:selected', this.options[this.selectedKey]?.data ?? '');
+      this.$emit('update:selected', this.selectedKey ?? '');
     },
     onSelected() {
       if (this.syncQueryParam) {

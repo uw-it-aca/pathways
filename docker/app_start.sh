@@ -1,6 +1,5 @@
-if [ "$ENV"  = "localdev" ]
-then
+source "/app/bin/activate"
 
-  . /scripts/app_deploy.sh
-
-fi
+cd /app
+python manage.py migrate
+python manage.py import_data

@@ -28,6 +28,7 @@ services:
       NODE_ENV: "development"
       VUE_DEVTOOLS: "True"
       BUNDLE_ANALYZER: "True"
+      ENV: "development"
     volumes:
       - ./pathways_vue:/app/pathways_vue
       - statics-volume:/static

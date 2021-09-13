@@ -65,7 +65,7 @@
             <li><router-link to="/course">Go to Course</router-link></li>
           </ul>
 
-          <search-chooser :course-list="courseList" :major-list="majorSeaList"/>
+          <search-chooser :course-list="courseList"/>
           <!-- Button trigger modal -->
           <button
             type="button"
@@ -103,13 +103,12 @@ export default {
     return {
       pageTitle: 'Home',
       welcomeModal: null,
-      courseList,
-      majorSeaList: proccessSeaMajors(majorSeaData),
+      courseList
     };
   },
   mounted() {
     // show the welcome modal when the component is mounted
-    this.showWelcomeModal();
+    // this.showWelcomeModal();
   },
   methods: {
     showWelcomeModal(event){

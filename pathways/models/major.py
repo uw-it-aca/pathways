@@ -25,5 +25,14 @@ class Major(models.Model):
 
     def json_data(self):
         return {"major_abbr": self.major_abbr,
-                "gpa_2yr": self.gpa_2yr,
-                "gpa_5yr": self.gpa_5yr}
+                "major_title": self.major_title,
+                "gpa_2yr": Major.fix_gpa_json(self.gpa_2yr),
+                "gpa_5yr": Major.fix_gpa_json(self.gpa_5yr)}
+
+    @staticmethod
+    def fix_gpa_json(json):
+        fixed = []
+        for key in json:
+            fixed.append({"gpa": key, "count": json[key]})
+        return fixed
+

@@ -47,6 +47,7 @@
     "eslint-plugin-vue": "^7.9.0",
     "eslint-utils": "^2.1.0",
     "mini-css-extract-plugin": "^1.6.0",
+    "numeral": "^2.0.6",
     "prettier": "^2.3.2",
     "sass": "^1.32.13",
     "sass-loader": "^11.0.1",
