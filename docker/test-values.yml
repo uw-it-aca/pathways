@@ -58,7 +58,8 @@ environmentVariables:
 
 externalSecrets:
   enabled: true
-  - name: test.dawgpath.uw.edu-secrets
+  secrets:
+    - name: test.dawgpath.uw.edu-secrets
       externalKey: axdd/kv/data/dawgpath/test/secrets
       data:
         - name: django-secret
@@ -67,14 +68,14 @@ externalSecrets:
           property: access-group-id
         - name: google-analytics-key
           property: google-analytics-key
-  - name: test.dawgpath.uw.edu-sql-secrets
+    - name: test.dawgpath.uw.edu-sql-secrets
       externalKey: axdd/kv/data/dawgpath/shared/sql-secrets
       data:
         - name: username
           property: username
         - name: password
           property: password
-  - name: test.dawgpath.uw.edu-ic-certs
+    - name: test.dawgpath.uw.edu-ic-certs
       externalKey: axdd/kv/data/dawgpath/test/ic-certs
       data:
         - name: test.dawgpath.uw.edu-ic.cert
