@@ -61,9 +61,9 @@ export default {
   methods: {
     generateGCD() {
       // set the dimensions and margins of the graph
-      const margin = { top: 10, right: 30, bottom: 30, left: 40 },
+      const margin = { top: 10, right: 30, bottom: 45, left: 40 },
         width = 600 - margin.left - margin.right,
-        height = 250 - margin.top - margin.bottom;
+        height = 270 - margin.top - margin.bottom;
 
       // append the svg object to the body of the page
       const svg = d3
@@ -112,15 +112,15 @@ export default {
       .attr("x",0 - (height / 2))
       .attr("dy", "0.5em")
       .style("text-anchor", "middle")
+      .style("font-size", "0.85rem")
       .classed("chart-label", true)
       .text("Number of students"); 
 
       svg.append("text")             
-      .attr("transform",
-            "translate(" + (width/2) + " ," + 
-                           (height + margin.top + 20) + ")")
+      .attr('x', width / 2)
+      .attr('y', height + margin.bottom)
       .style("text-anchor", "middle")
-      .style("font-size", "1rem")
+      .style("font-size", "0.85rem")
       .text("Course Grade"); 
 
       // append the bar rectangles to the svg element
@@ -147,5 +147,6 @@ export default {
 
 <style lang="scss">
 .chart-label {color: red;}
+#gcd_graph {margin-bottom: 1rem;}
 
 </style>
