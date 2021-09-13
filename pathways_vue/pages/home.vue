@@ -88,9 +88,6 @@ import { proccessSeaMajors } from '../helpers/major';
 import Layout from '../layout.vue';
 import SearchChooser from '../components/search/chooser.vue';
 
-import D3Arc from '../components/d3-arc.vue';
-import D3BoxPlot from '../components/d3-boxplot.vue';
-
 import { Modal } from 'bootstrap';
 
 export default {

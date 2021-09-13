@@ -5,7 +5,7 @@
     <div class="card-body">
       <h3>Course Grade Distribution</h3>
       <p>
-        This graph represents the distribution of grades for every student who completed {{ course }} over the past 5 years. 
+        This graph represents the distribution of grades for every student who completed <strong>CHEM 162</strong> over the past 5 years. 
         <a
           href="#"
           data-bs-toggle="popover"
@@ -63,7 +63,7 @@ export default {
       // set the dimensions and margins of the graph
       const margin = { top: 10, right: 30, bottom: 30, left: 40 },
         width = 600 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom;
+        height = 250 - margin.top - margin.bottom;
 
       // append the svg object to the body of the page
       const svg = d3
@@ -106,6 +106,23 @@ export default {
       ]); // d3.hist has to be called before the Y axis obviously
       svg.append('g').call(d3.axisLeft(y));
 
+      svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "0.5em")
+      .style("text-anchor", "middle")
+      .classed("chart-label", true)
+      .text("Number of students"); 
+
+      svg.append("text")             
+      .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top + 20) + ")")
+      .style("text-anchor", "middle")
+      .style("font-size", "1rem")
+      .text("Course Grade"); 
+
       // append the bar rectangles to the svg element
       svg
         .selectAll('rect')
@@ -128,4 +145,7 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.chart-label {color: red;}
+
+</style>
