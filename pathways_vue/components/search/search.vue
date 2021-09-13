@@ -7,7 +7,7 @@
       aria-label=""
       :placeholder="placeholder"
       :list="innerId"
-    />
+    />q
     <button type="button" class="btn btn-purple" @click="onSelected">Search</button>
   </div>
   <datalist :id="innerId">
@@ -65,21 +65,17 @@ export default {
         });
       }
       this.syncSelected();
-    },
-    labelToKey(label) {
-      let keyArr = Object.entries(this.options)
-        .find(([_, value]) => value.label == label);
-      return keyArr[0];
-    },
+    }
   },
   computed: {
     renderableOptions() {
-      return Object.entries(this.options).map(([_, value]) => value.label);
+      return this.options.map(m => m.value)
     },
     selectedKey() {
-      let keyArr = Object.entries(this.options)
-        .find(([_, value]) => value.label == this.selectedLabel) ?? [''];
-      return keyArr[0];
+      let selectedObj = this.options.find(o => o.value === this.selectedLabel);
+      if (selectedObj !== undefined){
+        return selectedObj.key;
+      }
     }
   },
 };

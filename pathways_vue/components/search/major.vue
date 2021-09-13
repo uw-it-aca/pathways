@@ -1,8 +1,8 @@
 // major.vue
 <template>
-  <search 
+  <search
     inner-id="majors"
-    :options="majorListSearchable"
+    :options="major_list"
     placeholder="Enter a major"
     route-path="major"
     sync-query-param="name"
@@ -25,7 +25,18 @@ export default {
     },
     selected: Object,
   },
+  data() {
+    return {
+      major_list: []
+    };
+  },
   emits: ['update:selected'],
+  mounted() {
+    const vue = this;
+    this.axios.get("/api/v1/majors/").then((response) => {
+      vue.major_list = response.data;
+    });
+  },
   computed: {
     majorListSearchable() {
       let selectable = {};

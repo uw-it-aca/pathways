@@ -5,6 +5,8 @@ import store from './store';
 
 import VueGtag from 'vue-gtag-next';
 import VueMq from 'vue3-mq';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
 
 // bootstrap js
 import 'bootstrap';
@@ -42,5 +44,6 @@ app.use(VueMq, {
 });
 app.use(router);
 app.use(store);
+app.use(VueAxios, axios);
 
 app.mount("#app");
