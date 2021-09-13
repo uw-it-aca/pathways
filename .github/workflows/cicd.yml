@@ -33,7 +33,7 @@ name: Build, Test and Deploy
 
 env:
   # Release name must match "repo" value in docker/*-values.yml
-  RELEASE_NAME: pathways
+  RELEASE_NAME: dawgpath
   DJANGO_APP: pathways
 
 # Be sure that branches defined here have corresponding steps
