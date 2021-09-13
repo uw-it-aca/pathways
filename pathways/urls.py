@@ -3,7 +3,7 @@
 
 from django.urls import include, path, re_path
 from django.views.generic.base import RedirectView
-from pathways.views.pages import PageView
+from pathways.views.pages import DefaultPageView
 
 
-urlpatterns = [re_path(r"^.*$", PageView.as_view(), name="index")]
+urlpatterns = [re_path(r"^.*$", DefaultPageView.as_view(), name="index")]

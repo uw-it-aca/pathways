@@ -8,7 +8,9 @@ services:
     restart: always
     container_name: pathways_app
     environment:
-      - GOOGLE_ANALYTICS_KEY=${GOOGLE_ANALYTICS_KEY}
+      ENV: localdev
+      AUTH: SAML_MOCK
+      GOOGLE_ANALYTICS_KEY: "${GOOGLE_ANALYTICS_KEY}"
     volumes:
       - ./pathways:/app/pathways
       - statics-volume:/static
