@@ -34,11 +34,6 @@
           <dd class="col-sm-6 key-coi">COI: 1.8</dd>
         </dl>
         <p>*53.9% of all UW courses fall within the 2-3 range</p>
-
-        <!-- <p></p>
-        <p><i class="bi bi-circle-fill"></i> </p>
-        <p><i class="bi bi-square-fill"></i> </p>
-         -->
       </div>
     </div>
   </div>
@@ -144,32 +139,6 @@ export default {
       g.append('path') // creates a circle symbol for curriculum COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolCircle).size(180))
         .attr('transform', 'translate(' + x(CurrCOI) + ', 55)');
-
-      /*g.selectAll('path')
-        .data(sortedCOI)
-        .enter()
-        .append('path')
-        .attr('d', arc)
-        .attr('fill', (d, i) => color(i))
-        .attr('stroke', '#FFF')
-        .attr('stroke-width', '1px')
-        .on('mouseenter', function () {
-          d3.select(this).transition().duration(200).attr('opacity', 0.5);
-        })
-        .on('mouseout', function () {
-          d3.select(this).transition().duration(200).attr('opacity', 1);
-        });*/
-      //g.attr('transform', 'translate(150,235)');
-
-      g.selectAll('text')
-        //.data(this.coi)
-        .enter()
-        .append('text')
-        .text((d) => `${d.outcome}  COI ${d.value}`)
-        .classed('legend-text', true)
-        .attr('x', -150)
-        .attr('dy', -8)
-        .attr('y', (d, i) => -(i + 1) * 25);
 
       g.append('text')
         .attr('x', -2)
