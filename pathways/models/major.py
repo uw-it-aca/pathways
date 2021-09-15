@@ -7,6 +7,10 @@ from django.db import models
 class Major(models.Model):
     major_abbr = models.CharField(max_length=12)
     major_title = models.TextField()
+    major_school = models.TextField()
+    major_campus = models.TextField()
+    major_description = models.TextField(null=True)
+    major_admission = models.TextField(null=True)
     gpa_2yr = models.JSONField(null=True)
     gpa_5yr = models.JSONField(null=True)
 
@@ -26,6 +30,10 @@ class Major(models.Model):
     def json_data(self):
         return {"major_abbr": self.major_abbr,
                 "major_title": self.major_title,
+                "major_school": self.major_school,
+                "major_campus": self.major_campus,
+                "major_description": self.major_description,
+                "major_admission": self.major_admission,
                 "gpa_2yr": Major.fix_gpa_json(self.gpa_2yr),
                 "gpa_5yr": Major.fix_gpa_json(self.gpa_5yr)}
 

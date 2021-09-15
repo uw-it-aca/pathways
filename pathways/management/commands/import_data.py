@@ -15,6 +15,11 @@ class Command(BaseCommand):
             for major in data:
                 gpa_data = {"gpa_2yr": data[major]['2_yr'],
                             "gpa_5yr": data[major]['5_yr'],
-                            "major_title": data[major]['major_title']}
+                            "major_title": data[major]['major_title'],
+                            "major_school": data[major]['major_school'],
+                            "major_campus": data[major]['major_campus'],
+                            "major_description": data[major]['major_description'],
+                            "major_admission": data[major]['major_admission'],
+                            }
                 Major.objects.update_or_create(major_abbr=major,
                                                defaults=gpa_data)
