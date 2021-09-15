@@ -22,7 +22,7 @@
         </div>
 
         <d3-histogram />
-        <contact-adviser />
+        <contact-adviser-major />
       </div>
       <div v-else>
         PLACEHOLDER: select something
