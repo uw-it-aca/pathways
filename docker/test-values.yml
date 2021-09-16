@@ -24,6 +24,8 @@ readiness:
   enabled: true
 securityPolicy:
   enabled: true
+labels:
+  billing-code: "786"
 
 externalService:
   enabled: true
