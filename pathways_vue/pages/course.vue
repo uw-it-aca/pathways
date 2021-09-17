@@ -22,7 +22,7 @@
             <grade-distribution />
           </div>
           <div class="col">
-            <outcome-index />
+            <outcome-index :selected="selectedCourse" />
           </div>
         </div>
 

@@ -21,7 +21,7 @@
 
         <dl class="row">
           <dt class="col-sm-6">
-            <i style="color: #ff8c00" class="bi bi-triangle-fill"></i> <span  class="key-desc">CHEM 162</span>
+            <i style="color: #ff8c00" class="bi bi-triangle-fill"></i> <span  class="key-desc">{{ selected }}</span>
           </dt>
           <dd class="col-sm-6 key-coi">COI: {{ CourseCOI }}</dd>
           <dt class="col-sm-6">
@@ -44,6 +44,11 @@ import * as d3 from 'd3';
 
 export default {
   name: 'OutcomeScore',
+  props: { 
+    selected: {
+      type: String,
+    },
+  },
   data() {
     return {
       coi: [
