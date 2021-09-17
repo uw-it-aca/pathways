@@ -5,7 +5,7 @@
     <div class="card-body">
       <h3>Course Grade Distribution</h3>
       <p>
-        This graph represents the distribution of grades for every student who completed <strong>CHEM 162</strong> over the past 5 years. 
+        This graph represents the distribution of grades for every student who completed <strong>{{ selected }}</strong> over the past 5 years. 
         <a
           href="#"
           data-bs-toggle="popover"
@@ -25,6 +25,11 @@ import * as d3 from 'd3';
 
 export default {
   name: "GradeDistribution",
+  props: { 
+    selected: {
+      type: String,
+    },
+  },
   data() {
     return {
       sampledata: [

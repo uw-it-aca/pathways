@@ -19,14 +19,14 @@
         </div>
         <div class="row">
           <div class="col">
-            <grade-distribution />
+            <grade-distribution :selected="selectedCourse"/>
           </div>
           <div class="col">
             <outcome-index :selected="selectedCourse" />
           </div>
         </div>
 
-        <prereq-map />
+        <prereq-map :selected="selectedCourse"/>
         <concurrent-courses />
         <contact-adviser-course />
       </div>

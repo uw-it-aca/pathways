@@ -16,7 +16,7 @@
             aria-controls="course-map"
             aria-selected="true"
           >
-            CHEM 162
+            {{ selected }}
           </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -52,6 +52,11 @@ import PrereqCurriculum from './prereq-curriculum.vue'
 
 export default {
   name: 'PrereqMap',
+  props: { 
+    selected: {
+      type: String,
+    },
+  },
   components: {
     'prereq-course': PrereqCourse,
     'prereq-curriculum': PrereqCurriculum,
