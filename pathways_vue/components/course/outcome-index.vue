@@ -23,15 +23,15 @@
           <dt class="col-sm-6">
             <i style="color: #ff8c00" class="bi bi-triangle-fill"></i> <span  class="key-desc">CHEM 162</span>
           </dt>
-          <dd class="col-sm-6 key-coi">COI: 2.7</dd>
+          <dd class="col-sm-6 key-coi">COI: {{ CourseCOI }}</dd>
           <dt class="col-sm-6">
             <i class="bi bi-circle-fill"></i> <span  class="key-desc">Average course in CHEM curriculum</span>
           </dt>
-          <dd class="col-sm-6 key-coi">COI: 2.0</dd>
+          <dd class="col-sm-6 key-coi">COI: {{ CurrCOI }}</dd>
           <dt class="col-sm-6">
             <i class="bi bi-square-fill"></i> <span  class="key-desc">Average 100 Level Course at UW</span>
           </dt>
-          <dd class="col-sm-6 key-coi">COI: 1.8</dd>
+          <dd class="col-sm-6 key-coi">COI: {{ UwCOI }}</dd>
         </dl>
         <p>*53.9% of all UW courses fall within the 2-3 range</p>
       </div>
@@ -48,9 +48,12 @@ export default {
     return {
       coi: [
         { outcome: 'course', value: 2.7 },
-        { outcome: 'curr', value: 2.0 },
+        { outcome: 'curr', value: 2.1 },
         { outcome: 'uw', value: 1.8 },
       ],
+      CourseCOI: '',
+      CurrCOI: '',
+      UwCOI: '',
     };
   },
   mounted() {
@@ -97,15 +100,15 @@ export default {
 
       // Pull in data to plot on line
 
-      const CourseCOI = this.coi.filter(function (d) {
+      this.CourseCOI = this.coi.filter(function (d) {
         return d.outcome === 'course';
       })[0].value;
 
-      const CurrCOI = this.coi.filter(function (d) {
+      this.CurrCOI = this.coi.filter(function (d) {
         return d.outcome === 'curr';
       })[0].value;
 
-      const UwCOI = this.coi.filter(function (d) {
+      this.UwCOI = this.coi.filter(function (d) {
         return d.outcome === 'uw';
       })[0].value;
 
@@ -123,7 +126,7 @@ export default {
 
       g.append('path') // creates a triangle symbol for course COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolTriangle).size(180))
-        .attr('transform', 'translate(' + x(CourseCOI) + ', 55)')
+        .attr('transform', 'translate(' + x(this.CourseCOI) + ', 55)')
         .style('fill', '#FF8C00')
         .on('mouseenter', function () {
           d3.select(this).transition().duration(200).attr('opacity', 0.5);
@@ -134,11 +137,11 @@ export default {
 
       g.append('path') // creates a square symbol for all uw COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolSquare).size(180))
-        .attr('transform', 'translate(' + x(UwCOI) + ', 55)');
+        .attr('transform', 'translate(' + x(this.UwCOI) + ', 55)');
 
       g.append('path') // creates a circle symbol for curriculum COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolCircle).size(180))
-        .attr('transform', 'translate(' + x(CurrCOI) + ', 55)');
+        .attr('transform', 'translate(' + x(this.CurrCOI) + ', 55)');
 
       g.append('text')
         .attr('x', -2)
