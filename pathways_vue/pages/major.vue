@@ -14,7 +14,7 @@
       </div>
       <div v-if="major_data">
         <div class="row">
-<!--          <div class="col-8"><major-details :major="selectedMajor" /></div>-->
+          <div class="col-8"><major-details :major="major_data" /></div>
 <!--          <div class="col-4"><explore-major :major="selectedMajor" /></div>-->
         </div>
         <div class="mb-5">

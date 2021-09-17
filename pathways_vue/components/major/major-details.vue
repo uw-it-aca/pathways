@@ -2,12 +2,12 @@
 
 <template>
   <div class="mb-5">
-    <h2> {{ major["Major"] }}</h2>
-    <p class="text-uppercase mb-1">{{ major["college"] }} - {{ major["campus"] }}</p>
-    <p><strong>Admission Policy:</strong> {{ major["Admission Policy"] }}</p>
+    <h2> {{ major["major_title"] }}</h2>
+    <p class="text-uppercase mb-1">{{ major["major_school"] }} - {{ major["major_campus"] }}</p>
+    <p><strong>Admission Policy:</strong> {{ major["major_admission"] }}</p>
     <div class="major-info">
       <div class="major-description">
-        <p v-html="major['Description']" />
+        <p v-html="major['major_description']" />
       </div>
     </div>
   </div>
