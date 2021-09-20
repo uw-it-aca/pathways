@@ -19,65 +19,25 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="align-middle">
-            <th scope="row">73%</th>
+          <tr v-for="course in common_courses" class="align-middle">
+            <th scope="row">{{course.percent}}%</th>
             <td>
               <div class="progress">
                 <div
                   class="progress-bar bg-secondary"
                   role="progressbar"
-                  style="width: 73%"
-                  aria-valuenow="73"
+                  :style="course.width"
+                  :aria-valuenow="course.percent"
                   aria-valuemin="0"
                   aria-valuemax="100"
                 ></div>
               </div>
             </td>
             <td>
-              <a href="/course/?code=CSS+415" class="router-link-active"><span class="badge bg-link-color text-light">CSS 415</span></a> 
-              Preparation for General Chemistry
+              <a href="/course/?code=CSS+415" class="router-link-active"><span class="badge bg-link-color text-light">{{course.course}}</span></a>
+              course title
             </td>
             <td>5.55</td>
-          </tr>
-          <tr class="align-middle">
-            <th scope="row">55%</th>
-            <td>
-              <div class="progress">
-                <div
-                  class="progress-bar bg-secondary"
-                  role="progressbar"
-                  style="width: 55%"
-                  aria-valuenow="55"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-            </td>
-            <td>
-              <a href="/course/?code=MATH+124" class="router-link-active"><span class="badge bg-link-color text-light">MATH 124</span></a> Calculus
-              with Analytic Geometry I
-            </td>
-            <td>3.51</td>
-          </tr>
-          <tr class="align-middle">
-            <th scope="row">27%</th>
-            <td>
-              <div class="progress">
-                <div
-                  class="progress-bar bg-secondary"
-                  role="progressbar"
-                  style="width: 27%"
-                  aria-valuenow="27"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-            </td>
-            <td>
-              <a href="/course/?code=CHEM+317" class="router-link-active"><span class="badge bg-link-color text-light">CHEM 317</span></a> Inorganic
-              Chemistry Laboratory
-            </td>
-            <td>7.2</td>
           </tr>
         </tbody>
       </table>
@@ -88,10 +48,30 @@
 <script>
 export default {
   name: 'CommonCourses',
+  props: {
+    major: {
+      type: Object,
+      required: true,
+    }
+  },
   data() {
     return {};
   },
   methods: {},
+  computed: {
+    common_courses: function (){
+      let processed_courses = [];
+
+      for (const [course, percent] of Object.entries(this.major.common_course_decl)) {
+        let style_string = `width: ${percent}%`;
+        processed_courses.push({'course': course,
+          'percent': percent,
+          'width': style_string})
+      }
+
+      return processed_courses.sort((a, b) => (a.percent < b.percent)? 1 : -1);
+    }
+  }
 };
 </script>
 

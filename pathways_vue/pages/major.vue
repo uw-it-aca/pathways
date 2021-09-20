@@ -18,7 +18,7 @@
           <div class="col-4"><explore-major :major="major_data" /></div>
         </div>
         <div class="mb-5">
-<!--          <common-courses />-->
+          <common-courses :major="major_data" />
         </div>
 
         <d3-histogram

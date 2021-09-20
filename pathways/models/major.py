@@ -39,7 +39,7 @@ class Major(models.Model):
                 "major_admission": self.major_admission,
                 "program_code": self.program_code,
                 "major_home_url": Major.get_major_url(self.major_home_url),
-                "commonm_course_decl": self.common_course_decl,
+                "common_course_decl": self.common_course_decl,
                 "gpa_2yr": Major.fix_gpa_json(self.gpa_2yr),
                 "gpa_5yr": Major.fix_gpa_json(self.gpa_5yr)}
 
