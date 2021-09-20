@@ -37,7 +37,7 @@ class Major(models.Model):
                 "major_description": self.major_description,
                 "major_admission": self.major_admission,
                 "program_code": self.program_code,
-                "major_home_url": self.major_home_url,
+                "major_home_url": Major.get_major_url(self.major_home_url),
                 "gpa_2yr": Major.fix_gpa_json(self.gpa_2yr),
                 "gpa_5yr": Major.fix_gpa_json(self.gpa_5yr)}
 
@@ -47,3 +47,8 @@ class Major(models.Model):
         for key in json:
             fixed.append({"gpa": key, "count": json[key]})
         return fixed
+
+    @staticmethod
+    def get_major_url(url):
+        if url is not None:
+            return "http:\\\\%s" % url
