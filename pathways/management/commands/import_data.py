@@ -18,8 +18,11 @@ class Command(BaseCommand):
                             "major_title": data[major]['major_title'],
                             "major_school": data[major]['major_school'],
                             "major_campus": data[major]['major_campus'],
-                            "major_description": data[major]['major_description'],
+                            "major_description":
+                                data[major]['major_description'],
                             "major_admission": data[major]['major_admission'],
+                            "program_code": data[major]['program_code'],
+                            "major_home_url": data[major]['major_home_url'],
                             }
                 Major.objects.update_or_create(major_abbr=major,
                                                defaults=gpa_data)

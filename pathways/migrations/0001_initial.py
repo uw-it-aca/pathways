@@ -14,7 +14,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Major',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True,
+                                        serialize=False,
+                                        verbose_name='ID')),
                 ('major_abbr', models.CharField(max_length=12)),
                 ('major_title', models.TextField()),
                 ('major_school', models.TextField()),
