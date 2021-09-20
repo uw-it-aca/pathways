@@ -13,6 +13,7 @@ class Major(models.Model):
     major_admission = models.TextField(null=True)
     major_home_url = models.URLField(null=True)
     program_code = models.CharField(max_length=25)
+    common_course_decl = models.JSONField(null=True)
     gpa_2yr = models.JSONField(null=True)
     gpa_5yr = models.JSONField(null=True)
 
@@ -38,6 +39,7 @@ class Major(models.Model):
                 "major_admission": self.major_admission,
                 "program_code": self.program_code,
                 "major_home_url": Major.get_major_url(self.major_home_url),
+                "commonm_course_decl": self.common_course_decl,
                 "gpa_2yr": Major.fix_gpa_json(self.gpa_2yr),
                 "gpa_5yr": Major.fix_gpa_json(self.gpa_5yr)}
 
