@@ -53,6 +53,11 @@ export default {
     // this.generateHistogram();
     this.generateChart(this.majorData.gpa_2yr);
   },
+  watch: {
+    majorData:  function(){
+      this.generateChart(this.majorData.gpa_2yr);
+    }
+  },
   computed: {
     yearCount() {
       if(this.gpa_2yr_active){

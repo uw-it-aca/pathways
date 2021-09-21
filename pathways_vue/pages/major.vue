@@ -11,7 +11,6 @@
         <div class="col-md-9">
           <search-major
             :prefill_id="majorID"
-            @update:selected="test"
           />
         </div>
       </div>
