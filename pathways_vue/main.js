@@ -7,6 +7,7 @@ import VueGtag from 'vue-gtag-next';
 import VueMq from 'vue3-mq';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import mitt from 'mitt';
 
 // bootstrap js
 import 'bootstrap';
@@ -19,6 +20,9 @@ const app = createApp(App);
 // MARK: google analytics data stream measurement_id
 const gaCode = document.body.getAttribute('google-analytics');
 const debugMode = document.body.getAttribute('django-debug');
+
+const emitter = mitt()
+app.config.globalProperties.emitter = emitter;
 
 app.config.productionTip = false;
 

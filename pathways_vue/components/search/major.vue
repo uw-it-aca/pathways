@@ -6,7 +6,6 @@
     placeholder="Enter a major"
     route-path="major"
     sync-query-param="id"
-    v-model:selected="selected"
   />
 </template>
 
@@ -19,7 +18,6 @@ export default {
     'search': Search,
   },
   props: {
-    selected: Object,
     prefill_id: ""
   },
   data() {
@@ -46,11 +44,6 @@ export default {
       });
 
       return selectable;
-    }
-  },
-  watch: {
-    selected(newValue) {
-      this.$emit('update:selected', newValue);
     }
   },
 };

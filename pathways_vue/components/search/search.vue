@@ -39,7 +39,6 @@ export default {
       default: null,
       type: String,
     },
-    selected: {},
   },
   emits: ['update:selected'],
   data() {
@@ -47,15 +46,9 @@ export default {
       selectedLabel: '',
     };
   },
-  mounted() {
-    if (this.syncQueryParam && this.$route.query[this.syncQueryParam]) {
-      this.selectedLabel = this.options[this.$route.query[this.syncQueryParam]]?.label ?? '';
-      this.syncSelected();
-    }
-  },
   methods: {
     syncSelected() {
-      this.$emit('update:selected', this.selectedKey ?? '');
+      this.emitter.emit("update:selected", this.selectedKey ?? '');
     },
     onSelected() {
       if (this.syncQueryParam) {
@@ -65,6 +58,15 @@ export default {
         });
       }
       this.syncSelected();
+    },
+    labelFromKey(key) {
+      let label = "";
+      this.options.forEach(function (option, idx){
+          if(option['key'] === key){
+            label = option['value'];
+          }
+        });
+      return label;
     }
   },
   computed: {
@@ -78,6 +80,14 @@ export default {
       }
     }
   },
+  watch: {
+    options(){
+      let option_id = this.$route.query[this.syncQueryParam];
+      if (this.syncQueryParam && option_id) {
+        this.selectedLabel = this.labelFromKey(option_id);
+      }
+    }
+  }
 };
 </script>
 

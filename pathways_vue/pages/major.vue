@@ -9,7 +9,10 @@
 
       <div class="row justify-content-center mb-5">
         <div class="col-md-9">
-<!--          <search-major v-model:selected="majorID" :prefill_id="majorID"/>-->
+          <search-major
+            :prefill_id="majorID"
+            @update:selected="test"
+          />
         </div>
       </div>
       <div v-if="major_data">
@@ -27,7 +30,7 @@
 <!--        <contact-adviser />-->
       </div>
       <div v-else>
-        PLACEHOLDER: select something |{{majorID}}|
+        No major selected
       </div>
     </template>
   </layout>
@@ -75,8 +78,16 @@ export default {
   mounted(){
     let major_id = this.$route.query.id;
     this.majorID = major_id;
-    this.get_major_data(major_id);
-  }
+    this.emitter.on("update:selected", selectedKey => {
+      this.majorID = selectedKey;
+
+    })
+  },
+  watch: {
+    majorID(newValue) {
+      this.get_major_data(newValue);
+    }
+  },
 };
 </script>
 
