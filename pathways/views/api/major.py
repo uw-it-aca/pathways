@@ -3,6 +3,7 @@
 
 from pathways.views.api import RESTDispatch
 from pathways.models.major import Major
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class MajorList(RESTDispatch):
@@ -13,5 +14,8 @@ class MajorList(RESTDispatch):
 
 class MajorDetails(RESTDispatch):
     def get(self, request, major_abbr, *args, **kwargs):
-        major = Major.get_major_data(major_abbr)
-        return self.json_response(major)
+        try:
+            major = Major.get_major_data(major_abbr)
+            return self.json_response(major)
+        except ObjectDoesNotExist as ex:
+            return self.error_response(404, "Major %s not found" % major_abbr)
