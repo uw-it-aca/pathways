@@ -40,7 +40,6 @@ import MajorDetails from '../components/major/major-details.vue';
 import ExploreMajor from '../components/major/explore-major.vue';
 import CommonCourses from '../components/major/common-courses.vue';
 import SearchMajor from '../components/search/major.vue';
-import D3Arc from '../components/d3-arc.vue';
 import D3BoxPlot from '../components/d3-boxplot.vue';
 import D3Histogram from '../components/d3-histogram.vue';
 import ContactAdviserMajor from '../components/major/contact-adviser-major.vue';
