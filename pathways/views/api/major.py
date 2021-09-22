@@ -4,14 +4,18 @@
 from pathways.views.api import RESTDispatch
 from pathways.models.major import Major
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 
+@method_decorator(login_required, name="dispatch")
 class MajorList(RESTDispatch):
     def get(self, request, *args, **kwargs):
         majors = Major.get_major_list()
         return self.json_response(majors)
 
 
+@method_decorator(login_required, name="dispatch")
 class MajorDetails(RESTDispatch):
     def get(self, request, major_abbr, *args, **kwargs):
         try:
