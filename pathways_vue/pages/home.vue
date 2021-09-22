@@ -73,6 +73,11 @@
           >
             About this app <i class="bi bi-info-circle"></i>
           </button>
+
+          <div class="mt-3">
+            <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
+          </div>
+
         </div>
       </div>
     </template>
@@ -88,7 +93,7 @@ import { proccessSeaMajors } from '../helpers/major';
 import Layout from '../layout.vue';
 import SearchChooser from '../components/search/chooser.vue';
 
-import { Modal } from 'bootstrap';
+import { Modal, Popover } from 'bootstrap';
 
 export default {
   components: {
@@ -106,6 +111,13 @@ export default {
   mounted() {
     // show the welcome modal when the component is mounted
     this.showWelcomeModal();
+
+    // enable popovers everywhere (from bs5 documentation)
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new Popover(popoverTriggerEl)
+    })
+
   },
   methods: {
     showWelcomeModal(event){
