@@ -7,12 +7,16 @@
       <p>
         This graph represents the distribution of grades for every student who completed <strong>CHEM 162</strong> over the past 5 years. 
         <a
-          href="#"
+          tabindex="0"
+          class="info-gcd"
+          role="button"
           data-bs-toggle="popover"
-          title="What is Course Grade Distribution?"
-          data-bs-content="Description goes here."
-          ><i class="bi bi-info-circle-fill"></i
-        ></a>
+          data-bs-trigger="focus"
+          title="Course Grade Distribution"
+          data-bs-content="What is CGD?"
+        >
+          <i class="bi bi-info-circle-fill"></i>
+        </a>
       </p>
       <div id="gcd_graph" />
       <p><small>Number of grades in this sample: 6988 (5 years). Data not instructor-specific.</small></p>
@@ -22,6 +26,7 @@
 
 <script>
 import * as d3 from 'd3';
+import { Popover } from 'bootstrap';
 
 export default {
   name: "GradeDistribution",
@@ -57,6 +62,7 @@ export default {
   },
   mounted() {
     this.generateGCD();
+    var popover = new Popover(document.querySelector('.info-gcd'));
   },
   methods: {
     generateGCD() {
