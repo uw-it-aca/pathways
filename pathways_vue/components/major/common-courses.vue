@@ -35,7 +35,7 @@
             </td>
             <td>
               <a href="/course/?code=CSS+415" class="router-link-active"><span class="badge bg-link-color text-light">{{course.course}}</span></a>
-              course title
+              {{course.title}}
             </td>
             <td>5.55</td>
           </tr>
@@ -62,10 +62,12 @@ export default {
     common_courses: function (){
       let processed_courses = [];
 
-      for (const [course, percent] of Object.entries(this.major.common_course_decl)) {
-        let style_string = `width: ${percent}%`;
+      for (const [course, data] of Object.entries(this.major.common_course_decl)) {
+
+        let style_string = `width: ${data['percent']}%`;
         processed_courses.push({'course': course,
-          'percent': percent,
+          'percent': data['percent'],
+          'title': data['title'],
           'width': style_string})
       }
 
