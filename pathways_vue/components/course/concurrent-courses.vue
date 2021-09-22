@@ -11,7 +11,20 @@
       <table class="table table-borderless">
         <thead>
           <tr class="bg-light text-dark">
-            <th scope="col" style="width: 10%">% <a href="#"><i class="bi bi-info-circle-fill"></i></a></th>
+            <th scope="col" style="width: 10%">
+              %
+              <a
+                tabindex="0"
+                class="info-course-concurrent"
+                role="button"
+                data-bs-toggle="popover"
+                data-bs-trigger="focus"
+                title="Percentage"
+                data-bs-content="Description needed."
+              >
+                <i class="bi bi-info-circle-fill"></i>
+              </a>
+            </th>
             <th scope="col" class="visually-hidden" style="width: 30%">Percentage Graph</th>
             <th scope="col" style="width: 30%">Concurrent Course</th>
             <th scope="col" style="width: 30%">COI</th>
@@ -91,10 +104,15 @@
 </template>
 
 <script>
+import { Popover } from 'bootstrap';
+
 export default {
   name: 'ConcurrentCourses',
   data() {
     return {};
+  },
+  mounted() {
+    var popover = new Popover(document.querySelector('.info-course-concurrent'));
   },
   methods: {},
 };
