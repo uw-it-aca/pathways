@@ -12,7 +12,20 @@
       <table class="table table-borderless">
         <thead>
           <tr class="bg-light text-dark">
-            <th scope="col" style="width: 10%">% info</th>
+            <th scope="col" style="width: 10%">
+              %
+              <a
+                tabindex="0"
+                class="info-major-common"
+                role="button"
+                data-bs-toggle="popover"
+                data-bs-trigger="focus"
+                title="Percentage"
+                data-bs-content="Description of common courses for majors."
+              >
+                <i class="bi bi-info-circle-fill"></i>
+              </a>
+            </th>
             <th scope="col" class="visually-hidden" style="width: 30%">Percentage Graph</th>
             <th scope="col" style="width: 30%">Common Course</th>
             <th scope="col" style="width: 30%">CDI</th>
@@ -34,7 +47,9 @@
               </div>
             </td>
             <td>
-              <a href="/course/?code=CSS+415" class="router-link-active"><span class="badge bg-link-color text-light">CSS 415</span></a> 
+              <a href="/course/?code=CSS+415" class="router-link-active"
+                ><span class="badge bg-link-color text-light">CSS 415</span></a
+              >
               Preparation for General Chemistry
             </td>
             <td>5.55</td>
@@ -54,8 +69,10 @@
               </div>
             </td>
             <td>
-              <a href="/course/?code=MATH+124" class="router-link-active"><span class="badge bg-link-color text-light">MATH 124</span></a> Calculus
-              with Analytic Geometry I
+              <a href="/course/?code=MATH+124" class="router-link-active"
+                ><span class="badge bg-link-color text-light">MATH 124</span></a
+              >
+              Calculus with Analytic Geometry I
             </td>
             <td>3.51</td>
           </tr>
@@ -74,8 +91,10 @@
               </div>
             </td>
             <td>
-              <a href="/course/?code=CHEM+317" class="router-link-active"><span class="badge bg-link-color text-light">CHEM 317</span></a> Inorganic
-              Chemistry Laboratory
+              <a href="/course/?code=CHEM+317" class="router-link-active"
+                ><span class="badge bg-link-color text-light">CHEM 317</span></a
+              >
+              Inorganic Chemistry Laboratory
             </td>
             <td>7.2</td>
           </tr>
@@ -86,10 +105,15 @@
 </template>
 
 <script>
+import { Popover } from 'bootstrap';
+
 export default {
   name: 'CommonCourses',
   data() {
     return {};
+  },
+  mounted() {
+    var popover = new Popover(document.querySelector('.info-major-common'));
   },
   methods: {},
 };
