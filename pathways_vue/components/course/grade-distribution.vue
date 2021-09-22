@@ -134,7 +134,7 @@ export default {
           return 'translate(' + x(d.x0) + ',' + y(d.length) + ')';
         })
         .attr('width', function (d) {
-          return x(d.x1) - x(d.x0) - 1;
+          return x(d.x1) - x(d.x0);
         })
         .attr('height', function (d) {
           return height - y(d.length);
