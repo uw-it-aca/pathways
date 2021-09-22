@@ -26,7 +26,7 @@
         <d3-histogram
           :major-data="major_data"
         />
-<!--        <contact-adviser />-->
+        <contact-adviser-major />
       </div>
       <div v-else>
         No major selected

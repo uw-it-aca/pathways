@@ -11,9 +11,11 @@
         scheduling a meeting with your adviser to discuss your interests, goals, degree requirements
         and academic planning.
       </p>
-      <button type="button" class="btn btn-purple" aria-label="Contact your adviser">
-        Contact your adviser
-      </button>
+      <form action="https://www.washington.edu/uaa/advising/">
+        <button type="submit" class="btn btn-purple" aria-label="Contact your adviser">
+          Contact your adviser
+        </button>
+      </form>
     </div>
   </div>
 </template>
