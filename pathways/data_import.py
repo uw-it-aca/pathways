@@ -12,7 +12,7 @@ def import_major_data(data):
                         data[major]['major_description'],
                     "major_admission": data[major]['major_admission'],
                     "program_code": data[major]['program_code'],
-                    "major_home_url": daqqta[major]['major_home_url'],
+                    "major_home_url": data[major]['major_home_url'],
                     "common_course_decl":
                         data[major]['common_course_decl']
                     }

@@ -8,12 +8,16 @@
         Using prior course data, this index compares estimated fail/withdrawal rates against actual
         fail/withdrawal rates.
         <a
-          href="#"
+          tabindex="0"
+          class="info-popper"
+          role="button"
           data-bs-toggle="popover"
-          title="What is COI?"
+          data-bs-trigger="focus"
+          title="Course Outcome Indicator"
           data-bs-content="A lower number (0-2) indicates that fewer people completed the course than predicted. A middle number (2-3) indicates the course is on target with predictions. A higher (3-5) number indicates that more people completed the course than anticipated."
-          ><i class="bi bi-info-circle-fill"></i
-        ></a>
+        >
+          <i class="bi bi-info-circle-fill"></i>
+        </a>
       </p>
       <div id="coiGraph" />
       <div class="coi-key">
@@ -21,15 +25,18 @@
 
         <dl class="row">
           <dt class="col-sm-6">
-            <i style="color: #ff8c00" class="bi bi-triangle-fill"></i> <span  class="key-desc">CHEM 162</span>
+            <i style="color: #ff8c00" class="bi bi-triangle-fill"></i>
+            <span class="key-desc">CHEM 162</span>
           </dt>
           <dd class="col-sm-6 key-coi">COI: 2.7</dd>
           <dt class="col-sm-6">
-            <i class="bi bi-circle-fill"></i> <span  class="key-desc">Average course in CHEM curriculum</span>
+            <i class="bi bi-circle-fill"></i>
+            <span class="key-desc">Average course in CHEM curriculum</span>
           </dt>
           <dd class="col-sm-6 key-coi">COI: 2.0</dd>
           <dt class="col-sm-6">
-            <i class="bi bi-square-fill"></i> <span  class="key-desc">Average 100 Level Course at UW</span>
+            <i class="bi bi-square-fill"></i>
+            <span class="key-desc">Average 100 Level Course at UW</span>
           </dt>
           <dd class="col-sm-6 key-coi">COI: 1.8</dd>
         </dl>
@@ -41,6 +48,7 @@
 
 <script>
 import * as d3 from 'd3';
+import { Popover } from 'bootstrap';
 
 export default {
   name: 'OutcomeScore',
@@ -55,6 +63,7 @@ export default {
   },
   mounted() {
     this.generateRect();
+    var popover = new Popover(document.querySelector('.info-popper'));
   },
   methods: {
     generateRect() {

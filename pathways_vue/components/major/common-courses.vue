@@ -12,7 +12,20 @@
       <table class="table table-borderless">
         <thead>
           <tr class="bg-light text-dark">
-            <th scope="col" style="width: 10%">% info</th>
+            <th scope="col" style="width: 10%">
+              %
+              <a
+                tabindex="0"
+                class="info-major-common"
+                role="button"
+                data-bs-toggle="popover"
+                data-bs-trigger="focus"
+                title="Percentage"
+                data-bs-content="Description of common courses for majors."
+              >
+                <i class="bi bi-info-circle-fill"></i>
+              </a>
+            </th>
             <th scope="col" class="visually-hidden" style="width: 30%">Percentage Graph</th>
             <th scope="col" style="width: 30%">Common Course</th>
             <th scope="col" style="width: 30%">CDI</th>
@@ -34,8 +47,10 @@
               </div>
             </td>
             <td>
-              <a href="/course/?code=CSS+415" class="router-link-active"><span class="badge bg-link-color text-light">{{course.course}}</span></a>
-              {{course.title}}
+              <a v-bind:href="'/course/?code=' + encodeURIComponent(course.course)" class="router-link-active"
+                ><span class="badge bg-link-color text-light">{{course.course}}</span></a
+              >
+               {{course.title}}
             </td>
             <td>5.55</td>
           </tr>
@@ -46,6 +61,8 @@
 </template>
 
 <script>
+import { Popover } from 'bootstrap';
+
 export default {
   name: 'CommonCourses',
   props: {
@@ -56,6 +73,9 @@ export default {
   },
   data() {
     return {};
+  },
+  mounted() {
+    var popover = new Popover(document.querySelector('.info-major-common'));
   },
   methods: {},
   computed: {
