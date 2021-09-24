@@ -16,3 +16,5 @@ GOOGLE_ANALYTICS_KEY = os.getenv("GOOGLE_ANALYTICS_KEY", default=" ")
 
 if os.getenv("ENV") == "localdev":
     DEBUG = True
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

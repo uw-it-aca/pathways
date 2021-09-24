@@ -30,7 +30,7 @@
           <label class="form-check-label" for="flexRadioDefault2"> Course </label>
         </div>
       </div>
-      <search-major :major-list="majorList" v-if="selectedRadio === 'major'" />
+      <search-major v-if="selectedRadio === 'major'" />
       <search-course :course-list="courseList" v-if="selectedRadio === 'course'" />
     </div>
   </div>
@@ -48,10 +48,6 @@ export default {
   },
   props: {
     courseList: {
-      type: Array,
-      required: true,
-    },
-    majorList: {
       type: Array,
       required: true,
     }

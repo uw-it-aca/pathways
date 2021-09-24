@@ -39,7 +39,6 @@ export default {
       default: null,
       type: String,
     },
-    selected: {},
   },
   emits: ['update:selected'],
   data() {
@@ -47,15 +46,9 @@ export default {
       selectedLabel: '',
     };
   },
-  mounted() {
-    if (this.syncQueryParam && this.$route.query[this.syncQueryParam]) {
-      this.selectedLabel = this.options[this.$route.query[this.syncQueryParam]]?.label ?? '';
-      this.syncSelected();
-    }
-  },
   methods: {
     syncSelected() {
-      this.$emit('update:selected', this.options[this.selectedKey]?.data ?? '');
+      this.emitter.emit("update:selected", this.selectedKey ?? '');
     },
     onSelected() {
       if (this.syncQueryParam) {
@@ -66,22 +59,35 @@ export default {
       }
       this.syncSelected();
     },
-    labelToKey(label) {
-      let keyArr = Object.entries(this.options)
-        .find(([_, value]) => value.label == label);
-      return keyArr[0];
-    },
+    labelFromKey(key) {
+      let label = "";
+      this.options.forEach(function (option, idx){
+          if(option['key'] === key){
+            label = option['value'];
+          }
+        });
+      return label;
+    }
   },
   computed: {
     renderableOptions() {
-      return Object.entries(this.options).map(([_, value]) => value.label);
+      return this.options.map(m => m.value)
     },
     selectedKey() {
-      let keyArr = Object.entries(this.options)
-        .find(([_, value]) => value.label == this.selectedLabel) ?? [''];
-      return keyArr[0];
+      let selectedObj = this.options.find(o => o.value === this.selectedLabel);
+      if (selectedObj !== undefined){
+        return selectedObj.key;
+      }
     }
   },
+  watch: {
+    options(){
+      let option_id = this.$route.query[this.syncQueryParam];
+      if (this.syncQueryParam && option_id) {
+        this.selectedLabel = this.labelFromKey(option_id);
+      }
+    }
+  }
 };
 </script>
 

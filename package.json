@@ -27,7 +27,9 @@
     "vue-loader": "^16.3.2",
     "vue-router": "^4.0.10",
     "vue3-mq": "^2.3.3",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "vue-axios": "^3.3.6",
+    "mitt": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
@@ -47,6 +49,7 @@
     "eslint-plugin-vue": "^7.9.0",
     "eslint-utils": "^2.1.0",
     "mini-css-extract-plugin": "^1.6.0",
+    "numeral": "^2.0.6",
     "prettier": "^2.3.2",
     "sass": "^1.32.13",
     "sass-loader": "^11.0.1",

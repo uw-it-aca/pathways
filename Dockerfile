@@ -32,6 +32,9 @@ COPY --chown=acait:acait --from=wpack /static /static
 
 RUN . /app/bin/activate && python manage.py collectstatic --noinput
 
+RUN . /app/bin/activate && python manage.py migrate
+RUN . /app/bin/activate && python manage.py import_data
+
 FROM gcr.io/uwit-mci-axdd/django-test-container:1.3.3 as app-test-container
 
 ENV NODE_PATH=/app/lib/node_modules
