@@ -4,8 +4,8 @@
   <div class="card mb-5">
     <div class="card-body">
       <h3>Declared major cumulative GPA distribution</h3>
-      <div class="alert alert-secondary" role="alert">
-        <p>Remember that GPA is just one of many factors that goes into admissions decisions.</p>
+      <div class="alert alert-warning px-1 py-1" role="alert">
+        <p class="mb-0"><i class="bi bi-exclamation-circle me-1"></i>Remember that GPA is just one of many factors that goes into admissions decisions.</p>
       </div>
       <ul class="nav nav-pills">
         <li class="nav-item">

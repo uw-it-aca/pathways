@@ -20,10 +20,11 @@
                 role="button"
                 data-bs-toggle="popover"
                 data-bs-trigger="focus"
+                data-bs-placement="top"
                 title="Percentage"
                 data-bs-content="Description of common courses for majors."
               >
-                <i class="bi bi-info-circle-fill"></i>
+                <i class="bi bi-info-circle-fill me-0"></i>
               </a>
             </th>
             <th scope="col" class="visually-hidden" style="width: 15%">Percentage Graph</th>
@@ -48,7 +49,7 @@
             </td>
             <td>
               <a v-bind:href="'/course/?code=' + encodeURIComponent(course.course)" class="router-link-active"
-                ><span class="badge bg-link-color text-light">{{course.course}}</span></a
+                ><span class="badge bg-link-color text-light me-2">{{course.course}}</span></a
               >
                {{course.title}}
             </td>
