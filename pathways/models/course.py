@@ -13,6 +13,7 @@ class Course(models.Model):
         courses = Course.objects.only("course_id", "course_title")
         course_json = []
         for course in courses:
-            course_json.append({"key": course.major_abbr,
-                               "value": course.major_title})
+            course_text = "%s: %s" % (course.course_id, course.course_title)
+            course_json.append({"key": course.course_id,
+                               "value": course_text})
         return course_json

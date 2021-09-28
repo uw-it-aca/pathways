@@ -1,5 +1,5 @@
 <template>
-  <div class="input-group">
+  <div class="input-group" v-if=!dataLoading>
     <input
       type="text"
       v-model="selectedLabel"
@@ -39,6 +39,10 @@ export default {
       default: null,
       type: String,
     },
+    dataLoading: {
+      default: false,
+      type: Boolean
+    }
   },
   emits: ['update:selected'],
   data() {
