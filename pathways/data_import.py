@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from pathways.models.major import Major
+from pathways.models.course import Course
 
 
 def import_major_data(data):
@@ -21,3 +22,10 @@ def import_major_data(data):
                     }
         Major.objects.update_or_create(major_abbr=major,
                                        defaults=gpa_data)
+
+
+def import_course_data(data):
+    for course in data:
+        course_data = {"course_title": course['course_title']}
+        Course.objects.update_or_create(course_id=course['course_id'],
+                                        defaults=course_data)

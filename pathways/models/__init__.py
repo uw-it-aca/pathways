@@ -2,3 +2,4 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from .major import Major
+from .course import Course
