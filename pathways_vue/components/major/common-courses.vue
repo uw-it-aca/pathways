@@ -12,7 +12,7 @@
       <table class="table table-borderless">
         <thead>
           <tr class="bg-light text-dark">
-            <th scope="col" style="width: 10%">
+            <th scope="col" style="width: 5%">
               %
               <a
                 tabindex="0"
@@ -26,8 +26,8 @@
                 <i class="bi bi-info-circle-fill"></i>
               </a>
             </th>
-            <th scope="col" class="visually-hidden" style="width: 30%">Percentage Graph</th>
-            <th scope="col" style="width: 30%">Common Course</th>
+            <th scope="col" class="visually-hidden" style="width: 15%">Percentage Graph</th>
+            <th scope="col" style="width: 50%">Common Course</th>
             <th scope="col" style="width: 30%">CDI</th>
           </tr>
         </thead>
