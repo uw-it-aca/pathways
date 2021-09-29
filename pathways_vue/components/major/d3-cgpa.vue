@@ -1,4 +1,4 @@
-// d3-histogram.vue
+// d3-cgpa.vue
 
 <template>
   <div class="card mb-5">
@@ -36,7 +36,7 @@ import * as d3 from 'd3';
 import numeral from 'numeral';
 
 export default {
-  name: 'D3Histogram',
+  name: 'D3Cgpa',
   data() {
     return {
       gpa_2yr_active: true,
