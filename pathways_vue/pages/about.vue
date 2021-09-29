@@ -24,9 +24,6 @@
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt id eligendi nihil consequuntur, 
         repellendus accusamus quod facere dicta error voluptates quibusdam reprehenderit dolores, 
         cumque pariatur beatae aperiam quisquam, porro quas.</p>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt id eligendi nihil consequuntur, 
-        repellendus accusamus quod facere dicta error voluptates quibusdam reprehenderit dolores, 
-        cumque pariatur beatae aperiam quisquam, porro quas.</p>
       
       <h2 id="terms">Term Definitions</h2>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt id eligendi nihil consequuntur, 
