@@ -4,8 +4,9 @@
   <div class="card mb-5">
     <div class="card-body">
       <h3>Declared major cumulative GPA distribution</h3>
-      <div class="alert alert-warning px-1 py-1" role="alert">
-        <p class="mb-0"><i class="bi bi-exclamation-circle me-1"></i>Remember that GPA is just one of many factors that goes into admissions decisions.</p>
+      <div class="px-1 py-1">
+        <p>Every student’s cumulative GPA at time of major declaration over the last {{yearCount}} years.</p>
+        <p class="fst-italic"><small><i class="bi bi-exclamation-circle me-1"></i>Remember that GPA is just one of many factors that goes into admissions decisions.</small></p>
       </div>
       <ul class="nav nav-pills">
         <li class="nav-item">
@@ -24,7 +25,7 @@
       </ul>
 
       <div id="histogram" class="m-3"></div>
-      <small>Every student’s cumulative GPA at time of major declaration over the last {{yearCount}} years. Number
+      <small>Number
         of students in this sample: {{total_count}}</small
       >
     </div>
@@ -90,13 +91,13 @@ export default {
 
       // set the dimensions and margins of the graph
       var margin = { top: 10, right: 30, bottom: 30, left: 40 },
-        width = 460 - margin.left - margin.right,
+        width = 800 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom;
 
       // set the ranges
       var x = d3.scaleBand()
         .range([0, width])
-        .padding(0.1);
+        .padding(0.3);
       var y = d3.scaleLinear()
         .range([height, 0]);
 
