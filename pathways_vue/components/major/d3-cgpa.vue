@@ -90,7 +90,7 @@ export default {
       this.total_count = numeral(count).format('0,0');
 
       // set the dimensions and margins of the graph
-      var margin = { top: 10, right: 30, bottom: 30, left: 40 },
+      var margin = { top: 10, right: 30, bottom: 50, left: 40 },
         width = 800 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom;
 
@@ -125,7 +125,24 @@ export default {
         .attr("width", x.bandwidth())
         .attr("y", function(d) { return y(d.count); })
         .attr("height", function(d) { return height - y(d.count); })
-        .style('fill', '#69b3a2');
+        .style('fill', '#4b2e83');
+
+        svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "0.5em")
+      .style("text-anchor", "middle")
+      .style("font-size", "0.85rem")
+      .classed("chart-label", true)
+      .text("Number of students"); 
+
+      svg.append("text")             
+      .attr('x', width / 2)
+      .attr('y', height + margin.bottom)
+      .style("text-anchor", "middle")
+      .style("font-size", "0.85rem")
+      .text("GPA"); 
 
       // add the x Axis
       svg.append("g")

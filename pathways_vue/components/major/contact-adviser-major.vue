@@ -13,7 +13,7 @@
       </p>
       <form action="https://www.washington.edu/uaa/advising/">
         <button type="submit" class="btn btn-purple" aria-label="Contact your adviser">
-          Contact your adviser
+          Find your adviser
         </button>
       </form>
     </div>
