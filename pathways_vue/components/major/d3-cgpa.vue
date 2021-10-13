@@ -147,7 +147,7 @@ export default {
       // add the x Axis
       svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x).tickValues(x.domain().filter(function(d,i) { return !(i % 5)})));
 
       // add the y Axis
       svg.append("g")
