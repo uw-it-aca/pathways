@@ -29,7 +29,21 @@
             </th>
             <th scope="col" class="visually-hidden" style="width: 15%">Percentage Graph</th>
             <th scope="col" style="width: 50%">Common Course</th>
-            <th scope="col" style="width: 30%">CDI</th>
+            <th scope="col" style="width: 30%">
+              COI 
+              <a
+                tabindex="0"
+                class="info-common-coi"
+                role="button"
+                data-bs-toggle="popover"
+                data-bs-trigger="focus"
+                data-bs-placement="top"
+                title="Course Outcome Index"
+                data-bs-content="Description of COI value."
+              >
+                <i class="bi bi-info-circle-fill me-0"></i>
+              </a>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -76,7 +90,8 @@ export default {
     return {};
   },
   mounted() {
-    var popover = new Popover(document.querySelector('.info-major-common'));
+    var popover = new Popover(document.querySelector('.info-common-coi'));
+    var popover2 = new Popover(document.querySelector('.info-major-common'));
   },
   methods: {},
   computed: {
