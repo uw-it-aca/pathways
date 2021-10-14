@@ -196,10 +196,6 @@ export default {
   shape-rendering: crispEdges;
 }
 
-.x.axis path {
-  display: none;
-}
-
 div.tooltip {
   position: absolute;
   text-align: center;
