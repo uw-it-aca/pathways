@@ -17,3 +17,11 @@ class Course(models.Model):
             course_json.append({"key": course.course_id,
                                "value": course_text})
         return course_json
+
+    @staticmethod
+    def get_course_data(course_id):
+        return Course.objects.get(course_id=course_id).json_data()
+
+    def json_data(self):
+        return {"course_id": self.course_id,
+                "course_title": self.course_title}

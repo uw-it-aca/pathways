@@ -8,8 +8,19 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
 
-# @method_decorator(login_required, name="dispatch")
+@method_decorator(login_required, name="dispatch")
 class CourseList(RESTDispatch):
     def get(self, request, *args, **kwargs):
         courses = Course.get_course_list()
         return self.json_response(courses)
+
+
+@method_decorator(login_required, name="dispatch")
+class CourseDetails(RESTDispatch):
+    def get(self, request, course_abbr, *args, **kwargs):
+        try:
+            course = Course.get_course_data(course_abbr)
+        except ObjectDoesNotExist as ex:
+            return self.error_response(404,
+                                       "Course %s not found" % course_abbr)
+        return self.json_response(course)
