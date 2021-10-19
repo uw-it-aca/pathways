@@ -26,6 +26,7 @@ def import_major_data(data):
 
 def import_course_data(data):
     for course in data:
-        course_data = {"course_title": course['course_title']}
+        course_data = {"course_title": course['course_title'],
+                       "course_credits": course['course_credits']}
         Course.objects.update_or_create(course_id=course['course_id'],
                                         defaults=course_data)
