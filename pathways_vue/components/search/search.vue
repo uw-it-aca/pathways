@@ -1,4 +1,5 @@
 <template>
+  <!--
   <div class="input-group">
     <input
       type="text"
@@ -10,6 +11,7 @@
     />
     <button type="button" class="btn btn-purple" @click="onSelected">Search</button>
   </div>
+  -->
   <datalist :id="innerId">
     <option v-for="(option, i) in renderableOptions" :key="i">{{ option }}</option>
   </datalist>
