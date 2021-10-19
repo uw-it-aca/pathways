@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="input-group my-3">
-        <select class="form-select" id="inputGroupSelect01">
+        <select class="form-select" id="inputGroupSelect01" disabled>
           <option selected>Select...</option>
           <option value="1">Major</option>
           <option value="2">Course</option>
@@ -45,7 +45,7 @@
         if major selected: please enter amajor 
         if course selected: please enter a course-->
         <input type="text" class="form-control w-75" placeholder="Please enter a major" aria-label="Text input with dropdown button" />
-        <button type="button" class="btn btn-purple" @click="onSelected">Search</button>
+        <button type="button" class="btn btn-purple" disabled @click="onSelected">Search</button>
       </div>
     </div>
   </div>
