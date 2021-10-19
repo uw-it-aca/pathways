@@ -72,7 +72,6 @@ export default {
         vue.major_data = response.data;
       });
     }
-
   },
   mounted(){
     let major_id = this.$route.query.id;

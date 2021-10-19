@@ -36,8 +36,6 @@
 </template>
 
 <script>
-import courseList from '../data/courses.json';
-
 import Layout from '../layout.vue';
 import SearchCourse from '../components/search/course.vue';
 import GradeDistribution from '../components/course/grade-distribution.vue';
@@ -63,27 +61,34 @@ export default {
   data() {
     return {
       pageTitle: 'Course',
-      courseList,
       selectedCourse: '',
+      courseData: {},
+      courseId: undefined
     };
   },
   computed: {
-    courseData() {
-      let title = courseList.find((title) => title.split(':')[0] === this.selectedCourse);
-
-      return {
-        title: title,
-        description: 'TODO '.repeat(100),
-        credits: 2,
-        offered: [
-          { quarter: 'SPR', class: 'pw-green' },
-          { quarter: 'AUT', class: 'creamcicle' },
-          { quarter: 'WIN', class: 'bg-blue-200' },
-        ],
-      };
-    },
   },
-  methods: {},
+  mounted(){
+    let course_id = this.$route.query.code;
+    this.courseId = course_id;
+    this.emitter.on("update:selected", selectedKey => {
+      this.courseId = selectedKey;
+
+    })
+  },
+  methods: {
+    get_course_data(course_id){
+      const vue = this;
+      this.axios.get("/api/v1/courses/" + course_id).then((response) => {
+        vue.courseData = response.data;
+      });
+    }
+  },
+  watch: {
+    courseId(newValue) {
+      this.get_course_data(newValue);
+    }
+  }
 };
 </script>
 
