@@ -3,7 +3,7 @@
 <template>
   <div class="mb-5">
     <h2>{{ course.title }}</h2>
-    <div><strong>Credits:</strong> {{ course.credits }}</div>
+    <div><strong>Credits:</strong> {{ course.course_credits }}</div>
     <div class="mb-2">
       <strong>Offered</strong>
       <ul class="ms-2 d-inline list-inline">

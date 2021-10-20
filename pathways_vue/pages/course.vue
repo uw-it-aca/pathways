@@ -8,11 +8,11 @@
     <template #content>
       <div class="row justify-content-center mb-5">
         <div class="col-md-9">
-          <search-course v-model:selected="selectedCourse" :course-list="courseList" />
+          <search-course v-model:selected="courseId" />
         </div>
       </div>
 
-      <div v-if="selectedCourse">
+      <div v-if="courseId">
         <div class="row">
           <div class="col-8"><course-details :course="courseData" /></div>
           <div class="col-4"><explore-course /></div>
@@ -61,7 +61,6 @@ export default {
   data() {
     return {
       pageTitle: 'Course',
-      selectedCourse: '',
       courseData: {},
       courseId: undefined
     };

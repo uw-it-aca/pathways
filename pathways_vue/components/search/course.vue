@@ -1,5 +1,4 @@
 // course.vue
-
 <template>
   <search
     inner-id="courses"
@@ -21,10 +20,6 @@ export default {
     'search': Search,
   },
   props: {
-    courseList: {
-      type: Array,
-      required: true,
-    },
     selected: String,
   },
   data() {
