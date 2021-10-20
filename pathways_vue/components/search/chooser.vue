@@ -12,6 +12,8 @@
             type="radio"
             name="flexRadioDefault"
             id="flexRadioDefault1"
+            v-model="picked"
+            value="seattle"
           />
           <label class="form-check-label" for="flexRadioDefault1">Seattle Campus</label>
         </div>
@@ -21,6 +23,8 @@
             type="radio"
             name="flexRadioDefault"
             id="flexRadioDefault2"
+            v-model="picked"
+            value="tacoma"
           />
           <label class="form-check-label" for="flexRadioDefault2">Tacoma Campus</label>
         </div>
@@ -30,12 +34,14 @@
             type="radio"
             name="flexRadioDefault"
             id="flexRadioDefault3"
+            v-model="picked"
+            value="bothell"
           />
           <label class="form-check-label" for="flexRadioDefault3">Bothell Campus</label>
         </div>
       </div>
-      <div class="input-group my-3">
-        <select class="form-select" id="inputGroupSelect01" disabled>
+      <div class="input-group my-3" :class="picked ? 'enabled' : 'disabled'">
+        <select class="form-select" id="inputGroupSelect01">
           <option selected>Select...</option>
           <option value="1">Major</option>
           <option value="2">Course</option>
@@ -98,7 +104,7 @@ export default {
   },
   data() {
     return {
-      selectedRadio: 'major',
+      picked: false,
     };
   },
   methods: {},
@@ -106,4 +112,10 @@ export default {
 </script>
 
 <style lang="scss">
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
 </style>
