@@ -8,6 +8,7 @@ class Course(models.Model):
     course_id = models.CharField(max_length=10)
     course_title = models.CharField(max_length=120)
     course_credits = models.CharField(max_length=12)
+    gpa_distro = models.JSONField(null=True)
 
     @staticmethod
     def get_course_list():
@@ -26,4 +27,5 @@ class Course(models.Model):
     def json_data(self):
         return {"course_id": self.course_id,
                 "course_title": self.course_title,
-                "course_credits": self.course_credits}
+                "course_credits": self.course_credits,
+                "gpa_distro": self.gpa_distro}
