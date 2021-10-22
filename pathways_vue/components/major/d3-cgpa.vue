@@ -76,6 +76,13 @@ export default {
         return 5;
       }
     },
+    formatGPA() {
+      if (d.gpa == '50') {
+        var newFormat = d3.format("");
+      } else {
+        var newFormat = d3.format(".2n");
+      }
+    },
   },
   methods: {
     selectChart(year) {
@@ -171,7 +178,7 @@ export default {
       svg.append("g")
         .attr('class', 'x axis')
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).tickValues(x.domain().filter(function (d, i) { return !(i % 5) })).tickFormat(d3.format(".2n")));
+        .call(d3.axisBottom(x).tickValues(x.domain().filter(function (d, i) { return !(i % 5) })).tickFormat(this.newFormat));
 
       // add the y Axis
       svg.append("g")
