@@ -34,5 +34,6 @@ class Course(models.Model):
     def fix_gpa_json(json):
         fixed = []
         for key in json:
-            fixed.append({"gpa": key, "count": json[key]})
+            if key != "null":
+                fixed.append({"gpa": key, "count": json[key]})
         return fixed
