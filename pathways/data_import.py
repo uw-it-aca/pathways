@@ -10,6 +10,7 @@ def import_major_data(data):
     major_objs = []
     for major in data:
         major_objs.append(Major(
+            major_abbr=data[major]['major_code'],
             gpa_2yr=data[major]['2_yr'],
             gpa_5yr=data[major]['5_yr'],
             major_title=data[major]['major_title'],

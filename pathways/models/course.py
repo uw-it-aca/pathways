@@ -28,4 +28,11 @@ class Course(models.Model):
         return {"course_id": self.course_id,
                 "course_title": self.course_title,
                 "course_credits": self.course_credits,
-                "gpa_distro": self.gpa_distro}
+                "gpa_distro": self.fix_gpa_json(self.gpa_distro)}
+
+    @staticmethod
+    def fix_gpa_json(json):
+        fixed = []
+        for key in json:
+            fixed.append({"gpa": key, "count": json[key]})
+        return fixed
