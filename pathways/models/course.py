@@ -9,6 +9,7 @@ class Course(models.Model):
     course_title = models.CharField(max_length=120)
     course_credits = models.CharField(max_length=12)
     gpa_distro = models.JSONField(null=True)
+    concurrent_courses = models.JSONField(null=True)
 
     @staticmethod
     def get_course_list():
@@ -28,7 +29,8 @@ class Course(models.Model):
         return {"course_id": self.course_id,
                 "course_title": self.course_title,
                 "course_credits": self.course_credits,
-                "gpa_distro": self.fix_gpa_json(self.gpa_distro)}
+                "gpa_distro": self.fix_gpa_json(self.gpa_distro),
+                "concurrent_courses": self.concurrent_courses}
 
     @staticmethod
     def fix_gpa_json(json):

@@ -33,6 +33,7 @@ def import_course_data(data):
             course_id=course['course_id'],
             course_title=course['course_title'],
             course_credits=course['course_credits'],
-            gpa_distro=course['gpa_distro']
+            gpa_distro=course['gpa_distro'],
+            concurrent_courses=course['concurrent_courses']
         ))
     Course.objects.bulk_create(course_objs)
