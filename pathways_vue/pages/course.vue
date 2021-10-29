@@ -28,7 +28,7 @@
         </div>
 
         <prereq-map />
-        <concurrent-courses />
+        <concurrent-courses :courseData="courseData"/>
         <contact-adviser-course />
       </div>
       <div v-else>PLACEHOLDER: select something</div>
