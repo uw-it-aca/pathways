@@ -3,3 +3,4 @@
 
 from .major import Major
 from .course import Course
+from .curriculum import Curriculum

@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.db import models
+import json
 
 
 class Course(models.Model):
@@ -10,6 +11,7 @@ class Course(models.Model):
     course_credits = models.CharField(max_length=12)
     gpa_distro = models.JSONField(null=True)
     concurrent_courses = models.JSONField(null=True)
+    prereq_graph = models.JSONField(null=True)
 
     @staticmethod
     def get_course_list():
@@ -30,7 +32,8 @@ class Course(models.Model):
                 "course_title": self.course_title,
                 "course_credits": self.course_credits,
                 "gpa_distro": self.fix_gpa_json(self.gpa_distro),
-                "concurrent_courses": self.concurrent_courses}
+                "concurrent_courses": self.concurrent_courses,
+                "prereq_graph": json.loads(self.prereq_graph)}
 
     @staticmethod
     def fix_gpa_json(json):

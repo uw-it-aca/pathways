@@ -5,6 +5,7 @@ from django.urls import include, path, re_path
 from pathways.views.pages import DefaultPageView
 from pathways.views.api.major import MajorDetails, MajorList
 from pathways.views.api.course import CourseList, CourseDetails
+from pathways.views.api.curric import CurricPrereq
 
 
 urlpatterns = [
@@ -20,5 +21,8 @@ urlpatterns = [
     re_path(
         r'^api/v1/courses/(?P<course_abbr>[^/]*)$',
         CourseDetails.as_view(), name='course-details'),
+    re_path(
+        r'^api/v1/curric_prereq/(?P<curric_abbr>[^/]*)$',
+        CurricPrereq.as_view(), name='curric-prereq'),
     re_path(r"^.*$", DefaultPageView.as_view(), name="index")
 ]

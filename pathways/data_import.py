@@ -3,6 +3,8 @@
 
 from pathways.models.major import Major
 from pathways.models.course import Course
+from pathways.models.curriculum import Curriculum
+import json
 
 
 def import_major_data(data):
@@ -34,6 +36,18 @@ def import_course_data(data):
             course_title=course['course_title'],
             course_credits=course['course_credits'],
             gpa_distro=course['gpa_distro'],
-            concurrent_courses=course['concurrent_courses']
+            concurrent_courses=course['concurrent_courses'],
+            prereq_graph=course['prereq_graph']
         ))
     Course.objects.bulk_create(course_objs)
+
+
+def import_curric_data(data):
+    Curriculum.objects.all().delete()
+    curric_objs = []
+    for curric in data:
+        curric_objs.append(Curriculum(
+            abbrev=curric['curric_abbrev'],
+            prereq_graph=json.loads(curric['prereq_graph'])
+        ))
+    Curriculum.objects.bulk_create(curric_objs)
