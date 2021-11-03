@@ -2,19 +2,17 @@
 
 <template>
   <div>
-    <p>This is the graph</p>
-    <div id="graph_container"/>
+    <div :id="'graph_container_' + id"/>
   </div>
 </template>
 
 <script>
-import PrereqCourse from './prereq-course.vue'
-import PrereqCurriculum from './prereq-curriculum.vue'
-
 export default {
   name: 'PrereqGraph',
   data() {
-    return {};
+    return {
+      id: undefined
+    };
   },
   props: {
     graph_data: {
@@ -27,7 +25,7 @@ export default {
     },
     active_course: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   watch: {
@@ -36,13 +34,14 @@ export default {
     }
   },
   mounted() {
+    this.id = Math.random()
     this.show_graph()
   },
   methods: {
     show_graph(){
-      if(this.graph_data){
+      if(this.graph_data  && Object.keys(this.graph_data).length > 0){
         // draw the graph
-        let graph_div = document.getElementById("graph_container");
+        let graph_div = document.getElementById('graph_container_' + this.id);
         this.new_graph(graph_div, this.graph_data.x, this.active_course);
       }
     },

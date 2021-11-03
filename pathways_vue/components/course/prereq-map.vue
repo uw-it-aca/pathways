@@ -42,7 +42,7 @@
           />
         </div>
         <div class="tab-pane w-75" id="pm-curriculum" role="tabpanel" aria-labelledby="curriculum-tab">
-          <prereq-curriculum />
+          <prereq-curriculum :curric_id="active_dept"/>
         </div>
       </div>
     </div>
