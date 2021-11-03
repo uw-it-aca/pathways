@@ -27,7 +27,10 @@
           </div>
         </div>
 
-        <prereq-map />
+        <prereq-map
+        :graph_data="courseData.prereq_graph"
+        :active_course="courseId"
+        />
         <concurrent-courses :courseData="courseData"/>
         <contact-adviser-course />
       </div>
