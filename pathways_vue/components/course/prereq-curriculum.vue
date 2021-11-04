@@ -16,7 +16,7 @@
   <div class="card shadow-sm" id="ViewCurrMap" v-else>
     <prereq-graph
       :v-if="has_data"
-      :graph_data="curricData"
+      :graph_data="curricData.prereq_grap"
       graph_type="curric"
     />
     <div class="text-dark p-3 bg-light rounded-top rounded-sm">
