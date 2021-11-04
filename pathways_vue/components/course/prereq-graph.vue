@@ -29,15 +29,22 @@ export default {
     },
   },
   watch: {
-    graph_data(new_val){
+    graph_data(){
       this.show_graph()
-    }
+    },
   },
-  mounted() {
-    this.id = Math.random()
-    this.show_graph()
+  created() {
+    this.id = this.uuid()
+    var vue = this;
+    // Ensures div has ID set when graph is being appended
+    setTimeout(() => {vue.show_graph()}, 100);
   },
   methods: {
+    uuid() {
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      );
+    },
     show_graph(){
       if(this.graph_data  && Object.keys(this.graph_data).length > 0){
         // draw the graph
