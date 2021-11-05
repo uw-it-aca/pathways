@@ -6,12 +6,12 @@
     please search for a major using the main search function.
   </p>
   <ul class="list-unstyled">
-    <li class="mb-3">
+    <li class="mb-3" v-for="course in courseData">
       <div class="card shadow-sm">
         <div class="card-body p-3">
           <strong
-            ><a href="/course/?code=ANTH+215" class="d-block mb-3">
-              ANTH 215: Introduction to Medical Anthropology and Global Health</a
+            ><a :href="'/course/?code=' + course.course_id" class="d-block mb-3">
+              {{course.course_id}}: {{course.course_title}}</a
             ></strong
           >
           <div>
@@ -21,38 +21,36 @@
                   <div>
                     <small
                       ><strong class="text-dark">Prerequisites</strong>
-                      <span class="badge rounded-pill bg-purple">0</span
+                      <span class="badge rounded-pill bg-purple">{{course.prereqs.length}}</span
                       ><span class="visually-hidden">courses</span></small
                     >
                   </div>
-                  <div><small>This course has no prerequisites.</small></div>
+                  <ul class="prereq-list" v-if="course.prereqs.length > 0">
+                    <li v-for="prereq in course.prereqs">
+                      <a :href="'/course/?code=' + prereq.course_id" class="active-router-link"><span class="badge bg-link-color text-light"
+                        >{{prereq.course_id}}</span></a
+                      >
+                    </li>
+                  </ul>
+
+                  <div v-else><small>This course has no prerequisites.</small></div>
                 </div>
                 <div class="p-0 col-sm-6">
                   <div>
                     <small
                       ><strong class="text-dark">Available upon completion</strong>
-                      <span class="badge rounded-pill bg-purple">3</span
+                      <span class="badge rounded-pill bg-purple">{{course.postreqs.length}}</span
                       ><span class="visually-hidden">courses</span></small
                     >
                   </div>
-                  <ul class="prereq-list">
-                    <li>
-                      <a href="/course/?code=ANTH+303" class="active-router-link"><span class="badge bg-link-color text-light"
-                        >ANTH 303</span></a
+                  <ul class="prereq-list" v-if="course.postreqs.length > 0">
+                    <li v-for="postreq in course.postreqs">
+                      <a :href="'/course/?code=' + postreq.course_id" class="active-router-link"><span class="badge bg-link-color text-light"
+                      >{{postreq.course_id}}</span></a
                       >
                     </li>
-                    <li>
-                      <a href="/course/?code=ANTH+422" class="active-router-link"><span class="badge bg-link-color text-light"
-                        >ANTH 422</span></a
-                      >
-                    </li>
-                    <li>
-                      <a href="/course/?code=BIO+A+420" class="active-router-link"><span class="badge bg-link-color text-light"
-                        >BIO A 420</span></a
-                      >
-                    </li>
-                    <!---->
                   </ul>
+                  <div v-else><small>No courses made available.</small></div>
                 </div>
               </div>
             </div>
@@ -68,6 +66,12 @@ export default {
   name: 'PrereqCurrList',
   data() {
     return {};
+  },
+  props: {
+    courseData: {
+      type: Array,
+      required: true,
+    }
   },
   methods: {},
 };

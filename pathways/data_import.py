@@ -49,7 +49,6 @@ def import_curric_data(data):
         curric_objs.append(Curriculum(
             abbrev=curric['curric_abbrev'],
             prereq_graph=json.loads(curric['prereq_graph']),
-            prereq_list=json.loads(curric['curric_prereqs']),
-            postreq_list=json.loads(curric['curric_postreqs'])
+            course_data=json.loads(curric['course_data'])
         ))
     Curriculum.objects.bulk_create(curric_objs)

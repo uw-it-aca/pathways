@@ -7,13 +7,11 @@ from django.db import models
 class Curriculum(models.Model):
     abbrev = models.CharField(max_length=10)
     prereq_graph = models.JSONField(null=True)
-    prereq_list = models.JSONField(null=True)
-    postreq_list = models.JSONField(null=True)
+    course_data = models.JSONField(null=True)
 
     @staticmethod
     def get_prereq(abbrev):
         curric = Curriculum.objects.get(abbrev=abbrev)
         response = {"prereq_grap": curric.prereq_graph,
-                    "prereq_list": curric.prereq_list,
-                    "postreq_list": curric.postreq_list}
+                    "course_data": curric.course_data}
         return response

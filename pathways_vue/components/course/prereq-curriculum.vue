@@ -12,7 +12,10 @@
       <label class="form-check-label" for="ToggleCurrList">View {{curric_id}} curriculum as a list</label>
     </div>
   </div>
-  <prereq-curr-list v-if="viewCurrList" />
+  <prereq-curr-list
+    v-if="viewCurrList"
+    :course-data="curricData.course_data"
+  />
   <div class="card shadow-sm" id="ViewCurrMap" v-else>
     <prereq-graph
       :v-if="has_data"
