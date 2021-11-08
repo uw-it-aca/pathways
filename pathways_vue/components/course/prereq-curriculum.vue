@@ -21,6 +21,7 @@
       :v-if="has_data"
       :graph_data="curricData.prereq_grap"
       graph_type="curric"
+      :active_course="course_id"
     />
     <div class="text-dark p-3 bg-light rounded-top rounded-sm">
       <small>Use the scroll function on your mouse or touchpad to zoom in and out</small>
@@ -42,6 +43,10 @@ export default {
     curric_id: {
       type: String,
       required: true,
+    },
+    course_id: {
+      type: String,
+      required: false,
     },
   },
   data() {

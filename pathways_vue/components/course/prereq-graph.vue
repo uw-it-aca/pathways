@@ -57,14 +57,14 @@ export default {
       for (var i = 0; i < Object.keys(data.nodes.course_number).length; i++) {
         var course_id =
           data.nodes.department_abbrev[i] + " " + data.nodes.course_number[i];
-        node_list.push({ id: course_id, label: course_id });
+        node_list.push({id: course_id, label: course_id});
       }
 
       var edge_list = [];
-      Object.keys(data.edges.from).forEach(function(key) {
+      Object.keys(data.edges.from).forEach(function (key) {
         var from = data.edges.from[key];
         var to = data.edges.to[key];
-        edge_list.push({ from: from, to: to });
+        edge_list.push({from: from, to: to});
       });
       var nodes = new vis.DataSet(node_list);
       var edges = new vis.DataSet(edge_list);
@@ -99,14 +99,15 @@ export default {
           // select and focus on that course node
           network.selectNodes([course_param]);
           network.focus(course_param, {
-            scale: 1.25,
+            scale: 1.0,
+            offset: {x:50, y:50},
             animation: true
           });
         } else {
           // default zoom for ONLY curric search (initial)
           network.moveTo({
-            position: { x: 0, y: 0 },
-            scale: 0.65
+            position: { x: 200, y: 200 },
+            scale: 0.50
           });
         }
       } else if (this.graph_type == "course") {
