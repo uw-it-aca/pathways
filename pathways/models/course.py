@@ -12,6 +12,8 @@ class Course(models.Model):
     gpa_distro = models.JSONField(null=True)
     concurrent_courses = models.JSONField(null=True)
     prereq_graph = models.JSONField(null=True)
+    course_description = models.TextField(null=True)
+    course_offered = models.TextField(null=True)
 
     @staticmethod
     def get_course_list():
@@ -33,7 +35,9 @@ class Course(models.Model):
                 "course_credits": self.course_credits,
                 "gpa_distro": self.fix_gpa_json(self.gpa_distro),
                 "concurrent_courses": self.concurrent_courses,
-                "prereq_graph": json.loads(self.prereq_graph)}
+                "prereq_graph": json.loads(self.prereq_graph),
+                "course_description": self.course_description,
+                "course_offered": self.course_offered}
 
     @staticmethod
     def fix_gpa_json(json):

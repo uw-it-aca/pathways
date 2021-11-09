@@ -37,7 +37,9 @@ def import_course_data(data):
             course_credits=course['course_credits'],
             gpa_distro=course['gpa_distro'],
             concurrent_courses=course['concurrent_courses'],
-            prereq_graph=course['prereq_graph']
+            prereq_graph=course['prereq_graph'],
+            course_description=course['course_description'],
+            course_offered=course['offered_string']
         ))
     Course.objects.bulk_create(course_objs)
 
