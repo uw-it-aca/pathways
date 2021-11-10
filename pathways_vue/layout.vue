@@ -20,7 +20,7 @@
        <div class="w-100 mt-auto pt-3 pb-3 bg-footer dp-footer">
         <div class="container-xl py-3">
           <ul class="list-inline mb-2">
-            <li class="list-inline-item"><a href="#" class="text-white text-decoration-none me-2"><i class="bi bi-envelope-fill me-0"></i> Contact</a></li>
+            <li class="list-inline-item"><a href="mailto:help@uw.edu?subject=DawgPath Comment, Request, Suggestion" class="text-white text-decoration-none me-2"><i class="bi bi-envelope-fill me-0"></i> Contact</a></li>
             <li class="list-inline-item"><a href="#" title="See DawgPath on IT Connect" class="text-white text-decoration-none me-2">DawgPath Help</a></li>
             <li class="list-inline-item"><a href="https://www.washington.edu/online/terms/" class="text-white text-decoration-none me-2">Terms</a></li>
             <li class="list-inline-item"><a href="https://www.washington.edu/online/privacy/" class="router-link text-white text-decoration-none me-2">Privacy</a></li>
