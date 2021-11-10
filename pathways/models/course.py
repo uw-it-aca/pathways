@@ -30,12 +30,15 @@ class Course(models.Model):
         return Course.objects.get(course_id=course_id).json_data()
 
     def json_data(self):
+        graph = None
+        if self.prereq_graph:
+            graph = json.loads(self.prereq_graph)
         return {"course_id": self.course_id,
                 "course_title": self.course_title,
                 "course_credits": self.course_credits,
                 "gpa_distro": self.fix_gpa_json(self.gpa_distro),
                 "concurrent_courses": self.concurrent_courses,
-                "prereq_graph": json.loads(self.prereq_graph),
+                "prereq_graph": graph,
                 "course_description": self.course_description,
                 "course_offered": self.course_offered}
 
