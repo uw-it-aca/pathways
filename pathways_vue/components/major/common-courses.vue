@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body explore-major">
-      <h3>Most commonly taken courses among students who declared this major</h3>
+      <h3>Common courses for {{ major["major_title"] }}</h3>
       <p>
         Below are the 10 most popular courses at the time of declaration among students who declared
         this major in the last 5 years.
@@ -12,7 +12,7 @@
       <table class="table table-borderless">
         <thead>
           <tr class="bg-light text-dark">
-            <th scope="col" style="width: 10%">
+            <th scope="col" style="width: 5%">
               %
               <a
                 tabindex="0"
@@ -20,15 +20,30 @@
                 role="button"
                 data-bs-toggle="popover"
                 data-bs-trigger="focus"
+                data-bs-placement="top"
                 title="Percentage"
-                data-bs-content="Description of common courses for majors."
+                data-bs-content="Percent of students who had taken the course by the time they declared for {major}."
               >
-                <i class="bi bi-info-circle-fill"></i>
+                <i class="bi bi-info-circle-fill me-0"></i>
               </a>
             </th>
-            <th scope="col" class="visually-hidden" style="width: 30%">Percentage Graph</th>
-            <th scope="col" style="width: 30%">Common Course</th>
-            <th scope="col" style="width: 30%">CDI</th>
+            <th scope="col" class="visually-hidden" style="width: 15%">Percentage Graph</th>
+            <th scope="col" style="width: 50%">Common Course</th>
+            <th scope="col" style="width: 30%">
+              COI 
+              <a
+                tabindex="0"
+                class="info-common-coi"
+                role="button"
+                data-bs-toggle="popover"
+                data-bs-trigger="focus"
+                data-bs-placement="top"
+                title="Course Outcome Index"
+                data-bs-content="Description of COI value."
+              >
+                <i class="bi bi-info-circle-fill me-0"></i>
+              </a>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -48,7 +63,7 @@
             </td>
             <td>
               <a v-bind:href="'/course/?code=' + encodeURIComponent(course.course)" class="router-link-active"
-                ><span class="badge bg-link-color text-light">{{course.course}}</span></a
+                ><span class="badge bg-link-color text-light me-2">{{course.course}}</span></a
               >
                {{course.title}}
             </td>
@@ -75,7 +90,8 @@ export default {
     return {};
   },
   mounted() {
-    var popover = new Popover(document.querySelector('.info-major-common'));
+    var popover = new Popover(document.querySelector('.info-common-coi'));
+    var popover2 = new Popover(document.querySelector('.info-major-common'));
   },
   methods: {},
   computed: {

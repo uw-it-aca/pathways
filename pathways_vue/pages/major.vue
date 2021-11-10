@@ -23,7 +23,7 @@
           <common-courses :major="major_data" />
         </div>
 
-        <d3-histogram
+        <d3-cgpa
           :major-data="major_data"
         />
         <contact-adviser-major />
@@ -42,16 +42,14 @@ import MajorDetails from '../components/major/major-details.vue';
 import ExploreMajor from '../components/major/explore-major.vue';
 import CommonCourses from '../components/major/common-courses.vue';
 import SearchMajor from '../components/search/major.vue';
-import D3BoxPlot from '../components/d3-boxplot.vue';
-import D3Histogram from '../components/d3-histogram.vue';
+import D3Cgpa from '../components/major/d3-cgpa.vue';
 import ContactAdviserMajor from '../components/major/contact-adviser-major.vue';
 
 export default {
   components: {
     'layout': Layout,
     'search-major': SearchMajor,
-    'd3-boxplot': D3BoxPlot,
-    'd3-histogram': D3Histogram,
+    'd3-cgpa': D3Cgpa,
     'contact-adviser-major': ContactAdviserMajor,
     'major-details': MajorDetails,
     'explore-major': ExploreMajor,
