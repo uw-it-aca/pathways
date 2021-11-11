@@ -3,6 +3,9 @@
 
 from django.db import models
 import json
+from pathways.models.course_level import CourseLevel
+from pathways.models.curriculum import Curriculum
+from pathways.models.coi_range import COIRange
 
 
 class Course(models.Model):
@@ -14,6 +17,7 @@ class Course(models.Model):
     prereq_graph = models.JSONField(null=True)
     course_description = models.TextField(null=True)
     course_offered = models.TextField(null=True)
+    coi_score = models.FloatField(null=True)
 
     @staticmethod
     def get_course_list():
@@ -40,7 +44,8 @@ class Course(models.Model):
                 "concurrent_courses": self.concurrent_courses,
                 "prereq_graph": graph,
                 "course_description": self.course_description,
-                "course_offered": self.course_offered}
+                "course_offered": self.course_offered,
+                "coi_data": self.get_coi_data()}
 
     @staticmethod
     def fix_gpa_json(json):
@@ -49,3 +54,15 @@ class Course(models.Model):
             if key != "null":
                 fixed.append({"gpa": key, "count": json[key]})
         return fixed
+
+    def get_coi_data(self):
+        curric, delim, num = self.course_id.rpartition(" ")
+        curric_score = Curriculum.objects.get(abbrev=curric).average_coi_score
+        course_level = int(num)//100*100
+        level_score = CourseLevel.objects.get(level=course_level).coi_score
+        percent_in_range = COIRange.get_percent_by_score(self.coi_score)
+
+        return {"course_coi": self.coi_score,
+                "curric_coi": curric_score,
+                "course_level_coi": level_score,
+                "percent_in_range": 1}

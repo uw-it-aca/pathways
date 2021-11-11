@@ -8,6 +8,7 @@ class Curriculum(models.Model):
     abbrev = models.CharField(max_length=10)
     prereq_graph = models.JSONField(null=True)
     course_data = models.JSONField(null=True)
+    average_coi_score = models.FloatField(null=True)
 
     @staticmethod
     def get_prereq(abbrev):
