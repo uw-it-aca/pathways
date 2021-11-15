@@ -60,9 +60,10 @@ class Course(models.Model):
         curric_score = Curriculum.objects.get(abbrev=curric).average_coi_score
         course_level = int(num)//100*100
         level_score = CourseLevel.objects.get(level=course_level).coi_score
-        percent_in_range = COIRange.get_percent_by_score(self.coi_score)
+        percent_in_range = COIRange.get_percent_by_score(self.coi_score)\
+            .json_data()
 
         return {"course_coi": self.coi_score,
                 "curric_coi": curric_score,
                 "course_level_coi": level_score,
-                "percent_in_range": 1}
+                "percent_in_range": percent_in_range}

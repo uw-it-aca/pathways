@@ -15,8 +15,13 @@ class COIRange(models.Model):
     coi_range = models.IntegerField(choices=RANGES)
     percent_in_range = models.FloatField(null=True)
 
+    def json_data(self):
+        return round(self.percent_in_range, 3)
+
     @staticmethod
     def get_percent_by_score(score):
+        if score is None:
+            return None
         if score <= 1:
             return COIRange.objects.get(coi_range=0)
         if score <= 2:
