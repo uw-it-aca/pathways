@@ -23,7 +23,8 @@
             :course="courseData"/>
           </div>
           <div class="col">
-            <outcome-index />
+            <outcome-index
+            :course="courseData"/>
           </div>
         </div>
 
