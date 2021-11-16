@@ -17,12 +17,12 @@
     </template>
     <template #footer>
       <!-- footer section override -->
-       <div class="w-100 mt-auto pt-3 pb-3 small bg-gray-800 dp-footer">
+       <div class="w-100 mt-auto pt-3 pb-3 small bg-gray-800">
         <div class="container-xl py-3">
           <ul class="list-inline mb-2">
-            <li class="list-inline-item"><a href="mailto:help@uw.edu?subject=DawgPath Comment, Request, Suggestion" class="text-white text-decoration-none me-2"><i class="bi bi-envelope-fill me-0"></i> Contact</a></li>
-            <li class="list-inline-item"><a href="#" title="See DawgPath on IT Connect" class="text-white text-decoration-none me-2">DawgPath Help</a></li>
-            <li class="list-inline-item"><a href="https://www.washington.edu/online/terms/" class="text-white text-decoration-none me-2">Terms</a></li>
+            <li class="list-inline-item item-dot"><a href="mailto:help@uw.edu?subject=DawgPath Comment, Request, Suggestion" class="text-white text-decoration-none me-2"><i class="bi bi-envelope-fill me-0"></i> Contact</a></li>
+            <li class="list-inline-item item-dot"><a href="#" title="See DawgPath on IT Connect" class="text-white text-decoration-none me-2">DawgPath Help</a></li>
+            <li class="list-inline-item item-dot"><a href="https://www.washington.edu/online/terms/" class="text-white text-decoration-none me-2">Terms</a></li>
             <li class="list-inline-item"><a href="https://www.washington.edu/online/privacy/" class="router-link text-white text-decoration-none me-2">Privacy</a></li>
           </ul>
           <div class="font-weight-light" style="color:#aaa">
@@ -87,15 +87,10 @@ export default {
 <style lang="scss">
 @import './css/custom.scss';
 
-.dp-footer {
-  ul {
-    li {
-      &:not(:last-child)::after {
-        content: '·';
-        color: #fff;
-        //margin-left: 0.5rem;
-      }
-    }
+.item-dot {
+  &::after {
+    content: '·';
+    color: #fff;
   }
 }
 
