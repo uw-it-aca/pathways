@@ -13,6 +13,7 @@
           <div class="d-flex">
             <div class="flex-fill">{{ userName }}</div>
             <div class="flex-fill text-end">
+              <a href="#" class="me-3">this is a new item</a>
               <a :href="signOutUrl" class="text-white">Sign out</a>
             </div>
           </div>
