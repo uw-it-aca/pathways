@@ -11,10 +11,10 @@
       <div class="bg-dark-purple text-white py-2 small">
         <div class="container-xl">
           <div class="d-flex">
-            <div class="flex-fill">{{ userName }}</div>
+            <div class="flex-fill"><i class="bi bi-person-circle me-2"></i>{{ userName }}</div>
             <div class="flex-fill text-end">
-              <a href="#" class="me-3">this is a new item</a>
-              <a :href="signOutUrl" class="text-white">Sign out</a>
+              <a href="/about" class="router-link text-white me-3 text-decoration-none"><i class="bi bi-question-circle me-2"></i>FAQ</a>
+              <a :href="signOutUrl" class="text-white text-decoration-none"><i class="bi bi-box-arrow-right me-2"></i>Sign out</a>
             </div>
           </div>
         </div>
@@ -140,6 +140,9 @@ export default {
     content: '·';
     color: #fff;
   }
+}
+.axdd-topbar-brand {
+  line-height: 65px;
 }
 
 </style>
