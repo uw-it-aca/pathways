@@ -16,16 +16,17 @@
       </div>
       <div v-if="major_data">
         <div class="row">
-          <div class="col-8"><major-details :major="major_data" /></div>
-          <div class="col-4"><explore-major :major="major_data" /></div>
+          <div class="col-sm-8"><major-details :major="major_data" /></div>
+          <div class="col-sm-4"><explore-major :major="major_data" /></div>
         </div>
         <div class="mb-5">
           <common-courses :major="major_data" />
         </div>
-
-        <d3-cgpa
-          :major-data="major_data"
-        />
+        <div class="row">
+          <div class="col-sm-8"><d3-cgpa :major-data="major_data"/></div>
+          <div class="col-sm-4"></div>
+        </div>
+        
         <contact-adviser-major />
       </div>
       <div v-else>
