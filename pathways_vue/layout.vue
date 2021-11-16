@@ -7,7 +7,54 @@
     :user-name="userName"
     :sign-out-url="signOutUrl"
   >
-    <template #header></template>
+    <template #header>
+      <div class="bg-dark-purple text-white py-2 small">
+        <div class="container-xl">
+          <div class="d-flex">
+            <div class="flex-fill">{{ userName }}</div>
+            <div class="flex-fill text-end">
+              <a :href="signOutUrl" class="text-white">Sign out</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-purple axdd-topbar-brand">
+        <div class="container-xl axdd-topbar-logo">
+          <a
+            v-if="$slots['navigation']"
+            class="btn btn-link btn-sm d-lg-none p-0 border-0 text-white"
+            data-bs-toggle="collapse"
+            data-bs-target="#nav-collapse"
+            role="button"
+            aria-expanded="false"
+            aria-controls="collapseExample"
+            aria-label="Toggle Navigation Menu"
+          >
+            <font-awesome-layers class="fa-2x">
+              <font-awesome-icon
+                :icon="faSquare"
+                transform="right-1"
+                class="m-0"
+              />
+              <font-awesome-icon
+                :icon="faBars"
+                transform="shrink-8 right-1 "
+                class="m-0"
+              />
+            </font-awesome-layers>
+          </a>
+
+          <div
+            class="d-inline align-middle text-white"
+            :class="[$mq == 'desktop' ? 'h3' : 'h5']"
+          >
+            <a :href="appRootUrl" class="text-white text-decoration-none">{{
+              appName
+            }}</a>
+          </div>
+        </div>
+      </div>
+    </template>
     <template #main>
       <!-- main section override -->
       <slot name="title">
