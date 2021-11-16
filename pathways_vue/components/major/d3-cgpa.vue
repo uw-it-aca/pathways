@@ -32,7 +32,7 @@
         </li>
       </ul>
 
-      <div id="histogram" class="m-3"></div>
+      <div id="histogram"></div>
       <small>
         Number
         of students in this sample: {{ total_count }}
@@ -76,6 +76,13 @@ export default {
         return 5;
       }
     },
+    formatGPA() {
+      if (d.gpa == '50') {
+        var newFormat = d3.format("");
+      } else {
+        var newFormat = d3.format(".2n");
+      }
+    },
   },
   methods: {
     selectChart(year) {
@@ -101,7 +108,9 @@ export default {
       // set the dimensions and margins of the graph
       var margin = { top: 10, right: 30, bottom: 50, left: 40 },
         width = 800 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom;
+        height = 400 - margin.top - margin.bottom,
+        rwidth = width + margin.left + margin.right,
+        rheight = height + margin.top + margin.bottom;
 
       var tooltip = d3.select('body').append('div')
         .attr('class', 'tooltip')
@@ -120,8 +129,9 @@ export default {
       var svg = d3
         .select('#histogram')
         .append('svg')
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        //.attr("width", width + margin.left + margin.right)
+        //.attr("height", height + margin.top + margin.bottom)
+        .attr("viewBox", `0 0 ${rwidth} ${rheight}`)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -171,7 +181,7 @@ export default {
       svg.append("g")
         .attr('class', 'x axis')
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).tickValues(x.domain().filter(function (d, i) { return !(i % 5) })).tickFormat(d3.format(".2n")));
+        .call(d3.axisBottom(x).tickValues(x.domain().filter(function (d, i) { return !(i % 5) })).tickFormat(this.newFormat));
 
       // add the y Axis
       svg.append("g")
