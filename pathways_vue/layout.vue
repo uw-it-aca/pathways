@@ -17,7 +17,7 @@
     </template>
     <template #footer>
       <!-- footer section override -->
-       <div class="w-100 mt-auto pt-3 pb-3 bg-footer dp-footer">
+       <div class="w-100 mt-auto pt-3 pb-3 small bg-gray-800 dp-footer">
         <div class="container-xl py-3">
           <ul class="list-inline mb-2">
             <li class="list-inline-item"><a href="mailto:help@uw.edu?subject=DawgPath Comment, Request, Suggestion" class="text-white text-decoration-none me-2"><i class="bi bi-envelope-fill me-0"></i> Contact</a></li>
@@ -86,10 +86,6 @@ export default {
 
 <style lang="scss">
 @import './css/custom.scss';
-
-.bg-footer {
-  background-color: $gray-800;
-}
 
 .dp-footer {
   ul {
