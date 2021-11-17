@@ -23,7 +23,7 @@
                   <h2 class="modal-title mb-2" id="exampleModalLabel">Welcome</h2>
                   <div>
                     <p>
-                      This app helps with course planning and preparation for applying to a major. A
+                      DawgPath helps with course planning and preparation for applying to a major. A
                       few things to keep in mind before getting started:
                     </p>
                     <ul>
@@ -41,6 +41,7 @@
                         Discovering and applying for a major can be a challenging experience. Look
                         for the “Contact your adviser” link to connect with your adviser.
                       </li>
+                      <li>Check out the <a href="/faq">DawgPath FAQ</a> for more info.</li>
                     </ul>
                   </div>
                   <div class="text-end">
@@ -59,7 +60,7 @@
           </div>
 
           <ul>
-            <li><router-link to="/about">Go to About</router-link></li>
+            <li><router-link to="/faq">Go to FAQ</router-link></li>
             <li><router-link to="/major">Go to Major</router-link></li>
             <li><router-link to="/course">Go to Course</router-link></li>
           </ul>
@@ -71,7 +72,7 @@
             class="btn btn-outline-primary mt-2 btn-sm"
             @click="showWelcomeModal"
           >
-            About this app <i class="bi bi-info-circle"></i>
+            About DawgPath <i class="bi bi-info-circle"></i>
           </button>
         </div>
       </div>

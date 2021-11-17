@@ -13,7 +13,7 @@
           <div class="d-flex">
             <div class="flex-fill"><i class="bi bi-person-circle me-2"></i>{{ userName }}</div>
             <div class="flex-fill text-end">
-              <a href="/about" class="router-link text-white me-3 text-decoration-none"><i class="bi bi-question-circle me-2"></i>FAQ</a>
+              <a href="/faq" class="router-link text-white me-3 text-decoration-none"><i class="bi bi-question-circle me-2"></i>FAQ</a>
               <a :href="signOutUrl" class="text-white text-decoration-none"><i class="bi bi-box-arrow-right me-2"></i>Sign out</a>
             </div>
           </div>
