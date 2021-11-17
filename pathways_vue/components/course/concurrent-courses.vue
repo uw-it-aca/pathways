@@ -5,7 +5,7 @@
     <div class="card-body">
       <h3>Concurrent Courses</h3>
       <p>
-        Students who took <strong>CHEM 162</strong> in the past 2 years also took the following
+        Students who took <strong>{{courseData.course_id}}</strong> in the past 2 years also took the following
         courses at the same time.
       </p>
       <table class="table table-borderless">
@@ -49,9 +49,9 @@
               <a href="/course/?code=CSS+415" class="router-link-active"
                 ><span class="badge bg-link-color text-light">{{course.course}}</span></a
               >
-              TODO: Add course titles
+              {{course.title}}
             </td>
-            <td>5.55</td>
+            <td>{{course.coi_score}}</td>
           </tr>
         </tbody>
       </table>
@@ -79,15 +79,19 @@ export default {
   methods: {},
   computed: {
     concurrent_courses: function (){
+      if(!this.courseData.concurrent_courses){
+        return []
+      }
       let processed_courses = [];
-      for (var course in this.courseData.concurrent_courses){
-        let percent = Math.round(this.courseData.concurrent_courses[course] * 100)
+      for (const [course, data] of Object.entries(this.courseData.concurrent_courses)) {
+        let percent = Math.round(data['percent'] * 100)
         let style_string = `width: ${percent}%`;
 
         processed_courses.push({'course': course,
                                  'percent': percent,
-                                 'title': "TODO: Course Title",
-                                 'width': style_string})
+                                 'title': data['title'],
+                                 'width': style_string,
+                                 'coi_score': data['coi_score']})
       }
       return processed_courses.sort((a, b) => (a.percent < b.percent)? 1 : -1).slice(0, 10);
     }

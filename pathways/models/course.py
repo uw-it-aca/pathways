@@ -37,11 +37,12 @@ class Course(models.Model):
         graph = None
         if self.prereq_graph:
             graph = json.loads(self.prereq_graph)
+        concurrrent = self.get_concurrent_with_coi()
         return {"course_id": self.course_id,
                 "course_title": self.course_title,
                 "course_credits": self.course_credits,
                 "gpa_distro": self.fix_gpa_json(self.gpa_distro),
-                "concurrent_courses": self.concurrent_courses,
+                "concurrent_courses": concurrrent,
                 "prereq_graph": graph,
                 "course_description": self.course_description,
                 "course_offered": self.course_offered,
@@ -67,3 +68,17 @@ class Course(models.Model):
                 "curric_coi": curric_score,
                 "course_level_coi": level_score,
                 "percent_in_range": percent_in_range}
+
+    def get_concurrent_with_coi(self):
+        courses = self.concurrent_courses.keys()
+        course_objs = Course.objects.filter(course_id__in=courses)
+        concurrent_with_coi = {}
+        for course in courses:
+            course_obj = course_objs.get(course_id=course)
+            percent = self.concurrent_courses[course]
+            title = course_obj.course_title
+            coi = course_obj.coi_score
+            concurrent_with_coi[course] = {"percent": percent,
+                                           "title": title,
+                                           "coi_score": coi}
+        return concurrent_with_coi
