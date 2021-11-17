@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.db import models
+from pathways.models.course import Course
 
 
 class Major(models.Model):
@@ -39,7 +40,7 @@ class Major(models.Model):
                 "major_admission": self.major_admission,
                 "program_code": self.program_code,
                 "major_home_url": Major.get_major_url(self.major_home_url),
-                "common_course_decl": self.common_course_decl,
+                "common_course_decl": self.get_common_with_coi(),
                 "gpa_2yr": Major.fix_gpa_json(self.gpa_2yr),
                 "gpa_5yr": Major.fix_gpa_json(self.gpa_5yr)}
 
@@ -54,3 +55,16 @@ class Major(models.Model):
     def get_major_url(url):
         if url is not None:
             return "http:\\\\%s" % url
+
+    def get_common_with_coi(self):
+        courses = self.common_course_decl.keys()
+        coi_scores = Course.objects.filter(course_id__in=courses)
+        common_with_coi = {}
+        for course in courses:
+            percent = self.common_course_decl[course]['percent']
+            title = self.common_course_decl[course]['title']
+            coi = coi_scores.get(course_id=course).coi_score
+            common_with_coi[course] = {"percent": percent,
+                                       "title": title,
+                                       "coi_score": coi}
+        return common_with_coi

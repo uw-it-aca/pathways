@@ -30,7 +30,7 @@
             <th scope="col" class="visually-hidden" style="width: 15%">Percentage Graph</th>
             <th scope="col" style="width: 50%">Common Course</th>
             <th scope="col" style="width: 30%">
-              COI 
+              COI
               <a
                 tabindex="0"
                 class="info-common-coi"
@@ -67,7 +67,7 @@
               >
                {{course.title}}
             </td>
-            <td>5.55</td>
+            <td>{{course.coi_score}}</td>
           </tr>
         </tbody>
       </table>
@@ -104,7 +104,8 @@ export default {
         processed_courses.push({'course': course,
           'percent': data['percent'],
           'title': data['title'],
-          'width': style_string})
+          'width': style_string,
+          'coi_score': data['coi_score']})
       }
 
       return processed_courses.sort((a, b) => (a.percent < b.percent)? 1 : -1);
