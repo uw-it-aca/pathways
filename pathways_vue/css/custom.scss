@@ -6,13 +6,14 @@ $nav-height: 52px;
 $bar-height: 40px;
 $link-color: #0069d9; //a11y blue
 
-// pathways custom colors
+// pathways custom theme colors
 $custom-colors: (
-  "test": red,
+  "test": red, // bg-test text-test
   "link-color": $link-color,
   "blue-200":   $blue-200,
-  "orange-200": $orange-200,
+  "orange-200": $orange-200, // border-orange-200
   "teal-200":   $teal-200,
+  "gray-800":   $gray-800, // bg-gray-800
 );
 
 // axdd-components + pathways custom colors
@@ -35,3 +36,5 @@ $utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
 .pw-orange { background-color: $orange-200; }
 .pw-green { background-color: $teal-200; }
 .pw-blue { background-color: $blue-200; }
+
+
