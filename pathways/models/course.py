@@ -6,6 +6,7 @@ import json
 from pathways.models.course_level import CourseLevel
 from pathways.models.curriculum import Curriculum
 from pathways.models.coi_range import COIRange
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class Course(models.Model):
@@ -61,8 +62,7 @@ class Course(models.Model):
         curric_score = Curriculum.objects.get(abbrev=curric).average_coi_score
         course_level = int(num)//100*100
         level_score = CourseLevel.objects.get(level=course_level).coi_score
-        percent_in_range = COIRange.get_percent_by_score(self.coi_score)\
-            .json_data()
+        percent_in_range = COIRange.get_percent_by_score(self.coi_score)
 
         return {"course_coi": self.coi_score,
                 "curric_coi": curric_score,
@@ -70,15 +70,19 @@ class Course(models.Model):
                 "percent_in_range": percent_in_range}
 
     def get_concurrent_with_coi(self):
-        courses = self.concurrent_courses.keys()
-        course_objs = Course.objects.filter(course_id__in=courses)
-        concurrent_with_coi = {}
-        for course in courses:
-            course_obj = course_objs.get(course_id=course)
-            percent = self.concurrent_courses[course]
-            title = course_obj.course_title
-            coi = course_obj.coi_score
-            concurrent_with_coi[course] = {"percent": percent,
-                                           "title": title,
-                                           "coi_score": coi}
-        return concurrent_with_coi
+        if self.concurrent_courses is not None:
+            courses = self.concurrent_courses.keys()
+            course_objs = Course.objects.filter(course_id__in=courses)
+            concurrent_with_coi = {}
+            for course in courses:
+                try:
+                    course_obj = course_objs.get(course_id=course)
+                    percent = self.concurrent_courses[course]
+                    title = course_obj.course_title
+                    coi = course_obj.coi_score
+                    concurrent_with_coi[course] = {"percent": percent,
+                                                   "title": title,
+                                                   "coi_score": coi}
+                except ObjectDoesNotExist:
+                    pass
+            return concurrent_with_coi

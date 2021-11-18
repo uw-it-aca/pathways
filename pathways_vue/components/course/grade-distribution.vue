@@ -5,7 +5,7 @@
     <div class="card-body">
       <h3>Course Grade Distribution</h3>
       <p>
-        This graph represents the distribution of grades for every student who completed <strong>CHEM 162</strong> over the past 5 years.
+        This graph represents the distribution of grades for every student who completed <strong>{{course.course_id}}</strong> over the past 5 years.
         <a
           tabindex="0"
           class="info-gcd"

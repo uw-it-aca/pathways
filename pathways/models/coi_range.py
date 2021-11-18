@@ -23,12 +23,12 @@ class COIRange(models.Model):
         if score is None:
             return None
         if score <= 1:
-            return COIRange.objects.get(coi_range=0)
+            return COIRange.objects.get(coi_range=0).json_data()
         if score <= 2:
-            return COIRange.objects.get(coi_range=1)
+            return COIRange.objects.get(coi_range=1).json_data()
         if score <= 3:
-            return COIRange.objects.get(coi_range=2)
+            return COIRange.objects.get(coi_range=2).json_data()
         if score <= 4:
-            return COIRange.objects.get(coi_range=3)
+            return COIRange.objects.get(coi_range=3).json_data()
         if score <= 5:
-            return COIRange.objects.get(coi_range=4)
+            return COIRange.objects.get(coi_range=4).json_data()

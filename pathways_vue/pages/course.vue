@@ -15,7 +15,7 @@
       <div v-if="courseData">
         <div class="row">
           <div class="col-8"><course-details :course="courseData" /></div>
-          <div class="col-4"><explore-course /></div>
+          <div class="col-4"><explore-course :course="courseData"/></div>
         </div>
         <div class="row">
           <div class="col">
