@@ -3,6 +3,7 @@
 
 from django.db import models
 from pathways.models.course import Course
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class Major(models.Model):
@@ -61,10 +62,13 @@ class Major(models.Model):
         coi_scores = Course.objects.filter(course_id__in=courses)
         common_with_coi = {}
         for course in courses:
-            percent = self.common_course_decl[course]['percent']
-            title = self.common_course_decl[course]['title']
-            coi = coi_scores.get(course_id=course).coi_score
-            common_with_coi[course] = {"percent": percent,
-                                       "title": title,
-                                       "coi_score": coi}
+            try:
+                percent = self.common_course_decl[course]['percent']
+                title = self.common_course_decl[course]['title']
+                coi = coi_scores.get(course_id=course).coi_score
+                common_with_coi[course] = {"percent": percent,
+                                           "title": title,
+                                           "coi_score": coi}
+            except ObjectDoesNotExist:
+                pass
         return common_with_coi
