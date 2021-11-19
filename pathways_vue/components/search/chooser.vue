@@ -31,7 +31,7 @@
         </div>
       </div>
       <search-major v-if="selectedRadio === 'major'" />
-      <search-course :course-list="courseList" v-if="selectedRadio === 'course'" />
+      <search-course v-if="selectedRadio === 'course'" />
     </div>
   </div>
 </template>
@@ -47,10 +47,6 @@ export default {
     'search-course': SearchCourse,
   },
   props: {
-    courseList: {
-      type: Array,
-      required: true,
-    }
   },
   data() {
     return {

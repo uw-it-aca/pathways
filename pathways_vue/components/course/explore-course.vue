@@ -1,11 +1,11 @@
-// explore-course.vue 
+// explore-course.vue
 
 <template>
   <div class="card mb-5">
     <div class="card-body explore-course">
       <h3>Explore this Course</h3>
       <ul>
-        <li><a href="#">MyPlan Course Page</a></li>
+        <li><a :href="myplanURL" target="_blank">MyPlan Course Page</a></li>
       </ul>
     </div>
   </div>
@@ -17,6 +17,19 @@ export default {
   name: 'ExploreCourse',
   data() {
     return {};
+  },
+  props: {
+    course: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    myplanURL() {
+      if(this.course['course_id'] !== null){
+        return "https://myplan.uw.edu/course/#/courses/" + encodeURIComponent(this.course['course_id']);
+      }
+    },
   },
   methods: {},
 };

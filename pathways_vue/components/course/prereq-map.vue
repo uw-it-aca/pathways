@@ -16,7 +16,7 @@
             aria-controls="course-map"
             aria-selected="true"
           >
-            CHEM 162
+            {{active_course}}
           </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -30,16 +30,22 @@
             aria-controls="curriculum-map"
             aria-selected="true"
           >
-            All CHEM Courses
+            {{active_dept}}
           </button>
         </li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane w-75 active" id="pm-course" role="tabpanel" aria-labelledby="course-tab">
-          <prereq-course />
+          <prereq-course
+            :graph_data="graph_data"
+            :active_course="active_course"
+          />
         </div>
         <div class="tab-pane w-75" id="pm-curriculum" role="tabpanel" aria-labelledby="curriculum-tab">
-          <prereq-curriculum />
+          <prereq-curriculum
+            :curric_id="active_dept"
+            :course_id="active_course"
+          />
         </div>
       </div>
     </div>
@@ -58,6 +64,24 @@ export default {
     },
   data() {
     return {};
+  },
+  props: {
+    graph_data: {
+      type: Object,
+      required: true,
+    },
+    active_course: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    active_dept: function (){
+      if(this.active_course){
+        var split_pos = this.active_course.lastIndexOf(" ");
+        return this.active_course.substring(0, split_pos);
+      }
+    }
   },
   methods: {},
 };

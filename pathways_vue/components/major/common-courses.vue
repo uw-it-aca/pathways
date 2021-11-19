@@ -70,7 +70,7 @@
               </a>
               {{ course.title }}
             </td>
-            <td>5.55</td>
+            <td>{{course.coi_score}}</td>
           </tr>
         </tbody>
       </table>
@@ -107,8 +107,8 @@ export default {
         processed_courses.push({'course': course,
           'percent': data['percent'],
           'title': data['title'],
-          'width': style_string        
-        })
+          'width': style_string,
+          'coi_score': data['coi_score']})
       }
 
       return processed_courses.sort((a, b) => (a.percent < b.percent) ? 1 : -1);

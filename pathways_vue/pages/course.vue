@@ -8,26 +8,31 @@
     <template #content>
       <div class="row justify-content-center mb-5">
         <div class="col-md-9">
-          <search-course v-model:selected="selectedCourse" :course-list="courseList" />
+          <search-course v-model:selected="courseId" />
         </div>
       </div>
 
-      <div v-if="selectedCourse">
+      <div v-if="courseData">
         <div class="row">
           <div class="col-8"><course-details :course="courseData" /></div>
-          <div class="col-4"><explore-course /></div>
+          <div class="col-4"><explore-course :course="courseData"/></div>
         </div>
         <div class="row">
           <div class="col">
-            <grade-distribution />
+            <grade-distribution
+            :course="courseData"/>
           </div>
           <div class="col">
-            <outcome-index />
+            <outcome-index
+            :course="courseData"/>
           </div>
         </div>
 
-        <prereq-map />
-        <concurrent-courses />
+        <prereq-map
+        :graph_data="courseData.prereq_graph"
+        :active_course="courseId"
+        />
+        <concurrent-courses :courseData="courseData"/>
         <contact-adviser-course />
       </div>
       <div v-else>PLACEHOLDER: select something</div>
@@ -36,8 +41,6 @@
 </template>
 
 <script>
-import courseList from '../data/courses.json';
-
 import Layout from '../layout.vue';
 import SearchCourse from '../components/search/course.vue';
 import GradeDistribution from '../components/course/grade-distribution.vue';
@@ -63,27 +66,33 @@ export default {
   data() {
     return {
       pageTitle: 'Course',
-      courseList,
-      selectedCourse: '',
+      courseData: {},
+      courseId: undefined
     };
   },
   computed: {
-    courseData() {
-      let title = courseList.find((title) => title.split(':')[0] === this.selectedCourse);
-
-      return {
-        title: title,
-        description: 'TODO '.repeat(100),
-        credits: 2,
-        offered: [
-          { quarter: 'SPR', class: 'pw-green' },
-          { quarter: 'AUT', class: 'creamcicle' },
-          { quarter: 'WIN', class: 'bg-blue-200' },
-        ],
-      };
-    },
   },
-  methods: {},
+  mounted(){
+    let course_id = this.$route.query.code;
+    this.courseId = course_id;
+    this.emitter.on("update:selected", selectedKey => {
+      this.courseId = selectedKey;
+
+    })
+  },
+  methods: {
+    get_course_data(course_id){
+      const vue = this;
+      this.axios.get("/api/v1/courses/" + course_id).then((response) => {
+        vue.courseData = response.data;
+      });
+    }
+  },
+  watch: {
+    courseId(newValue) {
+      this.get_course_data(newValue);
+    }
+  }
 };
 </script>
 
