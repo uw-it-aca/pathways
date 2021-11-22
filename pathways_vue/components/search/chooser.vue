@@ -48,7 +48,7 @@
         </select>
         <!-- TODO: change placeholder text based on user selection, disable search button until user selects major or course -->
         <!-- if none, placeholder blank
-        if major selected: please enter amajor 
+        if major selected: please enter amajor
         if course selected: please enter a course-->
         <input type="text" class="form-control w-75" placeholder="Please enter a major" aria-label="Text input with dropdown button" />
         <button type="button" class="btn btn-purple" disabled @click="onSelected">Search</button>
@@ -97,14 +97,11 @@ export default {
     'search-course': SearchCourse,
   },
   props: {
-    courseList: {
-      type: Array,
-      required: true,
-    }
   },
   data() {
     return {
       picked: false,
+      selectedRadio: 'major',
     };
   },
   methods: {},

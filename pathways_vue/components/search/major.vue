@@ -32,20 +32,6 @@ export default {
       vue.major_list = response.data;
     });
   },
-  computed: {
-    majorListSearchable() {
-      let selectable = {};
-
-      this.majorList.forEach((major) => {
-        selectable[major["Major"].trim()] = {
-          label: major["Major"].trim(),
-          data: major,
-        };
-      });
-
-      return selectable;
-    }
-  },
 };
 </script>
 
