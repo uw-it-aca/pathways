@@ -13,9 +13,9 @@ class TestMajorApi(ApiTest):
     def test_list(self):
         response = MajorList.as_view()(self.request)
         major_list = json.loads(response.content)
-        self.assertEqual(len(major_list), 1)
-        self.assertEqual(major_list[0]['key'], "TRAIN")
-        self.assertEqual(major_list[0]['value'], "Railroad Studies")
+        self.assertEqual(len(major_list), 3)
+        self.assertEqual(major_list['seattle'][0]['key'], "TRAIN")
+        self.assertEqual(major_list['seattle'][0]['value'], "Railroad Studies")
 
     def test_details(self):
         response = MajorDetails.as_view()(self.request, major_abbr="TRAIN")

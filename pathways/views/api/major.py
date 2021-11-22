@@ -10,14 +10,14 @@ from django.contrib.auth.decorators import login_required
 
 @method_decorator(login_required, name="dispatch")
 class MajorList(RESTDispatch):
-    def get(self, request, *args, **kwargs):
-        majors = Major.get_major_list()
+    def get(self, request, major_campus, *args, **kwargs):
+        majors = Major.get_major_list_by_campus()
         return self.json_response(majors)
 
 
 @method_decorator(login_required, name="dispatch")
 class MajorDetails(RESTDispatch):
-    def get(self, request, major_abbr, *args, **kwargs):
+    def get(self, request, major_campus, major_abbr, *args, **kwargs):
         try:
             major = Major.get_major_data(major_abbr)
             return self.json_response(major)

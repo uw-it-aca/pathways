@@ -10,10 +10,10 @@ from pathways.views.api.curric import CurricPrereq
 
 urlpatterns = [
     re_path(
-        r'^api/v1/majors/$',
+        r'^api/v1/majors/(?P<major_campus>[^/]*)$',
         MajorList.as_view(), name='major-list'),
     re_path(
-        r'^api/v1/majors/(?P<major_abbr>[^/]*)$',
+        r'^api/v1/majors/(?P<major_campus>[^/]+)/(?P<major_abbr>[^/]*)$',
         MajorDetails.as_view(), name='major-details'),
     re_path(
         r'^api/v1/courses/$',
