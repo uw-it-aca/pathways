@@ -29,28 +29,15 @@ class Major(models.Model):
         return major_json
 
     @staticmethod
-    def get_major_list_by_campus():
-        sea_majors = Major.objects\
-            .filter(major_campus="Seattle")\
+    def get_major_list_by_campus(major_campus):
+        majors = Major.objects\
+            .filter(major_campus=major_campus.capitalize())\
             .only("major_abbr", "major_title")
-        tac_majors = Major.objects \
-            .filter(major_campus="Tacoma") \
-            .only("major_abbr", "major_title")
-        bot_majors = Major.objects \
-            .filter(major_campus="Bothell") \
-            .only("major_abbr", "major_title")
-
-        def get_major_json(major_list):
-            major_json = []
-            for major in major_list:
-                major_json.append({"key": major.major_abbr,
-                                   "value": major.major_title})
-            return major_json
-
-        return {"seattle": get_major_json(sea_majors),
-                "tacoma": get_major_json(tac_majors),
-                "bothell": get_major_json(bot_majors),
-                }
+        major_json = []
+        for major in majors:
+            major_json.append({"key": major.major_abbr,
+                               "value": major.major_title})
+        return major_json
 
     @staticmethod
     def get_major_data(major_abbr):

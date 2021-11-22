@@ -10,9 +10,14 @@ from django.contrib.auth.decorators import login_required
 
 @method_decorator(login_required, name="dispatch")
 class MajorList(RESTDispatch):
+    valid_campus = ['seattle', 'tacoma', 'bothell']
+
     def get(self, request, major_campus, *args, **kwargs):
-        majors = Major.get_major_list_by_campus()
-        return self.json_response(majors)
+        if major_campus in self.valid_campus:
+            majors = Major.get_major_list_by_campus(major_campus)
+            return self.json_response(majors)
+        else:
+            return self.error_response(status=400, message="Invalid campus")
 
 
 @method_decorator(login_required, name="dispatch")

@@ -11,14 +11,16 @@ class TestMajorApi(ApiTest):
         super(TestMajorApi, self).setUp()
 
     def test_list(self):
-        response = MajorList.as_view()(self.request)
+        response = MajorList.as_view()(self.request, major_campus="seattle")
         major_list = json.loads(response.content)
-        self.assertEqual(len(major_list), 3)
-        self.assertEqual(major_list['seattle'][0]['key'], "TRAIN")
-        self.assertEqual(major_list['seattle'][0]['value'], "Railroad Studies")
+        self.assertEqual(len(major_list), 1)
+        self.assertEqual(major_list[0]['key'], "TRAIN")
+        self.assertEqual(major_list[0]['value'], "Railroad Studies")
 
     def test_details(self):
-        response = MajorDetails.as_view()(self.request, major_abbr="TRAIN")
+        response = MajorDetails.as_view()(self.request,
+                                          major_abbr="TRAIN",
+                                          major_campus="seattle")
         major_details = json.loads(response.content)
         self.assertIn("http", major_details['major_home_url'])
         self.assertEqual(major_details['gpa_2yr'][0]['count'], 0)
