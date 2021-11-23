@@ -51,6 +51,15 @@ export default {
       this.generateChart(course.gpa_distro);
     }
   },
+  computed: {
+    formatGPA() {
+      if (d.gpa == '50') {
+        var newFormat = d3.format("");
+      } else {
+        var newFormat = d3.format(".2n");
+      }
+    },
+  },
   methods: {
     generateChart(gpa_data){
       // clear chart
@@ -97,10 +106,28 @@ export default {
         .attr("y", function(d) { return y(d.count); })
         .attr("height", function(d) { return height - y(d.count); })
         .style('fill', '#69b3a2');
+
+      svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x", 0 - (height / 2))
+        .attr("dy", "0.5em")
+        .style("text-anchor", "middle")
+        .style("font-size", "0.85rem")
+        .classed("chart-label", true)
+        .text("Number of students");
+
+      svg.append("text")
+        .attr('x', width / 2)
+        .attr('y', height + margin.bottom)
+        .style("text-anchor", "middle")
+        .style("font-size", "0.85rem")
+        .text("Course Grade");
+
       // add the x Axis
       svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x).tickValues(x.domain().filter(function (d, i) { return !(i % 5) })).tickFormat(this.newFormat));
 
       // add the y Axis
       svg.append("g")
