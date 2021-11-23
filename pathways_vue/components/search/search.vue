@@ -97,4 +97,9 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
+</style>
