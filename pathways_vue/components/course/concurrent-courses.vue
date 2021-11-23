@@ -8,10 +8,10 @@
         Students who took <strong>{{courseData.course_id}}</strong> in the past 2 years also took the following
         courses at the same time.
       </p>
-      <table class="table table-borderless">
+      <table class="table table-borderless table-striped">
         <thead>
           <tr class="bg-light text-dark">
-            <th scope="col" style="width: 10%">
+            <th scope="col" style="width: 5%">
               %
               <a
                 tabindex="0"
@@ -22,11 +22,11 @@
                 title="Percentage"
                 data-bs-content="Description needed."
               >
-                <i class="bi bi-info-circle-fill"></i>
+                <i class="bi bi-info-circle-fill me-0"></i>
               </a>
             </th>
-            <th scope="col" class="visually-hidden" style="width: 30%">Percentage Graph</th>
-            <th scope="col" style="width: 30%">Concurrent Course</th>
+            <th scope="col" class="visually-hidden" style="width: 15%">Percentage Graph</th>
+            <th scope="col" style="width: 50%">Concurrent Course</th>
             <th scope="col" style="width: 30%">COI</th>
           </tr>
         </thead>
@@ -99,4 +99,8 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.table {
+  --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
+}
+</style>
