@@ -21,6 +21,10 @@
 </head>
 
 <body {% if ga_key %}data-google-analytics="{{ ga_key }}"{% endif %} data-django-debug="{{ django_debug|lower}}">
+    <script type="text/javascript">
+      window.user = '{{ user }}';
+      window.show_welcome = '{{  show_welcome }}';
+    </script>
 
     <!-- vue app will be injected here -->
     <div id="app"></div>
