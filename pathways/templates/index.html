@@ -23,7 +23,8 @@
 <body {% if ga_key %}data-google-analytics="{{ ga_key }}"{% endif %} data-django-debug="{{ django_debug|lower}}">
     <script type="text/javascript">
       window.user = '{{ user }}';
-      window.show_welcome = '{{  show_welcome }}';
+      window.show_welcome = {{  show_welcome | yesno:"true,false" }};
+      window.csrf_token = '{{  csrf_token }}';
     </script>
 
     <!-- vue app will be injected here -->

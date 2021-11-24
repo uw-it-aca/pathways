@@ -14,7 +14,7 @@ class UserPreference(RESTDispatch):
     def post(self, request, *args, **kwargs):
         uwnetid = get_user(self.request)
         request_params = json.loads(request.body)
-        welcome_display = request_params.get("welcome_display", True)
+        welcome_display = request_params.get("viewed_welcome_display", False)
         defaults = {'uwnetid': uwnetid,
                     'has_viewed_welcome': welcome_display}
         user, created = \
