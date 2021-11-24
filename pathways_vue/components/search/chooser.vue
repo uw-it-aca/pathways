@@ -120,7 +120,7 @@ export default {
       if(this.searchType==="major"){
         return this.majorList.map(m => m.value)
       }else if(this.searchType==="course"){
-        //handle course
+        return this.courseList.map(m => m.value)
       }
     },
     selectedKey() {
@@ -161,10 +161,19 @@ export default {
     },
     prefillCampus(){
       this.selectedCampus = this.prefillCampus;
-      this.fetch_major_data()
+      if(this.prefillType==="major"){
+        this.fetch_major_data()
+      }else if(this.prefillType==="course"){
+        this.fetch_course_data()
+      }
       this.doPrefill = true;
     },
     majorList(){
+      if(this.doPrefill){
+        this.prefillForm();
+      }
+    },
+    courseList(){
       if(this.doPrefill){
         this.prefillForm();
       }
@@ -193,8 +202,9 @@ export default {
       }
     },
     onSelected() {
+      let url = "/" + this.searchType;
       this.$router.push({
-        path: "/major",
+        path: url,
         query: { ['id']: this.selectedKey,
           ['campus']: this.selectedCampus}
       });
@@ -203,7 +213,13 @@ export default {
         campus: this.selectedCampus});
     },
 
-    fetch_course_data(){},
+    fetch_course_data(){
+      const vue = this;
+      this.axios.get("/api/v1/courses/" + this.selectedCampus).then((response) => {
+        vue.courseList = response.data;
+        this.loadingList = false;
+      });
+    },
     fetch_major_data(){
       const vue = this;
       this.axios.get("/api/v1/majors/" + this.selectedCampus).then((response) => {

@@ -7,7 +7,7 @@
       <div class="mt-3">
         <ul class="list-unstyled mb-0">
           <li v-for="prereq in prereqs">
-            <a :href="'/course/?code='+prereq.course_id" class="router-link-active">
+            <a :href="'/course/?id='+prereq.course_id" class="router-link-active">
               <span class="badge bg-link-color text-light">{{prereq.course_id}}</span>
             </a>
             <span class="ms-3">{{prereq.course_title}}</span>
@@ -24,7 +24,7 @@
       <div class="mt-3">
         <ul class="list-unstyled mb-0">
           <li v-for="postreq in postreqs">
-            <a :href="'/course/?code='+postreq.course_id" class="router-link-active">
+            <a :href="'/course/?id='+postreq.course_id" class="router-link-active">
               <span class="badge bg-link-color text-light">{{postreq.course_id}}</span>
             </a>
             <span class="ms-3">{{postreq.course_title}}</span>

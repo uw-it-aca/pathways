@@ -16,10 +16,10 @@ urlpatterns = [
         r'^api/v1/majors/(?P<major_campus>[^/]+)/(?P<major_abbr>[^/]*)$',
         MajorDetails.as_view(), name='major-details'),
     re_path(
-        r'^api/v1/courses/$',
+        r'^api/v1/courses/(?P<course_campus>[^/]*)$',
         CourseList.as_view(), name='course-list'),
     re_path(
-        r'^api/v1/courses/(?P<course_abbr>[^/]*)$',
+        r'^api/v1/courses/details/(?P<course_abbr>[^/]*)$',
         CourseDetails.as_view(), name='course-details'),
     re_path(
         r'^api/v1/curric_prereq/(?P<curric_abbr>[^/]*)$',
