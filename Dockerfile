@@ -9,10 +9,8 @@ ADD --chown=acait:acait setup.py /app/
 ADD --chown=acait:acait requirements.txt /app/
 
 RUN . /app/bin/activate && pip install -r requirements.txt
-RUN . /app/bin/activate && pip install psycopg2
 
-ADD --chown=acait:acait . /app/
-ADD --chown=acait:acait docker/ project/
+RUN . /app/bin/activate && pip install psycopg2
 
 FROM node:14.6.0-stretch AS wpack
 
