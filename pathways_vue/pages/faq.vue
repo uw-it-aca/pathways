@@ -86,7 +86,7 @@ export default {
   },
   data() {
     return {
-      pageTitle: 'About DawgPath',
+      pageTitle: 'DawgPath FAQ',
     };
   },
   methods: {},
