@@ -30,7 +30,9 @@ services:
       NODE_ENV: "development"
       VUE_DEVTOOLS: "True"
       BUNDLE_ANALYZER: "True"
+      ENV: "development"
     volumes:
+      - ./pathways:/app/pathways # expose main django app so webpack-loader can output bundles here
       - ./pathways_vue:/app/pathways_vue
       - statics-volume:/static
     command: npx webpack --watch --mode=development

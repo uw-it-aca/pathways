@@ -4,7 +4,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Home from '../pages/home.vue';
 import Course from '../pages/course.vue';
 import Major from '../pages/major.vue';
-import About from '../pages/about.vue';
+import Faq from '../pages/faq.vue';
 
 const routes = [
   {
@@ -13,9 +13,9 @@ const routes = [
     component: Home
   },
   {
-    path: "/about",
-    name: "About",
-    component: About,
+    path: "/faq",
+    name: "FAQ",
+    component: Faq,
     pathToRegexpOptions: { strict: true }
   },
   {

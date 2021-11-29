@@ -26,21 +26,21 @@
         <dl class="row">
           <dt class="col-sm-6">
             <i style="color: #ff8c00" class="bi bi-triangle-fill"></i>
-            <span class="key-desc">CHEM 162</span>
+            <span class="key-desc">{{course_id}}</span>
           </dt>
-          <dd class="col-sm-6 key-coi">COI: 2.7</dd>
+          <dd class="col-sm-6 key-coi">COI: {{course_coi}}</dd>
           <dt class="col-sm-6">
             <i class="bi bi-circle-fill"></i>
-            <span class="key-desc">Average course in CHEM curriculum</span>
+            <span class="key-desc">Average course in {{curric_abbr}} curriculum</span>
           </dt>
-          <dd class="col-sm-6 key-coi">COI: 2.0</dd>
+          <dd class="col-sm-6 key-coi">COI: {{curric_coi}}</dd>
           <dt class="col-sm-6">
             <i class="bi bi-square-fill"></i>
-            <span class="key-desc">Average 100 Level Course at UW</span>
+            <span class="key-desc">Average {{course_level}} Level Course at UW</span>
           </dt>
-          <dd class="col-sm-6 key-coi">COI: 1.8</dd>
+          <dd class="col-sm-6 key-coi">COI: {{course_level_coi}}</dd>
         </dl>
-        <p>*53.9% of all UW courses fall within the 2-3 range</p>
+        <p>*{{percent_in_range}}% of all UW courses fall within the {{range_text}} range</p>
       </div>
     </div>
   </div>
@@ -59,14 +59,61 @@ export default {
         { outcome: 'curr', value: 2.0 },
         { outcome: 'uw', value: 1.8 },
       ],
+      percent_in_range: null,
+      course_coi: null,
+      course_level_coi: null,
+      curric_coi: null,
+      curric_id: null,
+      curric_abbr: null,
+      course_num: null
     };
   },
+    props: {
+    course: {
+      type: Object,
+      required: true,
+    },
+  },
+  watch: {
+    course: function (course){
+      this.percent_in_range = course.coi_data.percent_in_range;
+      this.course_coi = course.coi_data.course_coi;
+      this.course_level_coi = course.coi_data.course_level_coi;
+      this.curric_coi = course.coi_data.curric_coi;
+      this.course_id = course.course_id;
+
+      var split_pos = this.course_id.lastIndexOf(" ");
+      this.curric_abbr = this.course_id.substring(0, split_pos);
+      this.course_num = parseInt(this.course_id.substring(split_pos + 1,
+        this.course_id.length));
+      this.generateRect();
+    }
+  },
   mounted() {
-    this.generateRect();
     var popover = new Popover(document.querySelector('.info-popper'));
+  },
+  computed: {
+    course_level: function (){
+      return Math.floor(this.course_num/100)*100;
+    },
+    range_text: function (){
+      if(this.course_coi <= 1){
+        return "0 - 1"
+      } else if(this.course_coi <= 2){
+        return "1 - 2"
+      } else if(this.course_coi <= 3){
+        return "2 - 3"
+      }else if(this.course_coi <= 4){
+        return "3 - 4"
+      }else if(this.course_coi <= 5){
+        return "4 - 5"
+      }
+    }
   },
   methods: {
     generateRect() {
+      // Clear any previous graphs
+      document.getElementById("coiGraph").innerHTML = "";
       const margin = { top: 20, right: 10, bottom: 20, left: 10 };
       const width = 600 - margin.left - margin.right,
         height = 100 - margin.top - margin.bottom;
@@ -105,18 +152,9 @@ export default {
         .attr('fill', '#055CAA');
 
       // Pull in data to plot on line
-
-      const CourseCOI = this.coi.filter(function (d) {
-        return d.outcome === 'course';
-      })[0].value;
-
-      const CurrCOI = this.coi.filter(function (d) {
-        return d.outcome === 'curr';
-      })[0].value;
-
-      const UwCOI = this.coi.filter(function (d) {
-        return d.outcome === 'uw';
-      })[0].value;
+      const CourseCOI = this.course_coi;
+      const CurrCOI = this.curric_coi;
+      const UwCOI = this.course_level_coi;
 
       // Draw the axis
       let xAxisGenerator = d3.axisBottom(x).ticks(5).tickSize(-20);

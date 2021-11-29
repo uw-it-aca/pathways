@@ -5,7 +5,7 @@
     <div class="card-body">
       <h3>Concurrent Courses</h3>
       <p>
-        Students who took <strong>CHEM 162</strong> in the past 2 years also took the following
+        Students who took <strong>{{courseData.course_id}}</strong> in the past 2 years also took the following
         courses at the same time.
       </p>
       <table class="table table-borderless">
@@ -31,15 +31,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="align-middle">
-            <th scope="row">73%</th>
+          <tr class="align-middle" v-for="course in concurrent_courses">
+            <th scope="row">{{course.percent}}%</th>
             <td>
               <div class="progress">
                 <div
                   class="progress-bar bg-secondary"
                   role="progressbar"
-                  style="width: 73%"
-                  aria-valuenow="73"
+                  :style="course.width"
+                  :aria-valuenow="course.percent"
                   aria-valuemin="0"
                   aria-valuemax="100"
                 ></div>
@@ -47,55 +47,11 @@
             </td>
             <td>
               <a href="/course/?code=CSS+415" class="router-link-active"
-                ><span class="badge bg-link-color text-light">CSS 415</span></a
+                ><span class="badge bg-link-color text-light">{{course.course}}</span></a
               >
-              Preparation for General Chemistry
+              {{course.title}}
             </td>
-            <td>5.55</td>
-          </tr>
-          <tr class="align-middle">
-            <th scope="row">55%</th>
-            <td>
-              <div class="progress">
-                <div
-                  class="progress-bar bg-secondary"
-                  role="progressbar"
-                  style="width: 55%"
-                  aria-valuenow="55"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-            </td>
-            <td>
-              <a href="/course/?code=MATH+124" class="router-link-active"
-                ><span class="badge bg-link-color text-light">MATH 124</span></a
-              >
-              Calculus with Analytic Geometry I
-            </td>
-            <td>3.51</td>
-          </tr>
-          <tr class="align-middle">
-            <th scope="row">27%</th>
-            <td>
-              <div class="progress">
-                <div
-                  class="progress-bar bg-secondary"
-                  role="progressbar"
-                  style="width: 27%"
-                  aria-valuenow="27"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-            </td>
-            <td>
-              <a href="/course/?code=CHEM+317" class="router-link-active"
-                ><span class="badge bg-link-color text-light">CHEM 317</span></a
-              >
-              Inorganic Chemistry Laboratory
-            </td>
-            <td>7.2</td>
+            <td>{{course.coi_score}}</td>
           </tr>
         </tbody>
       </table>
@@ -108,6 +64,12 @@ import { Popover } from 'bootstrap';
 
 export default {
   name: 'ConcurrentCourses',
+    props: {
+    courseData: {
+      type: Object,
+      required: true,
+    }
+  },
   data() {
     return {};
   },
@@ -115,6 +77,25 @@ export default {
     var popover = new Popover(document.querySelector('.info-course-concurrent'));
   },
   methods: {},
+  computed: {
+    concurrent_courses: function (){
+      if(!this.courseData.concurrent_courses){
+        return []
+      }
+      let processed_courses = [];
+      for (const [course, data] of Object.entries(this.courseData.concurrent_courses)) {
+        let percent = Math.round(data['percent'] * 100)
+        let style_string = `width: ${percent}%`;
+
+        processed_courses.push({'course': course,
+                                 'percent': percent,
+                                 'title': data['title'],
+                                 'width': style_string,
+                                 'coi_score': data['coi_score']})
+      }
+      return processed_courses.sort((a, b) => (a.percent < b.percent)? 1 : -1).slice(0, 10);
+    }
+  }
 };
 </script>
 

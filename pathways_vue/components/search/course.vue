@@ -1,13 +1,13 @@
 // course.vue
-
 <template>
   <search
     inner-id="courses"
-    :options="courseListSearchable"
+    :options="course_list"
     placeholder="Enter a course code"
     route-path="course"
     sync-query-param="code"
     v-model:selected="selected"
+    :data-loading="is_loading"
   />
 </template>
 
@@ -20,26 +20,22 @@ export default {
     'search': Search,
   },
   props: {
-    courseList: {
-      type: Array,
-      required: true,
-    },
     selected: String,
   },
+  data() {
+    return {
+      course_list: [],
+      is_loading: false
+    };
+  },
   emits: ['update:selected'],
-  computed: {
-    courseListSearchable() {
-      let selectable = {};
-
-      this.courseList.forEach((course) => {
-        selectable[course.split(':')[0].trim()] = {
-          label: course.trim(),
-          data: course.split(':')[0].trim(),
-        };
-      });
-
-      return selectable;
-    }
+  mounted() {
+    const vue = this;
+    this.is_loading = true;
+    this.axios.get("/api/v1/courses/").then((response) => {
+      vue.course_list = response.data;
+      vue.is_loading = false;
+    });
   },
   watch: {
     selected(newValue) {

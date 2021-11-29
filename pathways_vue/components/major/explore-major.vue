@@ -5,11 +5,12 @@
     <div class="card-body explore-major">
       <h3>Explore this Major</h3>
       <ul>
-        <!-- TODO: improve this to have proper capitalization and key/value mapping -->
-        <li v-for="(field, i) in fields" :key="i">
-          <a :href="major[field]" target="_blank">{{ field }}</a>
+        <li v-if="major['major_home_url']">
+          <a :href="major['major_home_url']" target="_blank">Degree Requirements</a>
         </li>
-        <li><a href="#">MyPlan Program Page</a></li>
+        <li v-if="major['program_code']">
+          <a :href="myplanURL" target="_blank">MyPlan Program Page</a>
+        </li>
       </ul>
     </div>
   </div>
@@ -29,12 +30,10 @@ export default {
     return {};
   },
   computed: {
-    fields() {
-      let wantedFields = [
-        'Degree requirements',
-      ];
-
-      return wantedFields.filter((field) => field in this.major);
+    myplanURL() {
+      if(this.major['program_code'] !== null){
+        return "https://myplan.uw.edu/program/#/programs/" + this.major['program_code']
+      }
     },
   },
   methods: {},

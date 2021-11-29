@@ -3,16 +3,16 @@
 <template>
   <div class="card mb-5">
     <div class="card-body explore-major">
-      <h3>Most commonly taken courses among students who declared this major</h3>
+      <h3>Common courses for {{ major["major_title"] }}</h3>
       <p>
         Below are the 10 most popular courses at the time of declaration among students who declared
         this major in the last 5 years.
       </p>
 
-      <table class="table table-borderless">
+      <table class="table table-borderless table-striped">
         <thead>
           <tr class="bg-light text-dark">
-            <th scope="col" style="width: 10%">
+            <th scope="col" style="width: 5%">
               %
               <a
                 tabindex="0"
@@ -20,83 +20,57 @@
                 role="button"
                 data-bs-toggle="popover"
                 data-bs-trigger="focus"
+                data-bs-placement="top"
                 title="Percentage"
-                data-bs-content="Description of common courses for majors."
+                data-bs-content="Percent of students who had taken the course by the time they declared for {major}."
               >
-                <i class="bi bi-info-circle-fill"></i>
+                <i class="bi bi-info-circle-fill me-0"></i>
               </a>
             </th>
-            <th scope="col" class="visually-hidden" style="width: 30%">Percentage Graph</th>
-            <th scope="col" style="width: 30%">Common Course</th>
-            <th scope="col" style="width: 30%">CDI</th>
+            <th scope="col" class="visually-hidden" style="width: 15%">Percentage Graph</th>
+            <th scope="col" style="width: 50%">Common Course</th>
+            <th scope="col" style="width: 30%">
+              COI
+              <a
+                tabindex="0"
+                class="info-common-coi"
+                role="button"
+                data-bs-toggle="popover"
+                data-bs-trigger="focus"
+                data-bs-placement="top"
+                title="Course Outcome Index"
+                data-bs-content="Description of COI value."
+              >
+                <i class="bi bi-info-circle-fill me-0"></i>
+              </a>
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr class="align-middle">
-            <th scope="row">73%</th>
+          <tr v-for="course in common_courses" class="align-middle">
+            <th scope="row">{{ course.percent }}%</th>
             <td>
               <div class="progress">
                 <div
                   class="progress-bar bg-secondary"
                   role="progressbar"
-                  style="width: 73%"
-                  aria-valuenow="73"
+                  :style="course.width"
+                  :aria-valuenow="course.percent"
                   aria-valuemin="0"
                   aria-valuemax="100"
                 ></div>
               </div>
             </td>
             <td>
-              <a href="/course/?code=CSS+415" class="router-link-active"
-                ><span class="badge bg-link-color text-light">CSS 415</span></a
+              <a
+                v-bind:href="'/course/?code=' + encodeURIComponent(course.course)"
+                class="router-link-active"
               >
-              Preparation for General Chemistry
+                <span class="badge bg-link-color text-light me-2">{{ course.course }}</span>
+              </a>
+              {{ course.title }}
             </td>
-            <td>5.55</td>
-          </tr>
-          <tr class="align-middle">
-            <th scope="row">55%</th>
-            <td>
-              <div class="progress">
-                <div
-                  class="progress-bar bg-secondary"
-                  role="progressbar"
-                  style="width: 55%"
-                  aria-valuenow="55"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-            </td>
-            <td>
-              <a href="/course/?code=MATH+124" class="router-link-active"
-                ><span class="badge bg-link-color text-light">MATH 124</span></a
-              >
-              Calculus with Analytic Geometry I
-            </td>
-            <td>3.51</td>
-          </tr>
-          <tr class="align-middle">
-            <th scope="row">27%</th>
-            <td>
-              <div class="progress">
-                <div
-                  class="progress-bar bg-secondary"
-                  role="progressbar"
-                  style="width: 27%"
-                  aria-valuenow="27"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-            </td>
-            <td>
-              <a href="/course/?code=CHEM+317" class="router-link-active"
-                ><span class="badge bg-link-color text-light">CHEM 317</span></a
-              >
-              Inorganic Chemistry Laboratory
-            </td>
-            <td>7.2</td>
+            <td>{{course.coi_score}}</td>
           </tr>
         </tbody>
       </table>
@@ -109,14 +83,42 @@ import { Popover } from 'bootstrap';
 
 export default {
   name: 'CommonCourses',
+  props: {
+    major: {
+      type: Object,
+      required: true,
+    }
+  },
   data() {
     return {};
   },
   mounted() {
-    var popover = new Popover(document.querySelector('.info-major-common'));
+    var popover = new Popover(document.querySelector('.info-common-coi'));
+    var popover2 = new Popover(document.querySelector('.info-major-common'));
   },
   methods: {},
+  computed: {
+    common_courses: function () {
+      let processed_courses = [];
+
+      for (const [course, data] of Object.entries(this.major.common_course_decl)) {
+
+        let style_string = `width: ${data['percent']}%`;
+        processed_courses.push({'course': course,
+          'percent': data['percent'],
+          'title': data['title'],
+          'width': style_string,
+          'coi_score': data['coi_score']})
+      }
+
+      return processed_courses.sort((a, b) => (a.percent < b.percent) ? 1 : -1);
+    }
+  }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.table {
+  --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
+}
+</style>
