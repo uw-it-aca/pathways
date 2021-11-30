@@ -130,7 +130,9 @@ export default {
       const svg = d3
         .select('#coiGraph')
         .append('svg')
-        .attr("viewBox", `0 0 ${rwidth} ${rheight}`);
+        .attr("viewBox", `0 0 ${rwidth} ${rheight}`)
+        .append("g")
+        .attr("transform","translate(" + margin.left + "," + margin.top + ")");
 
       // Draw the rect that expands width, light blue
       svg
@@ -203,7 +205,7 @@ export default {
         .text('on target with predictions*');
 
       g.append('text')
-        .attr('x', 425)
+        .attr('x', 410)
         .attr('y', 25)
         .attr('text-anchor', 'right')
         .style('font-size', '11px')
