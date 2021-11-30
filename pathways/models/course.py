@@ -13,6 +13,7 @@ class Course(models.Model):
     course_id = models.CharField(max_length=10)
     course_title = models.CharField(max_length=120)
     course_credits = models.CharField(max_length=12)
+    course_campus = models.CharField(max_length=7)
     gpa_distro = models.JSONField(null=True)
     concurrent_courses = models.JSONField(null=True)
     prereq_graph = models.JSONField(null=True)
@@ -23,16 +24,32 @@ class Course(models.Model):
     @staticmethod
     def get_course_list():
         courses = Course.objects.only("course_id", "course_title")
+        return Course._get_course_list_json(courses)
+
+    @staticmethod
+    def get_course_list_by_campus(campus):
+        courses = Course.objects\
+            .filter(course_campus=campus)\
+            .only("course_id", "course_title")
+        return Course._get_course_list_json(courses)
+
+    @staticmethod
+    def _get_course_list_json(course_list):
         course_json = []
-        for course in courses:
+        for course in course_list:
             course_text = "%s: %s" % (course.course_id, course.course_title)
             course_json.append({"key": course.course_id,
-                               "value": course_text})
+                                "value": course_text})
         return course_json
 
     @staticmethod
     def get_course_data(course_id):
         return Course.objects.get(course_id=course_id).json_data()
+
+    @staticmethod
+    def get_course_data_by_campus(campus, course_id):
+        return Course.objects.get(course_campus=campus,
+                                  course_id=course_id).json_data()
 
     def json_data(self):
         graph = None
@@ -42,6 +59,7 @@ class Course(models.Model):
         return {"course_id": self.course_id,
                 "course_title": self.course_title,
                 "course_credits": self.course_credits,
+                "course_campus": self.course_campus,
                 "gpa_distro": self.fix_gpa_json(self.gpa_distro),
                 "concurrent_courses": concurrrent,
                 "prereq_graph": graph,

@@ -63,7 +63,7 @@
             </td>
             <td>
               <a
-                v-bind:href="'/course/?code=' + encodeURIComponent(course.course)"
+                v-bind:href="'/course/?id=' + encodeURIComponent(course.course)"
                 class="router-link-active"
               >
                 <span class="badge bg-link-color text-light me-2">{{ course.course }}</span>

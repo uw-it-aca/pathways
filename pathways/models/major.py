@@ -29,6 +29,17 @@ class Major(models.Model):
         return major_json
 
     @staticmethod
+    def get_major_list_by_campus(major_campus):
+        majors = Major.objects\
+            .filter(major_campus=major_campus.capitalize())\
+            .only("major_abbr", "major_title")
+        major_json = []
+        for major in majors:
+            major_json.append({"key": major.major_abbr,
+                               "value": major.major_title})
+        return major_json
+
+    @staticmethod
     def get_major_data(major_abbr):
         return Major.objects.get(major_abbr=major_abbr).json_data()
 
@@ -48,8 +59,12 @@ class Major(models.Model):
     @staticmethod
     def fix_gpa_json(json):
         fixed = []
-        for key in json:
-            fixed.append({"gpa": key, "count": json[key]})
+        try:
+            for key in json:
+                fixed.append({"gpa": key, "count": json[key]})
+        except TypeError:
+            # No GPA data
+            pass
         return fixed
 
     @staticmethod
@@ -58,17 +73,21 @@ class Major(models.Model):
             return "http:\\\\%s" % url
 
     def get_common_with_coi(self):
-        courses = self.common_course_decl.keys()
-        coi_scores = Course.objects.filter(course_id__in=courses)
         common_with_coi = {}
-        for course in courses:
-            try:
-                percent = self.common_course_decl[course]['percent']
-                title = self.common_course_decl[course]['title']
-                coi = coi_scores.get(course_id=course).coi_score
-                common_with_coi[course] = {"percent": percent,
-                                           "title": title,
-                                           "coi_score": coi}
-            except ObjectDoesNotExist:
-                pass
+        try:
+            courses = self.common_course_decl.keys()
+            coi_scores = Course.objects.filter(course_id__in=courses)
+            for course in courses:
+                try:
+                    percent = self.common_course_decl[course]['percent']
+                    title = self.common_course_decl[course]['title']
+                    coi = coi_scores.get(course_id=course).coi_score
+                    common_with_coi[course] = {"percent": percent,
+                                               "title": title,
+                                               "coi_score": coi}
+                except ObjectDoesNotExist:
+                    pass
+        except AttributeError:
+            # No common courses
+            pass
         return common_with_coi
