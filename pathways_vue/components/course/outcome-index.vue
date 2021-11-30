@@ -54,11 +54,6 @@ export default {
   name: 'OutcomeScore',
   data() {
     return {
-      coi: [
-        { outcome: 'course', value: 2.7 },
-        { outcome: 'curr', value: 2.0 },
-        { outcome: 'uw', value: 1.8 },
-      ],
       percent_in_range: null,
       course_coi: null,
       course_level_coi: null,
