@@ -6,9 +6,13 @@ from pathways.views.pages import DefaultPageView
 from pathways.views.api.major import MajorDetails, MajorList
 from pathways.views.api.course import CourseList, CourseDetails
 from pathways.views.api.curric import CurricPrereq
+from pathways.views.api.user import UserPreference
 
 
 urlpatterns = [
+    re_path(
+        r'^api/v1/user_pref/$',
+        UserPreference.as_view(), name='user-pref'),
     re_path(
         r'^api/v1/majors/(?P<major_campus>[^/]*)$',
         MajorList.as_view(), name='major-list'),
