@@ -54,11 +54,6 @@ export default {
   name: 'OutcomeScore',
   data() {
     return {
-      coi: [
-        { outcome: 'course', value: 2.7 },
-        { outcome: 'curr', value: 2.0 },
-        { outcome: 'uw', value: 1.8 },
-      ],
       percent_in_range: null,
       course_coi: null,
       course_level_coi: null,
@@ -116,7 +111,9 @@ export default {
       document.getElementById("coiGraph").innerHTML = "";
       const margin = { top: 20, right: 10, bottom: 20, left: 10 };
       const width = 600 - margin.left - margin.right,
-        height = 100 - margin.top - margin.bottom;
+        height = 100 - margin.top - margin.bottom,
+        rwidth = width + margin.left + margin.right,
+        rheight = height + margin.top + margin.bottom;
 
       // Create the 5.0 COI scale
       const x = d3
@@ -128,8 +125,9 @@ export default {
       const svg = d3
         .select('#coiGraph')
         .append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom);
+        .attr("viewBox", `0 0 ${rwidth} ${rheight}`)
+        .append("g")
+        .attr("transform","translate(" + margin.left + "," + margin.top + ")");
 
       // Draw the rect that expands width, light blue
       svg
@@ -202,7 +200,7 @@ export default {
         .text('on target with predictions*');
 
       g.append('text')
-        .attr('x', 425)
+        .attr('x', 410)
         .attr('y', 25)
         .attr('text-anchor', 'right')
         .style('font-size', '11px')
