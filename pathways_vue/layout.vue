@@ -129,8 +129,8 @@ export default {
       ],
     };
   },
-    mounted() {
-    this.userName == window.user;
+  mounted() {
+    this.userName = window.user;
   },
 };
 </script>
