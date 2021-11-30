@@ -29,6 +29,17 @@ class Major(models.Model):
         return major_json
 
     @staticmethod
+    def get_major_list_by_campus(major_campus):
+        majors = Major.objects\
+            .filter(major_campus=major_campus.capitalize())\
+            .only("major_abbr", "major_title")
+        major_json = []
+        for major in majors:
+            major_json.append({"key": major.major_abbr,
+                               "value": major.major_title})
+        return major_json
+
+    @staticmethod
     def get_major_data(major_abbr):
         return Major.objects.get(major_abbr=major_abbr).json_data()
 

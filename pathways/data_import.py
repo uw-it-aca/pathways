@@ -39,6 +39,7 @@ def import_course_data(data, coi_data):
             course_id=course['course_id'],
             course_title=course['course_title'],
             course_credits=course['course_credits'],
+            course_campus=course['course_campus'],
             gpa_distro=course['gpa_distro'],
             concurrent_courses=course['concurrent_courses'],
             prereq_graph=course['prereq_graph'],

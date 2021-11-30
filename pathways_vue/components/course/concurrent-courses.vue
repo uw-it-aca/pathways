@@ -46,7 +46,7 @@
               </div>
             </td>
             <td>
-              <a href="/course/?code=CSS+415" class="router-link-active"
+              <a :href="'/course/?id=' + course.course_id" class="router-link-active"
                 ><span class="badge bg-link-color text-light">{{course.course}}</span></a
               >
               {{course.title}}
