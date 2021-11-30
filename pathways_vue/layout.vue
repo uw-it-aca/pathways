@@ -102,7 +102,7 @@ export default {
       // minimum application setup overrides
       appName: 'DawgPath',
       appRootUrl: '/',
-      userName: 'javerage',
+      userName: '',
       signOutUrl: '/signout',
 
       // automatically set year
@@ -128,6 +128,9 @@ export default {
         },
       ],
     };
+  },
+    mounted() {
+    this.userName == window.user;
   },
 };
 </script>
