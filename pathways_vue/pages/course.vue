@@ -19,15 +19,15 @@
 
       <div v-if="courseData">
         <div class="row">
-          <div class="col-8"><course-details :course="courseData" /></div>
-          <div class="col-4"><explore-course :course="courseData"/></div>
+          <div class="col-sm-8"><course-details :course="courseData" /></div>
+          <div class="col-sm-4"><explore-course :course="courseData"/></div>
         </div>
         <div class="row">
-          <div class="col">
+          <div class="col-sm-6">
             <grade-distribution
             :course="courseData"/>
           </div>
-          <div class="col">
+          <div class="col-sm-6">
             <outcome-index
             :course="courseData"/>
           </div>

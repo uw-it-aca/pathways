@@ -116,7 +116,9 @@ export default {
       document.getElementById("coiGraph").innerHTML = "";
       const margin = { top: 20, right: 10, bottom: 20, left: 10 };
       const width = 600 - margin.left - margin.right,
-        height = 100 - margin.top - margin.bottom;
+        height = 100 - margin.top - margin.bottom,
+        rwidth = width + margin.left + margin.right,
+        rheight = height + margin.top + margin.bottom;
 
       // Create the 5.0 COI scale
       const x = d3
@@ -128,8 +130,7 @@ export default {
       const svg = d3
         .select('#coiGraph')
         .append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom);
+        .attr("viewBox", `0 0 ${rwidth} ${rheight}`);
 
       // Draw the rect that expands width, light blue
       svg
