@@ -1,0 +1,111 @@
+ingress:
+  enabled: true
+  tls:
+    dawgpath:
+      secretName: dawgpath.uw.edu-ingress-cert
+      hosts:
+        - dawgpath.uw.edu
+  hosts:
+    dawgpath:
+      host: dawgpath.uw.edu
+      paths:
+        - "/"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "16K"
+
+lifecycle:
+  enabled: true
+  preStop:
+    enabled: true
+affinity:
+  podsSpanNodes: true
+readiness:
+  enabled: true
+securityPolicy:
+  enabled: true
+labels:
+  billing-code: "786"
+
+externalService:
+  enabled: true
+  name: dawgpath-db-service
+  type: ClusterIP
+  serviceAddress: 172.18.1.250
+  servicePort: 5432
+database:
+  engine: postgres
+  name: dawgpath-prod
+  hostname: dawgpath-db-service
+  secretName: dawgpath.uw.edu-sql-secrets
+
+repo: dawgpath
+instance: prod
+image:
+  repository: gcr.io/uwit-mci-axdd/dawgpath
+  tag: IMAGE_TAG
+
+memcached:
+  enabled: false
+
+environmentVariables:
+  - name: ENV
+    value: prod
+  - name: AUTH
+    value: SAML
+  - name: SAML_ENTITY_ID
+    value: https://dawgpath.uw.edu/saml2
+  - name: CLUSTER_CNAME
+    value: dawgpath.uw.edu
+
+externalSecrets:
+  enabled: true
+  secrets:
+    - name: dawgpath.uw.edu-secrets
+      externalKey: axdd/kv/data/dawgpath/prod/secrets
+      data:
+        - name: django-secret
+          property: django-secret
+        - name: access-group-id
+          property: access-group-id
+        - name: google-analytics-key
+          property: google-analytics-key
+    - name: dawgpath.uw.edu-sql-secrets
+      externalKey: axdd/kv/data/dawgpath/shared/sql-secrets
+      data:
+        - name: username
+          property: username
+        - name: password
+          property: password
+    - name: dawgpath.uw.edu-ic-certs
+      externalKey: axdd/kv/data/dawgpath/prod/ic-certs
+      data:
+        - name: dawgpath.uw.edu-ic.cert
+          property: dawgpath.uw.edu-ic.cert
+    - name: dawgpath.uw.edu-uw-idp-cert
+      externalKey: axdd/kv/data/idp-cert
+      data:
+        - name: uw-idp-cert
+          property: cert
+
+environmentVariablesSecrets:
+  djangoSecret:
+    name: DJANGO_SECRET
+    secretName: dawgpath.uw.edu-secrets
+    secretKey: django-secret
+  samlSPCert:
+    name: SP_CERT
+    secretName: dawgpath.uw.edu-ic-certs
+    secretKey: dawgpath.uw.edu-ic.cert
+  samlIDPCert:
+    name: IDP_CERT
+    secretName: dawgpath.uw.edu-uw-idp-cert
+    secretKey: uw-idp-cert
+  accessGroup:
+    name: ACCESS_GROUP
+    secretName: dawgpath.uw.edu-secrets
+    secretKey: access-group-id
+  googleAnalyticsKey:
+    name: GOOGLE_ANALYTICS_KEY
+    secretName: dawgpath.uw.edu-secrets
+    secretKey: google-analytics-key
