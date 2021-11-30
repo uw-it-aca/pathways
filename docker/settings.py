@@ -8,18 +8,11 @@ INSTALLED_APPS += [
 
 # Location of stats file that can be accessed during local development and 
 # collected from during production build process
-if os.getenv("ENV") == "localdev":
-    WEBPACK_LOADER = {
-        'DEFAULT': {
-            'STATS_FILE': os.path.join(BASE_DIR, 'pathways/static/webpack-stats.json'),
-        }
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'STATS_FILE': os.path.join(BASE_DIR, 'pathways/static/webpack-stats.json'),
     }
-else:
-    WEBPACK_LOADER = {
-        'DEFAULT': {
-            'STATS_FILE': os.path.join(BASE_DIR, '/static/webpack-stats.json'),
-        }
-    }
+}
 
 # If you have file data, define the path here
 # DATA_ROOT = os.path.join(BASE_DIR, "app_name/data")
