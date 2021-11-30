@@ -114,9 +114,8 @@ constring.txt
 node_modules/
 package-lock.json
 
-# webpack
+# react + webpack
 bundles/
-webpack_bundles/
 webpack-stats.json
 
 # cypress image snapshots diffs

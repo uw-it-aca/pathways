@@ -50,6 +50,7 @@
                       class="btn btn-purple"
                       data-bs-dismiss="modal"
                       aria-label="Close"
+                      @click="saveModalPref"
                     >
                       OK, got it
                     </button>
@@ -99,14 +100,26 @@ export default {
     };
   },
   mounted() {
-    // show the welcome modal when the component is mounted
-    this.showWelcomeModal();
+    if(window.show_welcome){
+      // show the welcome modal when the component is mounted
+      this.showWelcomeModal();
+    }
   },
   methods: {
     showWelcomeModal(event){
         this.welcomeModal = new Modal(document.getElementById('exampleModal'), {})
         this.welcomeModal.show()
     },
+    saveModalPref(){
+      this.axios({
+        method: 'post',
+        url: "/api/v1/user_pref/",
+        headers: {'X-CSRFToken': window.csrf_token},
+        data: {
+          viewed_welcome_display: true
+        }
+      });
+    }
   },
 };
 </script>
