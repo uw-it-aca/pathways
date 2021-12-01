@@ -74,7 +74,7 @@ export default {
       // set the dimensions and margins of the graph
       var margin = { top: 10, right: 30, bottom: 30, left: 40 },
         width = 460 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom,
+        height = 300 - margin.top - margin.bottom,
         rwidth = width + margin.left + margin.right,
         rheight = height + margin.top + margin.bottom;
 
@@ -128,15 +128,15 @@ export default {
         .attr("x", 0 - (height / 2))
         .attr("dy", "0.5em")
         .style("text-anchor", "middle")
-        .style("font-size", "0.85rem")
+        .style("font-size", "0.75rem")
         .classed("chart-label", true)
-        .text("Number of students");
+        .text("Number of Students");
 
       svg.append("text")
         .attr('x', width / 2)
         .attr('y', height + margin.bottom)
         .style("text-anchor", "middle")
-        .style("font-size", "0.85rem")
+        .style("font-size", "0.75rem")
         .text("Course Grade");
 
       // add the x Axis

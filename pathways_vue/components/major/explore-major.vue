@@ -5,9 +5,9 @@
     <div class="card-body explore-major">
       <h3>Explore this Major</h3>
       <ul>
-        <li v-if="major['major_home_url']">
+        <!--<li v-if="major['major_home_url']">
           <a :href="major['major_home_url']" target="_blank">Degree Requirements</a>
-        </li>
+        </li> -->
         <li v-if="major['program_code']">
           <a :href="myplanURL" target="_blank">MyPlan Program Page</a>
         </li>
