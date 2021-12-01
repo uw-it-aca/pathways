@@ -10,8 +10,8 @@ from django.contrib.auth.decorators import login_required
 
 @method_decorator(login_required, name="dispatch")
 class CourseList(RESTDispatch):
-    def get(self, request, *args, **kwargs):
-        courses = Course.get_course_list()
+    def get(self, request, course_campus, *args, **kwargs):
+        courses = Course.get_course_list_by_campus(course_campus)
         return self.json_response(courses)
 
 

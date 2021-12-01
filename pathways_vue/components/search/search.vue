@@ -1,4 +1,5 @@
 <template>
+  <!--
   <div class="input-group" v-if=!dataLoading>
     <input
       type="text"
@@ -10,6 +11,7 @@
     />
     <button type="button" class="btn btn-purple" @click="onSelected">Search</button>
   </div>
+  -->
   <datalist :id="innerId">
     <option v-for="(option, i) in renderableOptions" :key="i">{{ option }}</option>
   </datalist>
@@ -95,4 +97,9 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
+</style>

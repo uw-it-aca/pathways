@@ -9,8 +9,11 @@
 
       <div class="row justify-content-center mb-5">
         <div class="col-md-9">
-          <search-major
-            :prefill_id="majorID"
+          <search-chooser
+            :prefill-id="majorID"
+            :prefill-campus="campus"
+            prefill-type="major"
+            @update:selected="switch_major"
           />
         </div>
       </div>
@@ -26,7 +29,7 @@
           <div class="col-sm-8"><d3-cgpa :major-data="major_data"/></div>
           <div class="col-sm-4"></div>
         </div>
-        
+
         <contact-adviser-major />
       </div>
       <div v-else>
@@ -42,14 +45,14 @@ import Layout from '../layout.vue';
 import MajorDetails from '../components/major/major-details.vue';
 import ExploreMajor from '../components/major/explore-major.vue';
 import CommonCourses from '../components/major/common-courses.vue';
-import SearchMajor from '../components/search/major.vue';
+import SearchChooser from "../components/search/chooser.vue";
 import D3Cgpa from '../components/major/d3-cgpa.vue';
 import ContactAdviserMajor from '../components/major/contact-adviser-major.vue';
 
 export default {
   components: {
     'layout': Layout,
-    'search-major': SearchMajor,
+    'search-chooser': SearchChooser,
     'd3-cgpa': D3Cgpa,
     'contact-adviser-major': ContactAdviserMajor,
     'major-details': MajorDetails,
@@ -61,28 +64,31 @@ export default {
       pageTitle: 'Major',
       selectedMajor: null,
       majorID: null,
+      campus: null,
       major_data: null
     };
   },
   methods: {
-    get_major_data(major_id){
+    switch_major(data){
+      this.majorID = data.id;
+      this.campus = data.campus
+    },
+    get_major_data(){
       const vue = this;
-      this.axios.get("/api/v1/majors/" + major_id).then((response) => {
-        vue.major_data = response.data;
-      });
+      if(this.campus !== null && this.majorID !== null){
+        this.axios.get("/api/v1/majors/" + this.campus + "/" + this.majorID).then((response) => {
+          vue.major_data = response.data;
+        });
+      }
     }
   },
   mounted(){
-    let major_id = this.$route.query.id;
-    this.majorID = major_id;
-    this.emitter.on("update:selected", selectedKey => {
-      this.majorID = selectedKey;
-
-    })
+    this.majorID = this.$route.query.id;
+    this.campus = this.$route.query.campus;
   },
   watch: {
-    majorID(newValue) {
-      this.get_major_data(newValue);
+    majorID() {
+      this.get_major_data();
     }
   },
 };

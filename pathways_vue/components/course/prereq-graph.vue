@@ -97,12 +97,15 @@ export default {
         // if course param was passed
         if (course_param) {
           // select and focus on that course node
-          network.selectNodes([course_param]);
-          network.focus(course_param, {
-            scale: 1.0,
-            offset: {x:50, y:50},
-            animation: true
-          });
+          try {
+            network.selectNodes([course_param]);
+            network.focus(course_param, {
+              scale: 1.0,
+              offset: {x:50, y:50},
+              animation: true
+            });
+          } catch(error){
+          }
         } else {
           // default zoom for ONLY curric search (initial)
           network.moveTo({

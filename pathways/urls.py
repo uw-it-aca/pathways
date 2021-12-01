@@ -12,18 +12,18 @@ from pathways.views.api.user import UserPreference
 urlpatterns = [
     re_path(
         r'^api/v1/user_pref/$',
-        UserPreference.as_view(), name='major-list'),
+        UserPreference.as_view(), name='user-pref'),
     re_path(
-        r'^api/v1/majors/$',
+        r'^api/v1/majors/(?P<major_campus>[^/]*)$',
         MajorList.as_view(), name='major-list'),
     re_path(
-        r'^api/v1/majors/(?P<major_abbr>[^/]*)$',
+        r'^api/v1/majors/(?P<major_campus>[^/]+)/(?P<major_abbr>[^/]*)$',
         MajorDetails.as_view(), name='major-details'),
     re_path(
-        r'^api/v1/courses/$',
+        r'^api/v1/courses/(?P<course_campus>[^/]*)$',
         CourseList.as_view(), name='course-list'),
     re_path(
-        r'^api/v1/courses/(?P<course_abbr>[^/]*)$',
+        r'^api/v1/courses/details/(?P<course_abbr>[^/]*)$',
         CourseDetails.as_view(), name='course-details'),
     re_path(
         r'^api/v1/curric_prereq/(?P<curric_abbr>[^/]*)$',

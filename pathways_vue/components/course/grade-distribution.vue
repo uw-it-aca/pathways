@@ -51,6 +51,15 @@ export default {
       this.generateChart(course.gpa_distro);
     }
   },
+  computed: {
+    formatGPA() {
+      if (d.gpa == '50') {
+        var newFormat = d3.format("");
+      } else {
+        var newFormat = d3.format(".2n");
+      }
+    },
+  },
   methods: {
     generateChart(gpa_data){
       // clear chart
@@ -65,12 +74,18 @@ export default {
       // set the dimensions and margins of the graph
       var margin = { top: 10, right: 30, bottom: 30, left: 40 },
         width = 460 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom;
+        height = 400 - margin.top - margin.bottom,
+        rwidth = width + margin.left + margin.right,
+        rheight = height + margin.top + margin.bottom;
+
+      var tooltip = d3.select('body').append('div')
+        .attr('class', 'tooltip')
+        .style('opacity', 0);
 
       // set the ranges
       var x = d3.scaleBand()
         .range([0, width])
-        .padding(0.1);
+        .padding(0.3);
       var y = d3.scaleLinear()
         .range([height, 0]);
       // append the svg object to the body of the page
@@ -79,8 +94,7 @@ export default {
       var svg = d3
          .select('#gcd_graph')
         .append('svg')
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("viewBox", `0 0 ${rwidth} ${rheight}`)
         .append("g")
         .attr("transform","translate(" + margin.left + "," + margin.top + ")");
 
@@ -96,11 +110,39 @@ export default {
         .attr("width", x.bandwidth())
         .attr("y", function(d) { return y(d.count); })
         .attr("height", function(d) { return height - y(d.count); })
-        .style('fill', '#69b3a2');
+        .on("mouseover", function (event, d) {
+          tooltip.transition()
+            .style("opacity", 1);
+          tooltip.html(`Grade ${d.gpa / 10} No. ${d.count}`)
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function (d) {
+          tooltip.transition()
+            .style("opacity", 0);
+        });
+
+      svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 5 - margin.left)
+        .attr("x", 0 - (height / 2))
+        .attr("dy", "0.5em")
+        .style("text-anchor", "middle")
+        .style("font-size", "0.85rem")
+        .classed("chart-label", true)
+        .text("Number of students");
+
+      svg.append("text")
+        .attr('x', width / 2)
+        .attr('y', height + margin.bottom)
+        .style("text-anchor", "middle")
+        .style("font-size", "0.85rem")
+        .text("Course Grade");
+
       // add the x Axis
       svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x).tickValues(x.domain().filter(function (d, i) { return !(i % 5) })).tickFormat(this.newFormat));
 
       // add the y Axis
       svg.append("g")
@@ -114,5 +156,33 @@ export default {
 <style lang="scss">
 .chart-label {color: red;}
 #gcd_graph {margin-bottom: 1rem;}
+
+.bar {
+  fill: #4b2e83;
+}
+.bar:hover {
+  fill: #333;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  line-height: 1;
+  padding: 3px;
+  background: #000;
+  color: #fff;
+  border-radius: 4px;
+  width: 5rem;
+  height: 3.5rem;
+  font: 12px sans-serif;
+  pointer-events: none;
+}
 
 </style>
