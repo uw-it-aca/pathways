@@ -59,18 +59,13 @@
               </div>
             </div>
           </div>
-
-          <ul>
-            <li><router-link to="/faq">Go to FAQ</router-link></li>
-            <li><router-link to="/major">Go to Major</router-link></li>
-            <li><router-link to="/course">Go to Course</router-link></li>
-          </ul>
-
-          <search-chooser/>
+          <div class="mt-5">
+             <search-chooser/>
+          </div>
           <!-- Button trigger modal -->
           <button
             type="button"
-            class="btn btn-outline-primary mt-2 btn-sm"
+            class="btn btn-link mt-2 btn-sm text-decoration-none"
             @click="showWelcomeModal"
           >
             About DawgPath <i class="bi bi-info-circle"></i>
