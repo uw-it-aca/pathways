@@ -31,6 +31,7 @@
         </div>
 
         <contact-adviser-major />
+        <feedback />
       </div>
       <div v-else>
         No major selected
@@ -48,6 +49,7 @@ import CommonCourses from '../components/major/common-courses.vue';
 import SearchChooser from "../components/search/chooser.vue";
 import D3Cgpa from '../components/major/d3-cgpa.vue';
 import ContactAdviserMajor from '../components/major/contact-adviser-major.vue';
+import Feedback from "../components/common/feedback.vue";
 
 export default {
   components: {
@@ -58,6 +60,7 @@ export default {
     'major-details': MajorDetails,
     'explore-major': ExploreMajor,
     'common-courses': CommonCourses,
+    'feedback': Feedback,
   },
   data() {
     return {
