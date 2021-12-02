@@ -109,7 +109,7 @@ def import_coi_ranges(coi_data):
     range_3 = 0
     range_4 = 0
     for course in coi_data:
-        if course['coi_score'] <= 1:
+        if 0 <= course['coi_score'] <= 1:
             range_0 += 1
             continue
         if course['coi_score'] <= 2:
