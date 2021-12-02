@@ -27,7 +27,7 @@
         </div>
         <div class="offcanvas-body">
             <div class="embed-responsive">
-                <iframe class="embed-responsive-item" src="https://docs.google.com/forms/d/e/1FAIpQLScepHr_b5xnbFkPSsdWJb7QZ-raw27aKrY48tcx60NSF8TbVA/viewform?embedded=true" marginheight="0" marginwidth="0">Loading…</iframe>
+                <iframe class="embed-responsive-item" src="https://docs.google.com/forms/d/e/1FAIpQLScepHr_b5xnbFkPSsdWJb7QZ-raw27aKrY48tcx60NSF8TbVA/viewform?embedded=true"></iframe>
             </div>
         </div>
     </div>
