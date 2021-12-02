@@ -40,7 +40,7 @@
           </dt>
           <dd class="col-sm-6 key-coi">COI: {{course_level_coi}}</dd>
         </dl>
-        <p>*{{percent_in_range}}% of all UW courses fall within the {{range_text}} range</p>
+        <p>*<!--{{percent_in_range}}--> 54% of all UW courses fall within the <!--{{range_text}}-->2 - 3 range</p>
       </div>
     </div>
   </div>

@@ -2,7 +2,7 @@
 
 <template>
   <p class="fw-bold">
-    NOTE: This is an overview of every course in the CHEM department. For information on majors,
+    NOTE: This is an overview of every course in the department. For information on majors,
     please search for a major using the main search function.
   </p>
   <ul class="list-unstyled">
