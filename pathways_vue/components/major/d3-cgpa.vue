@@ -32,7 +32,7 @@
         </li>
       </ul>
 
-      <div id="histogram"></div>
+      <div id="histogram" class="mt-2"></div>
       <small>
         Number
         of students in this sample: {{ total_count }}
@@ -106,7 +106,7 @@ export default {
       this.total_count = numeral(count).format('0,0');
 
       // set the dimensions and margins of the graph
-      var margin = { top: 10, right: 30, bottom: 50, left: 40 },
+      var margin = { top: 10, right: 30, bottom: 50, left: 50 },
         width = 800 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom,
         rwidth = width + margin.left + margin.right,
@@ -162,7 +162,7 @@ export default {
 
       svg.append("text")
         .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left)
+        .attr("y", 5 - margin.left)
         .attr("x", 0 - (height / 2))
         .attr("dy", "0.5em")
         .style("text-anchor", "middle")
