@@ -72,7 +72,7 @@ export default {
       this.total_count = numeral(count).format('0,0');
 
       // set the dimensions and margins of the graph
-      var margin = { top: 10, right: 30, bottom: 30, left: 40 },
+      var margin = { top: 10, right: 30, bottom: 30, left: 50 },
         width = 460 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom,
         rwidth = width + margin.left + margin.right,
