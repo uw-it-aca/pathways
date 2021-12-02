@@ -5,7 +5,7 @@ import json
 
 from django.test import TestCase
 from pathways.data_import import import_major_data, import_level_coi,\
-    import_coi_ranges
+    import_coi_ranges, _get_course_coi, _get_curric_coi
 from pathways.models.major import Major
 from pathways.models.course_level import CourseLevel
 from pathways.models.coi_range import COIRange
@@ -58,3 +58,12 @@ class ImportTest(TestCase):
         self.assertEqual(cr_0.percent_in_range, 0)
         self.assertEqual(cr_2.percent_in_range, 0.2727272727272727)
         self.assertEqual(cr_4.percent_in_range, 0.18181818181818182)
+
+    def test_course_coi(self):
+        coi = _get_course_coi("B BIO 301", self.coi_data)
+        self.assertEqual(coi, 5.0)
+
+    def test_curric_coi(self):
+        curric_coi = _get_curric_coi(self.coi_data)
+        self.assertEqual(curric_coi.get("A A"), [1.1])
+        self.assertEqual(curric_coi.get("CHEM"), [2.1, 3.0, 3.5, 2.1])
