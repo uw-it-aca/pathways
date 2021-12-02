@@ -75,6 +75,8 @@ def import_level_coi(coi_data):
     level_400 = []
     for course in coi_data:
         curric, num = _split_course_id(course['course_id'])
+        if course['coi_score'] == -1:
+            continue
         if 400 <= num < 500:
             level_400.append(course['coi_score'])
         if num >= 300:
@@ -129,6 +131,8 @@ def _get_curric_coi(coi_data):
     currics = {}
     for course in coi_data:
         curric, num = _split_course_id(course['course_id'])
+        if course['coi_score'] == -1:
+            continue
         if curric in currics:
             currics[curric].append(course['coi_score'])
         else:
@@ -138,8 +142,8 @@ def _get_curric_coi(coi_data):
 
 def _get_course_coi(course, coi_data):
     for coi_course in coi_data:
-        if coi_course['course_id'] == course:
-            return coi_course['coi_score']
+        if coi_course['course_id'] == course and coi_course['coi_score'] != -1:
+            return round(coi_course['coi_score'], 1)
 
 
 def _split_course_id(course_id):
