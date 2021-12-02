@@ -5,7 +5,19 @@
     <div class="card-body">
       <h3>Declared major cumulative GPA distribution</h3>
       <div class="px-1 py-1">
-        <p>Every student’s cumulative GPA at time of major declaration over the last {{ yearCount }} years.</p>
+        <p>Every student’s cumulative GPA at time of major declaration over the last {{ yearCount }} years.
+            <a
+            tabindex="0"
+            class="info-gpa"
+            role="button"
+            data-bs-toggle="popover"
+            data-bs-trigger="focus"
+            title="Cumulative GPA Distribution"
+            data-bs-content="A histogram represents data in a range of buckets along the horizontal line, or x-axis. The vertical line, or y-axis, represents the number of outcomes for each bucket."
+          >
+            <i class="bi bi-info-circle-fill"></i>
+          </a>
+        </p>
         <p class="fst-italic">
           <small>
             <i class="bi bi-exclamation-circle me-1"></i>Remember that GPA is just one of many factors that goes into admissions decisions.
@@ -43,6 +55,7 @@
 
 <script>
 import * as d3 from 'd3';
+import { Popover } from 'bootstrap';
 import numeral from 'numeral';
 
 export default {
@@ -60,6 +73,7 @@ export default {
     },
   },
   mounted() {
+    var popover = new Popover(document.querySelector('.info-gpa'));
     // this.generateHistogram();
     this.generateChart(this.majorData.gpa_2yr);
   },
