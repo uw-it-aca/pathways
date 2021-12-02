@@ -18,7 +18,8 @@ class Command(BaseCommand):
             next(reader)
             coi_data = []
             for row in reader:
-                coi_data.append({"course_id": row[0], "coi_score": float(row[1])})
+                coi_data.append({"course_id": row[0],
+                                 "coi_score": float(row[1])})
             import_level_coi(coi_data)
             import_coi_ranges(coi_data)
             with open('pathways/data/major_data.json') as major_file:
