@@ -16,7 +16,7 @@ class COIRange(models.Model):
     percent_in_range = models.FloatField(null=True)
 
     def json_data(self):
-        return round(self.percent_in_range, 3)*100
+        return round(self.percent_in_range*100, 1)
 
     @staticmethod
     def get_percent_by_score(score):

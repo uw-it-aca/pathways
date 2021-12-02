@@ -3,6 +3,7 @@
 
 from django.core.management.base import BaseCommand
 import json
+import csv
 from pathways.data_import import import_major_data, import_course_data, \
     import_curric_data, import_level_coi, import_coi_ranges
 
@@ -12,7 +13,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         with open('pathways/data/coi_scores.json') as coi_file:
-            coi_data = json.load(coi_file)
+            reader = csv.reader(coi_file)
+            # skip headers
+            next(reader)
+            coi_data = []
+            for row in reader:
+                coi_data.append({"course_id": row[0],
+                                 "coi_score": float(row[1])})
             import_level_coi(coi_data)
             import_coi_ranges(coi_data)
             with open('pathways/data/major_data.json') as major_file:
