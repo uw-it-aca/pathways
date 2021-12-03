@@ -28,17 +28,20 @@
             <i style="color: #ff8c00" class="bi bi-triangle-fill"></i>
             <span class="key-desc">{{course_id}}</span>
           </dt>
-          <dd class="col-sm-6 key-coi">COI: {{course_coi}}</dd>
+          <dd v-if="course_coi == null" class="col-sm-6 key-coi">COI: Not Available</dd>
+          <dd v-else class="col-sm-6 key-coi">COI: {{course_coi}}</dd>
           <dt class="col-sm-6">
             <i class="bi bi-circle-fill"></i>
             <span class="key-desc">Average course in {{curric_abbr}} curriculum</span>
           </dt>
-          <dd class="col-sm-6 key-coi">COI: {{curric_coi}}</dd>
+          <dd v-if="curric_coi == null" class="col-sm-6 key-coi">COI: Not Available</dd>
+          <dd v-else class="col-sm-6 key-coi">COI: {{curric_coi}}</dd>
           <dt class="col-sm-6">
             <i class="bi bi-square-fill"></i>
             <span class="key-desc">Average {{course_level}} Level Course at UW</span>
           </dt>
-          <dd class="col-sm-6 key-coi">COI: {{course_level_coi}}</dd>
+          <dd v-if="course_level_coi == null" class="col-sm-6 key-coi">COI: Not Available</dd>
+          <dd v-else class="col-sm-6 key-coi">COI: {{course_level_coi}}</dd>
         </dl>
         <p>*<!--{{percent_in_range}}--> 54% of all UW courses fall within the <!--{{range_text}}-->2 - 3 range</p>
       </div>
@@ -168,6 +171,10 @@ export default {
 
       g.append('path') // creates a triangle symbol for course COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolTriangle).size(180))
+        .attr('class', function(d) {
+            if (CourseCOI == null) { return "d-none" }
+            else { return "display" }
+            ;})
         .attr('transform', 'translate(' + x(CourseCOI) + ', 55)')
         .style('fill', '#FF8C00')
         .on('mouseenter', function () {
@@ -179,10 +186,18 @@ export default {
 
       g.append('path') // creates a square symbol for all uw COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolSquare).size(180))
+        .attr('class', function(d) {
+            if (UwCOI == null) { return "d-none" }
+            else { return "display" }
+            ;})
         .attr('transform', 'translate(' + x(UwCOI) + ', 55)');
 
       g.append('path') // creates a circle symbol for curriculum COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolCircle).size(180))
+        .attr('class', function(d) {
+            if (CurrCOI == null) { return "d-none" }
+            else { return "display" }
+            ;})
         .attr('transform', 'translate(' + x(CurrCOI) + ', 55)');
 
       g.append('text')
@@ -228,5 +243,8 @@ svg {
 }
 .key-desc {
   font-weight: normal;
+}
+.display-none {
+  display: none;
 }
 </style>
