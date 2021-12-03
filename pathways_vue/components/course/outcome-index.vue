@@ -14,7 +14,7 @@
           data-bs-toggle="popover"
           data-bs-trigger="focus"
           title="Course Outcome Indicator"
-          data-bs-content="A lower number (0-2) indicates that fewer people completed the course than predicted. A middle number (2-3) indicates the course is on target with predictions. A higher (3-5) number indicates that more people completed the course than anticipated."
+          data-bs-content="A lower number (0-2) indicates that fewer people completed the course than expected. A middle number (2-3) indicates the course is on target with expectations. A higher (3-5) number indicates that more people completed the course than anticipated."
         >
           <i class="bi bi-info-circle-fill"></i>
         </a>
@@ -43,7 +43,8 @@
           <dd v-if="course_level_coi == null" class="col-sm-6 key-coi">COI: Not Available</dd>
           <dd v-else class="col-sm-6 key-coi">COI: {{course_level_coi}}</dd>
         </dl>
-        <p>*<!--{{percent_in_range}}--> 54% of all UW courses fall within the <!--{{range_text}}-->2 - 3 range</p>
+        <p>*<!--{{percent_in_range}}--> <small>54% of all UW courses fall within the <!--{{range_text}}-->2 - 3 range.</small>
+        </p>
       </div>
     </div>
   </div>
@@ -176,13 +177,7 @@ export default {
             else { return "display" }
             ;})
         .attr('transform', 'translate(' + x(CourseCOI) + ', 55)')
-        .style('fill', '#FF8C00')
-        .on('mouseenter', function () {
-          d3.select(this).transition().duration(200).attr('opacity', 0.5);
-        })
-        .on('mouseout', function () {
-          d3.select(this).transition().duration(200).attr('opacity', 1);
-        });
+        .style('fill', '#FF8C00');
 
       g.append('path') // creates a square symbol for all uw COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolSquare).size(180))
@@ -205,21 +200,21 @@ export default {
         .attr('y', 25)
         .attr('text-anchor', 'left')
         .style('font-size', '11px')
-        .text('fewer completions than predicted');
+        .text('less completions than expected');
 
       g.append('text')
         .attr('x', 290)
         .attr('y', 25)
         .attr('text-anchor', 'middle')
         .style('font-size', '11px')
-        .text('on target with predictions*');
+        .text('on target with expectations*');
 
       g.append('text')
         .attr('x', 410)
         .attr('y', 25)
         .attr('text-anchor', 'right')
         .style('font-size', '11px')
-        .text('more completions than predicted');
+        .text('more completions than expected');
     },
   },
 };

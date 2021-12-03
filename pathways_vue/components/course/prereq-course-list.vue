@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-3">
     <div class="card-body">
-      <h4>Prerequesites <span class="badge rounded-pill bg-purple">{{prereqs.length}}</span></h4>
+      <h4>Prerequisites <span class="badge rounded-pill bg-purple">{{prereqs.length}}</span></h4>
       <div class="mt-3">
         <ul class="list-unstyled mb-0">
           <li v-for="prereq in prereqs">
