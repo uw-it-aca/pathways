@@ -11,8 +11,8 @@
         scheduling a meeting with your adviser to discuss your interests, goals, degree requirements
         and academic planning.
       </p>
-      <button type="button" class="btn btn-purple" aria-label="Contact your adviser">
-        Contact your adviser
+      <button type="button" class="btn btn-outline-purple" aria-label="Find your adviser">
+        <i class="bi bi-file-person-fill me-0"></i> Find your adviser
       </button>
     </div>
   </div>

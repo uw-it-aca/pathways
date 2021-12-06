@@ -12,8 +12,8 @@
         and academic planning.
       </p>
       <form action="https://www.washington.edu/uaa/advising/">
-        <button type="submit" class="btn btn-purple" aria-label="Contact your adviser">
-          Find your adviser
+        <button type="submit" class="btn btn-outline-purple" aria-label="Find your adviser">
+          <i class="bi bi-file-person-fill me-0"></i> Find your adviser
         </button>
       </form>
     </div>
