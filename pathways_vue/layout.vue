@@ -64,6 +64,7 @@
       <slot name="content"></slot>
     </template>
     <template #footer>
+      <feedback />
       <!-- footer section override -->
        <div class="w-100 mt-auto pt-3 pb-3 small bg-gray-800">
         <div class="container-xl py-3">
@@ -85,11 +86,13 @@
 
 <script>
 import { Topbar } from 'axdd-components';
+import Feedback from "./components/common/feedback.vue";
 
 export default {
   name: 'DawgPath',
   components: {
     'topbar': Topbar,
+    'feedback': Feedback,
   },
   props: {
     pageTitle: {

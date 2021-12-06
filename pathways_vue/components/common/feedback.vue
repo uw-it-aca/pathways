@@ -1,14 +1,16 @@
 // feedback.vue
 
 <template>
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11;">
-        <button
-            class="btn btn-light btn-sm"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasRight"
-            aria-controls="offcanvasRight"
-        >Send us feedback <i class="bi bi-arrow-bar-left"></i></button>
+    <div class="position-relative">
+        <div class="position-absolute bottom-0 end-0 p-3" style="z-index: 11;">
+            <button
+                class="btn btn-outline-primary"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasRight"
+                aria-controls="offcanvasRight"
+            >Send us feedback <i class="bi bi-arrow-bar-left"></i></button>
+        </div>
     </div>
     <div
         class="offcanvas offcanvas-end"
