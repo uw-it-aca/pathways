@@ -19,15 +19,29 @@
                 role="button"
                 data-bs-toggle="popover"
                 data-bs-trigger="focus"
-                title="Percentage"
-                data-bs-content="Description needed."
+                data-bs-placement="top"
+                title="Concurrent Courses"
+                data-bs-content="Percentage of students who the two courses concurrently."
               >
                 <i class="bi bi-info-circle-fill me-0"></i>
               </a>
             </th>
             <th scope="col" class="visually-hidden" style="width: 15%">Percentage Graph</th>
             <th scope="col" style="width: 50%">Concurrent Course</th>
-            <th scope="col" style="width: 30%">COI</th>
+            <th scope="col" style="width: 30%">COI
+              <a
+                tabindex="0"
+                class="info-common-coi"
+                role="button"
+                data-bs-toggle="popover"
+                data-bs-trigger="focus"
+                data-bs-placement="top"
+                title="Course Outcome Index"
+                data-bs-content="A lower number (0-2) indicates that fewer people completed the course than predicted. A middle number (2-3) indicates the course is on target with predictions. A higher (3-5) number indicates that more people completed the course than anticipated."
+              >
+                <i class="bi bi-info-circle-fill me-0"></i>
+              </a>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -75,6 +89,7 @@ export default {
   },
   mounted() {
     var popover = new Popover(document.querySelector('.info-course-concurrent'));
+    var popover = new Popover(document.querySelector('.info-common-coi'));
   },
   methods: {},
   computed: {

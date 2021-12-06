@@ -15,7 +15,8 @@ class PagesViewTest(TestCase):
         self.request.session.save()
 
     def test_context(self):
-        response = DefaultPageView.as_view()(self.request)
-        self.assertIsInstance(response.context_data, dict)
-        self.assertEqual(response.context_data.get('ga_key'), ' ')
-        self.assertEqual(response.context_data.get('django_debug'), False)
+        with self.settings(GOOGLE_ANALYTICS_KEY=" "):
+            response = DefaultPageView.as_view()(self.request)
+            self.assertIsInstance(response.context_data, dict)
+            self.assertEqual(response.context_data.get('ga_key'), ' ')
+            self.assertEqual(response.context_data.get('django_debug'), False)

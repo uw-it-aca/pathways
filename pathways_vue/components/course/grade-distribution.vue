@@ -13,7 +13,7 @@
           data-bs-toggle="popover"
           data-bs-trigger="focus"
           title="Course Grade Distribution"
-          data-bs-content="What is CGD?"
+          data-bs-content="A histogram represents data in a range of buckets along the horizontal line, or x-axis. The vertical line, or y-axis, represents the number of outcomes for each bucket."
         >
           <i class="bi bi-info-circle-fill"></i>
         </a>
@@ -72,9 +72,9 @@ export default {
       this.total_count = numeral(count).format('0,0');
 
       // set the dimensions and margins of the graph
-      var margin = { top: 10, right: 30, bottom: 30, left: 40 },
+      var margin = { top: 10, right: 30, bottom: 30, left: 50 },
         width = 460 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom,
+        height = 300 - margin.top - margin.bottom,
         rwidth = width + margin.left + margin.right,
         rheight = height + margin.top + margin.bottom;
 
@@ -128,15 +128,15 @@ export default {
         .attr("x", 0 - (height / 2))
         .attr("dy", "0.5em")
         .style("text-anchor", "middle")
-        .style("font-size", "0.85rem")
+        .style("font-size", "0.75rem")
         .classed("chart-label", true)
-        .text("Number of students");
+        .text("Number of Students");
 
       svg.append("text")
         .attr('x', width / 2)
         .attr('y', height + margin.bottom)
         .style("text-anchor", "middle")
-        .style("font-size", "0.85rem")
+        .style("font-size", "0.75rem")
         .text("Course Grade");
 
       // add the x Axis

@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="input-group my-3" :class="selectedCampus ? 'enabled' : 'disabled'">
-        <select class="form-select" id="inputGroupSelect01" v-model="searchType">
+        <select class="form-select" id="inputGroupSelect01" v-model="searchType" style="max-width: 110px;">
           <option value="" selected disabled hidden>Select...</option>
           <option v-for="option in searchTypeOptions" v-bind:value="option.value">
             {{option.text}}
@@ -49,7 +49,7 @@
         </select>
         <input
           type="text"
-          class="form-control w-75"
+          class="form-control"
           :placeholder="searchPlaceholder"
           aria-label="Text input with dropdown button"
           v-model="selectedLabel"
@@ -62,10 +62,10 @@
                 @click="onSelected">
           Search
         </button>
-        <datalist id="searchDataList">
+      </div>
+      <datalist id="searchDataList">
           <option v-for="(option, i) in renderableOptions" :key="i">{{ option }}</option>
         </datalist>
-      </div>
     </div>
   </div>
 </template>

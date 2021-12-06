@@ -22,7 +22,7 @@
                 data-bs-trigger="focus"
                 data-bs-placement="top"
                 title="Percentage"
-                data-bs-content="Percent of students who had taken the course by the time they declared for {major}."
+                data-bs-content="Percent of students who had taken the course by the time they declared for major."
               >
                 <i class="bi bi-info-circle-fill me-0"></i>
               </a>
@@ -39,7 +39,7 @@
                 data-bs-trigger="focus"
                 data-bs-placement="top"
                 title="Course Outcome Index"
-                data-bs-content="Description of COI value."
+                data-bs-content="A lower number (0-2) indicates that fewer people completed the course than predicted. A middle number (2-3) indicates the course is on target with predictions. A higher (3-5) number indicates that more people completed the course than anticipated."
               >
                 <i class="bi bi-info-circle-fill me-0"></i>
               </a>

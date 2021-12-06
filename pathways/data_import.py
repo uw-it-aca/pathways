@@ -79,12 +79,17 @@ def import_level_coi(coi_data):
             continue
         if 400 <= num < 500:
             level_400.append(course['coi_score'])
+            continue
         if num >= 300:
             level_300.append(course['coi_score'])
+            continue
         if num >= 200:
             level_200.append(course['coi_score'])
+            continue
         if num >= 100:
             level_100.append(course['coi_score'])
+            continue
+
     CourseLevel(level=100,
                 coi_score=round(statistics.mean(level_100), 1)).save()
     CourseLevel(level=200,
@@ -104,7 +109,7 @@ def import_coi_ranges(coi_data):
     range_3 = 0
     range_4 = 0
     for course in coi_data:
-        if course['coi_score'] <= 1:
+        if 0 <= course['coi_score'] <= 1:
             range_0 += 1
             continue
         if course['coi_score'] <= 2:
