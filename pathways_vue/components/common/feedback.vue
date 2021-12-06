@@ -9,7 +9,7 @@
                 data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasRight"
                 aria-controls="offcanvasRight"
-            >Send us feedback <i class="bi bi-arrow-bar-left"></i></button>
+            ><i class="bi bi-chat-right-text-fill me-0"></i> Send us feedback</button>
         </div>
     </div>
     <div
