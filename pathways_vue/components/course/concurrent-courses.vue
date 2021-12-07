@@ -21,7 +21,7 @@
                 data-bs-trigger="focus"
                 data-bs-placement="top"
                 title="Concurrent Courses"
-                data-bs-content="Percentage of students who the two courses concurrently."
+                data-bs-content="Percentage of students who took the two courses at the same time."
               >
                 <i class="bi bi-info-circle-fill me-0"></i>
               </a>
