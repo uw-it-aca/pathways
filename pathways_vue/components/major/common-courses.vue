@@ -71,7 +71,7 @@
               {{ course.title }}
             </td>
             <td v-if="course.coi_score">{{course.coi_score}}</td>
-            <td v-else>Not Available</td>
+            <td v-else>No Data</td>
           </tr>
         </tbody>
       </table>
