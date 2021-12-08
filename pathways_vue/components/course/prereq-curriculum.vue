@@ -55,10 +55,6 @@ export default {
       curricData: {}
     };
   },
-  // mounted() {
-  //   console.log('load curric prereq');
-  //   this.get_curric_prereqs(this.curric_id);
-  // },
   watch: {
     curric_id(newValue) {
       this.get_curric_prereqs(newValue);
@@ -74,6 +70,8 @@ export default {
       const vue = this;
       this.axios.get("/api/v1/curric_prereq/" + curric_id).then((response) => {
         vue.curricData = response.data;
+      }).catch(function (error) {
+        vue.curricData = {};
       });
     }
   },
