@@ -1,12 +1,18 @@
 // prereq-course.vue
 
 <template>
-  <div v-if="graph_data == null" class="p-3"> <!-- v-if no prereq or after completion -->
+  <div v-if="graph_data == null" class="p-3"> 
       <div class="alert alert-info" role="alert">
-        {{active_course}} has no prerequisites or courses available after completion.
+        <p>No prerequisite information for {{active_course}} was found. Here are some possible reasons:</p>
+        <ul>
+            <li>The course does not have prereqs and/or isn't a prereq for other courses</li>
+            <li>It is no longer offered</li>
+            <li>It is a graduate level course</li>
+            <li>You made a typo – the course code doesn't exist</li>
+          </ul>
       </div>
   </div>
-  <div v-else><!-- v-else -->
+  <div v-else>
     <div class="p-3"> 
       <div class="form-check form-switch">
         <input
