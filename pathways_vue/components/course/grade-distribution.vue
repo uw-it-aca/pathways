@@ -43,8 +43,8 @@ export default {
     },
   },
   mounted() {
-
     var popover = new Popover(document.querySelector('.info-gcd'));
+    this.generateChart(this.course.gpa_distro);
   },
   watch:{
     course: function (course){
