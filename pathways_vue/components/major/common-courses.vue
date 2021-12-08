@@ -2,7 +2,13 @@
 
 <template>
   <div class="card mb-5">
-    <div class="card-body explore-major">
+    <div v-if="major.common_course_decl" class="card-body">
+      <h3>Concurrent Courses</h3>
+      <p>
+        No common courses available for <strong>{{ major["major_title"] }}</strong>.
+      </p>
+    </div>
+    <div v-else class="card-body explore-major">
       <h3>Common courses for {{ major["major_title"] }}</h3>
       <p>
         Below are the 10 most popular courses at the time of declaration among students who declared
