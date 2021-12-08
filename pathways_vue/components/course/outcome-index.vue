@@ -71,21 +71,12 @@ export default {
   },
   watch: {
     course: function (course){
-      this.percent_in_range = course.coi_data.percent_in_range;
-      this.course_coi = course.coi_data.course_coi;
-      this.course_level_coi = course.coi_data.course_level_coi;
-      this.curric_coi = course.coi_data.curric_coi;
-      this.course_id = course.course_id;
-
-      var split_pos = this.course_id.lastIndexOf(" ");
-      this.curric_abbr = this.course_id.substring(0, split_pos);
-      this.course_num = parseInt(this.course_id.substring(split_pos + 1,
-        this.course_id.length));
-      this.generateRect();
+      this.init();
     }
   },
   mounted() {
     var popover = new Popover(document.querySelector('.info-popper'));
+    this.init();
   },
   computed: {
     course_level: function (){
@@ -106,6 +97,19 @@ export default {
     }
   },
   methods: {
+    init(){
+      this.percent_in_range = this.course.coi_data.percent_in_range;
+      this.course_coi = this.course.coi_data.course_coi;
+      this.course_level_coi = this.course.coi_data.course_level_coi;
+      this.curric_coi = this.course.coi_data.curric_coi;
+      this.course_id = this.course.course_id;
+
+      var split_pos = this.course_id.lastIndexOf(" ");
+      this.curric_abbr = this.course_id.substring(0, split_pos);
+      this.course_num = parseInt(this.course_id.substring(split_pos + 1,
+        this.course_id.length));
+      this.generateRect();
+    },
     generateRect() {
       // Clear any previous graphs
       document.getElementById("coiGraph").innerHTML = "";
