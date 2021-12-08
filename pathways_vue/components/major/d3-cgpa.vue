@@ -2,7 +2,19 @@
 
 <template>
   <div class="card mb-5">
-    <div class="card-body">
+    <div class="card-body"> <!-- v-if no graph data -->
+      <h3>Declared major cumulative GPA distribution</h3>
+      <div class="alert alert-info" role="alert"></div>
+      <p>No major GPA information for [major name] was found. Here are some possible reasons:</p>
+        <ul>
+          <li>The major is new and doesn’t have enough student data to generate plots</li>
+          <li>This major is no longer offered </li>
+          <li>It is a graduate degree</li>
+          <li>You made a typo -- the major doesn’t exist</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-body"> <!-- v-else -->
       <h3>Declared major cumulative GPA distribution</h3>
       <div class="px-1 py-1">
         <p>Every student’s cumulative GPA at time of major declaration over the last {{ yearCount }} years.
