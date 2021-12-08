@@ -74,6 +74,8 @@ export default {
       const vue = this;
       this.axios.get("/api/v1/curric_prereq/" + curric_id).then((response) => {
         vue.curricData = response.data;
+      }).catch(function (error) {
+        vue.curricData = {};
       });
     }
   },
