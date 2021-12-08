@@ -33,7 +33,9 @@
         <contact-adviser-major />
       </div>
       <div v-else>
-        No major selected
+        <div v-if="showError">PLACEHOLDER: courseError loading major</div>
+        <div v-else>PLACEHOLDER: courseLoading/No major selected</div>
+
       </div>
     </template>
   </layout>
@@ -65,7 +67,8 @@ export default {
       selectedMajor: null,
       majorID: null,
       campus: null,
-      major_data: null
+      major_data: undefined,
+      showError: false
     };
   },
   methods: {
@@ -75,9 +78,12 @@ export default {
     },
     get_major_data(){
       const vue = this;
+      this.major_data = undefined;
       if(this.campus !== null && this.majorID !== null){
         this.axios.get("/api/v1/majors/" + this.campus + "/" + this.majorID).then((response) => {
           vue.major_data = response.data;
+        }).catch(function (error) {
+          vue.showError = true;
         });
       }
     }

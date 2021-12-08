@@ -40,7 +40,10 @@
         <concurrent-courses :courseData="courseData"/>
         <contact-adviser-course />
       </div>
-      <div v-if="showError">PLACEHOLDER: course not found</div>
+      <div v-else>
+        <div v-if="showError">PLACEHOLDER: course not found</div>
+        <div v-else>PLACEHOLDER: course loading</div>
+      </div>
     </template>
   </layout>
 </template>

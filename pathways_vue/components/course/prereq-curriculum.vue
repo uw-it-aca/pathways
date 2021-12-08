@@ -55,10 +55,6 @@ export default {
       curricData: {}
     };
   },
-  // mounted() {
-  //   console.log('load curric prereq');
-  //   this.get_curric_prereqs(this.curric_id);
-  // },
   watch: {
     curric_id(newValue) {
       this.get_curric_prereqs(newValue);
