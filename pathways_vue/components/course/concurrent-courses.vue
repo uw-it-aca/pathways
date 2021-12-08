@@ -65,7 +65,8 @@
               >
               {{course.title}}
             </td>
-            <td>{{course.coi_score}}</td>
+            <td v-if="course.coi_score">{{course.coi_score}}</td>
+            <td v-else>No Data</td>
           </tr>
         </tbody>
       </table>

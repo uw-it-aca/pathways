@@ -14,7 +14,7 @@
           data-bs-toggle="popover"
           data-bs-trigger="focus"
           title="Course Outcome Indicator"
-          data-bs-content="A lower number (0-2) indicates that fewer people completed the course than predicted. A middle number (2-3) indicates the course is on target with predictions. A higher (3-5) number indicates that more people completed the course than anticipated."
+          data-bs-content="A lower number (0-2) indicates that fewer people completed the course than expected. A middle number (2-3) indicates the course is on target with expectations. A higher (3-5) number indicates that more people completed the course than anticipated."
         >
           <i class="bi bi-info-circle-fill"></i>
         </a>
@@ -28,19 +28,24 @@
             <i style="color: #ff8c00" class="bi bi-triangle-fill"></i>
             <span class="key-desc">{{course_id}}</span>
           </dt>
-          <dd class="col-sm-6 key-coi">COI: {{course_coi}}</dd>
+          <dd v-if="course_coi" class="col-sm-6 key-coi">COI: <strong>{{course_coi}}</strong></dd>
+          <dd v-else class="col-sm-6 key-coi">No Data</dd>
           <dt class="col-sm-6">
             <i class="bi bi-circle-fill"></i>
             <span class="key-desc">Average course in {{curric_abbr}} curriculum</span>
           </dt>
-          <dd class="col-sm-6 key-coi">COI: {{curric_coi}}</dd>
+          <dd v-if="curric_coi" class="col-sm-6 key-coi">COI: <strong>{{curric_coi}}</strong></dd>
+          <dd v-else class="col-sm-6 key-coi">No Data</dd>
           <dt class="col-sm-6">
             <i class="bi bi-square-fill"></i>
             <span class="key-desc">Average {{course_level}} Level Course at UW</span>
           </dt>
-          <dd class="col-sm-6 key-coi">COI: {{course_level_coi}}</dd>
+          <dd v-if="course_level_coi" class="col-sm-6 key-coi">COI: <strong>{{course_level_coi}}</strong></dd>
+          <dd v-else class="col-sm-6 key-coi">No Data</dd>
         </dl>
-        <p>*<!--{{percent_in_range}}--> 54% of all UW courses fall within the <!--{{range_text}}-->2 - 3 range</p>
+        <p>*<!--{{percent_in_range}}--> <small>54% of all UW courses fall within the <!--{{range_text}}-->2 - 3 range.<br>
+          <strong>No Data</strong> means there is not enough data to generate a COI plot.</small>
+        </p>
       </div>
     </div>
   </div>
@@ -172,21 +177,27 @@ export default {
 
       g.append('path') // creates a triangle symbol for course COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolTriangle).size(180))
+        .attr('class', function(d) {
+            if (CourseCOI == null) { return "d-none" }
+            else { return "display" }
+            ;})
         .attr('transform', 'translate(' + x(CourseCOI) + ', 55)')
-        .style('fill', '#FF8C00')
-        .on('mouseenter', function () {
-          d3.select(this).transition().duration(200).attr('opacity', 0.5);
-        })
-        .on('mouseout', function () {
-          d3.select(this).transition().duration(200).attr('opacity', 1);
-        });
+        .style('fill', '#FF8C00');
 
       g.append('path') // creates a square symbol for all uw COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolSquare).size(180))
+        .attr('class', function(d) {
+            if (UwCOI == null) { return "d-none" }
+            else { return "display" }
+            ;})
         .attr('transform', 'translate(' + x(UwCOI) + ', 55)');
 
       g.append('path') // creates a circle symbol for curriculum COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolCircle).size(180))
+        .attr('class', function(d) {
+            if (CurrCOI == null) { return "d-none" }
+            else { return "display" }
+            ;})
         .attr('transform', 'translate(' + x(CurrCOI) + ', 55)');
 
       g.append('text')
@@ -194,21 +205,21 @@ export default {
         .attr('y', 25)
         .attr('text-anchor', 'left')
         .style('font-size', '11px')
-        .text('fewer completions than predicted');
+        .text('less completions than expected');
 
       g.append('text')
         .attr('x', 290)
         .attr('y', 25)
         .attr('text-anchor', 'middle')
         .style('font-size', '11px')
-        .text('on target with predictions*');
+        .text('on target with expectations*');
 
       g.append('text')
         .attr('x', 410)
         .attr('y', 25)
         .attr('text-anchor', 'right')
         .style('font-size', '11px')
-        .text('more completions than predicted');
+        .text('more completions than expected');
     },
   },
 };
@@ -232,5 +243,8 @@ svg {
 }
 .key-desc {
   font-weight: normal;
+}
+.display-none {
+  display: none;
 }
 </style>
