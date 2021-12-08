@@ -19,6 +19,17 @@
         </a>
       </p>
       <div id="gcd_graph" />
+      <div v-if="total_count < 8">
+        <div class="alert alert-info" role="alert">
+          <p>Data is not available for <strong>{{course.course_id}}</strong>. Here are some possible reasons:</p>
+            <ul>
+              <li>There isn’t enough student data to generate plots because the course is new or isn’t offered often.</li>
+              <li>It is a graduate course</li>
+              <li>This course is no longer offered</li>
+              <li>You made a typo -- the course code doesn’t exist</li>
+            </ul>
+        </div>
+      </div>
       <p><small>Number of grades in this sample: {{total_count}} (5 years). Data not instructor-specific.</small></p>
     </div>
   </div>
@@ -71,6 +82,8 @@ export default {
         }, 0);
       this.total_count = numeral(count).format('0,0');
 
+      const s_count = this.total_count; 
+
       // set the dimensions and margins of the graph
       var margin = { top: 10, right: 30, bottom: 30, left: 50 },
         width = 460 - margin.left - margin.right,
@@ -94,6 +107,10 @@ export default {
       var svg = d3
          .select('#gcd_graph')
         .append('svg')
+        .attr('class', function(d) {
+            if (s_count < 8) { return 'd-none' }
+            else { return "display" }
+            ;})
         .attr("viewBox", `0 0 ${rwidth} ${rheight}`)
         .append("g")
         .attr("transform","translate(" + margin.left + "," + margin.top + ")");
@@ -147,7 +164,6 @@ export default {
       // add the y Axis
       svg.append("g")
         .call(d3.axisLeft(y));
-
     }
   },
 };
