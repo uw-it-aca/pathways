@@ -1,29 +1,36 @@
 // prereq-course.vue
 
 <template>
-  <div class="p-3">
-    <div class="form-check form-switch">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        v-model="viewCourseList"
-        id="ToggleCourseList"
-      />
-      <label class="form-check-label" for="ToggleCourseList">View {{active_course}} prereqs as a list</label>
-    </div>
+  <div v-if="graph_data == null" class="p-3"> <!-- v-if no prereq or after completion -->
+      <div class="alert alert-info" role="alert">
+        {{active_course}} has no prerequisites or courses available after completion.
+      </div>
   </div>
-  <prereq-course-list v-if="viewCourseList"
-    :graph_data="graph_data"
-    :active_course="active_course"
-  />
-  <div class="card shadow-sm" id="ViewCourseMap" v-else>
-    <prereq-graph
+  <div v-else><!-- v-else -->
+    <div class="p-3"> 
+      <div class="form-check form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          v-model="viewCourseList"
+          id="ToggleCourseList"
+        />
+        <label class="form-check-label" for="ToggleCourseList">View {{active_course}} prereqs as a list</label>
+      </div>
+    </div>
+    <prereq-course-list v-if="viewCourseList"
       :graph_data="graph_data"
-      graph_type="course"
       :active_course="active_course"
     />
-    <div class="text-dark p-3 bg-light rounded-top rounded-sm">
-      <small>Use the scroll function on your mouse or touchpad to zoom in and out</small>
+    <div class="card shadow-sm" id="ViewCourseMap" v-else>
+      <prereq-graph
+        :graph_data="graph_data"
+        graph_type="course"
+        :active_course="active_course"
+      />
+      <div class="text-dark p-3 bg-light rounded-top rounded-sm">
+        <small>Use the scroll function on your mouse or touchpad to zoom in and out</small>
+      </div>
     </div>
   </div>
 </template>
