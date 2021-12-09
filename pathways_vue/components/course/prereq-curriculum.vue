@@ -1,7 +1,7 @@
 // prereq-curriculum.vue
 
 <template>
-  <div v-if="graph_data == null" class="p-3">
+  <div v-if="curricData === undefined" class="p-3">
     <div class="alert alert-info" role="alert">
       <p>The curriculum {{curric_id}} did not display a graph. Here are some possible reasons:</p>
         <ul>
@@ -30,7 +30,7 @@
     <div class="card shadow-sm" id="ViewCurrMap" v-else>
       <prereq-graph
         :v-if="has_data"
-        :graph_data="curricData.prereq_grap"
+        :graph_data="curricData.prereq_graph"
         graph_type="curric"
         :active_course="course_id"
       />
@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       viewCurrList: false,
-      curricData: {}
+      curricData: undefined
     };
   },
   watch: {
@@ -77,11 +77,18 @@ export default {
       return Object.keys(this.curricData).length > 0;
     }
   },
+  mounted() {
+    this.get_curric_prereqs(this.curric_id);
+  },
   methods: {
     get_curric_prereqs(curric_id){
       const vue = this;
       this.axios.get("/api/v1/curric_prereq/" + curric_id).then((response) => {
-        vue.curricData = response.data;
+        // don't show graph if there are no nodes/edges to display
+        if(Object.keys(response.data.prereq_graph.x.edges.from).length > 0){
+          console.log('has key')
+          vue.curricData = response.data;
+        }
       }).catch(function (error) {
         vue.curricData = {};
       });

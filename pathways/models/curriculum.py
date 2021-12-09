@@ -13,6 +13,6 @@ class Curriculum(models.Model):
     @staticmethod
     def get_prereq(abbrev):
         curric = Curriculum.objects.get(abbrev=abbrev)
-        response = {"prereq_grap": curric.prereq_graph,
+        response = {"prereq_graph": curric.prereq_graph,
                     "course_data": curric.course_data}
         return response
