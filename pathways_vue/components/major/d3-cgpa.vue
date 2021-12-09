@@ -62,7 +62,6 @@
         of students in this sample: {{ total_count }}
       </small>
     </div>
-  </div>
 </template>
 
 <script>

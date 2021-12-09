@@ -2,13 +2,13 @@
 
 <template>
   <div class="card mb-5">
-    <div class="card-body"> <!-- v-if -->
+    <div v-if="concurrent_courses.length === 0" class="card-body">
       <h3>Concurrent Courses</h3>
       <p>
         No concurrent courses available for <strong>{{courseData.course_id}}</strong>.
       </p>
     </div>
-    <div class="card-body"> <!-- v-else -->
+    <div v-else class="card-body">
       <h3>Concurrent Courses</h3>
       <p>
         Students who took <strong>{{courseData.course_id}}</strong> in the past 2 years also took the following
