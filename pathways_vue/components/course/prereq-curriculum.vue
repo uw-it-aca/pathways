@@ -1,30 +1,42 @@
 // prereq-curriculum.vue
 
 <template>
-  <div class="p-3">
-    <div class="form-check form-switch">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        v-model="viewCurrList"
-        id="ToggleCurrList"
-      />
-      <label class="form-check-label" for="ToggleCurrList">View {{curric_id}} curriculum as a list</label>
+  <div v-if="curricData === undefined" class="p-3">
+    <div class="alert alert-info" role="alert">
+      <p>The curriculum {{curric_id}} did not display a graph. Here are some possible reasons:</p>
+        <ul>
+          <li>The curriculum code does not exist</li>
+          <li>The map does not display graduate curriculum</li>
+          <li>The curriculum does not have courses with prerequisites</li>
+        </ul>
     </div>
   </div>
-  <prereq-curr-list
-    v-if="viewCurrList"
-    :course-data="curricData.course_data"
-  />
-  <div class="card shadow-sm" id="ViewCurrMap" v-else>
-    <prereq-graph
-      :v-if="has_data"
-      :graph_data="curricData.prereq_grap"
-      graph_type="curric"
-      :active_course="course_id"
+  <div v-else>
+    <div class="p-3">
+      <div class="form-check form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          v-model="viewCurrList"
+          id="ToggleCurrList"
+        />
+        <label class="form-check-label" for="ToggleCurrList">View {{curric_id}} curriculum as a list</label>
+      </div>
+    </div>
+    <prereq-curr-list
+      v-if="viewCurrList"
+      :course-data="curricData.course_data"
     />
-    <div class="text-dark p-3 bg-light rounded-top rounded-sm">
-      <small>Use the scroll function on your mouse or touchpad to zoom in and out</small>
+    <div class="card shadow-sm" id="ViewCurrMap" v-else>
+      <prereq-graph
+        :v-if="has_data"
+        :graph_data="curricData.prereq_graph"
+        graph_type="curric"
+        :active_course="course_id"
+      />
+      <div class="text-dark p-3 bg-light rounded-top rounded-sm">
+        <small>Use the scroll function on your mouse or touchpad to zoom in and out</small>
+      </div>
     </div>
   </div>
 </template>
@@ -52,7 +64,7 @@ export default {
   data() {
     return {
       viewCurrList: false,
-      curricData: {}
+      curricData: undefined
     };
   },
   watch: {
@@ -65,11 +77,18 @@ export default {
       return Object.keys(this.curricData).length > 0;
     }
   },
+  mounted() {
+    this.get_curric_prereqs(this.curric_id);
+  },
   methods: {
     get_curric_prereqs(curric_id){
       const vue = this;
       this.axios.get("/api/v1/curric_prereq/" + curric_id).then((response) => {
-        vue.curricData = response.data;
+        // don't show graph if there are no nodes/edges to display
+        if(Object.keys(response.data.prereq_graph.x.edges.from).length > 0){
+          console.log('has key')
+          vue.curricData = response.data;
+        }
       }).catch(function (error) {
         vue.curricData = {};
       });

@@ -238,4 +238,10 @@ export default {
     opacity: 0.4;
 }
 
+.form-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+}
+
 </style>

@@ -23,23 +23,18 @@
                   <h2 class="modal-title mb-2" id="exampleModalLabel">Welcome</h2>
                   <div>
                     <p>
-                      DawgPath helps with course planning and preparation for applying to a major. A
-                      few things to keep in mind before getting started:
+                      DawgPath is a new tool that helps students discover courses and majors of interest. This tool also enables students to be strategic when making decisions about their quarterly class schedule. Finally, DawgPath provides useful data for students who plan to apply to majors that have selective screening. A few things to keep in mind before getting started:
                     </p>
                     <ul>
                       <li>
-                        Grades are just one of the factors considered for admission to a
-                        capacity-constrained major. Reach out to your adviser to learn more.
+                        Grades are just one of the factors considered for admission to a capacity-constrained major. Reach out to your adviser to learn more.
                       </li>
                       <li>
-                        The median course grade and GPA data are only included for those students
-                        who had declared for the major (median grade for Chem 142, only includes
-                        those who declared Chemistry as their major).
+                        The median course grade and GPA data are only included for those students who had declared for the major.
                       </li>
 
                       <li>
-                        Discovering and applying for a major can be a challenging experience. Look
-                        for the “Contact your adviser” link to connect with your adviser.
+                        Discovering and applying for a major can be a challenging experience. Look for the “Contact your adviser” link to connect with your adviser.
                       </li>
                       <li>Check out the <a href="/faq">DawgPath FAQ</a> for more info.</li>
                     </ul>
