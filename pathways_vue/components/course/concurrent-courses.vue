@@ -95,8 +95,10 @@ export default {
     return {};
   },
   mounted() {
-    var popover = new Popover(document.querySelector('.info-course-concurrent'));
-    var popover = new Popover(document.querySelector('.info-common-coi'));
+    if(this.concurrent_courses.length > 0){
+      var popover = new Popover(document.querySelector('.info-course-concurrent'));
+      var popover = new Popover(document.querySelector('.info-common-coi'));
+    }
   },
   methods: {},
   computed: {

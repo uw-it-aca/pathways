@@ -2,8 +2,8 @@
 
 <template>
   <div class="card mb-5">
-    <div v-if="major.common_course_decl" class="card-body">
-      <h3>Concurrent Courses</h3>
+    <div v-if="commonCourses.length === 0" class="card-body">
+      <h3>Common Courses</h3>
       <p>
         No common courses available for <strong>{{ major["major_title"] }}</strong>.
       </p>
@@ -53,7 +53,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="course in common_courses" class="align-middle">
+          <tr v-for="course in commonCourses" class="align-middle">
             <th scope="row">{{ course.percent }}%</th>
             <td>
               <div class="progress">
@@ -97,15 +97,19 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      commonCourses: []
+    };
   },
   mounted() {
-    var popover = new Popover(document.querySelector('.info-common-coi'));
-    var popover2 = new Popover(document.querySelector('.info-major-common'));
+    this.commonCourses = this.get_common_courses();
+    if(this.commonCourses.length > 0){
+      // var popover = new Popover(document.querySelector('.info-common-coi'));
+      // var popover2 = new Popover(document.querySelector('.info-major-common'));
+    }
   },
-  methods: {},
-  computed: {
-    common_courses: function () {
+  methods: {
+    get_common_courses: function(){
       let processed_courses = [];
 
       for (const [course, data] of Object.entries(this.major.common_course_decl)) {
@@ -119,6 +123,18 @@ export default {
       }
 
       return processed_courses.sort((a, b) => (a.percent < b.percent) ? 1 : -1);
+    }
+  },
+  watch: {
+    commonCourses: function (course) {
+      if (this.commonCourses.length > 0) {
+        // Hack to get popovers to only init once element has rendered
+        setTimeout(function(){
+          var popover = new Popover(document.querySelector('.info-common-coi'));
+          var popover2 = new Popover(document.querySelector('.info-major-common'));
+        }, 1);
+
+      }
     }
   }
 };

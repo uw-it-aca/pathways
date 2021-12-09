@@ -65,7 +65,8 @@ export default {
       curric_coi: null,
       curric_id: null,
       curric_abbr: null,
-      course_num: null
+      course_num: null,
+      course_level: null
     };
   },
     props: {
@@ -84,9 +85,6 @@ export default {
     this.init();
   },
   computed: {
-    course_level: function (){
-      return Math.floor(this.course_num/100)*100;
-    },
     range_text: function (){
       if(this.course_coi <= 1){
         return "0 - 1"
@@ -113,6 +111,7 @@ export default {
       this.curric_abbr = this.course_id.substring(0, split_pos);
       this.course_num = parseInt(this.course_id.substring(split_pos + 1,
         this.course_id.length));
+      this.course_level = Math.floor(this.course_num/100)*100;
       this.generateRect();
     },
     generateRect() {
