@@ -12,7 +12,7 @@ class Command(BaseCommand):
     help = 'Run all unit tests'
 
     def handle(self, *args, **options):
-        with open('pathways/data/coi_scores.json') as coi_file:
+        with open('pathways/data/coi_scores.csv') as coi_file:
             reader = csv.reader(coi_file)
             # skip headers
             next(reader)
