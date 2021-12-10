@@ -33,8 +33,23 @@
         <contact-adviser-major />
       </div>
       <div v-else>
-        <div v-if="showError">PLACEHOLDER: courseError loading major</div>
-        <div v-else>PLACEHOLDER: courseLoading/No major selected</div>
+        <div v-if="showError">
+          <div class="alert alert-info" role="alert">
+            <p>Data is not available for selected major. Here are some possible reasons:</p>
+            <ul>
+              <li>This major is no longer offered</li>
+              <li>It is a graduate degree</li>
+              <li>You made a typo -- the major doesn’t exist.</li>
+            </ul>
+          </div>
+        </div>
+        <div v-else>
+          <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
 
       </div>
     </template>

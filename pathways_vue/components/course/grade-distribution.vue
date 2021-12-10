@@ -21,12 +21,9 @@
       <div id="gcd_graph" />
       <div v-if="total_count < 8">
         <div class="alert alert-info" role="alert">
-          <p>Data is not available for <strong>{{course.course_id}}</strong>. Here are some possible reasons:</p>
+          <p>Data is not available for <strong>{{course.course_id}}</strong>.</p>
             <ul>
               <li>There isn’t enough student data to generate plots because the course is new or isn’t offered often.</li>
-              <li>It is a graduate course</li>
-              <li>This course is no longer offered</li>
-              <li>You made a typo -- the course code doesn’t exist</li>
             </ul>
         </div>
       </div>

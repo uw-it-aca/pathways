@@ -41,8 +41,23 @@
         <contact-adviser-course />
       </div>
       <div v-else>
-        <div v-if="showError">PLACEHOLDER: course not found</div>
-        <div v-else>PLACEHOLDER: course loading</div>
+        <div v-if="showError">
+          <div class="alert alert-info" role="alert">
+            <p>Data is not available for {{courseId}}. Here are some possible reasons:</p>
+            <ul>
+              <li>This course is no longer offered</li>
+              <li>It is a graduate course</li>
+              <li>You made a typo -- the course code doesn’t exist.</li>
+            </ul>
+          </div>
+        </div>
+        <div v-else>
+          <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
       </div>
     </template>
   </layout>
