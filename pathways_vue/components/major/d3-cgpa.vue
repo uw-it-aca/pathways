@@ -4,12 +4,13 @@
   <div class="card mb-5">
     <div class="card-body" v-if="!showCard">
       <h3>Declared major cumulative GPA distribution</h3>
-      <div class="alert alert-info" role="alert"></div>
+      <div class="alert alert-info" role="alert">
       <p>No major GPA information for {{this.majorData.major_title}} was found. Here are some possible reasons:</p>
         <ul>
           <li>The major is new and doesn’t have enough student data to generate plots</li>
           <li>This major is no longer offered </li>
         </ul>
+      </div>
       </div>
     <div v-else class="card-body">
       <h3>Declared major cumulative GPA distribution</h3>
