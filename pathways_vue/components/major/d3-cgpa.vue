@@ -9,8 +9,6 @@
         <ul>
           <li>The major is new and doesn’t have enough student data to generate plots</li>
           <li>This major is no longer offered </li>
-          <li>It is a graduate degree</li>
-          <li>You made a typo -- the major doesn’t exist</li>
         </ul>
       </div>
     <div v-else class="card-body">
