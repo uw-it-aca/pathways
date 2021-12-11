@@ -6,7 +6,7 @@ INSTALLED_APPS += [
     'webpack_loader',
 ]
 
-# Location of stats file that can be accessed during local development and 
+# Location of stats file that can be accessed during local development and
 # collected from during production build process
 if os.getenv("ENV") == "localdev":
     WEBPACK_LOADER = {
@@ -31,3 +31,6 @@ if os.getenv("ENV") == "localdev":
     DEBUG = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+LIMIT_USER_ACCESS = os.getenv('ENV') == 'eval'
+ALLOWED_USERS_GROUP = os.getenv("ACCESS_GROUP", default=None)
