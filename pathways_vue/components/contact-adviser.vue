@@ -10,8 +10,8 @@
         and academic planning.
       </p>
       <ul>
-        <li v-for="info in advisingInfo" :key="info.url">
-          <a :href="info.url">{{info.label}}</a>
+        <li class="list-unstyled" v-for="info in advisingInfo" :key="info.url">
+          <a :href="info.url" target="_blank"><i class="bi bi-caret-right-fill me-1"></i>{{info.label}}</a>
         </li>
       </ul>
     </div>
@@ -29,20 +29,20 @@ export default {
     advisingInfo: function () {
       if (this.campus == "tacoma") {
         return [
-          {"label": "UW, Tacoma advising",
-           "url": "https://www.washington.edu/uaa/advising/"}]
+          {"label": "Find your Tacoma adviser",
+           "url": "https://www.tacoma.uw.edu/gaa#permalink-37917"}]
       } else if (this.campus == "seattle") {
         return [
-          {"label": "UW, Seattle premajor",
+          {"label": "Find your premajor adviser",
            "url": "https://www.washington.edu/uaa/advising/appointments/"},
-          {"label": "UW, Seattle premajor OMAD",
+          {"label": "Find your premajor OMAD adviser",
            "url": "http://depts.washington.edu/omadcs/location/"},
-          {"label": "UW, Seattle declared",
+          {"label": "Find your departmental or major adviser",
            "url": "http://www.washington.edu/uaa/advising/degree-overview/" +
                   "majors/advising-offices-by-program"}]
       } else if (this.campus == "bothell") {
         return [
-          {"label": "UW, Bothell advising",
+          {"label": "Find your Bothell adviser",
            "url": "https://uwb.campus.eab.com/"}]
       }
     }
