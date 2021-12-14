@@ -1,71 +1,53 @@
-import Vue from 'vue';
-import VueGtag from 'vue-gtag';
-import VueMq from 'vue-mq';
-
-// fontawesome + vue-fontawesome
-import { library } from '@fortawesome/fontawesome-svg-core';
-
-// load all icons for now... do treeshaking imports to optimize later
-import { fas } from '@fortawesome/free-solid-svg-icons';
-import { far } from '@fortawesome/free-regular-svg-icons';
-library.add(fas, far);
-
-import {
-  FontAwesomeIcon,
-  FontAwesomeLayers,
-  FontAwesomeLayersText,
-} from '@fortawesome/vue-fontawesome';
-
-// bootstrap + bootstrap-vue
-import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
-
+import { createApp } from 'vue'
 import App from './app.vue';
 import router from './router';
 import store from './store';
 
-// custom theming and global styles
+import VueGtag from 'vue-gtag-next';
+import VueMq from 'vue3-mq';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+import mitt from 'mitt';
+
+// bootstrap js
+import 'bootstrap';
+
+// custom bootstrap theming
 import './css/custom.scss';
-import './css/global.scss';
+
+const app = createApp(App);
 
 // MARK: google analytics data stream measurement_id
 const gaCode = document.body.getAttribute('google-analytics');
 const debugMode = document.body.getAttribute('django-debug');
 
-// vue setup
-Vue.component('font-awesome-icon', FontAwesomeIcon);
-Vue.component('font-awesome-layers', FontAwesomeLayers);
-Vue.component('font-awesome-layers-text', FontAwesomeLayersText);
+const emitter = mitt()
+app.config.globalProperties.emitter = emitter;
 
-Vue.use(BootstrapVue);
-Vue.use(BootstrapVueIcons);
+app.config.productionTip = false;
 
 // vue-gtag
-Vue.use(VueGtag, {
-  config: {
+app.use(VueGtag, {
+  isEnabled: debugMode == 'false',
+  property: {
     id: gaCode,
     params: {
       anonymize_ip: true,
     },
-  },
-  enabled: debugMode == 'true',
+  }
 });
 
-Vue.use(VueMq, {
+// vue-mq (media queries)
+app.use(VueMq, {
   breakpoints: {
-    // default mobile is 320px - 767px
-    mobile: 767, // tablet begins 768px
-    tablet: 991, // desktop begins 992px
+    // breakpoints == min-widths of next size
+    mobile: 768, // tablet begins 768px
+    tablet: 992, // desktop begins 992px
     desktop: Infinity,
   },
 });
+app.use(router);
+app.use(store);
+app.use(VueAxios, axios);
 
-Vue.config.devtools = process.env.VUE_DEVTOOLS === 'True';
-
-export const dataBus = new Vue();
-
-// vue app will be rendered inside of #main div found in index.html using webpack_loader
-new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount('#main');
+app.mount("#app");

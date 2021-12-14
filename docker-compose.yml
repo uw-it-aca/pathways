@@ -8,7 +8,9 @@ services:
     restart: always
     container_name: pathways_app
     environment:
-      - GOOGLE_ANALYTICS_KEY=${GOOGLE_ANALYTICS_KEY}
+      ENV: localdev
+      AUTH: SAML_MOCK
+      GOOGLE_ANALYTICS_KEY: "${GOOGLE_ANALYTICS_KEY}"
     volumes:
       - ./pathways:/app/pathways
       - statics-volume:/static
@@ -25,9 +27,12 @@ services:
     ports:
       - "${BUNDLE_ANALYZER_PORT:-8888}:8888" # Required when environment.BUNDLE_ANALYZER is true
     environment:
+      NODE_ENV: "development"
       VUE_DEVTOOLS: "True"
       BUNDLE_ANALYZER: "True"
+      ENV: "development"
     volumes:
+      - ./pathways:/app/pathways # expose main django app so webpack-loader can output bundles here
       - ./pathways_vue:/app/pathways_vue
       - statics-volume:/static
     command: npx webpack --watch --mode=development

@@ -1,9 +1,11 @@
 <template>
-  <div id="main">
-    <router-view />
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>
-  export default { };
+export default {
+  name: "App",
+  components: {
+  },
+};
 </script>

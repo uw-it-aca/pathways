@@ -1,11 +1,12 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import { createWebHistory, createRouter } from "vue-router";
+import { trackRouter } from "vue-gtag-next";
+
 
 // page components
 import Home from '../pages/home.vue';
-import Customize from '../pages/customize.vue';
-
-Vue.use(VueRouter);
+import Course from '../pages/course.vue';
+import Major from '../pages/major.vue';
+import Faq from '../pages/faq.vue';
 
 const routes = [
   {
@@ -14,15 +15,31 @@ const routes = [
     component: Home
   },
   {
-    path: "/customize/",
-    name: "Customize",
-    component: Customize,
+    path: "/faq",
+    name: "FAQ",
+    component: Faq,
+    pathToRegexpOptions: { strict: true }
   },
+  {
+    path: "/course",
+    name: "Course",
+    component: Course,
+    pathToRegexpOptions: { strict: true }
+  },
+  {
+    path: "/major",
+    name: "Major",
+    component: Major,
+    pathToRegexpOptions: { strict: true }
+  }
 ];
 
-const router = new VueRouter({
-  mode: 'history',
+const router = createRouter({
+  history: createWebHistory(),
   routes,
 });
+
+// add router tracking to gtag-next
+trackRouter(router);
 
 export default router;

@@ -2,26 +2,69 @@
 <template>
   <layout :page-title="pageTitle">
     <!-- page content -->
-    <template #title>{{ pageTitle }}</template>
+    <template #title>
+      <h1 class="visually-hidden">{{ pageTitle }}</h1>
+    </template>
     <template #content>
-      <div class="card mb-3 bg-light">
-        <div class="card-body">asldkjfas</div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="card mb-3 bg-light">
-            <div class="card-body">asldkjfas</div>
+      <div class="row justify-content-center">
+        <div class="col-md-9">
+
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <h2 class="modal-title mb-2" id="exampleModalLabel">Welcome</h2>
+                  <div>
+                    <p>
+                      DawgPath is a new tool that helps students discover courses and majors of interest. This tool also enables students to be strategic when making decisions about their quarterly class schedule. Finally, DawgPath provides useful data for students who plan to apply to majors that have selective screening. A few things to keep in mind before getting started:
+                    </p>
+                    <ul>
+                      <li>
+                        Grades are just one of the factors considered for admission to a capacity-constrained major. Reach out to your adviser to learn more.
+                      </li>
+                      <li>
+                        The median course grade and GPA data are only included for those students who had declared for the major.
+                      </li>
+
+                      <li>
+                        Discovering and applying for a major can be a challenging experience. Look for the “Contact your adviser” link to connect with your adviser.
+                      </li>
+                      <li>Check out the <a href="/faq">DawgPath FAQ</a> for more info.</li>
+                    </ul>
+                  </div>
+                  <div class="text-end">
+                    <button
+                      type="button"
+                      class="btn btn-purple"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                      @click="saveModalPref"
+                    >
+                      OK, got it
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-3">
-            <div class="card-body">asldkjfas</div>
+          <div class="mt-5">
+             <search-chooser/>
           </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-3 border-white">
-            <div class="card-body">asldkjfas</div>
-          </div>
+          <!-- Button trigger modal -->
+          <button
+            type="button"
+            class="btn btn-link mt-2 btn-sm text-decoration-none"
+            @click="showWelcomeModal"
+          >
+            About DawgPath <i class="bi bi-info-circle"></i>
+          </button>
         </div>
       </div>
     </template>
@@ -29,19 +72,50 @@
 </template>
 
 <script>
+
 import Layout from '../layout.vue';
+import SearchChooser from '../components/search/chooser.vue';
+
+import { Modal } from 'bootstrap';
 
 export default {
   components: {
     layout: Layout,
+    'search-chooser': SearchChooser,
   },
   data() {
     return {
-      pageTitle: 'My Home Page',
+      pageTitle: 'Home',
+      welcomeModal: null,
     };
   },
-  methods: {},
+  mounted() {
+    if(window.show_welcome){
+      // show the welcome modal when the component is mounted
+      this.showWelcomeModal();
+    }
+  },
+  methods: {
+    showWelcomeModal(event){
+        this.welcomeModal = new Modal(document.getElementById('exampleModal'), {})
+        this.welcomeModal.show()
+    },
+    saveModalPref(){
+      this.axios({
+        method: 'post',
+        url: "/api/v1/user_pref/",
+        headers: {'X-CSRFToken': window.csrf_token},
+        data: {
+          viewed_welcome_display: true
+        }
+      });
+    }
+  },
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+  .modal-body li {
+    margin-bottom:1em;
+  }
+</style>

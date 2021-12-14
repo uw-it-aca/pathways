@@ -2,39 +2,58 @@
   <!-- layout.vue: this is where you override the layout -->
   <topbar
     :app-name="appName"
+    :app-root-url="appRootUrl"
     :page-title="pageTitle"
     :user-name="userName"
     :sign-out-url="signOutUrl"
   >
-    <template #header></template>
-    <template #navigation>
-      <!-- navigation menu override -->
-      <b-nav vertical>
-        <b-nav-item
-          v-for="item in navItems"
-          :key="item.title"
-          class="mb-2"
-          :href="item.href"
-          :link-classes="'d-block px-2 py-1'"
-        >
-          {{ item.title }}
-        </b-nav-item>
-      </b-nav>
+    <template #header>
+      <div class="bg-dark-purple text-white py-2 small">
+        <div class="container-xl">
+          <div class="d-flex">
+            <div class="flex-fill"><i class="bi bi-person-circle me-2"></i>{{ userName }}</div>
+            <div class="flex-fill text-end">
+              <a href="/faq" class="router-link text-white me-3 text-decoration-none"><i class="bi bi-question-circle me-2"></i>FAQ</a>
+              <a :href="signOutUrl" class="text-white text-decoration-none"><i class="bi bi-box-arrow-right me-2"></i>Sign out</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-purple axdd-topbar-brand">
+        <div class="container-xl axdd-topbar-logo">
+          <div
+            class="d-inline align-middle text-white"
+            :class="[$mq == 'desktop' ? 'h3' : 'h5']"
+          >
+            <a :href="appRootUrl" class="text-white text-decoration-none">{{
+              appName
+            }}</a>
+          </div>
+        </div>
+      </div>
     </template>
     <template #main>
       <!-- main section override -->
-      <h1>
-        <slot name="title">
-          {{ pageTitle }}
-        </slot>
-      </h1>
+      <slot name="title">
+        {{ pageTitle }}
+      </slot>
       <slot name="content"></slot>
     </template>
     <template #footer>
-      <!-- footer section overrixe -->
-      <div class="text-white font-weight-light">
-        this is my custom footer<br />
-        Copyright &copy; {{ new Date().getFullYear() }} University of Washington
+      <!-- footer section override -->
+       <div class="w-100 mt-auto pt-3 pb-3 small bg-gray-800">
+        <div class="container-xl py-3">
+          <ul class="list-inline mb-2">
+            <li class="list-inline-item item-dot"><a href="mailto:help@uw.edu?subject=DawgPath Comment, Request, Suggestion" title="Contact the DawgPath team" class="text-white text-decoration-none me-2"><i class="bi bi-envelope-fill me-0"></i> Contact</a></li>
+            <li class="list-inline-item item-dot"><a href="#" title="DawgPath Docs on IT Connect" class="text-white text-decoration-none me-2">Documentation</a></li>
+            <li class="list-inline-item item-dot"><a href="https://www.washington.edu/online/terms/" title="UW Terms of Use" class="text-white text-decoration-none me-2">Terms</a></li>
+            <li class="list-inline-item"><a href="https://www.washington.edu/online/privacy/" title="UW Privacy Policy" class="router-link text-white text-decoration-none me-2">Privacy</a></li>
+          </ul>
+          <div class="font-weight-light" style="color:#aaa">
+            &copy; {{ new Date().getFullYear() }} University of
+          Washington
+          </div>
+        </div>
       </div>
     </template>
   </topbar>
@@ -44,9 +63,9 @@
 import { Topbar } from 'axdd-components';
 
 export default {
-  name: 'Pathways',
+  name: 'DawgPath',
   components: {
-    topbar: Topbar,
+    'topbar': Topbar,
   },
   props: {
     pageTitle: {
@@ -57,9 +76,10 @@ export default {
   data() {
     return {
       // minimum application setup overrides
-      appName: 'Pathways',
-      userName: 'javerage',
-      signOutUrl: '/signout',
+      appName: 'DawgPath',
+      appRootUrl: '/',
+      userName: '',
+      signOutUrl: '/saml/logout',
 
       // automatically set year
       currentYear: new Date().getFullYear(),
@@ -85,7 +105,23 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.userName = window.user;
+  },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+@import './css/custom.scss';
+
+.item-dot {
+  &::after {
+    content: '·';
+    color: #fff;
+  }
+}
+.axdd-topbar-brand {
+  line-height: 65px;
+}
+
+</style>

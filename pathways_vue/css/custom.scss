@@ -1,6 +1,40 @@
-// theme variables
-@import "./variables.scss";
+@use "sass:map";
+@import 'axdd-components/src/assets/css/custom.scss';
 
-// bootstrap + bootstrap-vue
-@import '~bootstrap';
-@import '~bootstrap-vue';
+// override variables
+$nav-height: 52px;
+$bar-height: 40px;
+$link-color: #0069d9; //a11y blue
+
+// pathways custom theme colors
+$custom-colors: (
+  "test": red, // bg-test text-test
+  "link-color": $link-color,
+  "blue-200":   $blue-200,
+  "orange-200": $orange-200, // border-orange-200
+  "teal-200":   $teal-200,
+  "gray-800":   $gray-800, // bg-gray-800
+);
+
+// axdd-components + pathways custom colors
+$theme-colors: map-merge($theme-colors, $custom-colors);
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+$utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
+$utilities-text-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
+$utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
+
+// import bootstrap and bootstrap-icons
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+// additional non-bootstrap styles
+
+.blah { color: purple; }
+
+// global pathways colors
+
+.pw-orange { background-color: $orange-200; }
+.pw-green { background-color: $teal-200; }
+.pw-blue { background-color: $blue-200; }
+
+

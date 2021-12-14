@@ -1,9 +1,10 @@
+const path = require("path")
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const DjangoBridgePlugin = require('django-webpack-bridge');
+const BundleTracker = require('webpack-bundle-tracker');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { VueLoaderPlugin } = require('vue-loader')
 const webpack = require('webpack');
 
 module.exports = (_env, options) => {
@@ -13,8 +14,10 @@ module.exports = (_env, options) => {
 
   const config = {
 
-    //context: __dirname,
+    context: __dirname,
 
+    // MARK: Specify the 'entry point' js for the vue application. Multiple entry points can be
+    // declared using an object
     entry: {
       main: './pathways_vue/main.js'
     },
@@ -26,20 +29,32 @@ module.exports = (_env, options) => {
       },
     },
 
+    // MARK: Put the 'bundles' in a name-spaced directory in the django app statics
+    // where it be collected when using 'collectstatic'
     output: {
-      path: '/static/pathways/',
+      path: path.resolve('./pathways/static/pathways/bundles/'),
       filename: "[name]-[contenthash].js",
-      publicPath: '',
+      publicPath: '/static/pathways/bundles/',
     },
 
     plugins: [
       new webpack.EnvironmentPlugin(['VUE_DEVTOOLS']),
+      new webpack.DefinePlugin({
+        __VUE_OPTIONS_API__: true,
+        __VUE_PROD_DEVTOOLS__: false,
+      }),
       new CleanWebpackPlugin(),
       new VueLoaderPlugin(),
       new MiniCssExtractPlugin({
         filename: "[name]-[contenthash].css",
       }),
-      new DjangoBridgePlugin(),
+      
+      // MARK: Put the 'webpack-stats.json' file in the static location directory so that it 
+      // can be accessed during development and production static collection
+      new BundleTracker({
+        filename: './pathways/static/webpack-stats.json'
+      }),
+
     ],
 
     module: {
@@ -76,11 +91,7 @@ module.exports = (_env, options) => {
         },
         {
           test: /\.(png|jpe?g|gif)$/i,
-          use: [
-            {
-              loader: 'file-loader',
-            },
-          ],
+          type: 'asset/resource',
         },
       ]
     },
@@ -88,7 +99,7 @@ module.exports = (_env, options) => {
     resolve: {
       extensions: ['.js', '.vue'],
       alias: {
-        'vue$': 'vue/dist/vue.esm.js'
+        'Vue': 'vue/dist/vue.esm-bundler.js',
       }
     }
   };
