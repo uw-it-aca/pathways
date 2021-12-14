@@ -38,7 +38,7 @@
         :active_course="courseId"
         />
         <concurrent-courses :courseData="courseData"/>
-        <contact-adviser :campus="courseCampus" :type="course"/>
+        <contact-adviser :campus="courseCampus" :type="'course'"/>
       </div>
       <div v-else>
         <div v-if="showError">PLACEHOLDER: course not found</div>
