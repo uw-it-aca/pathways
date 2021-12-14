@@ -30,7 +30,7 @@
           <div class="col-sm-4"></div>
         </div>
 
-        <contact-adviser :campus="campus" :type="major"/>
+        <contact-adviser :campus="campus" :type="'major'"/>
       </div>
       <div v-else>
         <div v-if="showError">
