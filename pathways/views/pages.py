@@ -9,9 +9,11 @@ from uw_saml.utils import get_user
 from pathways.views import eval_group_required
 from pathways.models.user import User
 
+ALLOWED_USERS_GROUP = getattr(settings, "ALLOWED_USERS_GROUP", None)
+
 
 @method_decorator(login_required, name="dispatch")
-@method_decorator(eval_group_required(settings.ALLOWED_USERS_GROUP),
+@method_decorator(eval_group_required(ALLOWED_USERS_GROUP),
                   name='dispatch')
 class PageView(TemplateView):
     """
