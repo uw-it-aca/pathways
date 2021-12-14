@@ -79,7 +79,7 @@ export default {
       appName: 'DawgPath',
       appRootUrl: '/',
       userName: '',
-      signOutUrl: '/signout',
+      signOutUrl: '/saml/logout',
 
       // automatically set year
       currentYear: new Date().getFullYear(),
