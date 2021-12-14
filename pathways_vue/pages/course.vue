@@ -38,7 +38,7 @@
         :active_course="courseId"
         />
         <concurrent-courses :courseData="courseData"/>
-        <contact-adviser-course />
+        <contact-adviser :campus="courseCampus" :type="course"/>
       </div>
       <div v-else>
         <div v-if="showError">PLACEHOLDER: course not found</div>
@@ -57,7 +57,7 @@ import ExploreCourse from '../components/course/explore-course.vue';
 import OutcomeIndex from '../components/course/outcome-index.vue';
 import PrereqMap from '../components/course/prereq-map.vue';
 import ConcurrentCourses from '../components/course/concurrent-courses.vue';
-import ContactAdviserCourse from '../components/course/contact-adviser-course.vue';
+import ContactAdviser from '../components/contact-adviser.vue';
 
 export default {
   components: {
@@ -67,7 +67,7 @@ export default {
     'explore-course': ExploreCourse,
     'grade-distribution': GradeDistribution,
     'outcome-index': OutcomeIndex,
-    'contact-adviser-course': ContactAdviserCourse,
+    'contact-adviser': ContactAdviser,
     'prereq-map': PrereqMap,
     'concurrent-courses': ConcurrentCourses,
   },
