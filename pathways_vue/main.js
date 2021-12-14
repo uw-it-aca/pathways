@@ -28,7 +28,7 @@ app.config.productionTip = false;
 
 // vue-gtag
 app.use(VueGtag, {
-  config: {
+  property: {
     id: gaCode,
     params: {
       anonymize_ip: true,
