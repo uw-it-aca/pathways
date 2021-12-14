@@ -6,10 +6,15 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from uw_saml.utils import get_user
+from pathways.views import eval_group_required
 from pathways.models.user import User
+
+ALLOWED_USERS_GROUP = getattr(settings, "ALLOWED_USERS_GROUP", None)
 
 
 @method_decorator(login_required, name="dispatch")
+@method_decorator(eval_group_required(ALLOWED_USERS_GROUP),
+                  name='dispatch')
 class PageView(TemplateView):
     """
     Superclass for all page views.
