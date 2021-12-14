@@ -20,3 +20,8 @@ class PagesViewTest(TestCase):
             self.assertIsInstance(response.context_data, dict)
             self.assertEqual(response.context_data.get('ga_key'), ' ')
             self.assertEqual(response.context_data.get('django_debug'), False)
+
+    def test_auth(self):
+        with self.settings(LIMIT_USER_ACCESS=True):
+            response = DefaultPageView.as_view()(self.request)
+            self.assertEqual(response.status_code, 401)

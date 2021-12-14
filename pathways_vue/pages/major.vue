@@ -33,7 +33,24 @@
         <contact-adviser-major />
       </div>
       <div v-else>
-        No major selected
+        <div v-if="showError">
+          <div class="alert alert-info" role="alert">
+            <p>Data is not available for selected major. Here are some possible reasons:</p>
+            <ul>
+              <li>This major is no longer offered</li>
+              <li>It is a graduate degree</li>
+              <li>You made a typo -- the major doesn’t exist.</li>
+            </ul>
+          </div>
+        </div>
+        <div v-else>
+          <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </template>
   </layout>
@@ -65,7 +82,8 @@ export default {
       selectedMajor: null,
       majorID: null,
       campus: null,
-      major_data: null
+      major_data: undefined,
+      showError: false
     };
   },
   methods: {
@@ -75,9 +93,12 @@ export default {
     },
     get_major_data(){
       const vue = this;
+      this.major_data = undefined;
       if(this.campus !== null && this.majorID !== null){
         this.axios.get("/api/v1/majors/" + this.campus + "/" + this.majorID).then((response) => {
           vue.major_data = response.data;
+        }).catch(function (error) {
+          vue.showError = true;
         });
       }
     }

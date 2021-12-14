@@ -70,9 +70,13 @@ class Course(models.Model):
     @staticmethod
     def fix_gpa_json(json):
         fixed = []
-        for key in json:
-            if key != "null":
-                fixed.append({"gpa": key, "count": json[key]})
+        try:
+            for key in json:
+                if key != "null":
+                    fixed.append({"gpa": key, "count": json[key]})
+        except TypeError:
+            # No GPA distro for course
+            pass
         return fixed
 
     def get_coi_data(self):

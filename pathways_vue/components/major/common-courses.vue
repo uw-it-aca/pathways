@@ -2,7 +2,13 @@
 
 <template>
   <div class="card mb-5">
-    <div class="card-body explore-major">
+    <div v-if="commonCourses.length === 0" class="card-body">
+      <h3>Common Courses</h3>
+      <p>
+        No common courses available for <strong>{{ major["major_title"] }}</strong>.
+      </p>
+    </div>
+    <div v-else class="card-body explore-major">
       <h3>Common courses for {{ major["major_title"] }}</h3>
       <p>
         Below are the 10 most popular courses at the time of declaration among students who declared
@@ -47,7 +53,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="course in common_courses" class="align-middle">
+          <tr v-for="course in commonCourses" class="align-middle">
             <th scope="row">{{ course.percent }}%</th>
             <td>
               <div class="progress">
@@ -70,7 +76,8 @@
               </a>
               {{ course.title }}
             </td>
-            <td>{{course.coi_score}}</td>
+            <td v-if="course.coi_score">{{course.coi_score}}</td>
+            <td v-else>No Data</td>
           </tr>
         </tbody>
       </table>
@@ -90,15 +97,19 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      commonCourses: []
+    };
   },
   mounted() {
-    var popover = new Popover(document.querySelector('.info-common-coi'));
-    var popover2 = new Popover(document.querySelector('.info-major-common'));
+    this.commonCourses = this.get_common_courses();
+    if(this.commonCourses.length > 0){
+      // var popover = new Popover(document.querySelector('.info-common-coi'));
+      // var popover2 = new Popover(document.querySelector('.info-major-common'));
+    }
   },
-  methods: {},
-  computed: {
-    common_courses: function () {
+  methods: {
+    get_common_courses: function(){
       let processed_courses = [];
 
       for (const [course, data] of Object.entries(this.major.common_course_decl)) {
@@ -112,6 +123,18 @@ export default {
       }
 
       return processed_courses.sort((a, b) => (a.percent < b.percent) ? 1 : -1);
+    }
+  },
+  watch: {
+    commonCourses: function (course) {
+      if (this.commonCourses.length > 0) {
+        // Hack to get popovers to only init once element has rendered
+        setTimeout(function(){
+          var popover = new Popover(document.querySelector('.info-common-coi'));
+          var popover2 = new Popover(document.querySelector('.info-major-common'));
+        }, 1);
+
+      }
     }
   }
 };

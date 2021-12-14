@@ -5,8 +5,8 @@
     <template #title
       ><h1 class="visually-hidden">{{ pageTitle }}</h1></template
     >
-    <template #content>
-      <div class="row justify-content-center mb-5">
+    <template #content >
+      <div class="row justify-content-center mb-5" >
         <div class="col-md-9">
           <search-chooser
             :prefill-id="courseId"
@@ -40,7 +40,25 @@
         <concurrent-courses :courseData="courseData"/>
         <contact-adviser-course />
       </div>
-      <div v-else>PLACEHOLDER: select something</div>
+      <div v-else>
+        <div v-if="showError">
+          <div class="alert alert-info" role="alert">
+            <p>Data is not available for {{courseId}}. Here are some possible reasons:</p>
+            <ul>
+              <li>This course is no longer offered</li>
+              <li>It is a graduate course</li>
+              <li>You made a typo -- the course code doesn’t exist.</li>
+            </ul>
+          </div>
+        </div>
+        <div v-else>
+          <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
   </layout>
 </template>
@@ -71,9 +89,10 @@ export default {
   data() {
     return {
       pageTitle: 'Course',
-      courseData: {},
+      courseData: undefined,
       courseId: undefined,
-      courseCampus: undefined
+      courseCampus: undefined,
+      showError: false
     };
   },
   computed: {
@@ -93,9 +112,13 @@ export default {
     },
     get_course_data(course_id){
       const vue = this;
+      this.courseData = undefined;
       this.axios.get("/api/v1/courses/details/" + course_id).then((response) => {
+        vue.showError = false;
         vue.courseData = response.data;
         vue.courseCampus = response.data.course_campus;
+      }).catch(function (error) {
+        vue.showError = true;
       });
     }
   },
