@@ -1,7 +1,7 @@
 // feedback.vue
 
 <template>
-    <div class="position-relative">
+    <div class="position-relative mt-5">
         <div class="position-absolute bottom-0 end-0 p-3" style="z-index: 11;">
             <button
                 class="btn btn-outline-primary"
@@ -46,4 +46,13 @@ export default {
 </script>
 
 <style lang="scss">
+iframe {
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+  };
 </style>
