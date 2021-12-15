@@ -30,7 +30,7 @@
           <div class="col-sm-4"></div>
         </div>
 
-        <contact-adviser-major />
+        <contact-adviser :campus="campus" :type="'major'"/>
       </div>
       <div v-else>
         <div v-if="showError">
@@ -64,14 +64,14 @@ import ExploreMajor from '../components/major/explore-major.vue';
 import CommonCourses from '../components/major/common-courses.vue';
 import SearchChooser from "../components/search/chooser.vue";
 import D3Cgpa from '../components/major/d3-cgpa.vue';
-import ContactAdviserMajor from '../components/major/contact-adviser-major.vue';
+import ContactAdviser from '../components/contact-adviser.vue';
 
 export default {
   components: {
     'layout': Layout,
     'search-chooser': SearchChooser,
     'd3-cgpa': D3Cgpa,
-    'contact-adviser-major': ContactAdviserMajor,
+    'contact-adviser': ContactAdviser,
     'major-details': MajorDetails,
     'explore-major': ExploreMajor,
     'common-courses': CommonCourses,

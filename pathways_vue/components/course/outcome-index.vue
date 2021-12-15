@@ -5,8 +5,8 @@
     <div class="card-body">
       <h3>Course Outcome Index (COI)</h3>
       <p>
-        Using prior course data, this index compares estimated fail/withdrawal rates against actual
-        fail/withdrawal rates.
+        Using prior course data, this index compares estimated pass/completion rates against actual
+        pass/completion rates.
         <a
           tabindex="0"
           class="info-popper"
