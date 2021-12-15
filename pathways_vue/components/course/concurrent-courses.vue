@@ -66,8 +66,8 @@
               </div>
             </td>
             <td>
-              <a :href="'/course/?id=' + course.course" class="router-link-active"
-                ><span class="badge bg-link-color text-light">{{course.course}}</span></a
+              <a :href="'/course/?id=' + course.course" class="btn-primary btn-course router-link-active text-decoration-none"
+                >{{course.course}}</a
               >
               {{course.title}}
             </td>
@@ -124,6 +124,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../../css/custom.scss';
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }

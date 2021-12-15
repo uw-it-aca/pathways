@@ -70,9 +70,9 @@
             <td>
               <a
                 v-bind:href="'/course/?id=' + encodeURIComponent(course.course)"
-                class="router-link-active"
+                class="btn-primary btn-course router-link-active text-decoration-none"
               >
-                <span class="badge bg-link-color text-light me-2">{{ course.course }}</span>
+                {{ course.course }}
               </a>
               {{ course.title }}
             </td>
@@ -141,6 +141,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../css/custom.scss';
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }
