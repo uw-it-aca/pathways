@@ -118,9 +118,9 @@ export default {
     },
     renderableOptions() {
       if(this.searchType==="major"){
-        return this.majorList.map(m => m.value)
+        return this.majorList.map(m => m.value).sort();
       }else if(this.searchType==="course"){
-        return this.courseList.map(m => m.value)
+        return this.courseList.map(m => m.value).sort();
       }
     },
     selectedKey() {
