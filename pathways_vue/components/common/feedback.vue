@@ -7,19 +7,19 @@
                 class="btn btn-outline-primary"
                 type="button"
                 data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasRight"
-                aria-controls="offcanvasRight"
+                data-bs-target="#send_feedback"
+                aria-controls="send_feedback"
             ><i class="bi bi-chat-right-text-fill me-0"></i> Send us feedback</button>
         </div>
     </div>
     <div
         class="offcanvas offcanvas-end"
         tabindex="-1"
-        id="offcanvasRight"
-        aria-labelledby="offcanvasRightLabel"
+        id="send_feedback"
+        aria-labelledby="dawgpath_feedback"
     >
         <div class="offcanvas-header">
-            <h5 id="offcanvasRightLabel">Feedback Form</h5>
+            <h3 id="dawgpath_feedback visually-hidden">Feedback Form</h3>
             <button
                 type="button"
                 class="btn-close text-reset"
