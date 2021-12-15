@@ -27,8 +27,8 @@
                   </div>
                   <ul class="prereq-list" v-if="course.prereqs.length > 0">
                     <li v-for="prereq in course.prereqs">
-                      <a :href="'/course/?id=' + prereq.course_id" class="active-router-link"><span class="badge bg-link-color text-light"
-                        >{{prereq.course_id}}</span></a
+                      <a :href="'/course/?id=' + prereq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
+                        {{prereq.course_id}}</a
                       >
                     </li>
                   </ul>
@@ -45,8 +45,8 @@
                   </div>
                   <ul class="prereq-list" v-if="course.postreqs.length > 0">
                     <li v-for="postreq in course.postreqs">
-                      <a :href="'/course/?id=' + postreq.course_id" class="active-router-link"><span class="badge bg-link-color text-light"
-                      >{{postreq.course_id}}</span></a
+                      <a :href="'/course/?id=' + postreq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
+                      {{postreq.course_id}}</a
                       >
                     </li>
                   </ul>

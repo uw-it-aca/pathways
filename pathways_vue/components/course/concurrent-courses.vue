@@ -124,18 +124,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../../css/custom.scss';
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
-}
-.btn-course {
-  display: inline-block;
-  padding: 0.35em 0.65em;
-  font-size: 0.75em;
-  font-weight: 700;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: 0.25rem;
 }
 </style>
