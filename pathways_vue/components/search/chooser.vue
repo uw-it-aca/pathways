@@ -58,7 +58,7 @@
         />
         <button type="button"
                 class="btn btn-purple"
-                :disabled="searchType.length === 0 || loadingList"
+                :disabled="searchType.length === 0 || loadingList || selectedLabel.length === 0"
                 @click="onSelected">
           Search
         </button>
