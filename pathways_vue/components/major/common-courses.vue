@@ -70,9 +70,9 @@
             <td>
               <a
                 v-bind:href="'/course/?id=' + encodeURIComponent(course.course)"
-                class="router-link-active"
+                class="btn-primary btn-course router-link-active text-decoration-none"
               >
-                <span class="badge bg-link-color text-light me-2">{{ course.course }}</span>
+                {{ course.course }}
               </a>
               {{ course.title }}
             </td>
@@ -143,5 +143,16 @@ export default {
 <style lang="scss" scoped>
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
+}
+.btn-course {
+  display: inline-block;
+  padding: 0.35em 0.65em;
+  font-size: 0.75em;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
 }
 </style>
