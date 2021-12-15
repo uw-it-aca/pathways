@@ -1,17 +1,4 @@
 <template>
-  <!--
-  <div class="input-group" v-if=!dataLoading>
-    <input
-      type="text"
-      v-model="selectedLabel"
-      class="form-control"
-      aria-label=""
-      :placeholder="placeholder"
-      :list="innerId"
-    />
-    <button type="button" class="btn btn-purple" @click="onSelected">Search</button>
-  </div>
-  -->
   <datalist :id="innerId">
     <option v-for="(option, i) in renderableOptions" :key="i">{{ option }}</option>
   </datalist>
