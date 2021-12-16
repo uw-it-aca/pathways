@@ -14,10 +14,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@700&family=Open+Sans:ital,wght@0,400;0,700;1,400&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
+    <!-- vis.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
 
+    <!-- webpack css bundles -->
     {% render_bundle 'main' 'css' %}
-
+    
 </head>
 
 <body {% if ga_key %}data-google-analytics="{{ ga_key }}"{% endif %} data-django-debug="{{ django_debug|lower}}">
@@ -29,6 +31,7 @@
 
     <!-- vue app will be injected here -->
     <div id="app"></div>
+    <!-- webpack js bundles -->
     {% render_bundle 'main' 'js' attrs='defer' %}
 
 </body>
