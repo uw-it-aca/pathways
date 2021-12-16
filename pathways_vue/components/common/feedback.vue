@@ -4,7 +4,7 @@
     <div class="position-relative mt-5">
         <div class="position-absolute bottom-0 end-0 p-3" style="z-index: 11;">
             <button
-                class="btn btn-outline-primary"
+                class="btn btn-primary"
                 type="button"
                 data-bs-toggle="offcanvas"
                 data-bs-target="#send_feedback"
@@ -19,7 +19,7 @@
         aria-labelledby="dawgpath_feedback"
     >
         <div class="offcanvas-header">
-            <h3 id="dawgpath_feedback visually-hidden">Feedback Form</h3>
+            <h3 id="dawgpath_feedback" class="visually-hidden">Feedback Form</h3>
             <button
                 type="button"
                 class="btn-close text-reset"
