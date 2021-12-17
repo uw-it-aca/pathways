@@ -9,11 +9,9 @@
     <li class="mb-3" v-for="course in courseData">
       <div class="card shadow-sm">
         <div class="card-body p-3">
-          <strong
-            ><a :href="'/course/?id=' + course.course_id" class="d-block mb-3">
+          <a :href="'/course/?id=' + course.course_id" class="d-block mb-3">
               {{course.course_id}}: {{course.course_title}}</a
-            ></strong
-          >
+            >
           <div>
             <div class="container">
               <div class="row">

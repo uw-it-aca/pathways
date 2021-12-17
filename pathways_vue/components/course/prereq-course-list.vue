@@ -10,7 +10,7 @@
             <a :href="'/course/?id='+prereq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
               {{prereq.course_id}}
             </a>
-            <span class="ms-3">{{prereq.course_title}}</span>
+            <span class="ms-3"><a :href="'/course/?id='+prereq.course_id">{{prereq.course_title}}</a></span>
           </li>
         </ul>
       </div>
@@ -27,7 +27,7 @@
             <a :href="'/course/?id='+postreq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
               {{postreq.course_id}}
             </a>
-            <span class="ms-3">{{postreq.course_title}}</span>
+            <span class="ms-3"><a :href="'/course/?id='+postreq.course_id" class="router-link-active" :title="'Go to course ' + postreq.course_id + ' ' + postreq.course_title">{{postreq.course_title}}</a></span>
           </li>
         </ul>
       </div>
