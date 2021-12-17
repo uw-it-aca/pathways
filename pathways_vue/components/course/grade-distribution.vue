@@ -12,10 +12,11 @@
           role="button"
           data-bs-toggle="popover"
           data-bs-trigger="focus"
+          data-bs-placement="top"
           title="Course Grade Distribution"
           data-bs-content="A histogram represents data in a range of buckets along the horizontal line, or x-axis. The vertical line, or y-axis, represents the number of outcomes for each bucket."
         >
-          <i class="bi bi-info-circle-fill"></i>
+          <i class="bi bi-info-circle-fill me-0"></i>
         </a>
       </p>
       <div id="gcd_graph" />
@@ -183,19 +184,4 @@ export default {
   stroke: #000;
   shape-rendering: crispEdges;
 }
-
-div.tooltip {
-  position: absolute;
-  text-align: center;
-  line-height: 1;
-  padding: 3px;
-  background: #000;
-  color: #fff;
-  border-radius: 4px;
-  width: 5rem;
-  height: 3.5rem;
-  font: 12px sans-serif;
-  pointer-events: none;
-}
-
 </style>

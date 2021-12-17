@@ -63,7 +63,7 @@
             class="btn btn-link mt-2 btn-sm text-decoration-none"
             @click="showWelcomeModal"
           >
-            About DawgPath <i class="bi bi-info-circle"></i>
+            About DawgPath <i class="bi bi-info-circle me-0"></i>
           </button>
         </div>
       </div>

@@ -25,7 +25,7 @@
             title="Cumulative GPA Distribution"
             data-bs-content="A histogram represents data in a range of buckets along the horizontal line, or x-axis. The vertical line, or y-axis, represents the number of outcomes for each bucket."
           >
-            <i class="bi bi-info-circle-fill"></i>
+            <i class="bi bi-info-circle-fill me-0"></i>
           </a>
         </p>
         <p class="fst-italic">
@@ -247,19 +247,5 @@ export default {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
-}
-
-div.tooltip {
-  position: absolute;
-  text-align: center;
-  line-height: 1;
-  padding: 4px;
-  background: #000;
-  color: #fff;
-  border-radius: 4px;
-  width: 4rem;
-  height: 2.5rem;
-  font: 12px sans-serif;
-  pointer-events: none;
 }
 </style>
