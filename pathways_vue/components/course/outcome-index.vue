@@ -44,7 +44,7 @@
           <dd v-else class="col-sm-6 key-coi">No Data</dd>
         </dl>
         <p>*<!--{{percent_in_range}}--> <small>54% of all UW courses fall within the <!--{{range_text}}-->2 - 3 range.<br>
-          <strong>No Data</strong> means there is not enough data to generate a COI plot.</small>
+          <strong>No Data</strong> indicates there is not enough data to generate a COI plot.</small>
         </p>
       </div>
     </div>
@@ -204,7 +204,7 @@ export default {
         .attr('y', 25)
         .attr('text-anchor', 'left')
         .style('font-size', '11px')
-        .text('less completions than expected');
+        .text('fewer completions than expected');
 
       g.append('text')
         .attr('x', 290)
