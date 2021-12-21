@@ -11,33 +11,33 @@
             class="form-check-input"
             type="radio"
             name="flexRadioDefault"
-            id="flexRadioDefault1"
+            id="SeattleCampus"
             v-model="selectedCampus"
             value="seattle"
           />
-          <label class="form-check-label" for="flexRadioDefault1">Seattle Campus</label>
+          <label class="form-check-label" for="SeattleCampus">Seattle Campus</label>
         </div>
         <div class="form-check form-check-inline">
           <input
             class="form-check-input"
             type="radio"
             name="flexRadioDefault"
-            id="flexRadioDefault2"
+            id="TacomaCampus"
             v-model="selectedCampus"
             value="tacoma"
           />
-          <label class="form-check-label" for="flexRadioDefault2">Tacoma Campus</label>
+          <label class="form-check-label" for="TacomaCampus">Tacoma Campus</label>
         </div>
         <div class="form-check form-check-inline">
           <input
             class="form-check-input"
             type="radio"
             name="flexRadioDefault"
-            id="flexRadioDefault3"
+            id="BothellCampus"
             v-model="selectedCampus"
             value="bothell"
           />
-          <label class="form-check-label" for="flexRadioDefault3">Bothell Campus</label>
+          <label class="form-check-label" for="BothellCampus">Bothell Campus</label>
         </div>
       </div>
       <div class="input-group my-3" :class="selectedCampus ? 'enabled' : 'disabled'">
@@ -58,7 +58,7 @@
         />
         <button type="button"
                 class="btn btn-purple"
-                :disabled="searchType.length === 0 || loadingList"
+                :disabled="searchType.length === 0 || loadingList || selectedLabel.length === 0"
                 @click="onSelected">
           Search
         </button>
@@ -113,14 +113,14 @@ export default {
       } else if(this.searchType === "course"){
         return "Please enter a course"
       } else {
-        return "Please select a campus and type"
+        return "Please select a campus and a major or course"
       }
     },
     renderableOptions() {
       if(this.searchType==="major"){
-        return this.majorList.map(m => m.value)
+        return this.majorList.map(m => m.value).sort();
       }else if(this.searchType==="course"){
-        return this.courseList.map(m => m.value)
+        return this.courseList.map(m => m.value).sort();
       }
     },
     selectedKey() {

@@ -7,10 +7,10 @@
       <div class="mt-3">
         <ul class="list-unstyled mb-0">
           <li v-for="prereq in prereqs">
-            <a :href="'/course/?id='+prereq.course_id" class="router-link-active">
-              <span class="badge bg-link-color text-light">{{prereq.course_id}}</span>
+            <a :href="'/course/?id='+prereq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
+              {{prereq.course_id}}
             </a>
-            <span class="ms-3">{{prereq.course_title}}</span>
+            <span class="ms-3"><a :href="'/course/?id='+prereq.course_id">{{prereq.course_title}}</a></span>
           </li>
         </ul>
       </div>
@@ -24,10 +24,10 @@
       <div class="mt-3">
         <ul class="list-unstyled mb-0">
           <li v-for="postreq in postreqs">
-            <a :href="'/course/?id='+postreq.course_id" class="router-link-active">
-              <span class="badge bg-link-color text-light">{{postreq.course_id}}</span>
+            <a :href="'/course/?id='+postreq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
+              {{postreq.course_id}}
             </a>
-            <span class="ms-3">{{postreq.course_title}}</span>
+            <span class="ms-3"><a :href="'/course/?id='+postreq.course_id" class="router-link-active" :title="'Go to course ' + postreq.course_id + ' ' + postreq.course_title">{{postreq.course_title}}</a></span>
           </li>
         </ul>
       </div>
@@ -105,6 +105,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../css/custom.scss';
 li {
   list-style-type: none;
   padding-bottom: 0.5rem;

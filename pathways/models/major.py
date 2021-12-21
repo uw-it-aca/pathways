@@ -18,6 +18,9 @@ class Major(models.Model):
     common_course_decl = models.JSONField(null=True)
     gpa_2yr = models.JSONField(null=True)
     gpa_5yr = models.JSONField(null=True)
+    credential_title = models.TextField(null=True)
+    credential_code = models.CharField(max_length=25, null=True)
+    credential_description = models.TextField(null=True)
 
     @staticmethod
     def get_major_list():
@@ -35,13 +38,13 @@ class Major(models.Model):
             .only("major_abbr", "major_title")
         major_json = []
         for major in majors:
-            major_json.append({"key": major.major_abbr,
-                               "value": major.major_title})
+            major_json.append({"key": major.credential_code,
+                               "value": major.credential_title})
         return major_json
 
     @staticmethod
-    def get_major_data(major_abbr):
-        return Major.objects.get(major_abbr=major_abbr).json_data()
+    def get_major_data(credential_abbr):
+        return Major.objects.get(credential_code=credential_abbr).json_data()
 
     def json_data(self):
         return {"major_abbr": self.major_abbr,
@@ -54,7 +57,10 @@ class Major(models.Model):
                 "major_home_url": Major.get_major_url(self.major_home_url),
                 "common_course_decl": self.get_common_with_coi(),
                 "gpa_2yr": Major.fix_gpa_json(self.gpa_2yr),
-                "gpa_5yr": Major.fix_gpa_json(self.gpa_5yr)}
+                "gpa_5yr": Major.fix_gpa_json(self.gpa_5yr),
+                "credential_description": self.credential_description,
+                "credential_title": self.credential_title,
+                "credential_code": self.credential_code}
 
     @staticmethod
     def fix_gpa_json(json):

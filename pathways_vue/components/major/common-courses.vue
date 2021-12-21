@@ -69,12 +69,15 @@
             </td>
             <td>
               <a
-                v-bind:href="'/course/?id=' + encodeURIComponent(course.course)"
-                class="router-link-active"
+                v-bind:href="'/course/?id=' + encodeURIComponent(course.course)" :title="'Go to course ' + course.course"
+                class="btn-primary btn-course router-link-active text-decoration-none"
               >
-                <span class="badge bg-link-color text-light me-2">{{ course.course }}</span>
+                {{ course.course }}
               </a>
-              {{ course.title }}
+               <a
+                v-bind:href="'/course/?id=' + encodeURIComponent(course.course)"
+                class="router-link-active ps-3" :title="'Go to course ' + course.course + ' ' + course.title"
+              >{{ course.title }}</a>
             </td>
             <td v-if="course.coi_score">{{course.coi_score}}</td>
             <td v-else>No Data</td>
@@ -141,6 +144,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../css/custom.scss';
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }

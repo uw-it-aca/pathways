@@ -1,6 +1,6 @@
 // course.vue
 <template>
-  <layout :page-title="pageTitle">
+  <layout v-if="pageTitle !== undefined" :page-title="pageTitle">
     <!-- page content -->
     <template #title
       ><h1 class="visually-hidden">{{ pageTitle }}</h1></template
@@ -88,14 +88,17 @@ export default {
   },
   data() {
     return {
-      pageTitle: 'Course',
       courseData: undefined,
       courseId: undefined,
+      courseTitle: undefined,
       courseCampus: undefined,
       showError: false
     };
   },
   computed: {
+    pageTitle: function() {
+      return this.courseTitle;
+    }
   },
   mounted(){
     let course_id = this.$route.query.id;
@@ -117,6 +120,7 @@ export default {
         vue.showError = false;
         vue.courseData = response.data;
         vue.courseCampus = response.data.course_campus;
+        vue.courseTitle = this.courseId + ": " + response.data.course_title + " - Course ";
       }).catch(function (error) {
         vue.showError = true;
       });
