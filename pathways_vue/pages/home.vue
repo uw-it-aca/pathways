@@ -34,7 +34,7 @@
                       </li>
 
                       <li>
-                        Discovering and applying for a major can be a challenging experience. Look for the “Contact your adviser” link to connect with your adviser.
+                        Discovering and applying for a major can be a challenging experience. Look for the "Find your adviser” links to connect with your adviser.
                       </li>
                       <li>Check out the <a href="/faq">DawgPath FAQ</a> for more info.</li>
                     </ul>

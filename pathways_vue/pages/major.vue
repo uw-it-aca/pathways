@@ -64,7 +64,7 @@ import ExploreMajor from '../components/major/explore-major.vue';
 import CommonCourses from '../components/major/common-courses.vue';
 import SearchChooser from "../components/search/chooser.vue";
 import D3Cgpa from '../components/major/d3-cgpa.vue';
-import ContactAdviser from '../components/contact-adviser.vue';
+import ContactAdviser from '../components/common/contact-adviser.vue';
 
 export default {
   components: {
