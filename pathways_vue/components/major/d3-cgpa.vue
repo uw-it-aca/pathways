@@ -30,7 +30,7 @@
         </p>
         <p class="fst-italic">
           <small>
-            <i class="bi bi-exclamation-circle me-1"></i>Remember that GPA is just one of many factors that goes into admissions decisions.
+            <i class="bi bi-exclamation-circle me-1"></i>Remember that GPA is just one of many factors that goes into major admissions decisions.
           </small>
         </p>
       </div>
