@@ -1,6 +1,9 @@
 {
 	"TRAIN": {
 		"major_code": "TRAIN",
+    "credential_code": "TRAIN-2-1_0",
+    "credential_title": "Railroad Studies degree in switching",
+    "credential_description": "Railroad Studies focuses on the interactions between humans and the environment. BuildingRailroad Studies focuses on the interactions between humans and the environment. BuildingRailroad Studies focuses on the interactions between humans and the environment. BuildingRailroad Studies focuses on the interactions between humans and the environment. Building",
 		"program_code": "UG-TRAIN-MAJOR",
 		"major_title": "Railroad Studies",
 		"major_school": "College of the Railroad",
