@@ -72,7 +72,7 @@ import ExploreCourse from '../components/course/explore-course.vue';
 import OutcomeIndex from '../components/course/outcome-index.vue';
 import PrereqMap from '../components/course/prereq-map.vue';
 import ConcurrentCourses from '../components/course/concurrent-courses.vue';
-import ContactAdviser from '../components/contact-adviser.vue';
+import ContactAdviser from '../components/common/contact-adviser.vue';
 
 export default {
   components: {
