@@ -22,9 +22,9 @@ class MajorList(RESTDispatch):
 
 @method_decorator(login_required, name="dispatch")
 class MajorDetails(RESTDispatch):
-    def get(self, request, major_campus, major_abbr, *args, **kwargs):
+    def get(self, request, major_campus, credential_abbr, *args, **kwargs):
         try:
-            major = Major.get_major_data(major_abbr)
+            major = Major.get_major_data(credential_abbr)
             return self.json_response(major)
         except ObjectDoesNotExist as ex:
             return self.error_response(404, "Major %s not found" % major_abbr)
