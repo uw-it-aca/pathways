@@ -11,33 +11,33 @@
             class="form-check-input"
             type="radio"
             name="flexRadioDefault"
-            id="flexRadioDefault1"
+            id="SeattleCampus"
             v-model="selectedCampus"
             value="seattle"
           />
-          <label class="form-check-label" for="flexRadioDefault1">Seattle Campus</label>
+          <label class="form-check-label" for="SeattleCampus">Seattle Campus</label>
         </div>
         <div class="form-check form-check-inline">
           <input
             class="form-check-input"
             type="radio"
             name="flexRadioDefault"
-            id="flexRadioDefault2"
+            id="TacomaCampus"
             v-model="selectedCampus"
             value="tacoma"
           />
-          <label class="form-check-label" for="flexRadioDefault2">Tacoma Campus</label>
+          <label class="form-check-label" for="TacomaCampus">Tacoma Campus</label>
         </div>
         <div class="form-check form-check-inline">
           <input
             class="form-check-input"
             type="radio"
             name="flexRadioDefault"
-            id="flexRadioDefault3"
+            id="BothellCampus"
             v-model="selectedCampus"
             value="bothell"
           />
-          <label class="form-check-label" for="flexRadioDefault3">Bothell Campus</label>
+          <label class="form-check-label" for="BothellCampus">Bothell Campus</label>
         </div>
       </div>
       <div class="input-group my-3" :class="selectedCampus ? 'enabled' : 'disabled'">
@@ -113,7 +113,7 @@ export default {
       } else if(this.searchType === "course"){
         return "Please enter a course"
       } else {
-        return "Please select a campus and type"
+        return "Please select a campus and a major or course"
       }
     },
     renderableOptions() {

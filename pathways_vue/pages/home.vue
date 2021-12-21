@@ -23,7 +23,7 @@
                   <h2 class="modal-title mb-2" id="exampleModalLabel">Welcome</h2>
                   <div>
                     <p>
-                      DawgPath is a new tool that helps students discover courses and majors of interest. This tool also enables students to be strategic when making decisions about their quarterly class schedule. Finally, DawgPath provides useful data for students who plan to apply to majors that have selective screening. A few things to keep in mind before getting started:
+                      DawgPath helps you discover courses and majors you're interested in and enables you to be strategic when making decisions about your quarterly class schedule. It provides useful data when planning to apply to majors that have selective screening. A few things to keep in mind before getting started:
                     </p>
                     <ul>
                       <li>

@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body explore-major">
-      <h3>Explore this Major</h3>
+      <h3>Explore this major</h3>
       <ul>
         <!--<li v-if="major['major_home_url']">
           <a :href="major['major_home_url']" target="_blank">Degree Requirements</a>
