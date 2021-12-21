@@ -17,7 +17,7 @@ urlpatterns = [
         r'^api/v1/majors/(?P<major_campus>[^/]*)$',
         MajorList.as_view(), name='major-list'),
     re_path(
-        r'^api/v1/majors/(?P<major_campus>[^/]+)/(?P<major_abbr>[^/]*)$',
+        r'^api/v1/majors/(?P<major_campus>[^/]+)/(?P<credential_abbr>[^/]*)$',
         MajorDetails.as_view(), name='major-details'),
     re_path(
         r'^api/v1/courses/(?P<course_campus>[^/]*)$',
