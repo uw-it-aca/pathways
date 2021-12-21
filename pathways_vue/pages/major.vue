@@ -1,6 +1,6 @@
 // major.vue
 <template>
-  <layout :page-title="pageTitle">
+  <layout v-if="pageTitle !== undefined" :page-title="pageTitle">
     <!-- page content -->
     <template #title>
       <h1 class="visually-hidden">{{ pageTitle }}</h1>
@@ -78,13 +78,18 @@ export default {
   },
   data() {
     return {
-      pageTitle: 'Major',
       selectedMajor: null,
       majorID: null,
+      majorTitle: undefined,
       campus: null,
       major_data: undefined,
       showError: false
     };
+  },
+  computed: {
+    pageTitle: function() {
+      return this.majorTitle;
+    }
   },
   methods: {
     switch_major(data){
@@ -97,6 +102,8 @@ export default {
       if(this.campus !== null && this.majorID !== null){
         this.axios.get("/api/v1/majors/" + this.campus + "/" + this.majorID).then((response) => {
           vue.major_data = response.data;
+          vue.majorTitle = response.data.major_title + " - Major ";
+
         }).catch(function (error) {
           vue.showError = true;
         });
