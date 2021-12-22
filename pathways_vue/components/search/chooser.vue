@@ -4,7 +4,7 @@
   <div class="card bg-light">
     <div class="card-body">
       <h4 class="fw-bold mt-2">Search for a major or course</h4>
-
+      <form @submit.prevent="onSelected">
       <div class="my-3">
         <div class="form-check form-check-inline">
           <input
@@ -48,7 +48,7 @@
           </option>
         </select>
         <input
-          type="text"
+          type="search"
           class="form-control"
           :placeholder="searchPlaceholder"
           aria-label="Text input with dropdown button"
@@ -66,6 +66,7 @@
       <datalist id="searchDataList">
           <option v-for="(option, i) in renderableOptions" :key="i">{{ option }}</option>
         </datalist>
+      </form>
     </div>
   </div>
 </template>
