@@ -9,10 +9,10 @@
           <a :href="major['major_home_url']" target="_blank">Degree Requirements</a>
         </li> -->
         <li v-if="major['program_code']">
-          <a :href="myplanProgramURL" target="_blank">MyPlan Program Page</a>
+          <a :href="myplanProgramURL">MyPlan Program Page</a>
         </li>
         <li v-if="major['credential_code']">
-          <a :href="myplanCredentialURL" target="_blank">MyPlan Credential Page</a>
+          <a :href="myplanCredentialURL">MyPlan Credential Page</a>
         </li>
       </ul>
     </div>

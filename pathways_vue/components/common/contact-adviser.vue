@@ -4,14 +4,14 @@
       <h3>Are you considering this {{type}}?</h3>
       <p>
         We understand this can be a challenging process with many sources of information to
-        consider. This webpage is designed to be a useful tool but not a replacement for meeting
+        consider. DawgPath is designed to be a useful tool but not a replacement for meeting
         with an academic adviser. As you begin to consider what you want to major in, we recommend
         scheduling a meeting with your adviser to discuss your interests, goals, degree requirements
         and academic planning.
       </p>
       <ul>
         <li class="list-unstyled" v-for="info in advisingInfo" :key="info.url">
-          <a :href="info.url" target="_blank"><i class="bi bi-dot me-1"></i>{{info.label}}</a>
+          <a :href="info.url"><i class="bi bi-dot me-1"></i>{{info.label}}</a>
         </li>
       </ul>
     </div>
@@ -36,9 +36,9 @@ export default {
           {"label": "Find your premajor adviser",
            "url": "https://www.washington.edu/uaa/advising/appointments/"},
           {"label": "Find your premajor OMAD adviser",
-           "url": "http://depts.washington.edu/omadcs/location/"},
+           "url": "https://depts.washington.edu/omadcs/location/"},
           {"label": "Find your departmental or major adviser",
-           "url": "http://www.washington.edu/uaa/advising/degree-overview/" +
+           "url": "https://www.washington.edu/uaa/advising/degree-overview/" +
                   "majors/advising-offices-by-program"}]
       } else if (this.campus == "bothell") {
         return [
