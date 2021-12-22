@@ -94,6 +94,9 @@
             <li>
               <a href="#minimum_reqs" class="text-decoration-none ms-4">Minimum Requirements</a>
             </li>
+            <li>
+              <a href="#mixed" class="text-decoration-none ms-4">Mixed Admission</a>
+            </li>
           </ul>
 
           <p><em>Remember to talk to an adviser when planning your course schedule.</em></p>
@@ -216,6 +219,8 @@
             These majors have additional admission requirements. Once you’re a UW student and meet the
             minimum requirements, you can be admitted without further screening.
           </p>
+          <h3 id="mixed" class="fw-bold fs-5">Mixed Admission</h3>
+          <p>Entry may be either open, minimum, or capacity-constrained depending on the degree/option chosen.</p>
         </div>
       </div>
     </template>
