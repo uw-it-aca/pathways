@@ -11,24 +11,20 @@ import Faq from '../pages/faq.vue';
 const routes = [
   {
     path: "/",
-    name: "Home",
     component: Home
   },
   {
     path: "/faq",
-    name: "FAQ",
     component: Faq,
     pathToRegexpOptions: { strict: true }
   },
   {
     path: "/course",
-    name: "Course",
     component: Course,
     pathToRegexpOptions: { strict: true }
   },
   {
     path: "/major",
-    name: "Major",
     component: Major,
     pathToRegexpOptions: { strict: true }
   }
