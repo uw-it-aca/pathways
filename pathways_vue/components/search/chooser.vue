@@ -113,7 +113,7 @@ export default {
       && this.prefillId !== null){
       this.doPrefill = true;
       this.selectedCampus =this.prefillCampus;
-      this.searchType = "course";
+      this.searchType = this.prefillType;
 
     }
   },
