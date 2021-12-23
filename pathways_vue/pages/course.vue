@@ -43,7 +43,7 @@
       <div v-else>
         <div v-if="showError">
           <div class="alert alert-info" role="alert">
-            <p>Data is not available for {{courseId}}. Here are some possible reasons:</p>
+            <p>Data is not available for selected course. Here are some possible reasons:</p>
             <ul>
               <li>This course is no longer offered</li>
               <li>It is a graduate course</li>
