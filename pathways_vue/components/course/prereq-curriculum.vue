@@ -86,7 +86,6 @@ export default {
       this.axios.get("/api/v1/curric_prereq/" + curric_id).then((response) => {
         // don't show graph if there are no nodes/edges to display
         if(Object.keys(response.data.prereq_graph.x.edges.from).length > 0){
-          console.log('has key')
           vue.curricData = response.data;
         }
       }).catch(function (error) {
