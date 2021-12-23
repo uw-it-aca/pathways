@@ -107,6 +107,16 @@ export default {
       doPrefill: false
     };
   },
+  mounted: function(){
+    if(this.prefillCampus !== null
+      && this.prefillType !== null
+      && this.prefillId !== null){
+      this.doPrefill = true;
+      this.selectedCampus =this.prefillCampus;
+      this.searchType = "course";
+
+    }
+  },
   computed: {
     searchPlaceholder() {
       if(this.searchType === "major"){
@@ -139,18 +149,14 @@ export default {
   },
   watch: {
     searchType(type) {
-      // reset search field
-      if(!this.doPrefill) {
-        this.selectedLabel = "";
-        if (type === "major") {
-          this.loadingList = true;
-          this.fetch_major_data();
-        } else if (type === "course") {
-          this.loadingList = true;
-          this.fetch_course_data();
-        }
+      this.selectedLabel = "";
+      if (type === "major") {
+        this.loadingList = true;
+        this.fetch_major_data();
+      } else if (type === "course") {
+        this.loadingList = true;
+        this.fetch_course_data();
       }
-      this.doPrefill = false;
     },
     selectedCampus(){
       // reset selected type (don't reset on prefill initialization)
@@ -182,25 +188,19 @@ export default {
   },
   methods: {
     prefillForm() {
-      this.doPrefill = true;
-      if(this.prefillCampus && this.prefillId) {
-        this.searchType = this.prefillType;
-
-        let prefillLabel = undefined;
-        let searchList = {};
-        if(this.searchType==="major"){
-          searchList = this.majorList;
-        }else if(this.searchType==="course"){
-          searchList = this.courseList;
-        }
-        let selectedObj = searchList.find(o => o.key === this.prefillId);
-        if (selectedObj !== undefined){
-          prefillLabel = selectedObj.value;
-        }
-        this.selectedLabel = prefillLabel;
-
-
+      let prefillLabel = undefined;
+      let searchList = {};
+      if(this.searchType==="major"){
+        searchList = this.majorList;
+      }else if(this.searchType==="course"){
+        searchList = this.courseList;
       }
+      let selectedObj = searchList.find(o => o.key === this.prefillId);
+      if (selectedObj !== undefined){
+        prefillLabel = selectedObj.value;
+      }
+      this.selectedLabel = prefillLabel;
+      this.doPrefill = false;
     },
     onSelected() {
       let url = "/" + this.searchType;
