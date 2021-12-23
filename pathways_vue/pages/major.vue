@@ -100,7 +100,7 @@ export default {
       const vue = this;
       this.major_data = undefined;
       if(this.campus !== null && this.majorID !== null){
-        this.axios.get("/api/v1/majors/" + this.campus + "/" + this.majorID).then((response) => {
+        this.axios.get("/api/v1/majors/details/" + this.majorID).then((response) => {
           vue.major_data = response.data;
           vue.majorTitle = vue.major_data.credential_title + " - Major ";
         }).catch(function (error) {
