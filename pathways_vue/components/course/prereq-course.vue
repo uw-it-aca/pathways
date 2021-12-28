@@ -3,13 +3,7 @@
 <template>
   <div v-if="graph_data == null" class="p-3"> 
       <div class="alert alert-info" role="alert">
-        <p>No prerequisite information for {{active_course}} was found. Here are some possible reasons:</p>
-        <ul>
-            <li>The course does not have prereqs and/or isn't a prereq for other courses</li>
-            <li>It is no longer offered</li>
-            <li>It is a graduate level course</li>
-            <li>You made a typo – the course code doesn't exist</li>
-          </ul>
+        <p>The course <strong>{{active_course}}</strong> does not have prereqs and is not a prereq for other courses.</p>
       </div>
   </div>
   <div v-else>

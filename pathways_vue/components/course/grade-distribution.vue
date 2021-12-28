@@ -21,10 +21,7 @@
       <div id="gcd_graph" />
       <div v-if="total_count < 8">
         <div class="alert alert-info" role="alert">
-          <p>Data is not available for <strong>{{course.course_id}}</strong>.</p>
-            <ul>
-              <li>There isn’t enough student data to generate plots because the course is new or isn’t offered often.</li>
-            </ul>
+          <p>Course grade distribution is not available for <strong>{{course.course_id}}</strong> because there isn’t enough final grade data to generate plots.</p>
         </div>
       </div>
       <p><small>Number of grades in this sample: {{total_count}} (5 years). Data not instructor-specific.</small></p>
