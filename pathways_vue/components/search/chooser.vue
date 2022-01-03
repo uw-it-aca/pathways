@@ -3,7 +3,7 @@
 <template>
   <div class="card bg-light">
     <div class="card-body">
-      <h4 class="fw-bold mt-2">Search for a major or course</h4>
+      <h2 class="fw-bold mt-2 fs-5">Search for a major or course</h2>
       <form @submit.prevent="onSelected">
       <div class="my-3">
         <div class="form-check form-check-inline">
@@ -120,9 +120,9 @@ export default {
   computed: {
     searchPlaceholder() {
       if(this.searchType === "major"){
-        return "Please enter a major"
+        return "Please select a major"
       } else if(this.searchType === "course"){
-        return "Please enter a course"
+        return "Please select a course"
       } else {
         return "Please select a campus and a major or course"
       }
