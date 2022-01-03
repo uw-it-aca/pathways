@@ -13,10 +13,11 @@
           role="button"
           data-bs-toggle="popover"
           data-bs-trigger="focus"
+          data-bs-placement="top"
           title="Course Outcome Indicator"
           data-bs-content="A lower number (0-2) indicates that fewer people completed the course than expected. A middle number (2-3) indicates the course is on target with expectations. A higher (3-5) number indicates that more people completed the course than anticipated."
         >
-          <i class="bi bi-info-circle-fill"></i>
+          <i class="bi bi-info-circle-fill me-0"></i>
         </a>
       </p>
       <div id="coiGraph" />
