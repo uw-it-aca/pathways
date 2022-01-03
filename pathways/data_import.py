@@ -1,9 +1,6 @@
 # Copyright 2022 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-# Copyright 2021 UW-IT, University of Washington
-# SPDX-License-Identifier: Apache-2.0
-
 from pathways.models.major import Major
 from pathways.models.course import Course
 from pathways.models.curriculum import Curriculum
