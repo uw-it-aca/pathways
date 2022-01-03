@@ -4,7 +4,7 @@
   <div class="mb-5">
     <h2> {{ major["credential_title"] }}</h2>
     <p class="text-uppercase mb-1">{{ major["major_school"] }} - {{ major["major_campus"] }}</p>
-    <p><strong>Admission Policy:</strong> <a href="/faq#admission_types" class="router-link-active" title="Admission to majors">{{ major["major_admission"] }}</a></p>
+    <p><strong>Admission Policy:</strong> <a href="/faq#admission_types" class="router-link-active" title="Admission to majors">{{ AdminReqs }}</a></p>
     <div class="major-info">
       <div class="major-description">
         <p v-html="major['credential_description']" />
@@ -27,6 +27,15 @@ export default {
     return {};
   },
   methods: {},
+  computed: {
+    AdminReqs() {
+      if(this.major["major_admission"] === "minimumRequirements"){
+        return "Minimum Requirements"
+      } else {
+        return this.major["major_admission"]
+      }
+    },
+  },
 };
 </script>
 
