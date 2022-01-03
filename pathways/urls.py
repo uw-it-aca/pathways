@@ -1,9 +1,6 @@
 # Copyright 2022 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-# Copyright 2021 UW-IT, University of Washington
-# SPDX-License-Identifier: Apache-2.0
-
 from django.urls import include, path, re_path
 from pathways.views.pages import DefaultPageView
 from pathways.views.api.major import MajorDetails, MajorList
