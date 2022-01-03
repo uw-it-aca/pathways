@@ -17,7 +17,7 @@
       <table class="table table-borderless table-striped">
         <thead>
           <tr class="bg-light text-dark">
-            <th scope="col" style="width: 5%">
+            <th scope="col" class="pe-0" style="width: 8%">
               %
               <a
                 tabindex="0"
@@ -32,9 +32,9 @@
                 <i class="bi bi-info-circle-fill me-0"></i>
               </a>
             </th>
-            <th scope="col" class="visually-hidden" style="width: 15%">Percentage Graph</th>
-            <th scope="col" style="width: 50%">Concurrent Course</th>
-            <th scope="col" style="width: 30%">COI
+            <th scope="col" class="visually-hidden" style="width: 20%">Percentage Graph</th>
+            <th scope="col" style="width: 62%">Concurrent Course</th>
+            <th scope="col" class="px-0" style="width: 10%;min-width:60px;">COI
               <a
                 tabindex="0"
                 class="info-common-coi"
