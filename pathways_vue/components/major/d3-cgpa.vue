@@ -191,7 +191,7 @@ export default {
           .on("mouseover", function (event, d) {
             tooltip.transition()
               .style("opacity", 1);
-            tooltip.html(`GPA: ${d.gpa / 10} No. ${d.count}`)
+            tooltip.html(`GPA: ${d.gpa / 10} Total ${d.count}`)
               .style("left", (event.pageX) + "px")
               .style("top", (event.pageY - 28) + "px");
           })
