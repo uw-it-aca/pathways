@@ -2,7 +2,7 @@
 
 <template>
   <div v-if="graph_data == null" class="p-3"> 
-      <div class="alert alert-info" role="alert">
+      <div class="alert alert-purple" role="alert">
         <p>The course <strong>{{active_course}}</strong> does not have prereqs and is not a prereq for other courses.</p>
       </div>
   </div>

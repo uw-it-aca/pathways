@@ -2,7 +2,7 @@
 
 <template>
   <div v-if="curricData === undefined" class="p-3">
-    <div class="alert alert-info" role="alert">
+    <div class="alert alert-purple" role="alert">
       <p>The curriculum {{curric_id}} did not display a graph. Here are some possible reasons:</p>
         <ul>
           <li>The curriculum code does not exist</li>

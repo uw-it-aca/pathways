@@ -4,9 +4,11 @@
   <div class="card mb-5">
     <div v-if="concurrent_courses.length === 0" class="card-body">
       <h3>Concurrent Courses</h3>
-      <p>
-        No concurrent courses available for <strong>{{courseData.course_id}}</strong>.
-      </p>
+      <div class="alert alert-purple" role="alert">
+        <p>
+          No concurrent courses available for <strong>{{courseData.course_id}}</strong>.
+        </p>
+      </div>
     </div>
     <div v-else class="card-body">
       <h3>Concurrent Courses</h3>
