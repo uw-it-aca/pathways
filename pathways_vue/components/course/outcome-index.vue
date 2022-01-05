@@ -126,7 +126,7 @@ export default {
       // Create the 5.0 COI scale
       const x = d3
         .scaleLinear()
-        .domain([0, 5]) // This is what is written on the Axis: from 0 to 100
+        .domain([-5, 5]) // This is what is written on the Axis: from 0 to 100
         .range([0, width]); // This is where the axis is placed: from 0px to 600px
 
       // Append SVG to container
@@ -163,7 +163,7 @@ export default {
       const UwCOI = this.course_level_coi;
 
       // Draw the axis
-      let xAxisGenerator = d3.axisBottom(x).ticks(5).tickSize(-20);
+      let xAxisGenerator = d3.axisBottom(x).ticks(10).tickSize([-13]);
       let xAxis = svg.append('g');
 
       xAxis
@@ -234,7 +234,7 @@ svg {
 }
 
 .tick {
-  stroke-width: 1.5;
+  stroke-width: 1;
 }
 
 .bi {
