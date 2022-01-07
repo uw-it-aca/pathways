@@ -174,15 +174,6 @@ export default {
 
       const g = svg.append('g');
 
-      g.append('path') // creates a triangle symbol for course COI and plots on x axis
-        .attr('d', d3.symbol().type(d3.symbolTriangle).size(180))
-        .attr('class', function(d) {
-            if (CourseCOI == null) { return "d-none" }
-            else { return "display" }
-            ;})
-        .attr('transform', 'translate(' + x(CourseCOI) + ', 55)')
-        .style('fill', '#FF8C00');
-
       g.append('path') // creates a square symbol for all uw COI and plots on x axis
         .attr('d', d3.symbol().type(d3.symbolSquare).size(180))
         .attr('class', function(d) {
@@ -198,6 +189,15 @@ export default {
             else { return "display" }
             ;})
         .attr('transform', 'translate(' + x(CurrCOI) + ', 55)');
+
+        g.append('path') // creates a triangle symbol for course COI and plots on x axis
+        .attr('d', d3.symbol().type(d3.symbolTriangle).size(180))
+        .attr('class', function(d) {
+            if (CourseCOI == null) { return "d-none" }
+            else { return "display" }
+            ;})
+        .attr('transform', 'translate(' + x(CourseCOI) + ', 55)')
+        .style('fill', '#FF8C00');
 
       g.append('text')
         .attr('x', -2)
