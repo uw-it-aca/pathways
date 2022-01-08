@@ -1,6 +1,6 @@
 // major.vue
 <template>
-  <layout v-if="pageTitle !== undefined" :page-title="pageTitle">
+  <layout :page-title="pageTitle">
     <!-- page content -->
     <template #title>
       <h1 class="visually-hidden">{{ pageTitle }}</h1>
@@ -88,7 +88,8 @@ export default {
   },
   computed: {
     pageTitle: function() {
-      return this.majorTitle;
+      let no_title = this.showError ? "Error" : "";
+      return this.majorTitle !== undefined ? this.majorTitle : no_title;
     }
   },
   methods: {
