@@ -4,7 +4,7 @@
   <div class="card bg-light">
     <div class="card-body">
       <h2 class="fw-bold mt-2 fs-5">Search for a major or course</h2>
-      <form @submit.prevent="onSelected">
+      <form @submit.prevent="onSelected" role="search">
       <fieldset>
         <legend class="visually-hidden">Select a campus to search</legend>
       <div class="my-3">
@@ -51,7 +51,7 @@
           </option>
         </select>
         <input
-          type="search"
+          type="text"
           class="form-control"
           :placeholder="searchPlaceholder"
           aria-autocomplete="both" 
