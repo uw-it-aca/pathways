@@ -5,6 +5,8 @@
     <div class="card-body">
       <h2 class="fw-bold mt-2 fs-5">Search for a major or course</h2>
       <form @submit.prevent="onSelected">
+      <fieldset>
+        <legend class="visually-hidden">Select a campus to search</legend>
       <div class="my-3">
         <div class="form-check form-check-inline">
           <input
@@ -40,8 +42,9 @@
           <label class="form-check-label" for="BothellCampus">Bothell Campus</label>
         </div>
       </div>
+      </fieldset>
       <div class="input-group my-3" :class="selectedCampus ? 'enabled' : 'disabled'">
-        <select class="form-select" id="inputGroupSelect01" v-model="searchType" style="max-width: 110px;">
+        <select aria-label="Select major or course" class="form-select" id="inputGroupSelect01" v-model="searchType" style="max-width: 110px;">
           <option value="" selected disabled hidden>Select...</option>
           <option v-for="option in searchTypeOptions" v-bind:value="option.value">
             {{option.text}}
@@ -51,7 +54,8 @@
           type="search"
           class="form-control"
           :placeholder="searchPlaceholder"
-          aria-label="Text input with dropdown button"
+          aria-autocomplete="both" 
+          aria-label="Start typing for major or course search options"
           v-model="selectedLabel"
           list="searchDataList"
           :disabled="searchType.length === 0"
