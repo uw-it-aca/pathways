@@ -36,7 +36,7 @@
             <th scope="col" class="visually-hidden" style="width: 20%">Percentage Graph</th>
             <th scope="col" style="width: 62%">Common Course</th>
             <th scope="col" class="px-0" style="width: 10%;min-width:60px;">
-              COI
+              <abbr title="Course Outcome Index Score">COI </abbr> 
               <a
                 tabindex="0"
                 class="info-common-coi"
