@@ -1,13 +1,13 @@
 // prereq-course.vue
 
 <template>
-  <div v-if="graph_data == null" class="p-3"> 
+  <div v-if="!show_graph" class="p-3">
       <div class="alert alert-info" role="alert">
         <p>The course <strong>{{active_course}}</strong> does not have prereqs and is not a prereq for other courses.</p>
       </div>
   </div>
   <div v-else>
-    <div class="p-3"> 
+    <div class="p-3">
       <div class="form-check form-switch">
         <input
           class="form-check-input"
@@ -60,6 +60,14 @@ export default {
       required: true,
     },
   },
+    computed: {
+    show_graph: function (){
+      if(this.graph_data && this.graph_data.x){
+        return Object.keys(this.graph_data.x.edges.from).length > 0;
+      }
+      return false
+    }
+  }
 };
 </script>
 

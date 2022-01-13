@@ -111,16 +111,6 @@ export default {
       doPrefill: false
     };
   },
-  mounted: function(){
-    if(this.prefillCampus !== null
-      && this.prefillType !== null
-      && this.prefillId !== null){
-      this.doPrefill = true;
-      this.selectedCampus =this.prefillCampus;
-      this.searchType = this.prefillType;
-
-    }
-  },
   computed: {
     searchPlaceholder() {
       if(this.searchType === "major"){
@@ -188,9 +178,21 @@ export default {
       if(this.doPrefill){
         this.prefillForm();
       }
+    },
+    prefillCampus(pc){
+      this.startPrefill();
     }
   },
   methods: {
+    startPrefill(){
+      if(this.prefillCampus !== null
+        && this.prefillType !== null
+        && this.prefillId !== null) {
+        this.doPrefill = true;
+        this.selectedCampus = this.prefillCampus;
+        this.searchType = this.prefillType;
+      }
+    },
     prefillForm() {
       let prefillLabel = undefined;
       let searchList = {};
