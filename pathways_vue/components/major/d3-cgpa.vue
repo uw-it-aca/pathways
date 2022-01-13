@@ -53,12 +53,19 @@
           >Last 5 Years</a>
         </li>
       </ul>
-
-      <div id="histogram" class="mt-2"></div>
-      <small>
-        Number
-        of students in this sample: {{ total_count }}
-      </small>
+      <p v-if="yearCount === 2 && !show2Year">
+        {{ majorData.credential_title }} did not have enough students in the last 2 years to generate a GPA graph.
+      </p>
+      <p v-else-if="yearCount === 5 && !show5Year">
+        {{ majorData.credential_title }} did not have enough students in the last 5 years to generate a GPA graph.
+      </p>
+      <div v-show="showGraph">
+        <div id="histogram" class="mt-2"></div>
+        <small>
+          Number
+          of students in this sample: {{ total_count }}
+        </small>
+      </div>
     </div>
   </div>
 </template>
@@ -112,12 +119,33 @@ export default {
         var newFormat = d3.format(".2n");
       }
     },
+    show2Year(){
+      let count = 0
+      for (const value of this.majorData.gpa_2yr){
+        count += value.count
+      }
+      return count > 0;
+    },
+    show5Year(){
+      let count = 0
+      for (const value of this.majorData.gpa_5yr){
+        count += value.count
+      }
+      return count > 0;
+    },
+    showGraph(){
+      if(this.yearCount === 2){
+        return this.show2Year;
+      } else if(this.yearCount === 5){
+        return this.show5Year;
+      }
+    }
   },
   methods: {
     selectChart(year) {
       if (year === '2yr') {
-        this.generateChart(this.majorData.gpa_2yr);
         this.gpa_2yr_active = true;
+        this.generateChart(this.majorData.gpa_2yr);
       } else if (year === '5yr') {
         this.gpa_2yr_active = false;
         this.generateChart(this.majorData.gpa_5yr);
@@ -125,6 +153,10 @@ export default {
 
     },
     generateChart(gpa_data) {
+      if((this.yearCount === 2 && !this.show2Year)
+        || (this.yearCount === 5 && !this.show5Year)){
+        return;
+      }
       if (this.showCard) {
         // clear chart
         document.getElementById("histogram").innerHTML = "";
