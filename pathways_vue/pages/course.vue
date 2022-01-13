@@ -104,6 +104,7 @@ export default {
   mounted(){
     let course_id = this.$route.query.id;
     this.courseId = course_id;
+    this.courseCampus = this.$route.query.campus;
     this.emitter.on("update:selected", selectedKey => {
       this.courseId = selectedKey;
 
