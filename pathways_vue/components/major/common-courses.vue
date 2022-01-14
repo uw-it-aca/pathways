@@ -4,9 +4,11 @@
   <div class="card mb-5">
     <div v-if="commonCourses.length === 0" class="card-body">
       <h3>Common Courses</h3>
+      <div class="alert alert-purple mt-2" role="alert">
       <p>
         No common courses available for <strong>{{ major["major_title"] }}</strong>.
       </p>
+    </div>
     </div>
     <div v-else class="card-body explore-major">
       <h3>Common courses for {{ major["major_title"] }}</h3>
