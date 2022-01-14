@@ -84,7 +84,11 @@ class Course(models.Model):
         curric_score = Curriculum.objects.get(abbrev=curric).average_coi_score
         course_level = int(num)//100*100
         level_score = CourseLevel.objects.get(level=course_level).coi_score
-        percent_in_range = COIRange.get_percent_by_score(self.coi_score)
+
+        total_courses = len(Course.objects.all())
+        courses_with_score = \
+            len(Course.objects.filter(coi_score=self.coi_score))
+        percent_in_range = courses_with_score / total_courses
 
         return {"course_coi": self.coi_score,
                 "curric_coi": curric_score,

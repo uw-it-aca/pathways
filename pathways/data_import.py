@@ -60,7 +60,7 @@ def import_curric_data(data, coi_data):
     for curric in data:
         coi = curric_coi.get(curric['curric_abbrev'])
         if coi is not None:
-            coi = round(statistics.mean(coi), 1)
+            coi = round(statistics.mean(coi))
         try:
             pr_graph = json.loads(curric['prereq_graph'])
         except TypeError:
@@ -82,8 +82,6 @@ def import_level_coi(coi_data):
     level_400 = []
     for course in coi_data:
         curric, num = _split_course_id(course['course_id'])
-        if course['coi_score'] == -1:
-            continue
         if 400 <= num < 500:
             level_400.append(course['coi_score'])
             continue
@@ -98,45 +96,13 @@ def import_level_coi(coi_data):
             continue
 
     CourseLevel(level=100,
-                coi_score=round(statistics.mean(level_100), 1)).save()
+                coi_score=round(statistics.mean(level_100))).save()
     CourseLevel(level=200,
-                coi_score=round(statistics.mean(level_200), 1)).save()
+                coi_score=round(statistics.mean(level_200))).save()
     CourseLevel(level=300,
-                coi_score=round(statistics.mean(level_300), 1)).save()
+                coi_score=round(statistics.mean(level_300))).save()
     CourseLevel(level=400,
-                coi_score=round(statistics.mean(level_400), 1)).save()
-
-
-def import_coi_ranges(coi_data):
-    COIRange.objects.all().delete()
-    course_count = len(coi_data)
-    range_0 = 0
-    range_1 = 0
-    range_2 = 0
-    range_3 = 0
-    range_4 = 0
-    for course in coi_data:
-        if 0 <= course['coi_score'] <= 1:
-            range_0 += 1
-            continue
-        if course['coi_score'] <= 2:
-            range_1 += 1
-            continue
-        if course['coi_score'] <= 3:
-            range_2 += 1
-            continue
-        if course['coi_score'] <= 4:
-            range_3 += 1
-            continue
-        if course['coi_score'] <= 5:
-            range_4 += 1
-            continue
-
-    COIRange(coi_range=0, percent_in_range=range_0 / course_count).save()
-    COIRange(coi_range=1, percent_in_range=range_1 / course_count).save()
-    COIRange(coi_range=2, percent_in_range=range_2 / course_count).save()
-    COIRange(coi_range=3, percent_in_range=range_3 / course_count).save()
-    COIRange(coi_range=4, percent_in_range=range_4 / course_count).save()
+                coi_score=round(statistics.mean(level_400))).save()
 
 
 def _get_curric_coi(coi_data):
