@@ -28,22 +28,22 @@
             <i style="color: #ff8c00" class="bi bi-triangle-fill"></i>
             <span class="key-desc">{{course_id}}</span>
           </dt>
-          <dd v-if="course_coi" class="col-sm-6 key-coi">COI: <strong>{{course_coi}}</strong></dd>
+          <dd v-if="course_coi !== null" class="col-sm-6 key-coi">COI: <strong>{{course_coi}}</strong></dd>
           <dd v-else class="col-sm-6 key-coi">No Data</dd>
           <dt class="col-sm-6">
             <i class="bi bi-circle-fill"></i>
             <span class="key-desc">Average course in {{curric_abbr}} curriculum</span>
           </dt>
-          <dd v-if="curric_coi" class="col-sm-6 key-coi">COI: <strong>{{curric_coi}}</strong></dd>
+          <dd v-if="curric_coi !== null" class="col-sm-6 key-coi">COI: <strong>{{curric_coi}}</strong></dd>
           <dd v-else class="col-sm-6 key-coi">No Data</dd>
           <dt class="col-sm-6">
             <i class="bi bi-square-fill"></i>
             <span class="key-desc">Average {{course_level}} Level Course at UW</span>
           </dt>
-          <dd v-if="course_level_coi" class="col-sm-6 key-coi">COI: <strong>{{course_level_coi}}</strong></dd>
+          <dd v-if="course_level_coi !== null" class="col-sm-6 key-coi">COI: <strong>{{course_level_coi}}</strong></dd>
           <dd v-else class="col-sm-6 key-coi">No Data</dd>
         </dl>
-        <p>*<!--{{percent_in_range}}--> <small>54% of all UW courses fall within the <!--{{range_text}}-->2 - 3 range.<br>
+        <p>*<small>{{percent_in_range}}% of all UW courses have a COI score of {{course_coi}}<br>
           <strong>No Data</strong> indicates there is not enough data to generate a COI plot.</small>
         </p>
       </div>

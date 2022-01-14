@@ -88,7 +88,7 @@ class Course(models.Model):
         total_courses = len(Course.objects.all())
         courses_with_score = \
             len(Course.objects.filter(coi_score=self.coi_score))
-        percent_in_range = courses_with_score / total_courses
+        percent_in_range = round((courses_with_score / total_courses) * 100)
 
         return {"course_coi": self.coi_score,
                 "curric_coi": curric_score,
