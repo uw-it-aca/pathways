@@ -61,9 +61,13 @@ def import_curric_data(data, coi_data):
         coi = curric_coi.get(curric['curric_abbrev'])
         if coi is not None:
             coi = round(statistics.mean(coi), 1)
+        try:
+            pr_graph = json.loads(curric['prereq_graph'])
+        except TypeError:
+            pr_graph = None
         curric_objs.append(Curriculum(
             abbrev=curric['curric_abbrev'],
-            prereq_graph=json.loads(curric['prereq_graph']),
+            prereq_graph=pr_graph,
             course_data=json.loads(curric['course_data']),
             average_coi_score=coi
         ))

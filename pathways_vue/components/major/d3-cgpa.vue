@@ -4,7 +4,7 @@
   <div class="card mb-5">
     <div class="card-body" v-if="!showCard">
       <h3>Declared major cumulative GPA distribution</h3>
-      <div class="alert alert-info" role="alert">
+      <div class="alert alert-purple" role="alert">
       <p>No major GPA information for {{this.majorData.major_title}} was found. Here are some possible reasons:</p>
         <ul>
           <li>The major is new and doesn’t have enough student data to generate plots</li>
@@ -53,12 +53,23 @@
           >Last 5 Years</a>
         </li>
       </ul>
-
-      <div id="histogram" class="mt-2"></div>
-      <small>
-        Number
-        of students in this sample: {{ total_count }}
-      </small>
+      <div v-if="yearCount === 2 && !show2Year">
+        <div class="alert alert-purple mt-2" role="alert">
+          <p>In the last 2 years <strong>{{ majorData.credential_title }}</strong> did not have enough students to generate a GPA graph.</p>
+        </div>
+      </div>
+      <div v-else-if="yearCount === 5 && !show5Year">
+        <div class="alert alert-purple mt-2" role="alert">
+          <p>In the last 5 years <strong>{{ majorData.credential_title }}</strong> did not have enough students to generate a GPA graph.</p>
+        </div>
+      </div>
+      <div v-show="showGraph">
+        <div id="histogram" class="mt-2"></div>
+        <small>
+          Number
+          of students in this sample: {{ total_count }}
+        </small>
+      </div>
     </div>
   </div>
 </template>
@@ -112,12 +123,33 @@ export default {
         var newFormat = d3.format(".2n");
       }
     },
+    show2Year(){
+      let count = 0
+      for (const value of this.majorData.gpa_2yr){
+        count += value.count
+      }
+      return count > 0;
+    },
+    show5Year(){
+      let count = 0
+      for (const value of this.majorData.gpa_5yr){
+        count += value.count
+      }
+      return count > 0;
+    },
+    showGraph(){
+      if(this.yearCount === 2){
+        return this.show2Year;
+      } else if(this.yearCount === 5){
+        return this.show5Year;
+      }
+    }
   },
   methods: {
     selectChart(year) {
       if (year === '2yr') {
-        this.generateChart(this.majorData.gpa_2yr);
         this.gpa_2yr_active = true;
+        this.generateChart(this.majorData.gpa_2yr);
       } else if (year === '5yr') {
         this.gpa_2yr_active = false;
         this.generateChart(this.majorData.gpa_5yr);
@@ -125,6 +157,10 @@ export default {
 
     },
     generateChart(gpa_data) {
+      if((this.yearCount === 2 && !this.show2Year)
+        || (this.yearCount === 5 && !this.show5Year)){
+        return;
+      }
       if (this.showCard) {
         // clear chart
         document.getElementById("histogram").innerHTML = "";
