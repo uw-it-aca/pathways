@@ -4,7 +4,7 @@
   <div class="card mb-5">
     <div class="card-body" v-if="!showCard">
       <h3>Declared major cumulative GPA distribution</h3>
-      <div class="alert alert-info" role="alert">
+      <div class="alert alert-purple" role="alert">
       <p>No major GPA information for {{this.majorData.major_title}} was found. Here are some possible reasons:</p>
         <ul>
           <li>The major is new and doesn’t have enough student data to generate plots</li>
@@ -53,12 +53,16 @@
           >Last 5 Years</a>
         </li>
       </ul>
-      <p v-if="yearCount === 2 && !show2Year">
-        {{ majorData.credential_title }} did not have enough students in the last 2 years to generate a GPA graph.
-      </p>
-      <p v-else-if="yearCount === 5 && !show5Year">
-        {{ majorData.credential_title }} did not have enough students in the last 5 years to generate a GPA graph.
-      </p>
+      <div v-if="yearCount === 2 && !show2Year">
+        <div class="alert alert-purple mt-2" role="alert">
+          <p>In the last 2 years <strong>{{ majorData.credential_title }}</strong> did not have enough students to generate a GPA graph.</p>
+        </div>
+      </div>
+      <div v-else-if="yearCount === 5 && !show5Year">
+        <div class="alert alert-purple mt-2" role="alert">
+          <p>In the last 5 years <strong>{{ majorData.credential_title }}</strong> did not have enough students to generate a GPA graph.</p>
+        </div>
+      </div>
       <div v-show="showGraph">
         <div id="histogram" class="mt-2"></div>
         <small>
