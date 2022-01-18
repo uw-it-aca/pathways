@@ -114,9 +114,9 @@ export default {
   computed: {
     searchPlaceholder() {
       if(this.searchType === "major"){
-        return "Please select a major"
+        return "Start typing to select a major (e.g. Math, Environmental Studies)"
       } else if(this.searchType === "course"){
-        return "Please select a course"
+        return "Start typing to select a course (e.g. CSE 142, Calculus)"
       } else {
         return "Please select a campus and a major or course"
       }
