@@ -193,7 +193,7 @@
           <h3
             id="pm_equivalencies"
             class="fw-bold fs-5"
-          >Are course equivalencies considered in the prereq map feature?</h3>
+          >Are course equivalencies considered in the Prereq Map feature?</h3>
           <p>
             Not all equivalencies (e.g. placement tests) are represented in the map – just UW courses. You can find some equivalencies in the text description.
           </p>
