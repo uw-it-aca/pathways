@@ -5,10 +5,11 @@
     <div v-if="commonCourses.length === 0" class="card-body">
       <h3>Common Courses</h3>
       <div class="alert alert-purple mt-2" role="alert">
-      <p>
-        No common courses available for <strong>{{ major["major_title"] }}</strong>.
-      </p>
-    </div>
+        <p>
+          No common courses available for
+          <strong>{{ major["major_title"] }}</strong>.
+        </p>
+      </div>
     </div>
     <div v-else class="card-body explore-major">
       <h3>Common courses for {{ major["major_title"] }}</h3>
@@ -71,17 +72,17 @@
             </td>
             <td>
               <a
-                v-bind:href="'/course/?id=' + encodeURIComponent(course.course)" :title="'Go to course ' + course.course"
-                class="btn-primary btn-course router-link-active text-decoration-none"
-              >
-                {{ course.course }}
-              </a>
-               <a
                 v-bind:href="'/course/?id=' + encodeURIComponent(course.course)"
-                class="router-link-active ps-3" :title="'Go to course ' + course.course + ' ' + course.title"
+                :title="'Go to course ' + course.course"
+                class="btn-primary btn-course router-link-active text-decoration-none"
+              >{{ course.course }}</a>
+              <a
+                v-bind:href="'/course/?id=' + encodeURIComponent(course.course)"
+                class="router-link-active ps-3"
+                :title="'Go to course ' + course.course + ' ' + course.title"
               >{{ course.title }}</a>
             </td>
-            <td v-if="course.coi_score">{{course.coi_score}}</td>
+            <td v-if="course.coi_score">{{ course.coi_score }}</td>
             <td v-else>No Data</td>
           </tr>
         </tbody>
@@ -108,23 +109,25 @@ export default {
   },
   mounted() {
     this.commonCourses = this.get_common_courses();
-    if(this.commonCourses.length > 0){
+    if (this.commonCourses.length > 0) {
       // var popover = new Popover(document.querySelector('.info-common-coi'));
       // var popover2 = new Popover(document.querySelector('.info-major-common'));
     }
   },
   methods: {
-    get_common_courses: function(){
+    get_common_courses: function () {
       let processed_courses = [];
 
       for (const [course, data] of Object.entries(this.major.common_course_decl)) {
 
         let style_string = `width: ${data['percent']}%`;
-        processed_courses.push({'course': course,
+        processed_courses.push({          
+'course': course,
           'percent': data['percent'],
           'title': data['title'],
           'width': style_string,
-          'coi_score': data['coi_score']})
+          'coi_score': data['coi_score']        
+})
       }
 
       return processed_courses.sort((a, b) => (a.percent < b.percent) ? 1 : -1);
@@ -134,7 +137,7 @@ export default {
     commonCourses: function (course) {
       if (this.commonCourses.length > 0) {
         // Hack to get popovers to only init once element has rendered
-        setTimeout(function(){
+        setTimeout(function () {
           var popover = new Popover(document.querySelector('.info-common-coi'));
           var popover2 = new Popover(document.querySelector('.info-major-common'));
         }, 1);
@@ -146,7 +149,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../css/custom.scss';
+@import "../../css/custom.scss";
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }
