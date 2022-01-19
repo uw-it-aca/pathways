@@ -12,15 +12,17 @@
           <!-- Modal -->
           <div
             class="modal fade"
+            role="dialog"
             id="exampleModal"
             tabindex="-1"
-            aria-labelledby="exampleModalLabel"
+            aria-modal="true"
+            aria-labelledby="welcome_modal"
             aria-hidden="true"
           >
             <div class="modal-dialog modal-dialog-centered modal-lg">
               <div class="modal-content">
                 <div class="modal-body">
-                  <h2 class="modal-title mb-2" id="exampleModalLabel">Welcome</h2>
+                  <h2 class="modal-title mb-2" id="welcome_modal">Welcome</h2>
                   <div>
                     <p>
                       DawgPath helps you discover courses and majors you're interested in and enables you to be strategic when making decisions about your quarterly class schedule. It provides useful data when planning to apply to majors that have selective screening. A few things to keep in mind before getting started:
@@ -44,7 +46,7 @@
                       type="button"
                       class="btn btn-purple"
                       data-bs-dismiss="modal"
-                      aria-label="Close"
+                      aria-label="Close welcome modal"
                       @click="saveModalPref"
                     >
                       OK, got it
@@ -61,6 +63,7 @@
           <button
             type="button"
             class="btn btn-link mt-2 btn-sm text-decoration-none"
+            aria-label="Open modal"
             @click="showWelcomeModal"
           >
             About DawgPath <i class="bi bi-info-circle"></i>
