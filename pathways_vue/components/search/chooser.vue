@@ -64,7 +64,7 @@
                 class="btn btn-purple"
                 :disabled="searchType.length === 0 || loadingList || selectedLabel.length === 0"
                 @click="onSelected">
-          Search
+          Go
         </button>
       </div>
       <datalist id="searchDataList">

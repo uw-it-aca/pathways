@@ -4,7 +4,7 @@
     <div class="position-relative mt-5">
         <div class="position-absolute bottom-0 end-0 p-3" style="z-index: 11;">
             <button
-                class="btn btn-primary"
+                class="btn btn-sm btn-primary"
                 type="button"
                 data-bs-toggle="offcanvas"
                 data-bs-target="#send_feedback"
