@@ -64,8 +64,8 @@
         </div>
       </div>
       <div v-show="showGraph">
-        <div id="histogram" class="mt-2"></div>
-        <div id="dataTable" class="">
+        <div aria-hidden="true" id="histogram" class="mt-2"></div>
+        <div v-if="yearCount === 2" id="dataTable2yr" class="visually-hidden">
           <table class="table">
             <thead>
               <tr>
@@ -74,9 +74,25 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="d in gpa_data">
-                <td>{{d.count}}</td>
-                <td>{{d.gpa/10}}</td>
+              <tr v-for="value in zeroCount2yr" v-bind:key="value.count">
+                <td>{{value.count}}</td>
+                <td>{{value.gpa/10}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-else-if="yearCount === 5" id="dataTable5yr" class="visually-hidden">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Number of Students</th>
+                <th scope="col">GPA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="value in zeroCount5yr" v-bind:key="value.count">
+                <td>{{value.count}}</td>
+                <td>{{value.gpa/10}}</td>
               </tr>
             </tbody>
           </table>
@@ -138,6 +154,16 @@ export default {
       } else {
         var newFormat = d3.format(".2n");
       }
+    },
+    zeroCount2yr: function() {
+      return this.majorData.gpa_2yr.filter(function(value) {
+        return value.count > 0;
+      })
+    },
+    zeroCount5yr: function() {
+      return this.majorData.gpa_5yr.filter(function(value) {
+        return value.count > 0;
+      })
     },
     show2Year(){
       let count = 0
