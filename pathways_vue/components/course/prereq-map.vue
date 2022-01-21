@@ -30,7 +30,7 @@
             aria-controls="curriculum-map"
             aria-selected="true"
           >
-            {{active_dept}}
+            All {{active_dept}} courses
           </button>
         </li>
       </ul>
