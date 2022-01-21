@@ -4,7 +4,7 @@
   <div class="card mb-5">
     <div class="card-body">
       <h3>Course Grade Distribution</h3>
-      <p>
+      <p aria-hidden="true">
         This graph represents the distribution of grades for every student who completed <strong>{{course.course_id}}</strong> over the past 5 years.
         <a
           tabindex="0"
@@ -18,12 +18,29 @@
           <i class="bi bi-info-circle-fill"></i>
         </a>
       </p>
-      <div id="gcd_graph" />
+      <div aria-hidden="true" id="gcd_graph" />
       <div v-if="total_count < 8">
         <div class="alert alert-purple" role="alert">
           <p>Course grade distribution is not available for <strong>{{course.course_id}}</strong> because there isn’t enough final grade data to generate plots.</p>
         </div>
       </div>
+      <div v-if="total_count > 8" id="dataTable" class="visually-hidden">
+          <table class="table">
+            <caption>This data table represents the distribution of grades for every student who completed <strong>{{course.course_id}}</strong> over the past 5 years.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Number of Students</th>
+                <th scope="col">GPA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="value in zeroCount" v-bind:key="value.count">
+                <td>{{value.count}}</td>
+                <td>{{value.gpa/10}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       <p><small>Number of grades in this sample: {{total_count}} (5 years). Data not instructor-specific.</small></p>
     </div>
   </div>
@@ -63,6 +80,11 @@ export default {
       } else {
         var newFormat = d3.format(".2n");
       }
+    },
+    zeroCount: function() {
+      return this.course.gpa_distro.filter(function(value) {
+        return value.count > 0;
+      })
     },
   },
   methods: {
