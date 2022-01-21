@@ -65,6 +65,22 @@
       </div>
       <div v-show="showGraph">
         <div id="histogram" class="mt-2"></div>
+        <div id="dataTable" class="">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Number of Students</th>
+                <th scope="col">GPA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="d in gpa_data">
+                <td>{{d.count}}</td>
+                <td>{{d.gpa/10}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <small>
           Number
           of students in this sample: {{ total_count }}
