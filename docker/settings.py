@@ -26,6 +26,7 @@ else:
 DATA_ROOT = os.path.join(BASE_DIR, "pathways/data")
 
 GOOGLE_ANALYTICS_KEY = os.getenv("GOOGLE_ANALYTICS_KEY", default=" ")
+GOOGLE_FEEDBACK_FORM = os.getenv("GOOGLE_FEEDBACK_FORM", default=" ")
 
 if os.getenv("ENV") == "localdev":
     DEBUG = True

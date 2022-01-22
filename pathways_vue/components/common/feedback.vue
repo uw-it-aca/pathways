@@ -29,7 +29,7 @@
         </div>
         <div class="offcanvas-body">
             <div class="embed-responsive">
-                <iframe class="embed-responsive-item" src="https://docs.google.com/forms/d/e/1FAIpQLScepHr_b5xnbFkPSsdWJb7QZ-raw27aKrY48tcx60NSF8TbVA/viewform?embedded=true"></iframe>
+                <iframe class="embed-responsive-item" :src="form_url"></iframe>
             </div>
         </div>
     </div>
@@ -42,6 +42,12 @@ export default {
         return {};
     },
     methods: {},
+    computed: {
+      form_url: function (){
+        var url = document.body.getAttribute('data-google-feedback-form');
+        return url
+      }
+    }
 };
 </script>
 

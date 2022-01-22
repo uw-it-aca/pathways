@@ -23,6 +23,8 @@ class PageView(TemplateView):
         uwnetid = get_user(self.request)
         context = super().get_context_data(**kwargs)
         context["ga_key"] = getattr(settings, "GOOGLE_ANALYTICS_KEY", " ")
+        context["google_feedback_form"] = \
+            getattr(settings, "GOOGLE_FEEDBACK_FORM", "")
         context['user'] = uwnetid
         context['show_welcome'] = User.show_welcome(uwnetid)
         context["django_debug"] = getattr(settings, "DEBUG", False)
