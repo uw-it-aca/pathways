@@ -87,6 +87,11 @@ externalSecrets:
       data:
         - name: uw-idp-cert
           property: cert
+    - name: test.dawgpath.uw.edu-feedback-form-secrets
+        externalKey: axdd/kv/data/dawgpath/shared/feedback-form
+        data:
+          - name: form-url
+            property: form-url
 
 environmentVariablesSecrets:
   djangoSecret:
@@ -109,3 +114,8 @@ environmentVariablesSecrets:
     name: GOOGLE_ANALYTICS_KEY
     secretName: test.dawgpath.uw.edu-secrets
     secretKey: google-analytics-key
+  googleFeedbackForm:
+    name: GOOGLE_FEEDBACK_FORM
+    secretName: test.dawgpath.uw.edu-feedback-form-secrets
+    secretKey: form-url
+
