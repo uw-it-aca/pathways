@@ -11,33 +11,8 @@
         </ul>
     </div>
   </div>
-  <div v-else>
-    <div class="p-3">
-      <div class="form-check form-switch">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          v-model="viewCurrList"
-          id="ToggleCurrList"
-        />
-        <label class="form-check-label" for="ToggleCurrList">View {{curric_id}} curriculum as a list</label>
-      </div>
-    </div>
-    <prereq-curr-list
-      v-if="viewCurrList"
-      :course-data="curricData.course_data"
-    />
-    <div class="card shadow-sm" id="ViewCurrMap" v-else>
-      <prereq-graph
-        :v-if="has_data"
-        :graph_data="curricData.prereq_graph"
-        graph_type="curric"
-        :active_course="course_id"
-      />
-      <div class="text-dark p-3 bg-light rounded-top rounded-sm">
-        <small>Use the scroll function on your mouse or touchpad to zoom in and out</small>
-      </div>
-    </div>
+  <div class="mt-3" v-else>
+    <prereq-curr-list :course-data="curricData.course_data"/>
   </div>
 </template>
 
