@@ -28,8 +28,8 @@
             :course="courseData"/>
           </div>
           <div class="col-md-6">
-            <outcome-index
-            :course="courseData"/>
+<!--            <outcome-index-->
+<!--            :course="courseData"/>-->
           </div>
         </div>
 
