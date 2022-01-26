@@ -15,7 +15,7 @@
           title="Course Grade Distribution"
           data-bs-content="This histogram represents data in a range of buckets along the horizontal line, or x-axis. The vertical line, or y-axis, represents the number of outcomes for each bucket."
         >
-          <i class="bi bi-info-circle-fill"></i>
+          <i class="bi bi-info-circle-fill me-0"></i>
         </a>
       </p>
       <div aria-hidden="true" id="gcd_graph" />
