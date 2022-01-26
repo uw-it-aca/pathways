@@ -69,14 +69,14 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col">Number of Students</th>
                 <th scope="col">GPA</th>
+                <th scope="col">Number of Students</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="value in zeroCount2yr" v-bind:key="value.count">
-                <td>{{value.count}}</td>
                 <td>{{value.gpa/10}}</td>
+                <td>{{value.count}}</td>
               </tr>
             </tbody>
           </table>
@@ -85,14 +85,14 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col">Number of Students</th>
                 <th scope="col">GPA</th>
+                <th scope="col">Number of Students</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="value in zeroCount5yr" v-bind:key="value.count">
-                <td>{{value.count}}</td>
                 <td>{{value.gpa/10}}</td>
+                <td>{{value.count}}</td>
               </tr>
             </tbody>
           </table>
