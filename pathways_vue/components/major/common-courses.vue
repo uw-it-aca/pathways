@@ -37,8 +37,8 @@
               </a>
             </th>
             <th scope="col" class="visually-hidden" style="width: 20%">Percentage Graph</th>
-            <th scope="col" style="width: 62%">Common Course</th>
-            <th scope="col" class="px-0" style="width: 10%;min-width:60px;">
+            <th scope="col" style="width: 72%">Common Course</th><!-- change this % to 62 when adding COI back in -->
+            <th scope="col" class="px-0" style="width: 10%;min-width:60px;display:none;"><!-- hidden -->
               <abbr title="Course Outcome Index Score">COI </abbr> 
               <a
                 tabindex="0"
@@ -82,8 +82,8 @@
                 :title="'Go to course ' + course.course + ' ' + course.title"
               >{{ course.title }}</a>
             </td>
-            <td v-if="course.coi_score">{{ course.coi_score }}</td>
-            <td v-else>No Data</td>
+            <td v-if="course.coi_score" style="display:none;">{{ course.coi_score }}</td>
+            <td v-else style="display:none;">No Data</td>
           </tr>
         </tbody>
       </table>
