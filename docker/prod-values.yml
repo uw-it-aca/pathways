@@ -88,10 +88,10 @@ externalSecrets:
         - name: uw-idp-cert
           property: cert
     - name: dawgpath.uw.edu-feedback-form-secrets
-        externalKey: axdd/kv/data/dawgpath/shared/feedback-form
-        data:
-          - name: form-url
-            property: form-url
+      externalKey: axdd/kv/data/dawgpath/shared/feedback-form
+      data:
+        - name: form-url
+          property: form-url
 
 environmentVariablesSecrets:
   djangoSecret:
