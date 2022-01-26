@@ -46,7 +46,7 @@
                       type="button"
                       class="btn btn-purple"
                       data-bs-dismiss="modal"
-                      aria-label="Close welcome modal"
+                      aria-label="Ok, got it"
                       @click="saveModalPref"
                     >
                       OK, got it

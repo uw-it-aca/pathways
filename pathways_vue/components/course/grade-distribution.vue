@@ -15,7 +15,7 @@
           title="Course Grade Distribution"
           data-bs-content="This histogram represents data in a range of buckets along the horizontal line, or x-axis. The vertical line, or y-axis, represents the number of outcomes for each bucket."
         >
-          <i class="bi bi-info-circle-fill"></i>
+          <i class="bi bi-info-circle-fill me-0"></i>
         </a>
       </p>
       <div aria-hidden="true" id="gcd_graph" />
@@ -25,22 +25,22 @@
         </div>
       </div>
       <div v-if="total_count > 8" id="dataTable" class="visually-hidden">
-          <table class="table">
-            <caption>This data table represents the distribution of grades for every student who completed <strong>{{course.course_id}}</strong> over the past 5 years.</caption>
-            <thead>
-              <tr>
-                <th scope="col">Number of Students</th>
-                <th scope="col">GPA</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="value in zeroCount" v-bind:key="value.count">
-                <td>{{value.count}}</td>
-                <td>{{value.gpa/10}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <table class="table">
+          <caption>This data table represents the distribution of grades for every student who completed <strong>{{course.course_id}}</strong> over the past 5 years.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Course Grade</th>
+              <th scope="col">Number of Students</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="value in zeroCount" v-bind:key="value.count">
+              <td>{{value.gpa/10}}</td>
+              <td>{{value.count}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p><small>Number of grades in this sample: {{total_count}} (5 years). Data not instructor-specific.</small></p>
     </div>
   </div>

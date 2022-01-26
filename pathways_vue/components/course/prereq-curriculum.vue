@@ -3,12 +3,7 @@
 <template>
   <div v-if="curricData === undefined" class="p-3">
     <div class="alert alert-purple" role="alert">
-      <p>The curriculum {{curric_id}} did not display a graph. Here are some possible reasons:</p>
-        <ul>
-          <li>The curriculum code does not exist</li>
-          <li>The map does not display graduate curriculum</li>
-          <li>The curriculum does not have courses with prerequisites</li>
-        </ul>
+      <p>The curriculum {{curric_id}} does not have courses with prerequisites.</p>
     </div>
   </div>
   <div class="mt-3" v-else>

@@ -2,11 +2,11 @@
 <template>
   <layout :page-title="pageTitle">
     <!-- page content -->
-    <template #title
-      ><h1 class="visually-hidden">{{ pageTitle }}</h1></template
-    >
-    <template #content >
-      <div class="row justify-content-center mb-5" >
+    <template #title>
+      <h1 class="visually-hidden">{{ pageTitle }}</h1>
+    </template>
+    <template #content>
+      <div class="row justify-content-center mb-5">
         <div class="col-md-9">
           <search-chooser
             :prefill-id="courseId"
@@ -18,27 +18,47 @@
       </div>
 
       <div v-if="courseData">
-        <div class="row">
-          <div class="col-sm-8"><course-details :course="courseData" /></div>
-          <div class="col-sm-4"><explore-course :course="courseData"/></div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <grade-distribution
-            :course="courseData"/>
+        <div class="row justify-content-sm-center">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-sm-8">
+                <course-details :course="courseData" />
+              </div>
+              <div class="col-sm-4">
+                <explore-course :course="courseData" />
+              </div>
+            </div>
           </div>
-          <div class="col-md-6">
-            <outcome-index
-            :course="courseData"/>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-sm-8"> <!-- change this class to col-sm-6 when adding COI graph -->
+                <grade-distribution :course="courseData" />
+              </div>
+         <!-- <div class="col-sm-6">
+                <outcome-index :course="courseData"/>
+              </div>-->
+            </div>
+          </div>
+        </div>
+        <!-- prereq map -->
+        <div class="row justify-content-center">
+          <div class="col-md-9">
+            <prereq-map :graph_data="courseData.prereq_graph" :active_course="courseId" />
           </div>
         </div>
 
-        <prereq-map
-        :graph_data="courseData.prereq_graph"
-        :active_course="courseId"
-        />
-        <concurrent-courses :courseData="courseData"/>
-        <contact-adviser :campus="courseCampus" :type="'course'"/>
+        <div class="row justify-content-center">
+          <div class="col-md-9">
+            <concurrent-courses :courseData="courseData" />
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-md-9">
+            <contact-adviser :campus="courseCampus" :type="'course'" />
+          </div>
+        </div>
       </div>
       <div v-else>
         <div v-if="showError">
@@ -96,12 +116,12 @@ export default {
     };
   },
   computed: {
-    pageTitle: function() {
+    pageTitle: function () {
       let no_title = this.showError ? "Error" : "";
       return this.courseTitle !== undefined ? this.courseTitle : no_title;
     }
   },
-  mounted(){
+  mounted() {
     let course_id = this.$route.query.id;
     this.courseId = course_id;
     this.courseCampus = this.$route.query.campus;
@@ -111,11 +131,11 @@ export default {
     })
   },
   methods: {
-    switch_course(data){
+    switch_course(data) {
       this.courseId = data.id;
       this.courseCampus = data.campus
     },
-    get_course_data(course_id){
+    get_course_data(course_id) {
       const vue = this;
       this.courseData = undefined;
       this.axios.get("/api/v1/courses/details/" + course_id).then((response) => {

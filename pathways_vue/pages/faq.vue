@@ -38,7 +38,7 @@
               </a>
             </li>
             <li>
-              <a href="#historgram" class="text-decoration-none">What is a histogram?</a>
+              <a href="#histogram" class="text-decoration-none">What is a histogram?</a>
             </li>
             <li>
               <a
@@ -46,7 +46,7 @@
                 class="text-decoration-none"
               >Which instructors taught the course listed?</a>
             </li>
-            <li>
+            <!-- <li>
               <a href="#coi" class="text-decoration-none">What is the course outcome index?</a>
             </li>
             <li>
@@ -60,7 +60,7 @@
                 href="#coi_curriculum"
                 class="text-decoration-none"
               >What does “average course in XXX curriculum” mean?</a>
-            </li>
+            </li>-->
             <li>
               <a
                 href="#pm_reqs"
@@ -119,7 +119,7 @@
               <li>Visualizes grading patterns for every UW course across the three campuses</li>
               <li>Lists courses that are often taken concurrently</li>
               <li>Displays the prerequisites for a course and the courses that can be taken upon completion of the course</li>
-              <li>Provides an index that measures the grade outcomes for each course</li>
+              <!-- <li>Provides an index that measures the grade outcomes for each course</li> -->
               <li>Makes it easy to connect with an adviser</li>
               <li>Enables users to search for courses by topic (e.g., social justice)</li>
             </ul>
@@ -158,7 +158,7 @@
           </h3>
           <p>Data is included for each major that a student declares.</p>
 
-          <h3 id="historgram" class="fw-bold fs-5">What is a histogram?</h3>
+          <h3 id="histogram" class="fw-bold fs-5">What is a histogram?</h3>
           <p>
             A histogram represents data in a range of containers along the horizontal line, or x-axis. The vertical line, or y-axis, represents the number of outcomes for each container.
           </p>
@@ -166,7 +166,7 @@
           <h3 id="instructors" class="fw-bold fs-5">Which instructors taught the course listed?</h3>
           <p>All of the instructors who have taught the class within the chosen timeframe are included and the results are aggregated. </p>
 
-          <h3 id="coi" class="fw-bold fs-5">What is the course outcome index?</h3>
+          <!-- <h3 id="coi" class="fw-bold fs-5">What is the course outcome index?</h3>
           <p>
             This index is calculated by estimating the number of PCs (pass/completion) for a course and subtracting the estimated PCs from the actual PCs to create an index rescaled to -5 to 5. The index is calculated using the previous five years of course data.
           </p>
@@ -180,7 +180,7 @@
           >What does “average course in XXX curriculum” mean?</h3>
           <p>
             This is the average course outcome index for all courses in a particular curriculum (e.g. CHEM/Chemistry).
-          </p>
+          </p> -->
 
           <h3
             id="pm_reqs"

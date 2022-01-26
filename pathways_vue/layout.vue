@@ -45,7 +45,7 @@
        <div class="w-100 mt-auto pt-3 pb-3 small bg-gray-800">
         <div class="container-xl py-3">
           <ul class="list-inline mb-2">
-            <li class="list-inline-item item-dot"><a href="mailto:help@uw.edu?subject=DawgPath Comment, Request, Suggestion" title="Contact the DawgPath team" class="text-white text-decoration-none me-2"><i class="bi bi-envelope-fill me-0"></i> Contact</a></li>
+            <li class="list-inline-item item-dot"><a href="mailto:help@uw.edu?subject=DawgPath Help, please route to Student and Instructor Success Analytics Service Offering" title="Contact the DawgPath team" class="text-white text-decoration-none me-2"><i class="bi bi-envelope-fill me-0"></i> Contact</a></li>
             <li class="list-inline-item item-dot"><a href="https://itconnect.uw.edu/learn/success-analytics/apps/#dawg" title="DawgPath Docs on IT Connect" class="text-white text-decoration-none me-2">Documentation</a></li>
             <li class="list-inline-item item-dot"><a href="https://www.washington.edu/online/terms/" title="UW Terms of Use" class="text-white text-decoration-none me-2">Terms</a></li>
             <li class="list-inline-item"><a href="https://www.washington.edu/online/privacy/" title="UW Privacy Policy" class="router-link text-white text-decoration-none me-2">Privacy</a></li>
