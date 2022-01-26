@@ -18,19 +18,34 @@
         </div>
       </div>
       <div v-if="major_data">
-        <div class="row">
-          <div class="col-sm-8"><major-details :major="major_data" /></div>
-          <div class="col-sm-4"><explore-major :major="major_data" /></div>
+        <div class="row justify-content-sm-center">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-sm-8"><major-details :major="major_data" /></div>
+              <div class="col-sm-4"><explore-major :major="major_data" /></div>
+            </div>
+          </div>
         </div>
-        <div class="mb-5">
-          <common-courses :major="major_data" />
+        <div class="row justify-content-center">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-sm-8">
+                <d3-cgpa :major-data="major_data"/>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-sm-4"></div> -->
         </div>
-        <div class="row">
-          <div class="col-sm-8"><d3-cgpa :major-data="major_data"/></div>
-          <div class="col-sm-4"></div>
+        <div class="row justify-content-center">
+          <div class="col-md-9">
+            <common-courses :major="major_data" />
+          </div>
         </div>
-
-        <contact-adviser :campus="campus" :type="'major'"/>
+        <div class="row justify-content-center">
+          <div class="col-md-9">
+            <contact-adviser :campus="campus" :type="'major'"/>
+        </div>
+        </div>
       </div>
       <div v-else>
         <div v-if="showError">
