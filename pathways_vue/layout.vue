@@ -27,7 +27,7 @@
           >
             <a :href="appRootUrl" class="text-white text-decoration-none">{{
               appName
-            }}</a>
+            }}<sub class="beta">BETA</sub></a>
           </div>
         </div>
       </div>
@@ -125,6 +125,12 @@ export default {
 }
 .axdd-topbar-brand {
   line-height: 65px;
+}
+.beta {
+    font-size: 0.45em;
+    color: #aaa;
+    right: -0.4em;
+    bottom: 0em;
 }
 
 </style>
