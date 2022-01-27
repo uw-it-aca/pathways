@@ -18,23 +18,38 @@
         </div>
       </div>
       <div v-if="major_data">
-        <div class="row">
-          <div class="col-sm-8"><major-details :major="major_data" /></div>
-          <div class="col-sm-4"><explore-major :major="major_data" /></div>
+        <div class="row justify-content-sm-center">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-sm-8"><major-details :major="major_data" /></div>
+              <div class="col-sm-4"><explore-major :major="major_data" /></div>
+            </div>
+          </div>
         </div>
-        <div class="mb-5">
-          <common-courses :major="major_data" />
+        <div class="row justify-content-center">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-sm-8">
+                <d3-cgpa :major-data="major_data"/>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-sm-4"></div> -->
         </div>
-        <div class="row">
-          <div class="col-sm-8"><d3-cgpa :major-data="major_data"/></div>
-          <div class="col-sm-4"></div>
+        <div class="row justify-content-center">
+          <div class="col-md-9">
+            <common-courses :major="major_data" />
+          </div>
         </div>
-
-        <contact-adviser :campus="campus" :type="'major'"/>
+        <div class="row justify-content-center">
+          <div class="col-md-9">
+            <contact-adviser :campus="campus" :type="'major'"/>
+        </div>
+        </div>
       </div>
       <div v-else>
         <div v-if="showError">
-          <div class="alert alert-info" role="alert">
+          <div class="alert alert-purple" role="alert">
             <p>Data is not available for selected major. Here are some possible reasons:</p>
             <ul>
               <li>This major is no longer offered</li>
@@ -64,7 +79,7 @@ import ExploreMajor from '../components/major/explore-major.vue';
 import CommonCourses from '../components/major/common-courses.vue';
 import SearchChooser from "../components/search/chooser.vue";
 import D3Cgpa from '../components/major/d3-cgpa.vue';
-import ContactAdviser from '../components/contact-adviser.vue';
+import ContactAdviser from '../components/common/contact-adviser.vue';
 
 export default {
   components: {
@@ -78,13 +93,19 @@ export default {
   },
   data() {
     return {
-      pageTitle: 'Major',
       selectedMajor: null,
       majorID: null,
+      majorTitle: undefined,
       campus: null,
       major_data: undefined,
       showError: false
     };
+  },
+  computed: {
+    pageTitle: function() {
+      let no_title = this.showError ? "Error" : "";
+      return this.majorTitle !== undefined ? this.majorTitle : no_title;
+    }
   },
   methods: {
     switch_major(data){
@@ -95,8 +116,9 @@ export default {
       const vue = this;
       this.major_data = undefined;
       if(this.campus !== null && this.majorID !== null){
-        this.axios.get("/api/v1/majors/" + this.campus + "/" + this.majorID).then((response) => {
+        this.axios.get("/api/v1/majors/details/" + this.majorID).then((response) => {
           vue.major_data = response.data;
+          vue.majorTitle = vue.major_data.credential_title + " - Major ";
         }).catch(function (error) {
           vue.showError = true;
         });

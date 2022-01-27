@@ -5,7 +5,7 @@
     <h2>{{ course.course_title }}</h2>
     <div><strong>Credits:</strong> {{ course.course_credits }}</div>
     <div class="mb-2" v-if="offered_terms">
-      <strong>Offered: </strong>
+      <strong>Typically offered: </strong>
       <ul class="ms-2 d-inline list-inline">
         <li class="list-inline-item" v-for="(term, i) in offered_terms" :key="i">
           <span class="badge text-dark" :class="term.class">{{ term.quarter }}</span>

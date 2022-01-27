@@ -1,4 +1,4 @@
-# Copyright 2021 UW-IT, University of Washington
+# Copyright 2022 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from django.urls import include, path, re_path
@@ -17,7 +17,7 @@ urlpatterns = [
         r'^api/v1/majors/(?P<major_campus>[^/]*)$',
         MajorList.as_view(), name='major-list'),
     re_path(
-        r'^api/v1/majors/(?P<major_campus>[^/]+)/(?P<major_abbr>[^/]*)$',
+        r'^api/v1/majors/details/(?P<credential_abbr>[^/]*)$',
         MajorDetails.as_view(), name='major-details'),
     re_path(
         r'^api/v1/courses/(?P<course_campus>[^/]*)$',

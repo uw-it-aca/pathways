@@ -30,18 +30,18 @@
             aria-controls="curriculum-map"
             aria-selected="true"
           >
-            {{active_dept}}
+            All {{active_dept}} courses
           </button>
         </li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane w-75 active" id="pm-course" role="tabpanel" aria-labelledby="course-tab">
+        <div class="tab-pane active" id="pm-course" role="tabpanel" aria-labelledby="course-tab">
           <prereq-course
             :graph_data="graph_data"
             :active_course="active_course"
           />
         </div>
-        <div class="tab-pane w-75" id="pm-curriculum" role="tabpanel" aria-labelledby="curriculum-tab">
+        <div class="tab-pane" id="pm-curriculum" role="tabpanel" aria-labelledby="curriculum-tab">
           <prereq-curriculum
             :curric_id="active_dept"
             :course_id="active_course"

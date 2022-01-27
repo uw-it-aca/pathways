@@ -5,8 +5,8 @@
     <div class="card-body">
       <h3>Course Outcome Index (COI)</h3>
       <p>
-        Using prior course data, this index compares estimated fail/withdrawal rates against actual
-        fail/withdrawal rates.
+        Using prior course data, this index compares estimated pass/completion rates against actual
+        pass/completion rates.
         <a
           tabindex="0"
           class="info-popper"
@@ -19,7 +19,7 @@
           <i class="bi bi-info-circle-fill"></i>
         </a>
       </p>
-      <div id="coiGraph" />
+      <div arai-hidden="true" id="coiGraph" />
       <div class="coi-key">
         <p class="fw-bold">Key</p>
 
@@ -28,23 +28,23 @@
             <i style="color: #ff8c00" class="bi bi-triangle-fill"></i>
             <span class="key-desc">{{course_id}}</span>
           </dt>
-          <dd v-if="course_coi" class="col-sm-6 key-coi">COI: <strong>{{course_coi}}</strong></dd>
+          <dd v-if="course_coi" class="col-sm-6 key-coi"><span aria-label="Course Outcome Index">COI:</span> <strong>{{course_coi}}</strong></dd>
           <dd v-else class="col-sm-6 key-coi">No Data</dd>
           <dt class="col-sm-6">
             <i class="bi bi-circle-fill"></i>
             <span class="key-desc">Average course in {{curric_abbr}} curriculum</span>
           </dt>
-          <dd v-if="curric_coi" class="col-sm-6 key-coi">COI: <strong>{{curric_coi}}</strong></dd>
+          <dd v-if="curric_coi" class="col-sm-6 key-coi"><span aria-label="Course Outcome Index">COI:</span> <strong>{{curric_coi}}</strong></dd>
           <dd v-else class="col-sm-6 key-coi">No Data</dd>
           <dt class="col-sm-6">
             <i class="bi bi-square-fill"></i>
             <span class="key-desc">Average {{course_level}} Level Course at UW</span>
           </dt>
-          <dd v-if="course_level_coi" class="col-sm-6 key-coi">COI: <strong>{{course_level_coi}}</strong></dd>
+          <dd v-if="course_level_coi" class="col-sm-6 key-coi"><span aria-label="Course Outcome Index">COI:</span> <strong>{{course_level_coi}}</strong></dd>
           <dd v-else class="col-sm-6 key-coi">No Data</dd>
         </dl>
         <p>*<!--{{percent_in_range}}--> <small>54% of all UW courses fall within the <!--{{range_text}}-->2 - 3 range.<br>
-          <strong>No Data</strong> means there is not enough data to generate a COI plot.</small>
+          <strong>No Data</strong> indicates there is not enough data to generate a COI plot.</small>
         </p>
       </div>
     </div>
@@ -204,7 +204,7 @@ export default {
         .attr('y', 25)
         .attr('text-anchor', 'left')
         .style('font-size', '11px')
-        .text('less completions than expected');
+        .text('fewer completions than expected');
 
       g.append('text')
         .attr('x', 290)

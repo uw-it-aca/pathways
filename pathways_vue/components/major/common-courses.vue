@@ -4,9 +4,12 @@
   <div class="card mb-5">
     <div v-if="commonCourses.length === 0" class="card-body">
       <h3>Common Courses</h3>
-      <p>
-        No common courses available for <strong>{{ major["major_title"] }}</strong>.
-      </p>
+      <div class="alert alert-purple mt-2" role="alert">
+        <p>
+          No common courses available for
+          <strong>{{ major["major_title"] }}</strong>.
+        </p>
+      </div>
     </div>
     <div v-else class="card-body explore-major">
       <h3>Common courses for {{ major["major_title"] }}</h3>
@@ -18,7 +21,7 @@
       <table class="table table-borderless table-striped">
         <thead>
           <tr class="bg-light text-dark">
-            <th scope="col" style="width: 5%">
+            <th scope="col" class="pe-0" style="width: 8%">
               %
               <a
                 tabindex="0"
@@ -33,10 +36,10 @@
                 <i class="bi bi-info-circle-fill me-0"></i>
               </a>
             </th>
-            <th scope="col" class="visually-hidden" style="width: 15%">Percentage Graph</th>
-            <th scope="col" style="width: 50%">Common Course</th>
-            <th scope="col" style="width: 30%">
-              COI
+            <th scope="col" class="visually-hidden" style="width: 20%">Percentage Graph</th>
+            <th scope="col" style="width: 72%">Common Course</th><!-- change this % to 62 when adding COI back in -->
+            <th scope="col" class="px-0" style="width: 10%;min-width:60px;display:none;"><!-- hidden -->
+              <abbr title="Course Outcome Index Score">COI </abbr> 
               <a
                 tabindex="0"
                 class="info-common-coi"
@@ -70,14 +73,17 @@
             <td>
               <a
                 v-bind:href="'/course/?id=' + encodeURIComponent(course.course)"
-                class="router-link-active"
-              >
-                <span class="badge bg-link-color text-light me-2">{{ course.course }}</span>
-              </a>
-              {{ course.title }}
+                :title="'Go to course ' + course.course"
+                class="btn-primary btn-course router-link-active text-decoration-none"
+              >{{ course.course }}</a>
+              <a
+                v-bind:href="'/course/?id=' + encodeURIComponent(course.course)"
+                class="router-link-active ps-3"
+                :title="'Go to course ' + course.course + ' ' + course.title"
+              >{{ course.title }}</a>
             </td>
-            <td v-if="course.coi_score">{{course.coi_score}}</td>
-            <td v-else>No Data</td>
+            <td v-if="course.coi_score" style="display:none;">{{ course.coi_score }}</td>
+            <td v-else style="display:none;">No Data</td>
           </tr>
         </tbody>
       </table>
@@ -103,23 +109,25 @@ export default {
   },
   mounted() {
     this.commonCourses = this.get_common_courses();
-    if(this.commonCourses.length > 0){
+    if (this.commonCourses.length > 0) {
       // var popover = new Popover(document.querySelector('.info-common-coi'));
       // var popover2 = new Popover(document.querySelector('.info-major-common'));
     }
   },
   methods: {
-    get_common_courses: function(){
+    get_common_courses: function () {
       let processed_courses = [];
 
       for (const [course, data] of Object.entries(this.major.common_course_decl)) {
 
         let style_string = `width: ${data['percent']}%`;
-        processed_courses.push({'course': course,
+        processed_courses.push({          
+'course': course,
           'percent': data['percent'],
           'title': data['title'],
           'width': style_string,
-          'coi_score': data['coi_score']})
+          'coi_score': data['coi_score']        
+})
       }
 
       return processed_courses.sort((a, b) => (a.percent < b.percent) ? 1 : -1);
@@ -129,7 +137,7 @@ export default {
     commonCourses: function (course) {
       if (this.commonCourses.length > 0) {
         // Hack to get popovers to only init once element has rendered
-        setTimeout(function(){
+        setTimeout(function () {
           var popover = new Popover(document.querySelector('.info-common-coi'));
           var popover2 = new Popover(document.querySelector('.info-major-common'));
         }, 1);
@@ -141,6 +149,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../css/custom.scss";
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }

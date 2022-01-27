@@ -4,9 +4,11 @@
   <div class="card mb-5">
     <div v-if="concurrent_courses.length === 0" class="card-body">
       <h3>Concurrent Courses</h3>
-      <p>
-        No concurrent courses available for <strong>{{courseData.course_id}}</strong>.
-      </p>
+      <div class="alert alert-purple" role="alert">
+        <p>
+          No concurrent courses available for <strong>{{courseData.course_id}}</strong>.
+        </p>
+      </div>
     </div>
     <div v-else class="card-body">
       <h3>Concurrent Courses</h3>
@@ -17,7 +19,7 @@
       <table class="table table-borderless table-striped">
         <thead>
           <tr class="bg-light text-dark">
-            <th scope="col" style="width: 5%">
+            <th scope="col" class="pe-0" style="width: 8%">
               %
               <a
                 tabindex="0"
@@ -32,9 +34,10 @@
                 <i class="bi bi-info-circle-fill me-0"></i>
               </a>
             </th>
-            <th scope="col" class="visually-hidden" style="width: 15%">Percentage Graph</th>
-            <th scope="col" style="width: 50%">Concurrent Course</th>
-            <th scope="col" style="width: 30%">COI
+            <th scope="col" class="visually-hidden" style="width: 20%">Percentage Graph</th>
+            <th scope="col" style="width: 72%">Concurrent Course</th><!-- change this % to 62 when adding COI back in -->
+            <th scope="col" class="px-0" style="width: 10%;min-width:60px; display:none;"><!-- hidden -->
+              <abbr title="Course Outcome Index Score">COI </abbr>
               <a
                 tabindex="0"
                 class="info-common-coi"
@@ -66,13 +69,14 @@
               </div>
             </td>
             <td>
-              <a :href="'/course/?id=' + course.course" class="router-link-active"
-                ><span class="badge bg-link-color text-light">{{course.course}}</span></a
+              <a :href="'/course/?id=' + course.course" :title="'Go to course ' + course.course" class="btn-primary btn-course router-link-active text-decoration-none"
+                >{{course.course}}</a
               >
-              {{course.title}}
+              <a :href="'/course/?id=' + course.course" class="router-link-active ps-3" :title="'Go to course ' + course.course + ' ' + course.title"> 
+                {{course.title}}</a>
             </td>
-            <td v-if="course.coi_score">{{course.coi_score}}</td>
-            <td v-else>No Data</td>
+            <td v-if="course.coi_score" style="display:none;">{{course.coi_score}}</td><!-- hidden -->
+            <td v-else style="display:none;">No Data</td><!-- hidden -->
           </tr>
         </tbody>
       </table>
@@ -124,6 +128,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../../css/custom.scss';
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }

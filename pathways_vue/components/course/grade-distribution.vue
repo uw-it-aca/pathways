@@ -4,7 +4,7 @@
   <div class="card mb-5">
     <div class="card-body">
       <h3>Course Grade Distribution</h3>
-      <p>
+      <p aria-hidden="true">
         This graph represents the distribution of grades for every student who completed <strong>{{course.course_id}}</strong> over the past 5 years.
         <a
           tabindex="0"
@@ -13,19 +13,33 @@
           data-bs-toggle="popover"
           data-bs-trigger="focus"
           title="Course Grade Distribution"
-          data-bs-content="A histogram represents data in a range of buckets along the horizontal line, or x-axis. The vertical line, or y-axis, represents the number of outcomes for each bucket."
+          data-bs-content="This histogram represents data in a range of buckets along the horizontal line, or x-axis. The vertical line, or y-axis, represents the number of outcomes for each bucket."
         >
-          <i class="bi bi-info-circle-fill"></i>
+          <i class="bi bi-info-circle-fill me-0"></i>
         </a>
       </p>
-      <div id="gcd_graph" />
+      <div aria-hidden="true" id="gcd_graph" />
       <div v-if="total_count < 8">
-        <div class="alert alert-info" role="alert">
-          <p>Data is not available for <strong>{{course.course_id}}</strong>.</p>
-            <ul>
-              <li>There isn’t enough student data to generate plots because the course is new or isn’t offered often.</li>
-            </ul>
+        <div class="alert alert-purple" role="alert">
+          <p>Course grade distribution is not available for <strong>{{course.course_id}}</strong> because there isn’t enough final grade data to generate plots.</p>
         </div>
+      </div>
+      <div v-if="total_count > 8" id="dataTable" class="visually-hidden">
+        <table class="table">
+          <caption>This data table represents the distribution of grades for every student who completed <strong>{{course.course_id}}</strong> over the past 5 years.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Course Grade</th>
+              <th scope="col">Number of Students</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="value in zeroCount" v-bind:key="value.count">
+              <td>{{value.gpa/10}}</td>
+              <td>{{value.count}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <p><small>Number of grades in this sample: {{total_count}} (5 years). Data not instructor-specific.</small></p>
     </div>
@@ -66,6 +80,11 @@ export default {
       } else {
         var newFormat = d3.format(".2n");
       }
+    },
+    zeroCount: function() {
+      return this.course.gpa_distro.filter(function(value) {
+        return value.count > 0;
+      })
     },
   },
   methods: {
@@ -127,7 +146,7 @@ export default {
         .on("mouseover", function (event, d) {
           tooltip.transition()
             .style("opacity", 1);
-          tooltip.html(`Grade ${d.gpa / 10} No. ${d.count}`)
+          tooltip.html(`Grade ${d.gpa / 10} Total ${d.count}`)
             .style("left", (event.pageX) + "px")
             .style("top", (event.pageY - 28) + "px");
         })

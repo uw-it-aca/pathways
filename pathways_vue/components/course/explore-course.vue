@@ -5,7 +5,7 @@
     <div class="card-body explore-course">
       <h3>Explore this Course</h3>
       <ul>
-        <li><a :href="myplanURL" target="_blank">MyPlan Course Page</a></li>
+        <li><a :href="myplanURL">MyPlan Course Page</a></li>
       </ul>
     </div>
   </div>

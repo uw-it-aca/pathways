@@ -9,11 +9,9 @@
     <li class="mb-3" v-for="course in courseData">
       <div class="card shadow-sm">
         <div class="card-body p-3">
-          <strong
-            ><a :href="'/course/?id=' + course.course_id" class="d-block mb-3">
+          <h4 class="fs-6"><a :href="'/course/?id=' + course.course_id" class="d-block mb-3" :title="'Go to course ' + course.course_id + ' ' + course.course_title">
               {{course.course_id}}: {{course.course_title}}</a
-            ></strong
-          >
+            ></h4>
           <div>
             <div class="container">
               <div class="row">
@@ -27,8 +25,8 @@
                   </div>
                   <ul class="prereq-list" v-if="course.prereqs.length > 0">
                     <li v-for="prereq in course.prereqs">
-                      <a :href="'/course/?id=' + prereq.course_id" class="active-router-link"><span class="badge bg-link-color text-light"
-                        >{{prereq.course_id}}</span></a
+                      <a :href="'/course/?id=' + prereq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
+                        {{prereq.course_id}}</a
                       >
                     </li>
                   </ul>
@@ -45,8 +43,8 @@
                   </div>
                   <ul class="prereq-list" v-if="course.postreqs.length > 0">
                     <li v-for="postreq in course.postreqs">
-                      <a :href="'/course/?id=' + postreq.course_id" class="active-router-link"><span class="badge bg-link-color text-light"
-                      >{{postreq.course_id}}</span></a
+                      <a :href="'/course/?id=' + postreq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
+                      {{postreq.course_id}}</a
                       >
                     </li>
                   </ul>

@@ -1,4 +1,4 @@
-# Copyright 2021 UW-IT, University of Washington
+# Copyright 2022 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from pathways.models.major import Major
@@ -25,7 +25,10 @@ def import_major_data(data):
             major_admission=data[major]['major_admission'],
             program_code=data[major]['program_code'],
             major_home_url=data[major]['major_home_url'],
-            common_course_decl=data[major]['common_course_decl']
+            common_course_decl=data[major]['common_course_decl'],
+            credential_code=data[major]['credential_code'],
+            credential_title=data[major]['credential_title'],
+            credential_description=data[major]['credential_description']
         ))
     Major.objects.bulk_create(major_objs)
 
@@ -58,9 +61,13 @@ def import_curric_data(data, coi_data):
         coi = curric_coi.get(curric['curric_abbrev'])
         if coi is not None:
             coi = round(statistics.mean(coi), 1)
+        try:
+            pr_graph = json.loads(curric['prereq_graph'])
+        except TypeError:
+            pr_graph = None
         curric_objs.append(Curriculum(
             abbrev=curric['curric_abbrev'],
-            prereq_graph=json.loads(curric['prereq_graph']),
+            prereq_graph=pr_graph,
             course_data=json.loads(curric['course_data']),
             average_coi_score=coi
         ))
