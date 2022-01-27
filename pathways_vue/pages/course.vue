@@ -112,7 +112,7 @@ export default {
       courseId: undefined,
       courseTitle: undefined,
       courseCampus: undefined,
-      showError: true
+      showError: false
     };
   },
   computed: {
