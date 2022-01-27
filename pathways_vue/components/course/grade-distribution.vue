@@ -41,7 +41,7 @@
           </tbody>
         </table>
       </div>
-      <p><small>Number of grades in this sample: {{total_count}} (5 years). Data not instructor-specific.</small></p>
+      <p><small>Number of grades in this sample: {{total_count}} (5 years).</small></p>
     </div>
   </div>
 </template>
