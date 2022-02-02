@@ -9,14 +9,26 @@ ingress:
       secretName: dawgpath.uw.edu-ingress-cert
       hosts:
         - dawgpath.uw.edu
+    pivot:
+      secretName: pivot.uw.edu-ingress-cert
+      hosts:
+        - pivot.uw.edu
   hosts:
     dawgpath:
       host: dawgpath.uw.edu
       paths:
         - "/"
+    pivot:
+      host: pivot.uw.edu
+      paths:
+        - "/"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
     nginx.ingress.kubernetes.io/client-body-buffer-size: "16K"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if ($host != 'dawgpath.uw.edu' ) {
+        return 301 $scheme://dawgpath.uw.edu$request_uri;
+      }
 
 lifecycle:
   enabled: true
