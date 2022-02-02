@@ -93,17 +93,17 @@ export default {
   },
   data() {
     return {
-      selectedMajor: null,
-      majorID: null,
+      selectedMajor: undefined,
+      majorID: undefined,
       majorTitle: undefined,
-      campus: null,
+      campus: undefined,
       major_data: undefined,
       showError: false
     };
   },
   computed: {
     pageTitle: function() {
-      let no_title = this.showError ? "Error" : "";
+      let no_title = this.showError ? "Error" : "Major";
       return this.majorTitle !== undefined ? this.majorTitle : no_title;
     }
   },
@@ -114,20 +114,20 @@ export default {
     },
     get_major_data(){
       const vue = this;
-      this.major_data = undefined;
-      if(this.campus !== null && this.majorID !== null){
-        this.axios.get("/api/v1/majors/details/" + this.majorID).then((response) => {
-          vue.major_data = response.data;
-          vue.majorTitle = vue.major_data.credential_title + " - Major ";
-        }).catch(function (error) {
-          vue.showError = true;
-        });
-      }
+      this.axios.get("/api/v1/majors/details/" + this.majorID).then((response) => {
+        vue.major_data = response.data;
+        vue.majorTitle = vue.major_data.credential_title + " - Major ";
+      }).catch(function (error) {
+        vue.showError = true;
+      });
     }
   },
   mounted(){
     this.majorID = this.$route.query.id;
     this.campus = this.$route.query.campus;
+    if(this.campus == undefined && this.majorID == undefined) {
+      this.showError = true;
+    }
   },
   watch: {
     majorID() {

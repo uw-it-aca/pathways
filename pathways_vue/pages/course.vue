@@ -116,15 +116,19 @@ export default {
     };
   },
   computed: {
-    pageTitle: function () {
-      let no_title = this.showError ? "Error" : "";
+    pageTitle: function() {
+      let no_title = this.showError ? "Error" : "Course";
       return this.courseTitle !== undefined ? this.courseTitle : no_title;
     }
   },
   mounted() {
-    let course_id = this.$route.query.id;
-    this.courseId = course_id;
+    this.courseId = this.$route.query.id;
     this.courseCampus = this.$route.query.campus;
+
+    if (this.courseId == undefined) {
+      this.showError = true;
+    }
+
     this.emitter.on("update:selected", selectedKey => {
       this.courseId = selectedKey;
 
