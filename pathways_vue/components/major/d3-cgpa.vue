@@ -65,18 +65,20 @@
       </div>
       <div v-show="showGraph">
         <div aria-hidden="true" id="histogram" class="mt-2"></div>
-        <div v-if="yearCount === 2" id="dataTable2yr" class="visually-hidden">
+        <div v-if="yearCount === 2" id="dataTable2yr">
           <table class="table">
             <thead>
               <tr>
                 <th scope="col">GPA</th>
                 <th scope="col">Number of Students</th>
+                <th scope="col">Percentage to total</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="value in zeroCount2yr" v-bind:key="value.count">
                 <td>{{value.gpa/10}}</td>
                 <td>{{value.count}}</td>
+                <td>{{(value.count/total)*100}}%</td>
               </tr>
             </tbody>
           </table>
@@ -87,12 +89,14 @@
               <tr>
                 <th scope="col">GPA</th>
                 <th scope="col">Number of Students</th>
+                <th scope="col">Percentage to total</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="value in zeroCount5yr" v-bind:key="value.count">
                 <td>{{value.gpa/10}}</td>
                 <td>{{value.count}}</td>
+                <td>%</td>
               </tr>
             </tbody>
           </table>
@@ -155,12 +159,12 @@ export default {
         var newFormat = d3.format(".2n");
       }
     },
-    zeroCount2yr: function() {
+    zeroCount2yr() {    
       return this.majorData.gpa_2yr.filter(function(value) {
         return value.count > 0;
       })
     },
-    zeroCount5yr: function() {
+    zeroCount5yr() {
       return this.majorData.gpa_5yr.filter(function(value) {
         return value.count > 0;
       })
@@ -196,7 +200,6 @@ export default {
         this.gpa_2yr_active = false;
         this.generateChart(this.majorData.gpa_5yr);
       }
-
     },
     generateChart(gpa_data) {
       if((this.yearCount === 2 && !this.show2Year)
@@ -212,6 +215,8 @@ export default {
           return accumulator + currentValue.count;
         }, 0);
         this.total_count = numeral(count).format('0,0');
+        this.num_total = numeral(count);
+        this.total = this.num_total.value();
 
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 30, bottom: 50, left: 50},
