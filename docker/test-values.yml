@@ -23,7 +23,7 @@ ingress:
     nginx.ingress.kubernetes.io/client-body-buffer-size: "16K"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       if ($host != 'test.dawgpath.uw.edu' ) {
-        return 301 $scheme://test.dawgpath.uw.edu$request_uri;
+        return 301 $scheme://test.dawgpath.uw.edu;
       }
 
 lifecycle:
