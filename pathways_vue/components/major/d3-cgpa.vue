@@ -345,7 +345,7 @@ div.tooltip {
   background: #000;
   color: #fff;
   border-radius: 4px;
-  width: 7rem;
+  width: 7.5rem;
   height: 2.5rem;
   font: 12px sans-serif;
   pointer-events: none;
