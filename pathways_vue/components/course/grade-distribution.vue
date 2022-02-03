@@ -31,12 +31,14 @@
             <tr>
               <th scope="col">Course Grade</th>
               <th scope="col">Number of Students</th>
+              <th scope="col">Percentage of Students</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="value in zeroCount" v-bind:key="value.count">
               <td>{{value.gpa/10}}</td>
               <td>{{value.count}}</td>
+              <td>{{distributionPercentage(value.count)}}</td>
             </tr>
           </tbody>
         </table>
@@ -88,7 +90,12 @@ export default {
     },
   },
   methods: {
+    distributionPercentage(count) {
+      return (count / this.total_count * 100).toFixed(2);
+    },
     generateChart(gpa_data){
+      let vue = this;
+
       // clear chart
       document.getElementById("gcd_graph").innerHTML = "";
 
@@ -96,7 +103,7 @@ export default {
       var count = gpa_data.reduce(function(accumulator, currentValue) {
           return accumulator + currentValue.count;
         }, 0);
-      this.total_count = numeral(count).format('0,0');
+      this.total_count = count;
 
       const s_count = this.total_count; 
 
@@ -146,7 +153,9 @@ export default {
         .on("mouseover", function (event, d) {
           tooltip.transition()
             .style("opacity", 1);
-          tooltip.html(`Grade ${d.gpa / 10} Total ${d.count}`)
+          tooltip.html(
+            `Grade ${d.gpa / 10}<br/>
+             Total ${d.count} (${vue.distributionPercentage(d.count)}%)`)
             .style("left", (event.pageX) + "px")
             .style("top", (event.pageY - 28) + "px");
         })
@@ -205,14 +214,15 @@ export default {
 
 div.tooltip {
   position: absolute;
-  text-align: center;
+  text-align: left;
+  white-space: nowrap;
   line-height: 1;
   padding: 3px;
   background: #000;
   color: #fff;
   border-radius: 4px;
-  width: 5rem;
-  height: 3.5rem;
+  width: 7rem;
+  height: 2.5rem;
   font: 12px sans-serif;
   pointer-events: none;
 }

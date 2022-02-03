@@ -65,20 +65,20 @@
       </div>
       <div v-show="showGraph">
         <div aria-hidden="true" id="histogram" class="mt-2"></div>
-        <div v-if="yearCount === 2" id="dataTable2yr">
+        <div v-if="yearCount === 2" id="dataTable2yr" class="visually-hidden">
           <table class="table">
             <thead>
               <tr>
                 <th scope="col">GPA</th>
                 <th scope="col">Number of Students</th>
-                <th scope="col">Percentage to total</th>
+                <th scope="col">Percentage of Students</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="value in zeroCount2yr" v-bind:key="value.count">
                 <td>{{value.gpa/10}}</td>
                 <td>{{value.count}}</td>
-                <td>{{(value.count/total)*100}}%</td>
+                <td>{{distributionPercentage(value.count)}}%</td>
               </tr>
             </tbody>
           </table>
@@ -89,21 +89,20 @@
               <tr>
                 <th scope="col">GPA</th>
                 <th scope="col">Number of Students</th>
-                <th scope="col">Percentage to total</th>
+                <th scope="col">Percentage of Students</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="value in zeroCount5yr" v-bind:key="value.count">
                 <td>{{value.gpa/10}}</td>
                 <td>{{value.count}}</td>
-                <td>%</td>
+                <td>{{distributionPercentage(value.count)}}%</td>
               </tr>
             </tbody>
           </table>
         </div>
         <small>
-          Number
-          of students in this sample: {{ total_count }}
+          Number of students in this sample: {{ total_count }}
         </small>
       </div>
     </div>
@@ -201,7 +200,12 @@ export default {
         this.generateChart(this.majorData.gpa_5yr);
       }
     },
+    distributionPercentage(count) {
+      return (count / this.total_count * 100).toFixed(2);
+    },
     generateChart(gpa_data) {
+      let vue = this;
+
       if((this.yearCount === 2 && !this.show2Year)
         || (this.yearCount === 5 && !this.show5Year)){
         return;
@@ -214,9 +218,7 @@ export default {
         var count = gpa_data.reduce(function (accumulator, currentValue) {
           return accumulator + currentValue.count;
         }, 0);
-        this.total_count = numeral(count).format('0,0');
-        this.num_total = numeral(count);
-        this.total = this.num_total.value();
+        this.total_count = count;
 
         // set the dimensions and margins of the graph
         var margin = {top: 10, right: 30, bottom: 50, left: 50},
@@ -274,7 +276,9 @@ export default {
           .on("mouseover", function (event, d) {
             tooltip.transition()
               .style("opacity", 1);
-            tooltip.html(`GPA: ${d.gpa / 10} Total ${d.count}`)
+            tooltip.html(
+              `GPA: ${d.gpa / 10}<br/>
+               Total: ${d.count} (${vue.distributionPercentage(d.count)}%)`)
               .style("left", (event.pageX) + "px")
               .style("top", (event.pageY - 28) + "px");
           })
@@ -334,13 +338,14 @@ export default {
 
 div.tooltip {
   position: absolute;
-  text-align: center;
+  text-align: left;
+  white-space: nowrap;
   line-height: 1;
   padding: 4px;
   background: #000;
   color: #fff;
   border-radius: 4px;
-  width: 4rem;
+  width: 7rem;
   height: 2.5rem;
   font: 12px sans-serif;
   pointer-events: none;
