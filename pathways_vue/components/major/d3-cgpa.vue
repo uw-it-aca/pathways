@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body" v-if="!showCard">
-      <h3>Declared major cumulative GPA distribution</h3>
+      <h3 class="h4">Declared major cumulative GPA distribution</h3>
       <div class="alert alert-purple" role="alert">
       <p>No major GPA information for {{this.majorData.major_title}} was found. Here are some possible reasons:</p>
         <ul>

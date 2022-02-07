@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body">
-      <h3>Course Grade Distribution</h3>
+      <h3 class="h4">Course Grade Distribution</h3>
       <p aria-hidden="true">
         This graph represents the distribution of grades for every student who completed <strong>{{course.course_id}}</strong> over the past 5 years.
         <a

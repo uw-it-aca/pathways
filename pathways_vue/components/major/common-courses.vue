@@ -12,7 +12,7 @@
       </div>
     </div>
     <div v-else class="card-body explore-major">
-      <h3>Common courses for {{ major["major_title"] }}</h3>
+      <h3 class="h4">Common courses for {{ major["major_title"] }}</h3>
       <p>
         Below are the 10 most popular courses at the time of declaration among students who declared
         this major in the last 5 years.
