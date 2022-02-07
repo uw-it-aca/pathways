@@ -33,11 +33,13 @@
       </div>
     </template>
     <template #main>
-      <!-- main section override -->
-      <slot name="title">
-        {{ pageTitle }}
-      </slot>
-      <slot name="content"></slot>
+      <div class="bg-white">
+        <!-- main section override -->
+        <slot name="title">
+          {{ pageTitle }}
+        </slot>
+        <slot name="content"></slot>
+      </div>
     </template>
     <template #footer>
       <feedback />
