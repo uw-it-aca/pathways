@@ -25,13 +25,8 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-md-9">
-            <div class="row">
-              <div class="col-sm-8">
-                <d3-cgpa :major-data="major_data" />
-              </div>
-            </div>
+            <d3-cgpa :major-data="major_data"/>
           </div>
-          <!-- <div class="col-sm-4"></div> -->
         </div>
         <div class="row justify-content-center">
           <div class="col-md-9">

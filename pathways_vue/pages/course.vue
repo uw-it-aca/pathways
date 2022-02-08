@@ -26,17 +26,14 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-md-9">
-            <div class="row">
-              <div class="col-sm-8">
-                <!-- change this class to col-sm-6 when adding COI graph -->
-                <grade-distribution :course="courseData" />
-              </div>
-              <!-- <div class="col-sm-6">
-                <outcome-index :course="courseData"/>
-              </div>-->
-            </div>
+            <grade-distribution :course="courseData" />
           </div>
         </div>
+   <!-- <div class="row justify-content-center">
+          <div class="col-md-9">
+            <outcome-index :course="courseData"/>
+          </div>
+        </div>-->
         <!-- prereq map -->
         <div class="row justify-content-center">
           <div class="col-md-9">
