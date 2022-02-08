@@ -15,7 +15,7 @@
       <h3>Common courses for {{ major["major_title"] }}</h3>
       <p>
         Below are the 10 most popular courses at the time of declaration among students who declared
-        this major in the last 5 years.
+        this major in the last 5 years.  
       </p>
 
       <table class="table table-borderless table-striped">
@@ -87,6 +87,7 @@
           </tr>
         </tbody>
       </table>
+      <p><small>Note: data includes transfers and course equivalencies.</small></p>
     </div>
   </div>
 </template>
