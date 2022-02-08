@@ -1,5 +1,5 @@
 <template>
-  <div class="card mb-5 bg-tan border-0 p-3">
+  <div class="card mb-5 bg-light-beige border-0 p-3">
     <div class="card-body">
       <h3 class="h4">Are you considering this {{type}}?</h3>
       <p>

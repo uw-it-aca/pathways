@@ -33,7 +33,7 @@
       </div>
     </template>
     <template #main>
-      <div class="bg-white">
+      <div class="bg-white" style="min-height: 400px;">
         <!-- main section override -->
         <slot name="title">
           {{ pageTitle }}

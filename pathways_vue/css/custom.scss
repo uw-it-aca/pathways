@@ -14,6 +14,8 @@ $custom-colors: (
   "orange-200": $orange-200, // border-orange-200
   "teal-200":   $teal-200,
   "gray-800":   $gray-800, // bg-gray-800
+  "light-beige": #FAF8F4,
+  "light-gray": #F8F9FA,
 );
 
 // axdd-components + pathways custom colors
@@ -30,25 +32,24 @@ $utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
 // additional non-bootstrap styles
 
 .blah { color: purple; }
-.bg-tan {
-  background-color: #FAF8F4;
-}
-
-body {
-  background-color: #F8F9FA;
-}
 
 a {
   text-decoration: none;
 }
-
-
 
 // global pathways colors
 
 .pw-orange { background-color: $orange-200; }
 .pw-green { background-color: $teal-200; }
 .pw-blue { background-color: $blue-200; }
+
+// custom fonts
+.pw-font-open-sans {
+  font-family: 'Open Sans', sans-serif !important;
+}
+.pw-font-encode-sans {
+  font-family: 'Encode Sans', sans-serif !important;
+}
 
 // custom course btn 
 .btn-course {

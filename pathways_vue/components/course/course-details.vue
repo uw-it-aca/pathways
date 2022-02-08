@@ -1,8 +1,8 @@
 // course-details.vue
 
 <template>
-  <div class="mb-5">
-    <h2>{{ course.course_title }}</h2>
+  <div class="mb-3">
+    <h2 class="pw-font-encode-sans">{{ course.course_title }}</h2>
     <div><strong>Credits:</strong> {{ course.course_credits }}</div>
     <div class="mb-2" v-if="offered_terms">
       <strong>Typically offered: </strong>
