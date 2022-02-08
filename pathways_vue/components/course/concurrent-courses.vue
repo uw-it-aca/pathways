@@ -72,7 +72,7 @@
               <a :href="'/course/?id=' + course.course" :title="'Go to course ' + course.course" class="btn-primary btn-course router-link-active text-decoration-none"
                 >{{course.course}}</a
               >
-              <a :href="'/course/?id=' + course.course" class="router-link-active ps-3" :title="'Go to course ' + course.course + ' ' + course.title"> 
+              <a :href="'/course/?id=' + course.course" class="router-link-active ps-3" :title="'Go to course ' + course.course + ' ' + course.title">
                 {{course.title}}</a>
             </td>
             <td v-if="course.coi_score" style="display:none;">{{course.coi_score}}</td><!-- hidden -->
@@ -128,7 +128,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../css/custom.scss';
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }

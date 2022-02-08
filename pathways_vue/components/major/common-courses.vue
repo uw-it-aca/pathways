@@ -15,7 +15,7 @@
       <h3 class="h4 pw-font-encode-sans">Common courses for {{ major["major_title"] }}</h3>
       <p>
         Below are the 10 most popular courses at the time of declaration among students who declared
-        this major in the last 5 years.  
+        this major in the last 5 years.
       </p>
 
       <table class="table table-borderless table-striped">
@@ -39,7 +39,7 @@
             <th scope="col" class="visually-hidden" style="width: 20%">Percentage Graph</th>
             <th scope="col" style="width: 72%">Common Course</th><!-- change this % to 62 when adding COI back in -->
             <th scope="col" class="px-0" style="width: 10%;min-width:60px;display:none;"><!-- hidden -->
-              <abbr title="Course Outcome Index Score">COI </abbr> 
+              <abbr title="Course Outcome Index Score">COI </abbr>
               <a
                 tabindex="0"
                 class="info-common-coi"
@@ -122,12 +122,12 @@ export default {
       for (const [course, data] of Object.entries(this.major.common_course_decl)) {
 
         let style_string = `width: ${data['percent']}%`;
-        processed_courses.push({          
+        processed_courses.push({
 'course': course,
           'percent': data['percent'],
           'title': data['title'],
           'width': style_string,
-          'coi_score': data['coi_score']        
+          'coi_score': data['coi_score']
 })
       }
 
@@ -150,7 +150,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../css/custom.scss";
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }

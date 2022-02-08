@@ -81,13 +81,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../css/custom.scss';
-
-.creamcicle {
-  background-color: $orange-200;
-}
-
-.yellow {
-  background-color: $yellow-200;
-}
 </style>

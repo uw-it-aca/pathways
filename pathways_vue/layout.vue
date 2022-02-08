@@ -117,8 +117,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import './css/custom.scss';
-
 .item-dot {
   &::after {
     content: '·';
