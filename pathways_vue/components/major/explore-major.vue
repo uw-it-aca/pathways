@@ -1,24 +1,18 @@
 // explore-major.vue
 
 <template>
-  <div class="card mb-5">
-    <div class="card-body explore-major">
-      <h3>Explore this major</h3>
-      <ul>
-        <!--<li v-if="major['major_home_url']">
+  <ul class="nav mb-5">
+    <!--<li v-if="major['major_home_url']">
           <a :href="major['major_home_url']" target="_blank">Degree Requirements</a>
-        </li> -->
-        <li v-if="major['program_code']">
-          <a :href="myplanProgramURL">MyPlan Program Page</a>
-        </li>
-        <li v-if="major['credential_code']">
-          <a :href="myplanCredentialURL">MyPlan Credential Page</a>
-        </li>
-      </ul>
-    </div>
-  </div>
+    </li>-->
+    <li class="nav-item me-5" v-if="major['program_code']">
+      <a class="nav-link p-0" :href="myplanProgramURL">MyPlan Program Page</a>
+    </li>
+    <li class="nav-item" v-if="major['credential_code']">
+      <a class="nav-link p-0" :href="myplanCredentialURL">MyPlan Credential Page</a>
+    </li>
+  </ul>
 </template>
-
 
 <script>
 export default {
@@ -27,20 +21,25 @@ export default {
     major: {
       type: Object,
       required: true,
-    }
+    },
   },
   data() {
     return {};
   },
   computed: {
     myplanProgramURL() {
-      if(this.major['program_code'] !== null){
-        return "https://myplan.uw.edu/program/#/programs/" + this.major['program_code']
+      if (this.major['program_code'] !== null) {
+        return 'https://myplan.uw.edu/program/#/programs/' + this.major['program_code'];
       }
     },
     myplanCredentialURL() {
-      if(this.major['credential_code'] !== null){
-        return "https://myplan.uw.edu/program/#/programs/" + this.major['program_code'] + "/" + this.major['credential_code']
+      if (this.major['credential_code'] !== null) {
+        return (
+          'https://myplan.uw.edu/program/#/programs/' +
+          this.major['program_code'] +
+          '/' +
+          this.major['credential_code']
+        );
       }
     },
   },

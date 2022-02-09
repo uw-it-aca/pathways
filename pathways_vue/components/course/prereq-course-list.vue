@@ -103,7 +103,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../css/custom.scss';
 li {
   list-style-type: none;
   padding-bottom: 0.5rem;
