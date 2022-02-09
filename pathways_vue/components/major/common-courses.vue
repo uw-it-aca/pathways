@@ -44,7 +44,7 @@
         </thead>
         <tbody>
           <tr v-for="course in commonCourses" class="align-middle">
-            <th scope="row">{{ course.percent }}%</th>
+            <th scope="row"></th>
             <td>
               <a
                 v-bind:href="'/course/?id=' + encodeURIComponent(course.course)"
@@ -127,4 +127,13 @@ export default {
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }
+
+tbody {
+  counter-reset: rank;
+}
+tbody tr th:first-child::before {
+  counter-increment: rank;
+  content: counter(rank);
+}
+
 </style>
