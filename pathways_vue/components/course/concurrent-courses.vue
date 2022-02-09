@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div v-if="concurrent_courses.length === 0" class="card-body">
-      <h3>Concurrent Courses</h3>
+      <h3 class="h4 pw-font-encode-sans">Concurrent Courses</h3>
       <div class="alert alert-purple" role="alert">
         <p>
           No concurrent courses available for <strong>{{courseData.course_id}}</strong>.
@@ -11,7 +11,7 @@
       </div>
     </div>
     <div v-else class="card-body">
-      <h3>Concurrent Courses</h3>
+      <h3 class="h4 pw-font-encode-sans">Concurrent Courses</h3>
       <p>
         Students who took <strong>{{courseData.course_id}}</strong> in the past 2 years also took the following
         courses at the same time.
@@ -72,7 +72,7 @@
               <a :href="'/course/?id=' + course.course" :title="'Go to course ' + course.course" class="btn-primary btn-course router-link-active text-decoration-none"
                 >{{course.course}}</a
               >
-              <a :href="'/course/?id=' + course.course" class="router-link-active ps-3" :title="'Go to course ' + course.course + ' ' + course.title"> 
+              <a :href="'/course/?id=' + course.course" class="router-link-active ps-3" :title="'Go to course ' + course.course + ' ' + course.title">
                 {{course.title}}</a>
             </td>
             <td v-if="course.coi_score" style="display:none;">{{course.coi_score}}</td><!-- hidden -->
@@ -128,7 +128,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../css/custom.scss';
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }

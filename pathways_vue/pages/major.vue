@@ -6,7 +6,6 @@
       <h1 class="visually-hidden">{{ pageTitle }}</h1>
     </template>
     <template #content>
-
       <div class="row justify-content-center mb-5">
         <div class="col-md-9">
           <search-chooser
@@ -20,21 +19,14 @@
       <div v-if="major_data">
         <div class="row justify-content-sm-center">
           <div class="col-md-9">
-            <div class="row">
-              <div class="col-sm-8"><major-details :major="major_data" /></div>
-              <div class="col-sm-4"><explore-major :major="major_data" /></div>
-            </div>
+            <major-details :major="major_data" />
+            <explore-major :major="major_data" />
           </div>
         </div>
         <div class="row justify-content-center">
           <div class="col-md-9">
-            <div class="row">
-              <div class="col-sm-8">
-                <d3-cgpa :major-data="major_data"/>
-              </div>
-            </div>
+            <d3-cgpa :major-data="major_data"/>
           </div>
-          <!-- <div class="col-sm-4"></div> -->
         </div>
         <div class="row justify-content-center">
           <div class="col-md-9">
@@ -43,8 +35,8 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-md-9">
-            <contact-adviser :campus="campus" :type="'major'"/>
-        </div>
+            <contact-adviser :campus="campus" :type="'major'" />
+          </div>
         </div>
       </div>
       <div v-else>
@@ -65,7 +57,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </template>
   </layout>
@@ -102,17 +93,17 @@ export default {
     };
   },
   computed: {
-    pageTitle: function() {
+    pageTitle: function () {
       let no_title = this.showError ? "Error" : "Major";
       return this.majorTitle !== undefined ? this.majorTitle : no_title;
     }
   },
   methods: {
-    switch_major(data){
+    switch_major(data) {
       this.majorID = data.id;
       this.campus = data.campus
     },
-    get_major_data(){
+    get_major_data() {
       const vue = this;
       this.axios.get("/api/v1/majors/details/" + this.majorID).then((response) => {
         vue.major_data = response.data;
@@ -122,10 +113,10 @@ export default {
       });
     }
   },
-  mounted(){
+  mounted() {
     this.majorID = this.$route.query.id;
     this.campus = this.$route.query.campus;
-    if(this.campus == undefined && this.majorID == undefined) {
+    if (this.campus == undefined && this.majorID == undefined) {
       this.showError = true;
     }
   },

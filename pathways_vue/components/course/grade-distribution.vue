@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body">
-      <h3>Course Grade Distribution</h3>
+      <h3 class="h4 pw-font-encode-sans">Course Grade Distribution</h3>
       <p aria-hidden="true">
         This graph represents the distribution of grades for every student who completed <strong>{{course.course_id}}</strong> over the past 5 years.
         <a
@@ -108,9 +108,9 @@ export default {
       const s_count = this.total_count; 
 
       // set the dimensions and margins of the graph
-      var margin = { top: 10, right: 30, bottom: 30, left: 50 },
-        width = 460 - margin.left - margin.right,
-        height = 300 - margin.top - margin.bottom,
+      var margin = { top: 10, right: 30, bottom: 50, left: 50 },
+        width = 800 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom,
         rwidth = width + margin.left + margin.right,
         rheight = height + margin.top + margin.bottom;
 
@@ -170,7 +170,7 @@ export default {
         .attr("x", 0 - (height / 2))
         .attr("dy", "0.5em")
         .style("text-anchor", "middle")
-        .style("font-size", "0.75rem")
+        .style("font-size", "0.85rem")
         .classed("chart-label", true)
         .text("Number of Students");
 
@@ -178,7 +178,7 @@ export default {
         .attr('x', width / 2)
         .attr('y', height + margin.bottom)
         .style("text-anchor", "middle")
-        .style("font-size", "0.75rem")
+        .style("font-size", "0.85rem")
         .text("Course Grade");
 
       // add the x Axis
@@ -221,7 +221,7 @@ div.tooltip {
   background: #000;
   color: #fff;
   border-radius: 4px;
-  width: 7rem;
+  width: 7.5rem;
   height: 2.5rem;
   font: 12px sans-serif;
   pointer-events: none;

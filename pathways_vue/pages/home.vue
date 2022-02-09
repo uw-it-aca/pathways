@@ -56,9 +56,7 @@
               </div>
             </div>
           </div>
-          <div class="mt-5">
-             <search-chooser/>
-          </div>
+          <search-chooser/>
           <!-- Button trigger modal -->
           <button
             type="button"

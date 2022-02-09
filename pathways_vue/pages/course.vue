@@ -20,28 +20,20 @@
       <div v-if="courseData">
         <div class="row justify-content-sm-center">
           <div class="col-md-9">
-            <div class="row">
-              <div class="col-sm-8">
-                <course-details :course="courseData" />
-              </div>
-              <div class="col-sm-4">
-                <explore-course :course="courseData" />
-              </div>
-            </div>
+            <course-details :course="courseData" />
+            <explore-course :course="courseData" />
           </div>
         </div>
         <div class="row justify-content-center">
           <div class="col-md-9">
-            <div class="row">
-              <div class="col-sm-8"> <!-- change this class to col-sm-6 when adding COI graph -->
-                <grade-distribution :course="courseData" />
-              </div>
-         <!-- <div class="col-sm-6">
-                <outcome-index :course="courseData"/>
-              </div>-->
-            </div>
+            <grade-distribution :course="courseData" />
           </div>
         </div>
+   <!-- <div class="row justify-content-center">
+          <div class="col-md-9">
+            <outcome-index :course="courseData"/>
+          </div>
+        </div>-->
         <!-- prereq map -->
         <div class="row justify-content-center">
           <div class="col-md-9">
@@ -85,7 +77,7 @@
 
 <script>
 import Layout from '../layout.vue';
-import SearchChooser from "../components/search/chooser.vue";
+import SearchChooser from '../components/search/chooser.vue';
 import GradeDistribution from '../components/course/grade-distribution.vue';
 import CourseDetails from '../components/course/course-details.vue';
 import ExploreCourse from '../components/course/explore-course.vue';
@@ -112,14 +104,14 @@ export default {
       courseId: undefined,
       courseTitle: undefined,
       courseCampus: undefined,
-      showError: false
+      showError: false,
     };
   },
   computed: {
-    pageTitle: function() {
-      let no_title = this.showError ? "Error" : "Course";
+    pageTitle: function () {
+      let no_title = this.showError ? 'Error' : 'Course';
       return this.courseTitle !== undefined ? this.courseTitle : no_title;
-    }
+    },
   },
   mounted() {
     this.courseId = this.$route.query.id;
@@ -129,34 +121,36 @@ export default {
       this.showError = true;
     }
 
-    this.emitter.on("update:selected", selectedKey => {
+    this.emitter.on('update:selected', (selectedKey) => {
       this.courseId = selectedKey;
-
-    })
+    });
   },
   methods: {
     switch_course(data) {
       this.courseId = data.id;
-      this.courseCampus = data.campus
+      this.courseCampus = data.campus;
     },
     get_course_data(course_id) {
       const vue = this;
       this.courseData = undefined;
-      this.axios.get("/api/v1/courses/details/" + course_id).then((response) => {
-        vue.showError = false;
-        vue.courseData = response.data;
-        vue.courseCampus = response.data.course_campus;
-        vue.courseTitle = this.courseId + ": " + response.data.course_title + " - Course ";
-      }).catch(function (error) {
-        vue.showError = true;
-      });
-    }
+      this.axios
+        .get('/api/v1/courses/details/' + course_id)
+        .then((response) => {
+          vue.showError = false;
+          vue.courseData = response.data;
+          vue.courseCampus = response.data.course_campus;
+          vue.courseTitle = this.courseId + ': ' + response.data.course_title + ' - Course ';
+        })
+        .catch(function (error) {
+          vue.showError = true;
+        });
+    },
   },
   watch: {
     courseId(newValue) {
       this.get_course_data(newValue);
-    }
-  }
+    },
+  },
 };
 </script>
 
