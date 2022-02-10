@@ -22,22 +22,9 @@
         <thead>
           <tr class="bg-light text-dark">
             <th scope="col" class="pe-0" style="width: 8%">
-              %
-              <a
-                tabindex="0"
-                class="info-major-common"
-                role="button"
-                data-bs-toggle="popover"
-                data-bs-trigger="focus"
-                data-bs-placement="top"
-                title="Percentage"
-                data-bs-content="Percent of students who had taken the course by the time they declared for major."
-              >
-                <i class="bi bi-info-circle-fill me-0"></i>
-              </a>
+              Rank
             </th>
-            <th scope="col" class="visually-hidden" style="width: 20%">Percentage Graph</th>
-            <th scope="col" style="width: 72%">Common Course</th><!-- change this % to 62 when adding COI back in -->
+            <th scope="col" style="width: 92%">Common Course</th><!-- change this % to 62 when adding COI back in -->
             <th scope="col" class="px-0" style="width: 10%;min-width:60px;display:none;"><!-- hidden -->
               <abbr title="Course Outcome Index Score">COI </abbr>
               <a
@@ -57,19 +44,7 @@
         </thead>
         <tbody>
           <tr v-for="course in commonCourses" class="align-middle">
-            <th scope="row">{{ course.percent }}%</th>
-            <td>
-              <div class="progress">
-                <div
-                  class="progress-bar bg-secondary"
-                  role="progressbar"
-                  :style="course.width"
-                  :aria-valuenow="course.percent"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-            </td>
+            <th scope="row"></th>
             <td>
               <a
                 v-bind:href="'/course/?id=' + encodeURIComponent(course.course)"
@@ -140,7 +115,6 @@ export default {
         // Hack to get popovers to only init once element has rendered
         setTimeout(function () {
           var popover = new Popover(document.querySelector('.info-common-coi'));
-          var popover2 = new Popover(document.querySelector('.info-major-common'));
         }, 1);
 
       }
@@ -153,4 +127,13 @@ export default {
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }
+
+tbody {
+  counter-reset: rank;
+}
+tbody tr th:first-child::before {
+  counter-increment: rank;
+  content: counter(rank);
+}
+
 </style>
