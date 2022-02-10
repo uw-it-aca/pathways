@@ -1,13 +1,8 @@
 // explore-course.vue
 
 <template>
-  <div class="card mb-5">
-    <div class="card-body explore-course">
-      <h3>Explore this Course</h3>
-      <ul>
-        <li><a :href="myplanURL">MyPlan Course Page</a></li>
-      </ul>
-    </div>
+  <div class="mb-5">
+    <a :href="myplanURL">MyPlan Course Page</a>
   </div>
 </template>
 
@@ -26,7 +21,7 @@ export default {
   },
   computed: {
     myplanURL() {
-      if(this.course['course_id'] !== null){
+      if (this.course['course_id'] !== null) {
         return "https://myplan.uw.edu/course/#/courses/" + encodeURIComponent(this.course['course_id']);
       }
     },

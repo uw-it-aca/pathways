@@ -1,7 +1,7 @@
 // chooser.vue
 
 <template>
-  <div class="card bg-light">
+  <div class="card bg-light mt-5">
     <div class="card-body">
       <h2 class="fw-bold mt-2 fs-5">Search for a major or course</h2>
       <form @submit.prevent="onSelected" role="search">

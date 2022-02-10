@@ -9,9 +9,17 @@ ingress:
       secretName: test.pivot.uw.edu-ingress-cert
       hosts:
         - test.pivot.uw.edu
+    prereqmap:
+      secretName: test.prereqmap.uw.edu-ingress-cert
+      hosts:
+        - test.prereqmap.uw.edu
   hosts:
     dawgpath:
       host: test.dawgpath.uw.edu
+      paths:
+        - "/"
+    prereqmap:
+      host: test.prereqmap.uw.edu
       paths:
         - "/"
     pivot:

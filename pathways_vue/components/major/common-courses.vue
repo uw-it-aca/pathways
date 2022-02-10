@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div v-if="commonCourses.length === 0" class="card-body">
-      <h3>Common Courses</h3>
+      <h3 class="h4 pw-font-encode-sans">Common Courses</h3>
       <div class="alert alert-purple mt-2" role="alert">
         <p>
           No common courses available for
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div v-else class="card-body explore-major">
-      <h3>Common courses for {{ major["major_title"] }}</h3>
+      <h3 class="h4 pw-font-encode-sans">Common courses for {{ major["major_title"] }}</h3>
       <p>
         Below are the 10 most popular courses at the time of declaration among students who declared
         this major in the last 5 years.
@@ -22,24 +22,11 @@
         <thead>
           <tr class="bg-light text-dark">
             <th scope="col" class="pe-0" style="width: 8%">
-              %
-              <a
-                tabindex="0"
-                class="info-major-common"
-                role="button"
-                data-bs-toggle="popover"
-                data-bs-trigger="focus"
-                data-bs-placement="top"
-                title="Percentage"
-                data-bs-content="Percent of students who had taken the course by the time they declared for major."
-              >
-                <i class="bi bi-info-circle-fill me-0"></i>
-              </a>
+              Rank
             </th>
-            <th scope="col" class="visually-hidden" style="width: 20%">Percentage Graph</th>
-            <th scope="col" style="width: 72%">Common Course</th><!-- change this % to 62 when adding COI back in -->
+            <th scope="col" style="width: 92%">Common Course</th><!-- change this % to 62 when adding COI back in -->
             <th scope="col" class="px-0" style="width: 10%;min-width:60px;display:none;"><!-- hidden -->
-              <abbr title="Course Outcome Index Score">COI </abbr> 
+              <abbr title="Course Outcome Index Score">COI </abbr>
               <a
                 tabindex="0"
                 class="info-common-coi"
@@ -57,19 +44,7 @@
         </thead>
         <tbody>
           <tr v-for="course in commonCourses" class="align-middle">
-            <th scope="row">{{ course.percent }}%</th>
-            <td>
-              <div class="progress">
-                <div
-                  class="progress-bar bg-secondary"
-                  role="progressbar"
-                  :style="course.width"
-                  :aria-valuenow="course.percent"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-            </td>
+            <th scope="row"></th>
             <td>
               <a
                 v-bind:href="'/course/?id=' + encodeURIComponent(course.course)"
@@ -87,6 +62,7 @@
           </tr>
         </tbody>
       </table>
+      <p><small>Note: data includes transfers and course equivalencies.</small></p>
     </div>
   </div>
 </template>
@@ -121,12 +97,12 @@ export default {
       for (const [course, data] of Object.entries(this.major.common_course_decl)) {
 
         let style_string = `width: ${data['percent']}%`;
-        processed_courses.push({          
+        processed_courses.push({
 'course': course,
           'percent': data['percent'],
           'title': data['title'],
           'width': style_string,
-          'coi_score': data['coi_score']        
+          'coi_score': data['coi_score']
 })
       }
 
@@ -139,7 +115,6 @@ export default {
         // Hack to get popovers to only init once element has rendered
         setTimeout(function () {
           var popover = new Popover(document.querySelector('.info-common-coi'));
-          var popover2 = new Popover(document.querySelector('.info-major-common'));
         }, 1);
 
       }
@@ -149,8 +124,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../css/custom.scss";
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }
+
+tbody {
+  counter-reset: rank;
+}
+tbody tr th:first-child::before {
+  counter-increment: rank;
+  content: counter(rank);
+}
+
 </style>
