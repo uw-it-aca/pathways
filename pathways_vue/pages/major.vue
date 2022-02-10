@@ -105,6 +105,7 @@ export default {
     },
     get_major_data() {
       const vue = this;
+      this.major_data = undefined;
       if(this.majorID !== undefined){
         this.axios.get("/api/v1/majors/details/" + this.majorID).then((response) => {
           vue.major_data = response.data;
