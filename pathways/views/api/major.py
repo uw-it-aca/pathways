@@ -27,4 +27,5 @@ class MajorDetails(RESTDispatch):
             major = Major.get_major_data(credential_abbr)
             return self.json_response(major)
         except ObjectDoesNotExist as ex:
-            return self.error_response(404, "Major %s not found" % major_abbr)
+            return self.error_response(404,
+                                       "Major %s not found" % credential_abbr)
