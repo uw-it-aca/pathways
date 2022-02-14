@@ -62,7 +62,6 @@
           </tr>
         </tbody>
       </table>
-      <p><small>Note: data includes transfers and course equivalencies.</small></p>
     </div>
   </div>
 </template>
