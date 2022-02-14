@@ -29,7 +29,7 @@
               <a
                 href="#common_courses"
                 class="text-decoration-none"
-              >How is most commonly taken courses calculated?</a>
+              >How is the data for the most commonly taken courses feature calculated?</a>
             </li>
             <li>
               <a href="#double_majors" class="text-decoration-none">
@@ -147,9 +147,9 @@
           <h3
             id="common_courses"
             class="fw-bold fs-5"
-          >How is the data most commonly taken courses calculated?</h3>
+          >How is the data for the most commonly taken courses feature calculated?</h3>
           <p>
-            Most commonly taken courses is a list of the most popular courses up to the point a student had declared their major. 
+            Most commonly taken courses is a list of the most popular courses up to the point a student had declared their major. This data does not include course equivalencies. 
           </p>
 
           <h3 id="double_majors" class="fw-bold fs-5">
