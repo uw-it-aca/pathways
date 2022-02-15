@@ -134,6 +134,6 @@ export default {
 }
 .logo {
   max-width: 200px;
+  padding:0.7rem;
 }
-
 </style>
