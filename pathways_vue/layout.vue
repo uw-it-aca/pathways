@@ -25,9 +25,9 @@
             class="d-inline align-middle text-white"
             :class="[$mq == 'desktop' ? 'h3' : 'h5']"
           >
-            <a :href="appRootUrl" class="text-white text-decoration-none">{{
+            <a :href="appRootUrl" class="text-white text-decoration-none"><span class="visually-hidden">{{
               appName
-            }}<sub class="beta">BETA</sub></a>
+            }}</span> <img src="/static/pathways/img/logo.png" class="logo" alt="Dawgpath logo with husky paw prints" /> <sub class="tagline text-white fst-italic" :class="[$mq == 'mobile' ? 'd-none' : 'display']">{{tagLine}}</sub></a>
           </div>
         </div>
       </div>
@@ -85,6 +85,7 @@ export default {
       appRootUrl: '/',
       userName: '',
       signOutUrl: '/saml/logout',
+      tagLine: 'Discover your path to a degree',
 
       // automatically set year
       currentYear: new Date().getFullYear(),
@@ -126,11 +127,13 @@ export default {
 .axdd-topbar-brand {
   line-height: 65px;
 }
-.beta {
+.tagline {
     font-size: 0.45em;
-    color: #aaa;
-    right: -0.4em;
+    right: 0em;
     bottom: 0em;
 }
-
+.logo {
+  max-width: 200px;
+  padding:0.7rem;
+}
 </style>
