@@ -9,9 +9,9 @@
     <li class="mb-3" v-for="course in courseData">
       <div class="card shadow-sm">
         <div class="card-body p-3">
-          <h4 class="fs-6"><a :href="'/course/?id=' + course.course_id" class="d-block mb-3" :title="'Go to course ' + course.course_id + ' ' + course.course_title">
+          <h3 class="fs-6"><a :href="'/course/?id=' + course.course_id" class="d-block mb-3" :title="'Go to course ' + course.course_id + ' ' + course.course_title">
               {{course.course_id}}: {{course.course_title}}</a
-            ></h4>
+            ></h3>
           <div>
             <div class="container">
               <div class="row">

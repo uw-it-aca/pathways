@@ -2,12 +2,10 @@
 <template>
   <layout :page-title="pageTitle">
     <!-- page content -->
-    <template #title>
-      <h1 class="visually-hidden">{{ pageTitle }}</h1>
-    </template>
     <template #content>
       <div class="row justify-content-center">
         <div class="col-md-9">
+          <h1 class="visually-hidden">{{ pageTitle }}</h1>
 
           <!-- Modal -->
           <div
@@ -25,18 +23,24 @@
                   <h2 class="modal-title mb-2" id="welcome_modal">Welcome</h2>
                   <div>
                     <p>
-                      DawgPath helps you discover courses and majors you're interested in and enables you to be strategic when making decisions about your quarterly class schedule. It provides useful data when planning to apply to majors that have selective screening. A few things to keep in mind before getting started:
+                      DawgPath helps you discover courses and majors you're interested in and
+                      enables you to be strategic when making decisions about your quarterly class
+                      schedule. It provides useful data when planning to apply to majors that have
+                      selective screening. A few things to keep in mind before getting started:
                     </p>
                     <ul>
                       <li>
-                        Grades are just one of the factors considered for admission to a capacity-constrained major. Reach out to your adviser to learn more.
+                        Grades are just one of the factors considered for admission to a
+                        capacity-constrained major. Reach out to your adviser to learn more.
                       </li>
                       <li>
-                        The median course grade and GPA data are only included for those students who had declared for the major.
+                        The median course grade and GPA data are only included for those students
+                        who had declared for the major.
                       </li>
 
                       <li>
-                        Discovering and applying for a major can be a challenging experience. Look for the "Find your adviser” links to connect with your adviser.
+                        Discovering and applying for a major can be a challenging experience. Look
+                        for the "Find your adviser” links to connect with your adviser.
                       </li>
                       <li>Check out the <a href="/faq">DawgPath FAQ</a> for more info.</li>
                     </ul>
@@ -56,7 +60,7 @@
               </div>
             </div>
           </div>
-          <search-chooser/>
+          <search-chooser />
           <!-- Button trigger modal -->
           <button
             type="button"
@@ -73,7 +77,6 @@
 </template>
 
 <script>
-
 import Layout from '../layout.vue';
 import SearchChooser from '../components/search/chooser.vue';
 
@@ -91,32 +94,32 @@ export default {
     };
   },
   mounted() {
-    if(window.show_welcome){
+    if (window.show_welcome) {
       // show the welcome modal when the component is mounted
       this.showWelcomeModal();
     }
   },
   methods: {
-    showWelcomeModal(event){
-        this.welcomeModal = new Modal(document.getElementById('exampleModal'), {})
-        this.welcomeModal.show()
+    showWelcomeModal(event) {
+      this.welcomeModal = new Modal(document.getElementById('exampleModal'), {});
+      this.welcomeModal.show();
     },
-    saveModalPref(){
+    saveModalPref() {
       this.axios({
         method: 'post',
-        url: "/api/v1/user_pref/",
-        headers: {'X-CSRFToken': window.csrf_token},
+        url: '/api/v1/user_pref/',
+        headers: { 'X-CSRFToken': window.csrf_token },
         data: {
-          viewed_welcome_display: true
-        }
+          viewed_welcome_display: true,
+        },
       });
-    }
+    },
   },
 };
 </script>
 
 <style lang="scss">
-  .modal-body li {
-    margin-bottom:1em;
-  }
+.modal-body li {
+  margin-bottom: 1em;
+}
 </style>

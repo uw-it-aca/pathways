@@ -19,7 +19,7 @@
         aria-labelledby="dawgpath_feedback"
     >
         <div class="offcanvas-header">
-            <h3 id="dawgpath_feedback" class="visually-hidden">Feedback Form</h3>
+            <h2 id="dawgpath_feedback" class="visually-hidden">Feedback Form</h2>
             <button
                 type="button"
                 class="btn-close text-reset"

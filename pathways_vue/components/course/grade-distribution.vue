@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body">
-      <h3 class="h4 pw-font-encode-sans">Course Grade Distribution</h3>
+      <h2 class="h4 pw-font-encode-sans">Course Grade Distribution</h2>
       <p aria-hidden="true">
         This graph represents the distribution of grades for every student who completed <strong>{{course.course_id}}</strong> over the past 5 years.
         <a
@@ -105,7 +105,7 @@ export default {
         }, 0);
       this.total_count = count;
 
-      const s_count = this.total_count; 
+      const s_count = this.total_count;
 
       // set the dimensions and margins of the graph
       var margin = { top: 10, right: 30, bottom: 50, left: 50 },

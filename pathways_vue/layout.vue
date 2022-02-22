@@ -35,9 +35,6 @@
     <template #main>
       <div class="bg-white mt-n3 mb-n5" style="min-height: 400px;">
         <!-- main section override -->
-        <slot name="title">
-          {{ pageTitle }}
-        </slot>
         <slot name="content"></slot>
       </div>
     </template>
