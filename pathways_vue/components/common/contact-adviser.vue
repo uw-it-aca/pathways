@@ -1,7 +1,7 @@
 <template>
   <div class="card mb-5 bg-light-beige border-0 p-3">
     <div class="card-body">
-      <h3 class="h4">Are you considering this {{type}}?</h3>
+      <h2 class="h4">Are you considering this {{type}}?</h2>
       <p>
         We understand this can be a challenging process with many sources of information to
         consider. DawgPath is designed to be a useful tool but not a replacement for meeting

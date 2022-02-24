@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body">
-      <h3>Course Outcome Index (COI)</h3>
+      <h2 class="h4 pw-font-encode-sans">Course Outcome Index (COI)</h2>
       <p>
         Using prior course data, this index compares estimated pass/completion rates against actual
         pass/completion rates.

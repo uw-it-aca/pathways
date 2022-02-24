@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div v-if="commonCourses.length === 0" class="card-body">
-      <h3 class="h4 pw-font-encode-sans">Common Courses</h3>
+      <h2 class="h4 pw-font-encode-sans">Common Courses</h2>
       <div class="alert alert-purple mt-2" role="alert">
         <p>
           No common courses available for
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div v-else class="card-body explore-major">
-      <h3 class="h4 pw-font-encode-sans">Common courses for {{ major["major_title"] }}</h3>
+      <h2 class="h4 pw-font-encode-sans">Common courses for {{ major["major_title"] }}</h2>
       <p>
         Below are the 10 most popular courses at the time of declaration among students who declared
         this major in the last 5 years.
