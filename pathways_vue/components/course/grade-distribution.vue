@@ -37,7 +37,7 @@
             id="ToggleDataTable"
           />
           <label class="form-check-label" for="ToggleDataTable"
-            >View data as a table</label
+            >Display data as a table</label
           >
         </div>
       </div>
