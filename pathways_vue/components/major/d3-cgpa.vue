@@ -53,6 +53,19 @@
           >Last 5 Years</a>
         </li>
       </ul>
+      <div class="p-3">
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            v-model="viewDataTable"
+            id="ToggleDataTable"
+          />
+          <label class="form-check-label" for="ToggleDataTable"
+            >Display data as a table</label
+          >
+        </div>
+      </div>
       <div v-if="yearCount === 2 && !show2Year">
         <div class="alert alert-purple mt-2" role="alert">
           <p>In the last 2 years <strong>{{ majorData.credential_title }}</strong> did not have enough students to generate a GPA graph.</p>
@@ -65,7 +78,7 @@
       </div>
       <div v-show="showGraph">
         <div aria-hidden="true" id="histogram" class="mt-2"></div>
-        <div v-if="yearCount === 2" id="dataTable2yr" class="visually-hidden">
+        <div v-if="yearCount === 2" id="dataTable2yr">
           <table class="table">
             <thead>
               <tr>
@@ -83,7 +96,7 @@
             </tbody>
           </table>
         </div>
-        <div v-else-if="yearCount === 5" id="dataTable5yr" class="visually-hidden">
+        <div v-else-if="yearCount === 5" id="dataTable5yr">
           <table class="table">
             <thead>
               <tr>
