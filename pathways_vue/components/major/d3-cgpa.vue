@@ -77,7 +77,7 @@
         </div>
       </div>
       <div v-show="showGraph">
-        <div aria-hidden="true" id="histogram" class="mt-2"></div>
+        <div aria-hidden="true" id="histogram" :class="[ viewDataTable ? 'visually-hidden' : '']"></div>
         <div v-if="yearCount === 2" id="dataTable2yr">
           <table class="table">
             <thead>
@@ -132,7 +132,8 @@ export default {
   data() {
     return {
       gpa_2yr_active: true,
-      total_count: 0
+      total_count: 0,
+      viewDataTable: false,
     };
   },
   props: {
