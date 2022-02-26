@@ -1,10 +1,11 @@
 @use "sass:map";
 @import 'axdd-components/src/assets/css/custom.scss';
 
-// override variables
-$nav-height: 52px;
-$bar-height: 40px;
-$link-color: #0069d9; //a11y blue
+// local bootstrap config
+//$nav-height: 52px;
+//$bar-height: 40px;
+$link-color: #0069d8; //a11y blue
+$enable-negative-margins: true;
 
 // pathways custom theme colors
 $custom-colors: (
@@ -25,9 +26,23 @@ $utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
 $utilities-text-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
 $utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
 
-// import bootstrap and bootstrap-icons
-@import "bootstrap/scss/bootstrap";
-@import "bootstrap-icons/font/bootstrap-icons.css";
+// bootstrap: add bg hover utility class
+$utilities: (
+  "background-color": (
+      property: background-color,
+      class: bg,
+      state: hover focus,
+      values: map-merge(
+        $theme-colors,
+        (
+          "body": $body-bg,
+          "white": $white,
+          "transparent": transparent
+        )
+      )
+  )
+);
+
 
 // additional non-bootstrap styles
 
@@ -67,3 +82,6 @@ a {
 }
 
 
+// import bootstrap and bootstrap-icons
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
