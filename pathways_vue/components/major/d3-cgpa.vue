@@ -79,7 +79,7 @@
       <div v-show="showGraph">
         <div aria-hidden="true" id="histogram" :class="[ viewDataTable ? 'visually-hidden' : '']"></div>
         <div v-if="yearCount === 2" id="dataTable2yr">
-          <table class="table">
+          <table class="table" v-if="viewDataTable">
             <thead>
               <tr>
                 <th scope="col">GPA</th>
