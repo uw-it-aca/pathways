@@ -114,7 +114,7 @@ export default {
   mounted() {
     this.majorID = this.$route.query.id;
     this.campus = this.$route.query.campus;
-    if (this.campus == undefined && this.majorID == undefined) {
+    if (this.campus == undefined || this.majorID == undefined) {
       this.showError = true;
     }
   },
