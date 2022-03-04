@@ -59,7 +59,7 @@
             <tr v-for="value in zeroCount" v-bind:key="value.count">
               <td>{{ value.gpa / 10 }}</td>
               <td>{{ value.count }}</td>
-              <td>{{ distributionPercentage(value.count) }}</td>
+              <td>{{ distributionPercentage(value.count) }}%</td>
             </tr>
           </tbody>
         </table>
