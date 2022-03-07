@@ -96,7 +96,7 @@ export default {
   computed: {
     pageTitle: function () {
       let no_title = this.showError ? 'Error' : 'Course';
-      return this.courseTitle !== undefined ? this.courseTitle + ' - Courseeeee' : no_title;
+      return this.courseTitle !== undefined ? this.courseTitle + ' - Course' : no_title;
     },
   },
   mounted() {
