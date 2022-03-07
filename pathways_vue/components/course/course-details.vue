@@ -2,7 +2,7 @@
 
 <template>
   <div class="mb-3">
-    <h1 class="h2 pw-font-encode-sans">{{ course.course_title }}</h1>
+    <h1 class="h2 pw-font-encode-sans">{{course.course_id}}: {{ course.course_title }}</h1>
     <div><strong>Credits:</strong> {{ course.course_credits }}</div>
     <div class="mb-2" v-if="offered_terms">
       <strong>Typically offered: </strong>
