@@ -22,7 +22,6 @@
                       <span class="badge rounded-pill bg-purple">{{course.prereqs.length}}</span
                       ><span class="visually-hidden">courses</span></small
                     >
-                    
                   </div>
                   <ul class="prereq-list" v-if="course.prereqs.length > 0">
                     <li v-for="prereq in course.prereqs">
