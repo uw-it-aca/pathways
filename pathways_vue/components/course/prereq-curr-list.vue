@@ -6,13 +6,13 @@
     please search for a major using the main search function.
   </p>
   <ul class="list-unstyled">
-    <li class="mb-3" v-for="course in courseData">
+    <li class="mb-3" v-for="(course, index) in courseData" :key="index">
       <div class="card shadow-sm">
         <div class="card-body p-3">
-          <h3 class="fs-6"><a :href="'/course/?id=' + course.course_id" class="d-block mb-3" :title="'Go to course ' + course.course_id + ' ' + course.course_title">
-              {{course.course_id}}: {{course.course_title}}</a
-            ></h3>
-          <div>
+          <h3 class="fs-6 d-flex justify-content-between"><a :href="'/course/?id=' + course.course_id" class="d-inline-block mb-3" :title="'Go to course ' + course.course_id + ' ' + course.course_title">
+              {{course.course_id}}: {{course.course_title}}</a>
+              <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" :data-bs-target="'#collapsePrereqs_' + index" aria-expanded="false" aria-controls="collapsePrereqs">Show/hide list</button></h3>
+          <div class="collapse" :id="'collapsePrereqs_' + index">
             <div class="container">
               <div class="row">
                 <div class="p-0 mb-3 col-sm-6">
@@ -22,7 +22,7 @@
                       <span class="badge rounded-pill bg-purple">{{course.prereqs.length}}</span
                       ><span class="visually-hidden">courses</span></small
                     >
-                    <button type="button" class="btn btn-link btn-sm" v-if="course.prereqs.length > 0">Show/hide list</button>
+                    
                   </div>
                   <ul class="prereq-list" v-if="course.prereqs.length > 0">
                     <li v-for="prereq in course.prereqs">
