@@ -3,7 +3,7 @@
 <template>
   <p class="fw-bold">
     NOTE: This is an overview of every course in the department. For information on majors,
-    please search for a major using the main search function.
+    please search for a major using the main search function. Some courses may require multiple prerequisites before completion.
   </p>
   <ul class="list-unstyled">
     <li class="mb-3" v-for="(course, index) in courseData" :key="index">
@@ -36,7 +36,7 @@
                 <div class="p-0 col-sm-6">
                   <div>
                     <small
-                      ><strong class="text-dark">Available upon completion</strong>
+                      ><strong class="text-dark">Is a prerequisite for</strong>
                       <span class="badge rounded-pill bg-purple">{{course.postreqs.length}}</span
                       ><span class="visually-hidden">courses</span></small
                     >
@@ -48,7 +48,7 @@
                       >
                     </li>
                   </ul>
-                  <div v-else><small>No courses made available.</small></div>
+                  <div v-else><small>This course is not a prerequisite for other courses.</small></div>
                 </div>
               </div>
             </div>
