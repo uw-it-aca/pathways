@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-3">
     <div class="card-body">
-      <h3>Prerequisites <span class="badge rounded-pill bg-purple">{{prereqs.length}}</span></h3>
+      <h3>Prerequisites for {{ active_course }} <span class="badge rounded-pill bg-purple">{{prereqs.length}}</span></h3>
       <div class="mt-3">
         <ul class="list-unstyled mb-0">
           <li v-for="prereq in prereqs">
@@ -18,8 +18,9 @@
   <div class="card mb-3">
     <div class="card-body">
       <h3>
-        Courses Available Upon Completion <span class="badge rounded-pill bg-purple">{{postreqs.length}}</span>
+        {{ active_course }} is a prerequisite for <span class="badge rounded-pill bg-purple">{{postreqs.length}}</span>
       </h3>
+      <small>Some courses may require multiple prerequisites before completion.</small>
       <div class="mt-3">
         <ul class="list-unstyled mb-0">
           <li v-for="postreq in postreqs">
