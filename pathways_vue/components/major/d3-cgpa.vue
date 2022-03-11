@@ -119,7 +119,7 @@
           </table>
         </div>
         <div v-else-if="yearCount === 5" id="dataTable5yr">
-          <table class="table">
+          <table class="table" v-if="viewDataTable">
             <thead>
               <tr>
                 <th scope="col">GPA</th>
