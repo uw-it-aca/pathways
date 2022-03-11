@@ -120,6 +120,12 @@
         </div>
         <div v-else-if="yearCount === 5" id="dataTable5yr">
           <table class="table" v-if="viewDataTable">
+            <caption class="caption-top">
+              Number of students in this sample:
+              {{
+                total_count
+              }}
+            </caption>
             <thead>
               <tr>
                 <th scope="col">GPA</th>
