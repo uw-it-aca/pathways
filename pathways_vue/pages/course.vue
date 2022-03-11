@@ -2,72 +2,58 @@
 <template>
   <layout :page-title="pageTitle">
     <!-- page content -->
-    <template #title>
-      <h1 class="visually-hidden">{{ pageTitle }}</h1>
-    </template>
     <template #content>
-      <div class="row justify-content-center mb-5">
-        <div class="col-md-9">
-          <search-chooser
-            :prefill-id="courseId"
-            :prefill-campus="courseCampus"
-            prefill-type="course"
-            @update:selected="switch_course"
-          />
-        </div>
-      </div>
-
-      <div v-if="courseData">
-        <div class="row justify-content-sm-center">
+      <div class="d-flex flex-column">
+        <div v-if="courseData" class="order-2 row justify-content-sm-center">
           <div class="col-md-9">
             <course-details :course="courseData" />
             <explore-course :course="courseData" />
           </div>
-        </div>
-        <div class="row justify-content-center">
+
           <div class="col-md-9">
             <grade-distribution :course="courseData" />
           </div>
-        </div>
-   <!-- <div class="row justify-content-center">
-          <div class="col-md-9">
-            <outcome-index :course="courseData"/>
-          </div>
-        </div>-->
-        <!-- prereq map -->
-        <div class="row justify-content-center">
+          <!--<div class="col-md-9">
+            <outcome-index :course="courseData" />
+          </div>-->
+          <!-- prereq map -->
           <div class="col-md-9">
             <prereq-map :graph_data="courseData.prereq_graph" :active_course="courseId" />
           </div>
-        </div>
 
-        <div class="row justify-content-center">
           <div class="col-md-9">
             <concurrent-courses :courseData="courseData" />
           </div>
-        </div>
-        <div class="row justify-content-center">
           <div class="col-md-9">
             <contact-adviser :campus="courseCampus" :type="'course'" />
           </div>
         </div>
-      </div>
-      <div v-else>
-        <div v-if="showError">
-          <div class="alert alert-purple" role="alert">
-            <p>Data is not available for selected course. Here are some possible reasons:</p>
-            <ul>
-              <li>This course is no longer offered</li>
-              <li>It is a graduate course</li>
-              <li>You made a typo -- the course code doesn’t exist.</li>
-            </ul>
+        <div v-else class="row order-2 justify-content-sm-center">
+          <div v-if="showError" class="col-md-9">
+            <div class="alert alert-purple" role="alert">
+              <p>Data is not available for selected course. Here are some possible reasons:</p>
+              <ul>
+                <li>This course is no longer offered</li>
+                <li>It is a graduate course</li>
+                <li>You made a typo -- the course code doesn’t exist.</li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <div v-else>
-          <div class="d-flex justify-content-center">
+          <div v-else class="col-md-9 text-center">
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
+          </div>
+        </div>
+
+        <div class="order-1 row justify-content-center mb-5">
+          <div class="col-md-9">
+            <search-chooser
+              :prefill-id="courseId"
+              :prefill-campus="courseCampus"
+              prefill-type="course"
+              @update:selected="switch_course"
+            />
           </div>
         </div>
       </div>
@@ -110,7 +96,7 @@ export default {
   computed: {
     pageTitle: function () {
       let no_title = this.showError ? 'Error' : 'Course';
-      return this.courseTitle !== undefined ? this.courseTitle : no_title;
+      return this.courseTitle !== undefined ? this.courseTitle + ' - Course' : no_title;
     },
   },
   mounted() {
@@ -139,7 +125,8 @@ export default {
           vue.showError = false;
           vue.courseData = response.data;
           vue.courseCampus = response.data.course_campus;
-          vue.courseTitle = this.courseId + ': ' + response.data.course_title + ' - Course ';
+          //vue.courseTitle = this.courseId + ': ' + response.data.course_title + ' - Course ';
+          vue.courseTitle = this.courseId + ': ' + response.data.course_title;
         })
         .catch(function (error) {
           vue.showError = true;

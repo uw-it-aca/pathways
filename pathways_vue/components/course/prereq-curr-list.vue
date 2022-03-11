@@ -3,16 +3,16 @@
 <template>
   <p class="fw-bold">
     NOTE: This is an overview of every course in the department. For information on majors,
-    please search for a major using the main search function.
+    please search for a major using the main search function. Some courses may require multiple prerequisites before completion.
   </p>
   <ul class="list-unstyled">
-    <li class="mb-3" v-for="course in courseData">
+    <li class="mb-3" v-for="(course, index) in courseData" :key="index">
       <div class="card shadow-sm">
         <div class="card-body p-3">
-          <h4 class="fs-6"><a :href="'/course/?id=' + course.course_id" class="d-block mb-3" :title="'Go to course ' + course.course_id + ' ' + course.course_title">
-              {{course.course_id}}: {{course.course_title}}</a
-            ></h4>
-          <div>
+          <h3 class="fs-6 d-flex justify-content-between"><a :href="'/course/?id=' + course.course_id" class="d-inline-block mb-3" :title="'Go to course ' + course.course_id + ' ' + course.course_title">
+              {{course.course_id}}: {{course.course_title}}</a>
+              <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" :data-bs-target="'#collapsePrereqs_' + index" aria-expanded="false" aria-controls="collapsePrereqs">Show/hide list</button></h3>
+          <div class="collapse" :id="'collapsePrereqs_' + index">
             <div class="container">
               <div class="row">
                 <div class="p-0 mb-3 col-sm-6">
@@ -36,7 +36,7 @@
                 <div class="p-0 col-sm-6">
                   <div>
                     <small
-                      ><strong class="text-dark">Available upon completion</strong>
+                      ><strong class="text-dark">Is a prerequisite for</strong>
                       <span class="badge rounded-pill bg-purple">{{course.postreqs.length}}</span
                       ><span class="visually-hidden">courses</span></small
                     >
@@ -48,7 +48,7 @@
                       >
                     </li>
                   </ul>
-                  <div v-else><small>No courses made available.</small></div>
+                  <div v-else><small>This course is not a prerequisite for other courses.</small></div>
                 </div>
               </div>
             </div>
