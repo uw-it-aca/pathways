@@ -28,7 +28,7 @@
           </p>
         </div>
       </div>
-      <div class="p-3">
+      <div v-else class="p-3">
         <div class="form-check form-switch">
           <input
             class="form-check-input"
