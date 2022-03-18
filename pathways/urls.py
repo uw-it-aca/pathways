@@ -46,5 +46,7 @@ urlpatterns += [
     re_path(
         r'^api/v1/curric_prereq/(?P<curric_abbr>[^/]*)$',
         CurricPrereq.as_view(), name='curric-prereq'),
+
+    re_path(r'^(major|course|faq)$', DefaultPageView.as_view()),
     re_path(r'^$', DefaultPageView.as_view()),
 ]
