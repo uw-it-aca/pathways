@@ -19,12 +19,10 @@ if settings.DEBUG:
         re_path(
             r"^500$",
             TemplateView.as_view(template_name="500.html"),
-            name="500_response",
-        ),
+            name="500_response"),
         re_path(r"^404$",
-            TemplateView.as_view(template_name="404.html"),
-            name="404_response",
-        )
+                TemplateView.as_view(template_name="404.html"),
+                name="404_response")
     ]
 
 urlpatterns += [
