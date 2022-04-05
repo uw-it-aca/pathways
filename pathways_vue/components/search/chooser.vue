@@ -50,15 +50,20 @@
             {{option.text}}
           </option>
         </select>
+        <!-- TODO: wire is-invalid class to datalist validation -->
         <input
           type="text"
           class="form-control"
+          :class="isValidInput == null ? '' : 'is-invalid'"
           :placeholder="searchPlaceholder"
-          aria-autocomplete="both" 
+          aria-autocomplete="both"
           aria-label="Start typing for major or course search options"
           v-model="selectedLabel"
           list="searchDataList"
           :disabled="searchType.length === 0"
+          required
+          id="searchInput"
+          @change="validateInput"
         />
         <button type="button"
                 class="btn btn-purple"
@@ -66,10 +71,12 @@
                 @click="onSelected">
           Go
         </button>
+        <!-- TODO: update this message -->
+        <div class="invalid-feedback">You must select a major/course from the list</div>
       </div>
       <datalist id="searchDataList">
-          <option v-for="(option, i) in renderableOptions" :key="i">{{ option }}</option>
-        </datalist>
+        <option v-for="(option, i) in renderableOptions" :value="option" :key="i">{{ option }}</option>
+      </datalist>
       </form>
     </div>
   </div>
@@ -108,7 +115,8 @@ export default {
       courseList:[],
       loadingList: false,
       selectedLabel: "",
-      doPrefill: false
+      doPrefill: false,
+      isValidInput: null,
     };
   },
   computed: {
@@ -233,6 +241,21 @@ export default {
         vue.majorList = response.data;
         this.loadingList = false;
       });
+    },
+    validateInput() {
+
+      let val = document.getElementById("searchInput").value;
+      //let obj = document.getElementById("searchDataList").find("option[value='" + val + "']");
+
+      alert(val);
+
+      if(obj != null && obj.length > 0) {
+          return this.isValidInput = true;
+      }
+      else {
+          return this.isValidInput = false;
+      }
+
     }
   },
 };
