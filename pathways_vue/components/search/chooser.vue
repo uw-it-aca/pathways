@@ -247,12 +247,12 @@ export default {
       // get the value in the input
       let val = document.getElementById("searchInput").value;
 
-      // get a list of option values from the datalist
+      // find instances of 'val' in the datalist
       //let obj = document.getElementById("searchDataList").find("option[value='" + val + "']");
 
       alert(val);
 
-      // check to make sure that 'val' is in the 'obj' datalist
+      // if there are 'obj' that match the 'val', input is valid
       if(obj != null && obj.length > 0) {
           return this.isValidInput = true;
       }
