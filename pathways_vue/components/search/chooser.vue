@@ -50,26 +50,32 @@
             {{option.text}}
           </option>
         </select>
+        <!-- TODO: wire is-invalid class to datalist validation -->
         <input
           type="text"
           class="form-control"
+          :class="isValidInput || isValidInput == null ? '' : 'is-invalid'"
           :placeholder="searchPlaceholder"
-          aria-autocomplete="both" 
+          aria-autocomplete="both"
           aria-label="Start typing for major or course search options"
           v-model="selectedLabel"
           list="searchDataList"
           :disabled="searchType.length === 0"
+          id="searchInput"
+          @change="validateInput"
         />
         <button type="button"
                 class="btn btn-purple"
-                :disabled="searchType.length === 0 || loadingList || selectedLabel.length === 0"
+                :disabled="searchType.length === 0 || loadingList || !isValidInput || !this.searchValue "
                 @click="onSelected">
           Go
         </button>
+        <!-- TODO: update this message -->
+        <div class="invalid-feedback">Please select from the options in the dropdown</div>
       </div>
       <datalist id="searchDataList">
-          <option v-for="(option, i) in renderableOptions" :key="i">{{ option }}</option>
-        </datalist>
+        <option v-for="(option, i) in renderableOptions" :value="option" :key="i">{{ option }}</option>
+      </datalist>
       </form>
     </div>
   </div>
@@ -108,7 +114,8 @@ export default {
       courseList:[],
       loadingList: false,
       selectedLabel: "",
-      doPrefill: false
+      doPrefill: false,
+      isValidInput: null,
     };
   },
   computed: {
@@ -140,6 +147,9 @@ export default {
         return selectedObj.key;
       }
     },
+    searchValue() {
+      return this.selectedLabel;
+    }
   },
   watch: {
     searchType(type) {
@@ -233,6 +243,32 @@ export default {
         vue.majorList = response.data;
         this.loadingList = false;
       });
+    },
+    validateInput() {
+
+      let found;
+
+      // clear validation for empty inputs
+      if (this.searchValue == '') {
+        this.isValidInput = true;
+        return
+      }
+
+      // search for the searchValue based on search type
+      if (this.searchType == 'major') {
+        found =  Array.from(this.majorList).find(element => (element.value == this.searchValue))
+      } else {
+        found =  Array.from(this.courseList).find(element => (element.value == this.searchValue))
+      }
+
+      // set validation based on the found value
+      if(found != undefined && found.value) {
+          this.isValidInput = true;
+      }
+      else {
+          this.isValidInput = false;
+      }
+
     }
   },
 };
