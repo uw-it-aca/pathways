@@ -71,7 +71,7 @@
           Go
         </button>
         <!-- TODO: update this message -->
-        <div class="invalid-feedback">Please select from the options provided</div>
+        <div class="invalid-feedback">Please select from the options in the dropdown</div>
       </div>
       <datalist id="searchDataList">
         <option v-for="(option, i) in renderableOptions" :value="option" :key="i">{{ option }}</option>
