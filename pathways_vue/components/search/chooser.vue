@@ -54,25 +54,24 @@
         <input
           type="text"
           class="form-control"
-          :class="isValidInput == null ? '' : 'is-invalid'"
+          :class="isValidInput || isValidInput == null ? '' : 'is-invalid'"
           :placeholder="searchPlaceholder"
           aria-autocomplete="both"
           aria-label="Start typing for major or course search options"
           v-model="selectedLabel"
           list="searchDataList"
           :disabled="searchType.length === 0"
-          required
           id="searchInput"
           @change="validateInput"
         />
         <button type="button"
                 class="btn btn-purple"
-                :disabled="searchType.length === 0 || loadingList || selectedLabel.length === 0"
+                :disabled="searchType.length === 0 || loadingList || !isValidInput || !this.searchValue "
                 @click="onSelected">
           Go
         </button>
         <!-- TODO: update this message -->
-        <div class="invalid-feedback">You must select a major/course from the list</div>
+        <div class="invalid-feedback">Please select from the options provided</div>
       </div>
       <datalist id="searchDataList">
         <option v-for="(option, i) in renderableOptions" :value="option" :key="i">{{ option }}</option>
@@ -148,6 +147,9 @@ export default {
         return selectedObj.key;
       }
     },
+    searchValue() {
+      return this.selectedLabel;
+    }
   },
   watch: {
     searchType(type) {
@@ -244,20 +246,27 @@ export default {
     },
     validateInput() {
 
-      // get the value in the input
-      let val = document.getElementById("searchInput").value;
+      let found;
 
-      // find instances of 'val' in the datalist
-      //let obj = document.getElementById("searchDataList").find("option[value='" + val + "']");
+      // clear validation for empty inputs
+      if (this.searchValue == '') {
+        this.isValidInput = true;
+        return
+      }
 
-      alert(val);
+      // search for the searchValue based on search type
+      if (this.searchType == 'major') {
+        found =  Array.from(this.majorList).find(element => (element.value == this.searchValue))
+      } else {
+        found =  Array.from(this.courseList).find(element => (element.value == this.searchValue))
+      }
 
-      // if there are 'obj' that match the 'val', input is valid
-      if(obj != null && obj.length > 0) {
-          return this.isValidInput = true;
+      // set validation based on the found value
+      if(found != undefined && found.value) {
+          this.isValidInput = true;
       }
       else {
-          return this.isValidInput = false;
+          this.isValidInput = false;
       }
 
     }
