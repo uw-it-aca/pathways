@@ -9,7 +9,7 @@
     <li class="mb-3" v-for="(course, index) in courseData" :key="index">
       <div class="card shadow-sm">
         <div class="card-body p-3">
-          <h3 class="fs-6 d-flex justify-content-between"><a :href="'/course/?id=' + course.course_id" class="d-inline-block mb-3" :title="'Go to course ' + course.course_id + ' ' + course.course_title">
+          <h3 class="fs-6 d-flex justify-content-between"><a :href="'/course?id=' + course.course_id" class="d-inline-block mb-3" :title="'Go to course ' + course.course_id + ' ' + course.course_title">
               {{course.course_id}}: {{course.course_title}}</a>
               <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" :data-bs-target="'#collapsePrereqs_' + index" aria-expanded="false" aria-controls="collapsePrereqs">Show/hide list</button></h3>
           <div class="collapse" :id="'collapsePrereqs_' + index">
@@ -25,7 +25,7 @@
                   </div>
                   <ul class="prereq-list" v-if="course.prereqs.length > 0">
                     <li v-for="prereq in course.prereqs">
-                      <a :href="'/course/?id=' + prereq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
+                      <a :href="'/course?id=' + prereq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
                         {{prereq.course_id}}</a
                       >
                     </li>
@@ -43,7 +43,7 @@
                   </div>
                   <ul class="prereq-list" v-if="course.postreqs.length > 0">
                     <li v-for="postreq in course.postreqs">
-                      <a :href="'/course/?id=' + postreq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
+                      <a :href="'/course?id=' + postreq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
                       {{postreq.course_id}}</a
                       >
                     </li>
