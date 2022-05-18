@@ -19,7 +19,8 @@
       <table class="table table-borderless table-striped">
         <thead>
           <tr class="bg-light text-dark">
-            <th scope="col" class="pe-0" style="width: 8%">
+            <th scope="col" class="pe-0" style="width: 5%"></th>
+            <th scope="col" class="pe-0" style="width: 5%">
               %
               <a
                 tabindex="0"
@@ -34,8 +35,8 @@
                 <i class="bi bi-info-circle-fill me-0"></i>
               </a>
             </th>
-            <th scope="col" class="visually-hidden" style="width: 20%">Percentage Graph</th>
-            <th scope="col" style="width: 72%">Concurrent Course</th><!-- change this % to 62 when adding COI back in -->
+            <!-- <th scope="col" class="visually-hidden" style="width: 20%">Percentage Graph</th> -->
+            <th scope="col" style="width: 90%">Concurrent Course</th><!-- change this % to 62 when adding COI back in -->
             <th scope="col" class="px-0" style="width: 10%;min-width:60px; display:none;"><!-- hidden -->
               <abbr title="Course Outcome Index Score">COI </abbr>
               <a
@@ -55,9 +56,10 @@
         </thead>
         <tbody>
           <tr class="align-middle" v-for="course in concurrent_courses">
-            <th scope="row">{{course.percent}}%</th>
-            <td>
-              <div class="progress">
+            <th scope="row"></th>
+            <td>{{course.percent}}%</td>
+            <!-- <td>
+               <div class="progress">
                 <div
                   class="progress-bar bg-secondary"
                   role="progressbar"
@@ -67,7 +69,7 @@
                   aria-valuemax="100"
                 ></div>
               </div>
-            </td>
+            </td> -->
             <td>
               <a :href="'/course?id=' + course.course" :title="'Go to course ' + course.course" class="btn-primary btn-course router-link-active text-decoration-none"
                 >{{course.course}}</a
