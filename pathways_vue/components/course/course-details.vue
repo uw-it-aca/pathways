@@ -3,7 +3,9 @@
 <template>
   <div class="mb-3">
     <h1 class="h2 pw-font-encode-sans">{{course.course_id}}: {{ course.course_title }}</h1>
-    <div class="badge bg-danger">&nbsp; &nbsp; &nbsp;Bottleneck</div>
+    <div class="badge bg-danger dp-badge"><span class="material-symbols-outlined">
+call_merge
+</span> Bottleneck</div>
     <div><strong>Credits:</strong> {{ course.course_credits }}</div>
     <div class="mb-2" v-if="offered_terms">
       <strong>Typically offered: </strong>
@@ -82,4 +84,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.material-symbols-outlined {
+  vertical-align: middle;
+  line-height: 0 !important;
+  position: relative;
+  top: -1px;
+  font-size: 1rem;
+}
+.dp-badge {
+  border-radius:2rem;
+}
+
 </style>
