@@ -31,7 +31,5 @@ GOOGLE_FEEDBACK_FORM = os.getenv("GOOGLE_FEEDBACK_FORM", default=" ")
 if os.getenv("ENV") == "localdev":
     DEBUG = True
 
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-
 LIMIT_USER_ACCESS = os.getenv('ENV') == 'eval'
 ALLOWED_USERS_GROUP = os.getenv("ACCESS_GROUP", default=None)
