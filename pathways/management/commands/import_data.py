@@ -6,12 +6,15 @@ import json
 import csv
 from pathways.data_import import import_major_data, import_course_data, \
     import_curric_data, import_level_coi, import_coi_ranges
+from logging import getLogger
+import time
 
-
+logger = getLogger(__name__)
 class Command(BaseCommand):
     help = 'Run all unit tests'
 
     def handle(self, *args, **options):
+        start = time.time()
         with open('pathways/data/coi_scores.csv') as coi_file:
             reader = csv.reader(coi_file)
             # skip headers
@@ -31,3 +34,7 @@ class Command(BaseCommand):
             with open('pathways/data/curric_data.json') as curric_file:
                 data = json.load(curric_file)
                 import_curric_data(data, coi_data)
+
+        total_time = time.time() - start
+        logger.info("Imported data in: %s" % total_time)
+
