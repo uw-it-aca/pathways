@@ -10,6 +10,8 @@ from logging import getLogger
 import time
 
 logger = getLogger(__name__)
+
+
 class Command(BaseCommand):
     help = 'Run all unit tests'
 
@@ -37,4 +39,3 @@ class Command(BaseCommand):
 
         total_time = time.time() - start
         logger.info("Imported data in: %s" % total_time)
-
