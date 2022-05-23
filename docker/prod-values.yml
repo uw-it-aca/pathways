@@ -48,8 +48,6 @@ readiness:
   enabled: true
 securityPolicy:
   enabled: true
-labels:
-  billing-code: "786"
 
 externalService:
   enabled: true
@@ -65,9 +63,6 @@ database:
 
 repo: dawgpath
 instance: prod
-image:
-  repository: gcr.io/uwit-mci-axdd/dawgpath
-  tag: IMAGE_TAG
 
 memcached:
   enabled: false
@@ -86,7 +81,7 @@ externalSecrets:
   enabled: true
   secrets:
     - name: dawgpath.uw.edu-secrets
-      externalKey: axdd/kv/data/dawgpath/prod/secrets
+      externalKey: dawgpath/prod/secrets
       data:
         - name: django-secret
           property: django-secret
@@ -95,24 +90,24 @@ externalSecrets:
         - name: google-analytics-key
           property: google-analytics-key
     - name: dawgpath.uw.edu-sql-secrets
-      externalKey: axdd/kv/data/dawgpath/shared/sql-secrets
+      externalKey: dawgpath/shared/sql-secrets
       data:
         - name: username
           property: username
         - name: password
           property: password
     - name: dawgpath.uw.edu-ic-certs
-      externalKey: axdd/kv/data/dawgpath/prod/ic-certs
+      externalKey: dawgpath/prod/ic-certs
       data:
         - name: dawgpath.uw.edu-ic.cert
           property: dawgpath.uw.edu-ic.cert
     - name: dawgpath.uw.edu-uw-idp-cert
-      externalKey: axdd/kv/data/idp-cert
+      externalKey: idp-cert
       data:
         - name: uw-idp-cert
           property: cert
     - name: dawgpath.uw.edu-feedback-form-secrets
-      externalKey: axdd/kv/data/dawgpath/shared/feedback-form
+      externalKey: dawgpath/shared/feedback-form
       data:
         - name: form-url
           property: form-url
