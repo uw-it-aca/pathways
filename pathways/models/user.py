@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 class User(models.Model):
-    uwnetid = models.CharField(max_length=32)
+    uwnetid = models.CharField(max_length=32, unique=True)
     has_viewed_welcome = models.BooleanField(default=False)
     first_login = models.DateTimeField(auto_now_add=True)
 
