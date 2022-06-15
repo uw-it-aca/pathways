@@ -3,14 +3,10 @@
 <template>
   <div class="mb-3">
     <h1 class="h2 pw-font-encode-sans">{{ course.course_id }}: {{ course.course_title }}</h1>
-    <!-- if bottleneck course -->
-    <div class="badge bg-danger dp-badge mb-2">
-      <span class="material-symbols-outlined">call_merge</span> Bottleneck
-    </div>
     <!-- if gateway course -->
-    <div class="badge bg-success dp-badge mb-2">
-      <span class="material-symbols-outlined">call_split</span> Gateway
-    </div>
+      <icon-gateway />
+    <!-- if bottleneck course -->
+      <icon-bottleneck />
     <!-- end if -->
     <div>
       <strong>Credits:</strong>
@@ -30,8 +26,15 @@
 </template>r
 
 <script>
+import IconGateway from '../common/icon-gateway.vue';
+import IconBottleneck from '../common/icon-bottleneck.vue';
+
 export default {
   name: 'CourseDetails',
+  components: {
+    'icon-gateway': IconGateway,
+    'icon-bottleneck': IconBottleneck,
+    },
   props: {
     course: {
       type: Object,
@@ -39,7 +42,11 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+    };
+  },
+  mounted() {
+
   },
   computed: {
     offered_terms: function () {
@@ -91,14 +98,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.material-symbols-outlined {
-  vertical-align: middle;
-  line-height: 0 !important;
-  position: relative;
-  top: -1px;
-  font-size: 1rem;
-}
-.dp-badge {
-  border-radius: 2rem;
-}
 </style>

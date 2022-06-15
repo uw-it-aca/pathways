@@ -56,7 +56,15 @@
         </thead>
         <tbody>
           <tr class="align-middle" v-for="course in concurrent_courses">
-            <th scope="row"></th>
+            <th scope="row">
+              <div>
+                <!-- if bottleneck course -->
+                <icon-bottleneck />
+                <!-- if gateway course -->
+                <icon-gateway />
+                <!-- end if -->
+              </div>
+            </th>
             <td>{{course.percent}}%</td>
             <!-- <td>
                <div class="progress">
@@ -88,9 +96,15 @@
 
 <script>
 import { Popover } from 'bootstrap';
+import IconGateway from '../common/icon-gateway.vue';
+import IconBottleneck from '../common/icon-bottleneck.vue';
 
 export default {
   name: 'ConcurrentCourses',
+  components: {
+    'icon-gateway': IconGateway,
+    'icon-bottleneck': IconBottleneck,
+    },
     props: {
     courseData: {
       type: Object,
@@ -103,7 +117,7 @@ export default {
   mounted() {
     if(this.concurrent_courses.length > 0){
       var popover = new Popover(document.querySelector('.info-course-concurrent'));
-      var popover = new Popover(document.querySelector('.info-common-coi'));
+      //var popover = new Popover(document.querySelector('.info-common-coi'));
     }
   },
   methods: {},
@@ -129,7 +143,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }
