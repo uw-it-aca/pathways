@@ -57,9 +57,9 @@
         <tbody>
           <tr class="align-middle" v-for="course in concurrent_courses">
             <th scope="row">
-              <div>
+              <div class="icon-col">
                 <!-- if bottleneck course -->
-                <icon-bottleneck />
+                 <icon-bottleneck /> 
                 <!-- if gateway course -->
                 <icon-gateway />
                 <!-- end if -->
@@ -143,8 +143,23 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .table {
   --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
 }
+.icon-col {
+  .round-sm {
+    height: 18px;
+    width: 18px;
+    line-height: 18px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    font-size: 0.7em;
+
+    .material-symbols-outlined {
+      font-size: 0.8rem;
+    }
+  }
+}
+
 </style>

@@ -21,7 +21,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .material-symbols-outlined {
   vertical-align: middle;
   line-height: 0 !important;
