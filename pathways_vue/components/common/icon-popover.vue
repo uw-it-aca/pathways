@@ -1,5 +1,6 @@
 <template>
   <a
+    v-if="type === 'bottleneck'"
     tabindex="0"
     class="info-bottleneck"
     role="button"
@@ -12,12 +13,32 @@
       <span class="material-symbols-outlined fw-bold">call_merge</span>
     </div>
   </a>
+  <a
+    v-else
+    tabindex="0"
+    class="info-gateway"
+    role="button"
+    data-bs-toggle="popover"
+    data-bs-trigger="focus"
+    data-bs-placement="left"
+    data-bs-content="This course acts as a gateway course. These high-demand courses have few or no prereqs and serve as a prereq for other courses."
+  >
+    <div class="round round-sm bg-success mb-2">
+      <span class="material-symbols-outlined fw-bold">call_split</span>
+    </div>
+  </a>
 </template>
 
 <script>
 import { Popover } from 'bootstrap';
 export default {
-  name: 'IconBottleneck',
+  name: 'IconPopover',
+  props: {
+    type: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {};
   },

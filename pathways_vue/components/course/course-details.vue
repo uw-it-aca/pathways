@@ -8,6 +8,9 @@
     <!-- if bottleneck course -->
       <icon-bottleneck />
     <!-- end if -->
+
+      <IconPopover :type="'bottleneck'"></IconPopover>
+      <IconPopover :type="'gateway'"></IconPopover>
     <div>
       <strong>Credits:</strong>
       {{ course.course_credits }}
@@ -28,12 +31,14 @@
 <script>
 import IconGateway from '../common/icon-gateway.vue';
 import IconBottleneck from '../common/icon-bottleneck.vue';
+import IconPopover from '../common/icon-popover.vue';
 
 export default {
   name: 'CourseDetails',
   components: {
     'icon-gateway': IconGateway,
     'icon-bottleneck': IconBottleneck,
+    IconPopover
     },
   props: {
     course: {
