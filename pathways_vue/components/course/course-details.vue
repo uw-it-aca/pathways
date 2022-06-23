@@ -3,14 +3,8 @@
 <template>
   <div class="mb-3">
     <h1 class="h2 pw-font-encode-sans">{{ course.course_id }}: {{ course.course_title }}</h1>
-    <!-- if gateway course -->
-      <icon-gateway />
-    <!-- if bottleneck course -->
-      <icon-bottleneck />
-    <!-- end if -->
-
-      <IconPopover :type="'bottleneck'"></IconPopover>
-      <IconPopover :type="'gateway'"></IconPopover>
+      <icon-popover :variant="'bottleneck'"></icon-popover>
+      <icon-popover :variant="'gateway'" :text="'this course is blah'"></icon-popover>
     <div>
       <strong>Credits:</strong>
       {{ course.course_credits }}
@@ -29,16 +23,12 @@
 </template>r
 
 <script>
-import IconGateway from '../common/icon-gateway.vue';
-import IconBottleneck from '../common/icon-bottleneck.vue';
 import IconPopover from '../common/icon-popover.vue';
 
 export default {
   name: 'CourseDetails',
   components: {
-    'icon-gateway': IconGateway,
-    'icon-bottleneck': IconBottleneck,
-    IconPopover
+    'icon-popover': IconPopover
     },
   props: {
     course: {

@@ -1,6 +1,6 @@
 <template>
   <a
-    v-if="type === 'bottleneck'"
+    v-if="variant === 'bottleneck'"
     tabindex="0"
     class="info-bottleneck"
     role="button"
@@ -34,10 +34,14 @@ import { Popover } from 'bootstrap';
 export default {
   name: 'IconPopover',
   props: {
-    type: {
+    variant: {
       type: String,
       required: true,
     },
+    text: {
+      type: String,
+      required: true,
+    }
   },
   data() {
     return {};
