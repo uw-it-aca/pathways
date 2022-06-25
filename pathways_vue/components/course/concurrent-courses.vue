@@ -61,8 +61,8 @@
           <tr class="align-middle" v-for="course in concurrent_courses">
             <th scope="row">
               <div class="icon-col">
-                <icon-popover :variant="'bottleneck'" />
-                <icon-popover :variant="'gateway'" />
+                <icon-popover v-if="course.is_bottleneck" :variant="'bottleneck'" />
+                <icon-popover v-if="course.is_gateway" :variant="'gateway'" />
               </div>
             </th>
             <td>{{ course.percent }}%</td>
@@ -145,6 +145,8 @@ export default {
           title: data['title'],
           width: style_string,
           coi_score: data['coi_score'],
+          is_bottleneck: data['is_bottleneck'],
+          is_gateway: data['is_gateway']
         });
       }
       return processed_courses.sort((a, b) => (a.percent < b.percent ? 1 : -1)).slice(0, 10);

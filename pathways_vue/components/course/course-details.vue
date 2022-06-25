@@ -3,8 +3,8 @@
 <template>
   <div class="mb-3">
     <h1 class="h2 pw-font-encode-sans">{{ course.course_id }}: {{ course.course_title }}</h1>
-      <icon-popover :variant="'bottleneck'"></icon-popover>
-      <icon-popover :variant="'gateway'" :text="'this course is blah'"></icon-popover>
+      <icon-popover v-if="course.is_bottleneck" :variant="'bottleneck'"></icon-popover>
+      <icon-popover v-if="course.is_gateway" :variant="'gateway'"></icon-popover>
     <div>
       <strong>Credits:</strong>
       {{ course.course_credits }}

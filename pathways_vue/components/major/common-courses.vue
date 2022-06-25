@@ -44,7 +44,12 @@
         </thead>
         <tbody>
           <tr v-for="course in commonCourses" class="align-middle">
-            <th scope="row"></th>
+            <th scope="row">
+              <div class="icon-col">
+                <icon-popover v-if="course.is_bottleneck" :variant="'bottleneck'" />
+                <icon-popover v-if="course.is_gateway" :variant="'gateway'" />
+              </div>
+            </th>
             <td>
               <a
                 v-bind:href="'/course?id=' + encodeURIComponent(course.course)"
@@ -68,9 +73,13 @@
 
 <script>
 import { Popover } from 'bootstrap';
+import IconPopover from '../common/icon-popover.vue';
 
 export default {
   name: 'CommonCourses',
+  components: {
+    'icon-popover': IconPopover,
+  },
   props: {
     major: {
       type: Object,
@@ -101,7 +110,9 @@ export default {
           'percent': data['percent'],
           'title': data['title'],
           'width': style_string,
-          'coi_score': data['coi_score']
+          'coi_score': data['coi_score'],
+          is_bottleneck: data['is_bottleneck'],
+          is_gateway: data['is_gateway']
 })
       }
 
