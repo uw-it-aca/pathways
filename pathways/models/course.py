@@ -20,6 +20,8 @@ class Course(models.Model):
     course_description = models.TextField(null=True)
     course_offered = models.TextField(null=True)
     coi_score = models.FloatField(null=True)
+    is_bottleneck = models.BooleanField(default=False)
+    is_gateway = models.BooleanField(default=False)
 
     @staticmethod
     def get_course_list():

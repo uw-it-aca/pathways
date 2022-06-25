@@ -6,6 +6,7 @@ from pathways.models.course import Course
 from pathways.models.curriculum import Curriculum
 from pathways.models.course_level import CourseLevel
 from pathways.models.coi_range import COIRange
+from django.core.exceptions import ObjectDoesNotExist
 import statistics
 import json
 
@@ -161,3 +162,29 @@ def _get_course_coi(course, coi_data):
 def _split_course_id(course_id):
     curric, delim, num = course_id.rpartition(" ")
     return curric, int(num)
+
+
+def import_gateway_courses(gateway_data):
+    gateway_course_objs = []
+    for row in gateway_data:
+        course_id = row[1] + " " + row[2]
+        try:
+            course = Course.objects.get(course_id=course_id)
+            course.is_gateway = True
+            gateway_course_objs.append(course)
+        except ObjectDoesNotExist:
+            pass
+        Course.objects.bulk_update(gateway_course_objs, ['is_gateway'])
+
+
+def import_bottleneck_courses(bottleneck_data):
+    bottleneck_course_objs = []
+    for row in bottleneck_data:
+        course_id = row[1] + " " + row[2]
+        try:
+            course = Course.objects.get(course_id=course_id)
+            course.is_bottleneck = True
+            bottleneck_course_objs.append(course)
+        except ObjectDoesNotExist:
+            pass
+        Course.objects.bulk_update(bottleneck_course_objs, ['is_bottleneck'])
