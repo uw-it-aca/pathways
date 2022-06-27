@@ -21,22 +21,17 @@
       <table class="table table-borderless table-striped">
         <thead>
           <tr class="bg-light text-dark">
-            <th scope="col" class="pe-0" style="width: 8%">
+            <th scope="col" class="pe-0" style="width: 5%"></th>
+            <th scope="col" style="width: 5%">
               Rank
             </th>
-            <th scope="col" style="width: 92%">Common Course</th><!-- change this % to 62 when adding COI back in -->
-            <th scope="col" class="px-0" style="width: 10%;min-width:60px;display:none;"><!-- hidden -->
+            <th scope="col" style="width: 90%">Common Course</th><!-- change this % to 62 when adding COI back in -->
+            <th scope="col" class="px-0" style="width: 10%;min-width:60px;display:none;">
+              <!-- hidden -->
               <abbr title="Course Outcome Index Score">COI </abbr>
-              <a
-                tabindex="0"
-                class="info-common-coi"
-                role="button"
-                data-bs-toggle="popover"
-                data-bs-trigger="focus"
-                data-bs-placement="top"
-                title="Course Outcome Index"
-                data-bs-content="A lower number (0-2) indicates that fewer people completed the course than predicted. A middle number (2-3) indicates the course is on target with predictions. A higher (3-5) number indicates that more people completed the course than anticipated."
-              >
+              <a tabindex="0" class="info-common-coi" role="button" data-bs-toggle="popover" data-bs-trigger="focus"
+                data-bs-placement="top" title="Course Outcome Index"
+                data-bs-content="A lower number (0-2) indicates that fewer people completed the course than predicted. A middle number (2-3) indicates the course is on target with predictions. A higher (3-5) number indicates that more people completed the course than anticipated.">
                 <i class="bi bi-info-circle-fill me-0"></i>
               </a>
             </th>
@@ -44,23 +39,20 @@
         </thead>
         <tbody>
           <tr v-for="course in commonCourses" class="align-middle">
-            <th scope="row">
+            <td>
               <div class="icon-col">
                 <icon-popover v-if="course.is_bottleneck" :variant="'bottleneck'" />
                 <icon-popover v-if="course.is_gateway" :variant="'gateway'" />
               </div>
-            </th>
+            </td>
+            <td class="rank" scope="row">
+            </td>
             <td>
-              <a
-                v-bind:href="'/course?id=' + encodeURIComponent(course.course)"
+              <a v-bind:href="'/course?id=' + encodeURIComponent(course.course)"
                 :title="'Go to course ' + course.course"
-                class="btn-primary btn-course router-link-active text-decoration-none"
-              >{{ course.course }}</a>
-              <a
-                v-bind:href="'/course?id=' + encodeURIComponent(course.course)"
-                class="router-link-active ps-3"
-                :title="'Go to course ' + course.course + ' ' + course.title"
-              >{{ course.title }}</a>
+                class="btn-primary btn-course router-link-active text-decoration-none">{{ course.course }}</a>
+              <a v-bind:href="'/course?id=' + encodeURIComponent(course.course)" class="router-link-active ps-3"
+                :title="'Go to course ' + course.course + ' ' + course.title">{{ course.title }}</a>
             </td>
             <td v-if="course.coi_score" style="display:none;">{{ course.coi_score }}</td>
             <td v-else style="display:none;">No Data</td>
@@ -106,14 +98,14 @@ export default {
 
         let style_string = `width: ${data['percent']}%`;
         processed_courses.push({
-'course': course,
+          'course': course,
           'percent': data['percent'],
           'title': data['title'],
           'width': style_string,
           'coi_score': data['coi_score'],
           is_bottleneck: data['is_bottleneck'],
           is_gateway: data['is_gateway']
-})
+        })
       }
 
       return processed_courses.sort((a, b) => (a.percent < b.percent) ? 1 : -1);
@@ -141,9 +133,9 @@ export default {
 tbody {
   counter-reset: rank;
 }
-tbody tr th:first-child::before {
+
+tbody tr td.rank:not(:first-child):after {
   counter-increment: rank;
   content: counter(rank);
 }
-
 </style>
