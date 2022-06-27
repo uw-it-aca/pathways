@@ -5,7 +5,8 @@ from django.core.management.base import BaseCommand
 import json
 import csv
 from pathways.data_import import import_major_data, import_course_data, \
-    import_curric_data, import_level_coi, import_coi_ranges
+    import_curric_data, import_level_coi, import_coi_ranges, \
+    import_gateway_courses, import_bottleneck_courses
 from logging import getLogger
 import time
 import hashlib
@@ -17,6 +18,8 @@ COI_PATH = "pathways/data/coi_scores.csv"
 MAJOR_PATH = "pathways/data/major_data.json"
 COURSE_PATH = "pathways/data/course_data.json"
 CURRIC_PATH = "pathways/data/curric_data.json"
+BOTTLENECK_PATH = "pathways/data/bottleneck_courses.csv"
+GATEWAY_PATH = "pathways/data/gateway_courses.csv"
 
 
 class Command(BaseCommand):
@@ -45,6 +48,12 @@ class Command(BaseCommand):
             with open(CURRIC_PATH) as curric_file:
                 data = json.load(curric_file)
                 import_curric_data(data, coi_data)
+            with open(GATEWAY_PATH) as gateway_file:
+                data = csv.reader(gateway_file)
+                import_gateway_courses(data)
+            with open(BOTTLENECK_PATH) as bottleneck_file:
+                data = csv.reader(bottleneck_file)
+                import_bottleneck_courses(data)
 
         total_time = time.time() - start
         logger.info("Imported data in: %s" % total_time)
@@ -75,6 +84,18 @@ class Command(BaseCommand):
             DataImport.objects \
                 .update_or_create(type='curric',
                                   defaults={'hash': curric_hash})
+        gateway_hash = self._get_hash_by_path(GATEWAY_PATH)
+        if DataImport.needs_import('gateway', gateway_hash):
+            needs_update = True
+            DataImport.objects \
+                .update_or_create(type='curric',
+                                  defaults={'hash': gateway_hash})
+        bottleneck_hash = self._get_hash_by_path(BOTTLENECK_PATH)
+        if DataImport.needs_import('bottleneck', bottleneck_hash):
+            needs_update = True
+            DataImport.objects \
+                .update_or_create(type='curric',
+                                  defaults={'hash': bottleneck_hash})
         return needs_update
 
     def _get_hash_by_path(self, path):

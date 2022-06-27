@@ -20,6 +20,8 @@ class Course(models.Model):
     course_description = models.TextField(null=True)
     course_offered = models.TextField(null=True)
     coi_score = models.FloatField(null=True)
+    is_bottleneck = models.BooleanField(default=False)
+    is_gateway = models.BooleanField(default=False)
 
     @staticmethod
     def get_course_list():
@@ -55,7 +57,7 @@ class Course(models.Model):
         graph = None
         if self.prereq_graph:
             graph = json.loads(self.prereq_graph)
-        concurrrent = self.get_concurrent_with_coi()
+        concurrrent = self.get_concurrent_with_coi_and_flags()
         return {"course_id": self.course_id,
                 "course_title": self.course_title,
                 "course_credits": self.course_credits,
@@ -65,7 +67,9 @@ class Course(models.Model):
                 "prereq_graph": graph,
                 "course_description": self.course_description,
                 "course_offered": self.course_offered,
-                "coi_data": self.get_coi_data()}
+                "coi_data": self.get_coi_data(),
+                "is_bottleneck": self.is_bottleneck,
+                "is_gateway": self.is_gateway}
 
     @staticmethod
     def fix_gpa_json(json):
@@ -91,7 +95,7 @@ class Course(models.Model):
                 "course_level_coi": level_score,
                 "percent_in_range": percent_in_range}
 
-    def get_concurrent_with_coi(self):
+    def get_concurrent_with_coi_and_flags(self):
         if self.concurrent_courses is not None:
             courses = self.concurrent_courses.keys()
             course_objs = Course.objects.filter(course_id__in=courses)
@@ -102,9 +106,13 @@ class Course(models.Model):
                     percent = self.concurrent_courses[course]
                     title = course_obj.course_title
                     coi = course_obj.coi_score
+                    bottleneck = course_obj.is_bottleneck
+                    gateway = course_obj.is_gateway
                     concurrent_with_coi[course] = {"percent": percent,
                                                    "title": title,
-                                                   "coi_score": coi}
+                                                   "coi_score": coi,
+                                                   "is_bottleneck": bottleneck,
+                                                   "is_gateway": gateway}
                 except ObjectDoesNotExist:
                     pass
             return concurrent_with_coi
