@@ -2,7 +2,7 @@
 
 <template>
 
-    <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
+    <div class="alert alert-info alert-dismissible fade show text-center mb-0" role="alert">
         <strong>New Feature!</strong> DawgPath now shows which courses act as a bottleneck or a gateway for easier
         registration planning. <a href="/faq#bottleneck" class="router-link">Learn more.</a>
         <button type="button" class="btn btn-link close" data-bs-dismiss="alert" aria-label="Close">

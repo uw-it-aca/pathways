@@ -27,9 +27,6 @@
           </div>
         </div>
       </div>
-
-      <div>
-      </div>
       <banner />
     </template>
     <template #main>
