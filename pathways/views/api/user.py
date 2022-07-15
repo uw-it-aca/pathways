@@ -14,13 +14,22 @@ class UserPreference(RESTDispatch):
     def post(self, request, *args, **kwargs):
         uwnetid = get_user(self.request)
         request_params = json.loads(request.body)
-        welcome_display = request_params.get("viewed_welcome_display", False)
-        defaults = {'uwnetid': uwnetid,
-                    'has_viewed_welcome': welcome_display}
+        welcome_display = request_params.get("viewed_welcome_display")
+        bottleneck_display = request_params.get("viewed_bottleneck_banner")
+
         user, created = \
-            User.objects.get_or_create(uwnetid=uwnetid,
-                                       defaults=defaults)
-        if created:
+            User.objects.get_or_create(uwnetid=uwnetid)
+        user_updated = False
+        if welcome_display is not None:
+            if welcome_display != user.has_viewed_welcome:
+                user_updated = True
+                user.has_viewed_welcome = welcome_display
+        if bottleneck_display is not None:
+            if bottleneck_display != user.has_viewed_bottleneck_banner:
+                user_updated = True
+                user.has_viewed_bottleneck_banner = bottleneck_display
+        if user_updated:
+            user.save()
             return self.json_response(status=200)
         else:
-            return self.error_response(304)
+            return self.json_response(status=304)
