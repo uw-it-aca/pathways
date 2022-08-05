@@ -79,11 +79,15 @@
       </form>
     </div>
   </div>
+  <data-update />
 </template>
 <script>
-
+import DataUpdate from '../common/data-update.vue';
 export default {
   name: 'SearchChooser',
+  components: {
+    'data-update': DataUpdate
+    },
   props: {
     syncQueryParam: {
       default: null,
