@@ -1,7 +1,7 @@
 // data-update.vue
 
 <template>
-  <div class="fw-lighter float-end mt-2 small" style="color:#bbb;"><i class="bi-bar-chart-fill"></i> Data updated: Summer 2022</div>
+  <div class="fw-lighter float-end mt-2 text-secondary small"><i class="bi-bar-chart-fill"></i> Data updated: Summer 2022</div>
 </template>
 
 
