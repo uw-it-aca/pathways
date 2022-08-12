@@ -23,6 +23,12 @@ class Course(models.Model):
     is_bottleneck = models.BooleanField(default=False)
     is_gateway = models.BooleanField(default=False)
 
+    def get_search_string(self):
+        string = "{id} {title} {description}"
+        return string.format(id=self.course_id,
+                             title=self.course_title,
+                             description=self.course_description)
+
     @staticmethod
     def get_course_list():
         courses = Course.objects.only("course_id", "course_title")
