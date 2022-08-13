@@ -6,6 +6,7 @@ from pathways.models.course import Course
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from pathways.search import search_courses
 
 
 @method_decorator(login_required, name="dispatch")
@@ -24,3 +25,12 @@ class CourseDetails(RESTDispatch):
             return self.error_response(404,
                                        "Course %s not found" % course_abbr)
         return self.json_response(course)
+
+
+@method_decorator(login_required, name="dispatch")
+class CourseSearch(RESTDispatch):
+    def get(self, request, *args, **kwargs):
+        search_string = request.GET.get("search_string")
+        courses = search_courses(search_string)
+
+        return self.json_response(courses)
