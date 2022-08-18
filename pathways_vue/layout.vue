@@ -27,6 +27,8 @@
           </div>
         </div>
       </div>
+    </template>
+    <template #bar>
       <banner />
     </template>
     <template #main>
