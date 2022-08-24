@@ -31,6 +31,15 @@ class CourseDetails(RESTDispatch):
 class CourseSearch(RESTDispatch):
     def get(self, request, *args, **kwargs):
         search_string = request.GET.get("search_string")
-        courses = search_courses(search_string)
+        is_bottleneck = request.GET.get("is_bottleneck")
+        is_gateway = request.GET.get("is_gateway")
+        min_coi_score = request.GET.get("min_coi_score")
+        max_coi_score = request.GET.get("max_coi_score")
+        campus = request.GET.get("campus")
 
+        courses = search_courses(search_string, campus,
+                                 is_gateway=is_bottleneck,
+                                 is_bottleneck=is_gateway,
+                                 min_coi_score=min_coi_score,
+                                 max_coi_score=max_coi_score)
         return self.json_response(courses)
