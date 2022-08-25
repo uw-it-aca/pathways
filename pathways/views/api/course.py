@@ -31,8 +31,13 @@ class CourseDetails(RESTDispatch):
 class CourseSearch(RESTDispatch):
     def get(self, request, *args, **kwargs):
         search_string = request.GET.get("search_string")
-        is_bottleneck = request.GET.get("is_bottleneck")
-        is_gateway = request.GET.get("is_gateway")
+        is_bottleneck = False
+
+        def to_bool(value):
+            return value is not None and value == "true"
+
+        is_gateway = to_bool(request.GET.get("is_gateway"))
+        is_bottleneck = to_bool(request.GET.get("is_bottleneck"))
         min_coi_score = request.GET.get("min_coi_score")
         max_coi_score = request.GET.get("max_coi_score")
         campus = request.GET.get("campus")

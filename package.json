@@ -29,7 +29,9 @@
     "vue3-mq": "^2.3.3",
     "vuex": "^4.0.2",
     "vue-axios": "^3.3.6",
-    "mitt": "^3.0.0"
+    "mitt": "^3.0.0",
+    "multi-range-slider-vue": "^1.1.4",
+    "qs": "^6.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",

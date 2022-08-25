@@ -22,9 +22,9 @@ def search_courses(search_string, campus, is_bottleneck=None, is_gateway=None,
         # If no course_id match, query contents
         if len(results) == 0:
             filter_queries = []
-            if is_bottleneck is not None:
+            if is_bottleneck:
                 filter_queries.append(Term('is_bottleneck', is_bottleneck))
-            if is_gateway is not None:
+            if is_gateway:
                 filter_queries.append(Term('is_gateway', is_gateway))
 
             if min_coi_score is not None or max_coi_score is not None:
