@@ -9,7 +9,7 @@
       <a class="nav-link p-0" :href="myplanProgramURL">MyPlan Program Page</a>
     </li>
     <li class="nav-item" v-if="major['credential_code']">
-      <a class="nav-link p-0" :href="myplanCredentialURL">MyPlan Credential Page</a>
+      <a class="nav-link p-0" :href="myplanCredentialURL">MyPlan Degree Requirements</a>
     </li>
   </ul>
 </template>
