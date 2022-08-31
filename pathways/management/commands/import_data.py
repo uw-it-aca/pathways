@@ -89,13 +89,13 @@ class Command(BaseCommand):
         if DataImport.needs_import('gateway', gateway_hash):
             needs_update = True
             DataImport.objects \
-                .update_or_create(type='curric',
+                .update_or_create(type='gateway',
                                   defaults={'hash': gateway_hash})
         bottleneck_hash = self._get_hash_by_path(BOTTLENECK_PATH)
         if DataImport.needs_import('bottleneck', bottleneck_hash):
             needs_update = True
             DataImport.objects \
-                .update_or_create(type='curric',
+                .update_or_create(type='bottleneck',
                                   defaults={'hash': bottleneck_hash})
         return needs_update
 
