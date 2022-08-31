@@ -46,7 +46,7 @@
       <div v-if="total_count > 8" id="dataTable">
         <table class="table" v-if="viewDataTable">
           <caption class="caption-top">
-            Number of grades in this sample: {{ total_count }} (5 years).
+            Number of grades in this sample: {{ total_count }} (5 years). Data does not include pass/fail grades.
           </caption>
           <thead>
             <tr>
@@ -65,7 +65,8 @@
         </table>
       </div>
       <p :class="[ viewDataTable ? 'visually-hidden' : '']">
-        <small>Number of grades in this sample: {{ total_count }} (5 years).</small>
+        <small>Number of grades in this sample: <strong>{{ total_count }}</strong> (5 years).<br />
+          The graph does not include pass/fail grades. </small>
       </p>
     </div>
   </div>

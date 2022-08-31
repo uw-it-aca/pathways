@@ -100,7 +100,8 @@
               Number of students in this sample:
               {{
                 total_count
-              }}
+              }}. 
+              Data does not include pass/fail grades. 
             </caption>
             <thead>
               <tr>
@@ -124,7 +125,8 @@
               Number of students in this sample:
               {{
                 total_count
-              }}
+              }}.
+              Data does not include pass/fail grades. 
             </caption>
             <thead>
               <tr>
@@ -143,7 +145,8 @@
           </table>
         </div>
         <p :class="[viewDataTable ? 'visually-hidden' : '']">
-          <small> Number of students in this sample: {{ total_count }} </small>
+          <small> Number of students in this sample: <strong>{{ total_count }}</strong> <br />
+          The graph does not include pass/fail grades. </small>
         </p>
       </div>
     </div>
