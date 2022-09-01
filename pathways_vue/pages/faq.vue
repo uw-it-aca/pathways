@@ -20,11 +20,11 @@
                 >Why isn’t there data for all majors/courses?</a
               >
             </li>
-            <li>
+            <!-- <li>
               <a href="#bottleneck" class="text-decoration-none"
               >What are "bottleneck" courses?</a
               >
-            </li>
+            </li>-->
             <li>
               <a href="#gateway" class="text-decoration-none"
               >What are "gateway" courses?</a
@@ -160,17 +160,17 @@
                 In order to protect privacy, DawgPath displays information only for majors and
                 courses that have seven or more students.
               </p>
-              <h2 id="bottleneck" class="fw-bold fs-5">
+             <!--  <h2 id="bottleneck" class="fw-bold fs-5">
                 What are "bottleneck" courses?
               </h2>
               <p>
                 answer here
-              </p>
+              </p>-->
               <h2 id="gateway" class="fw-bold fs-5">
                 What are "gateway" courses?
               </h2>
               <p>
-                answer here
+                A gateway course is one that is early in a student’s career and is either necessary for their degree or is an important prerequisite to many other courses. These courses are sometimes hard to register for due to the demand. Additionally, these are generally larger-sized courses with many enrollments.
               </p>
 
               <h2 id="minors" class="fw-bold fs-5">Does DawgPath include minors?</h2>
