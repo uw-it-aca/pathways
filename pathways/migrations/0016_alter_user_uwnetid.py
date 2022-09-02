@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='uwnetid',
-            field=models.CharField(max_length=32, unique=True),
+            field=models.CharField(max_length=32),
         ),
     ]
