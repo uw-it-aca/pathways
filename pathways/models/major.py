@@ -55,7 +55,7 @@ class Major(models.Model):
                 "major_admission": self.major_admission,
                 "program_code": self.program_code,
                 "major_home_url": Major.get_major_url(self.major_home_url),
-                "common_course_decl": self.get_common_with_coi(),
+                "common_course_decl": self.get_common_with_coi_and_flags(),
                 "gpa_2yr": Major.fix_gpa_json(self.gpa_2yr),
                 "gpa_5yr": Major.fix_gpa_json(self.gpa_5yr),
                 "credential_description": self.credential_description,
@@ -78,19 +78,24 @@ class Major(models.Model):
         if url is not None:
             return "http:\\\\%s" % url
 
-    def get_common_with_coi(self):
+    def get_common_with_coi_and_flags(self):
         common_with_coi = {}
         try:
             courses = self.common_course_decl.keys()
             coi_scores = Course.objects.filter(course_id__in=courses)
             for course in courses:
                 try:
+                    course_obj = Course.objects.get(course_id=course)
                     percent = self.common_course_decl[course]['percent']
                     title = self.common_course_decl[course]['title']
                     coi = coi_scores.get(course_id=course).coi_score
+                    bottleneck = course_obj.is_bottleneck
+                    gateway = course_obj.is_gateway
                     common_with_coi[course] = {"percent": percent,
                                                "title": title,
-                                               "coi_score": coi}
+                                               "coi_score": coi,
+                                               "is_bottleneck": bottleneck,
+                                               "is_gateway": gateway}
                 except ObjectDoesNotExist:
                     pass
         except AttributeError:

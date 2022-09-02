@@ -26,7 +26,9 @@ class PageView(TemplateView):
         context["google_feedback_form"] = \
             getattr(settings, "GOOGLE_FEEDBACK_FORM", "")
         context['user'] = uwnetid
-        context['show_welcome'] = User.show_welcome(uwnetid)
+        banners = User.show_banners(uwnetid)
+        context['show_welcome'] = "welcome" in banners
+        context['show_bottleneck'] = "bottleneck" in banners
         context["django_debug"] = getattr(settings, "DEBUG", False)
         return context
 
