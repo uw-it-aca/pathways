@@ -43,7 +43,7 @@ export default {
       } else if (this.campus == "bothell") {
         return [
           {"label": "Find your Bothell adviser",
-           "url": "https:/uwb.navigate.eab.com/"}]
+           "url": "https://uwb.navigate.eab.com/"}]
       }
     }
   },
