@@ -195,7 +195,7 @@ export default {
           tooltip
             .html(
               `Grade ${d.gpa / 10}<br/>
-             Total ${d.count} (${vue.distributionPercentage(d.count)}%)`
+              ${vue.distributionPercentage(d.count)}% (${d.count} total)`
             )
             .style('left', event.pageX + 'px')
             .style('top', event.pageY - 28 + 'px');
