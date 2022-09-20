@@ -188,3 +188,15 @@ def import_bottleneck_courses(bottleneck_data):
         except ObjectDoesNotExist:
             pass
         Course.objects.bulk_update(bottleneck_course_objs, ['is_bottleneck'])
+
+
+def import_career_center_mapping(career_major_data):
+    majors_to_update = []
+    for row in career_major_data:
+        try:
+            major = Major.objects.get(credential_code=row[0])
+            major.career_center_major = row[1]
+            majors_to_update.append(major)
+        except ObjectDoesNotExist:
+            pass
+    Major.objects.bulk_update(majors_to_update, ['career_center_major'])
