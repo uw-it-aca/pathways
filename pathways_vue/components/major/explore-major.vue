@@ -11,6 +11,9 @@
     <li class="nav-item" v-if="major['credential_code']">
       <a class="nav-link p-0" :href="myplanCredentialURL">MyPlan Degree Requirements</a>
     </li>
+    <li class="nav-item" v-if="major['career_center_major']">
+      <a class="nav-link p-0" :href="careerCenterOutcomeURL">Career Center Outcomes</a>
+    </li>
   </ul>
 </template>
 
@@ -42,6 +45,14 @@ export default {
         );
       }
     },
+    careerCenterOutcomeURL(){
+      if (this.major['career_center_major'] !== null) {
+        return (
+          'https://careers.uw.edu/outcomes/#!' +
+          this.major['career_center_major']
+        );
+      }
+    }
   },
   methods: {},
 };
