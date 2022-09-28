@@ -1,10 +1,35 @@
 // explore-major.vue
 
 <template>
-  <ul class="nav mb-5">
-    <!--<li v-if="major['major_home_url']">
-          <a :href="major['major_home_url']" target="_blank">Degree Requirements</a>
-    </li>-->
+  <h2 class="h4 pw-font-encode-sans mb-3">Explore this Major</h2>
+  <div class="row mb-5">
+    <div class="col-sm-4" v-if="major['program_code']">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="h6 card-title"><a class="nav-link p-0" :href="myplanProgramURL">Program Information</a></h3>
+          <small><p class="card-text p-0">Learn more about this program and its degrees</p></small>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4" v-if="major['credential_code']">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="h6 card-title"><a class="nav-link p-0" :href="myplanCredentialURL">Degree Requirements</a></h3>
+          <small><p class="card-text p-0">View courses needed to complete this degree</p></small>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4" v-if="major['career_center_major']">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="h6 card-title"><a class="nav-link p-0" :href="careerCenterOutcomeURL">Career Outcomes</a></h3>
+          <small><p class="card-text p-0">See what graduates do with this degree</p></small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <ul class="nav mb-5">
     <li class="nav-item me-5" v-if="major['program_code']">
       <a class="nav-link p-0" :href="myplanProgramURL">MyPlan Program Page</a>
     </li>
@@ -14,7 +39,7 @@
     <li class="nav-item" v-if="major['career_center_major']">
       <a class="nav-link p-0" :href="careerCenterOutcomeURL">Career Center Outcomes</a>
     </li>
-  </ul>
+  </ul> -->
 </template>
 
 <script>
