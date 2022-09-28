@@ -28,7 +28,9 @@
     <div class="col-sm-4" v-if="major['career_center_major']">
       <div class="card">
         <div class="card-body d-flex">
-          <div class="pe-2"><i class="bi bi-pie-chart display-5 text-purple"></i></div>
+          <div class="pe-2"><span class="material-symbols-outlined display-4 text-purple">
+donut_small
+</span></div>
           <div class="">
           <h3 class="h6 card-title mb-0"><a class="nav-link p-0" :href="careerCenterOutcomeURL">Career Outcomes</a></h3>
           <small><p class="card-text p-0">See what graduates do with this degree</p></small>
@@ -101,5 +103,8 @@ export default {
     list-style-type: none;
     padding-bottom: 0.5rem;
   }
+}
+.material-symbols-outlined {
+  top: 1rem;
 }
 </style>
