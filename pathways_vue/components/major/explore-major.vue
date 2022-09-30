@@ -51,18 +51,6 @@
       </a>
     </div>
   </div>
-
-  <!-- <ul class="nav mb-5">
-    <li class="nav-item me-5" v-if="major['program_code']">
-      <a class="nav-link p-0" :href="myplanProgramURL">MyPlan Program Page</a>
-    </li>
-    <li class="nav-item" v-if="major['credential_code']">
-      <a class="nav-link p-0" :href="myplanCredentialURL">MyPlan Degree Requirements</a>
-    </li>
-    <li class="nav-item" v-if="major['career_center_major']">
-      <a class="nav-link p-0" :href="careerCenterOutcomeURL">Career Center Outcomes</a>
-    </li>
-  </ul> -->
 </template>
 
 <script>
