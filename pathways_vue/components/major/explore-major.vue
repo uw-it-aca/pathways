@@ -4,8 +4,8 @@
   <h2 class="h4 pw-font-encode-sans mb-3">Explore this Major</h2>
   <div class="row mb-5">
     <div class="col-md-4" v-if="major['program_code']">
-      <a class="nav-link p-0" :href="myplanProgramURL">
-        <div class="card">
+      <a class="card-link p-0" :href="myplanProgramURL">
+        <div class="card h-100">
           <div class="card-body d-flex">
             <div class="pe-2"><i class="bi-journal-bookmark display-5 text-purple"></i></div>
             <div class="">
@@ -19,8 +19,8 @@
       </a>
     </div>
     <div class="col-md-4" v-if="major['credential_code']">
-      <a class="nav-link p-0" :href="myplanCredentialURL">
-        <div class="card">
+      <a class="card-link p-0" :href="myplanCredentialURL">
+        <div class="card h-100">
           <div class="card-body d-flex">
             <div class="pe-2"><i class="bi-clipboard-check display-5 text-purple"></i></div>
             <div class="">
@@ -34,8 +34,8 @@
       </a>
     </div>
     <div class="col-md-4" v-if="major['career_center_major']">
-      <a class="nav-link p-0" :href="careerCenterOutcomeURL">
-        <div class="card">
+      <a class="card-link p-0" :href="careerCenterOutcomeURL">
+        <div class="card h-100">
           <div class="card-body d-flex">
             <div class="pe-2"><span class="material-symbols-outlined display-4 text-purple">
                 donut_small
