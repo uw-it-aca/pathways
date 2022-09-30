@@ -121,4 +121,8 @@ export default {
 .material-symbols-outlined {
   top: 1rem;
 }
+.card:hover {
+  opacity: 0.7;
+  -khtml-opacity: 0.7;
+}
 </style>
