@@ -170,7 +170,7 @@
                 What are "gateway" courses?
               </h2>
               <p>
-                A gateway course is one that is early in a student’s career and is either necessary for their degree or is an important prerequisite to many other courses. These courses are sometimes hard to register for due to the demand. Additionally, these are generally larger-sized courses with many enrollments.
+                A gateway course is one that is early in a student’s career and is either necessary for their degree or is an important prerequisite to many other courses. These courses are sometimes hard to register for due to the demand. Additionally, these are generally larger-sized courses with many enrollments. <br /><a href="https://itconnect.uw.edu/wp-content/uploads/2022/09/Gateway-and-Bottleneck-Courses.pdf" title="IT Connect Gateway courses PDF">Learn about of process of identifying gateway courses (PDF).</a>
               </p>
 
               <h2 id="minors" class="fw-bold fs-5">Does DawgPath include minors?</h2>
