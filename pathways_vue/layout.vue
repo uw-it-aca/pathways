@@ -21,7 +21,7 @@
           <div class="d-inline align-middle text-white" :class="[$mq == 'desktop' ? 'h3' : 'h5']">
             <a :href="appRootUrl" class="text-white text-decoration-none"><span class="visually-hidden">{{
                 appName
-            }}</span> <img src="/static/pathways/img/logo.png" class="logo"
+            }}</span> <img :src="'/static/pathways/img/logo.png'" class="logo"
                 alt="Dawgpath logo with husky paw prints" /> <sub class="tagline text-white fst-italic"
                 :class="[$mq == 'mobile' ? 'd-none' : 'display']">{{ tagLine }}</sub></a>
           </div>

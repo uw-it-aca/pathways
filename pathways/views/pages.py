@@ -16,6 +16,8 @@ ALLOWED_USERS_GROUP = getattr(settings, "ALLOWED_USERS_GROUP", None)
 @method_decorator(eval_group_required(ALLOWED_USERS_GROUP),
                   name='dispatch')
 class PageView(TemplateView):
+    template_name = "index.html"
+
     """
     Superclass for all page views.
     """

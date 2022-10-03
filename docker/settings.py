@@ -3,23 +3,17 @@ import os
 
 INSTALLED_APPS += [
     'pathways.apps.PathwaysConfig',
-    'webpack_loader',
 ]
 
-# Location of stats file that can be accessed during local development and
-# collected from during production build process
 if os.getenv("ENV") == "localdev":
-    WEBPACK_LOADER = {
-        'DEFAULT': {
-            'STATS_FILE': os.path.join(BASE_DIR, 'pathways/static/webpack-stats.json'),
-        }
-    }
+    DEBUG = True
+
+if os.getenv("ENV") == "localdev":
+    VITE_MANIFEST_PATH = os.path.join(
+        BASE_DIR, "pathways", "static", "manifest.json"
+    )
 else:
-    WEBPACK_LOADER = {
-        'DEFAULT': {
-            'STATS_FILE': os.path.join(BASE_DIR, '/static/webpack-stats.json'),
-        }
-    }
+    VITE_MANIFEST_PATH = os.path.join(os.sep, "static", "manifest.json")
 
 # If you have file data, define the path here
 # DATA_ROOT = os.path.join(BASE_DIR, "app_name/data")
@@ -27,6 +21,25 @@ DATA_ROOT = os.path.join(BASE_DIR, "pathways/data")
 
 GOOGLE_ANALYTICS_KEY = os.getenv("GOOGLE_ANALYTICS_KEY", default=" ")
 GOOGLE_FEEDBACK_FORM = os.getenv("GOOGLE_FEEDBACK_FORM", default=" ")
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "debug": True,
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "pathways.context_processors.google_analytics",
+                "pathways.context_processors.django_debug",
+                # "pathways.context_processors.auth_user",
+            ],
+        },
+    }
+]
 
 if os.getenv("ENV") == "localdev":
     DEBUG = True
