@@ -3,8 +3,8 @@
 
 from django.conf import settings
 from django.urls import reverse
-#from uw_saml.utils import get_user
-#from userservice.user import UserService
+# from uw_saml.utils import get_user
+# from userservice.user import UserService
 
 
 def auth_user(request):
