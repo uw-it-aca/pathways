@@ -25,7 +25,7 @@
 
 </head>
 
-<body {% if google_analytics %}data-google-analytics="{{ google_analytics }}"{% endif %} {% if logout_url %}data-logout-url="{{ logout_url }}"{% endif %}
+<body {% if ga_key %}data-google-analytics="{{ ga_key }}"{% endif %} {% if logout_url %}data-logout-url="{{ logout_url }}"{% endif %}
   {% if google_feedback_form %}data-google-feedback-form="{{ google_feedback_form }}"{% endif %}
       data-django-debug="{{ django_debug|lower}}" class="bg-light-gray">
 
