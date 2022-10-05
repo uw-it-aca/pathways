@@ -109,6 +109,11 @@ export default {
 .material-symbols-outlined {
   top: 1rem;
 }
+@media (max-width: 575.98px) {
+  .material-symbols-outlined {
+  top: 0.4rem;
+  }
+}
 .card:hover {
   opacity: 0.7;
   -khtml-opacity: 0.7;
