@@ -109,7 +109,7 @@ export default {
 .material-symbols-outlined {
   top: 1rem;
 }
-@media (max-width: 575.98px) {
+@media (max-width: 767.98px) {
   .material-symbols-outlined {
   top: 0.4rem;
   }
