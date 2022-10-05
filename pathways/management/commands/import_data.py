@@ -103,7 +103,7 @@ class Command(BaseCommand):
                 .update_or_create(type='bottleneck',
                                   defaults={'hash': bottleneck_hash})
         career_hash = self._get_hash_by_path(CAREER_CENTER_PATH)
-        if DataImport.needs_import('career_major_mapping', career_hash):
+        if DataImport.needs_import('cc_major', career_hash):
             needs_update = True
             DataImport.objects \
                 .update_or_create(type='cc_major',
