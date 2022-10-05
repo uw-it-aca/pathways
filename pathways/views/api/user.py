@@ -16,6 +16,7 @@ class UserPreference(RESTDispatch):
         request_params = json.loads(request.body)
         welcome_display = request_params.get("viewed_welcome_display")
         bottleneck_display = request_params.get("viewed_bottleneck_banner")
+        outcomes_display = request_params.get("viewed_outcomes_banner")
 
         user, created = \
             User.objects.get_or_create(uwnetid=uwnetid)
@@ -28,6 +29,10 @@ class UserPreference(RESTDispatch):
             if bottleneck_display != user.has_viewed_bottleneck_banner:
                 user_updated = True
                 user.has_viewed_bottleneck_banner = bottleneck_display
+        if outcomes_display is not None:
+            if outcomes_display != user.has_viewed_outcomes_banner:
+                user_updated = True
+                user.has_viewed_outcomes_banner = outcomes_display
         if user_updated:
             user.save()
             return self.json_response(status=200)

@@ -1,7 +1,7 @@
 // major-details.vue
 
 <template>
-  <div class="mb-2">
+  <div class="mb-5">
     <h1 class="h2 pw-font-encode-sans"> {{ major["credential_title"] }}</h1>
     <p class="text-uppercase mb-1">{{ major["major_school"] }} - {{ major["major_campus"] }}</p>
     <p><strong>Admission Policy:</strong> <a href="/faq#admission_types" class="router-link-active text-capitalize" title="Admission to majors">{{ AdminReqs }}</a></p>
