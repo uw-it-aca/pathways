@@ -106,7 +106,7 @@ class Command(BaseCommand):
         if DataImport.needs_import('career_major_mapping', career_hash):
             needs_update = True
             DataImport.objects \
-                .update_or_create(type='career_major_mapping',
+                .update_or_create(type='cc_major',
                                   defaults={'hash': career_hash})
         return needs_update
 
