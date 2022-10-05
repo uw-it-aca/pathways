@@ -19,18 +19,6 @@
       ></span>
     </button>
   </div>
-  in course listings.
-  <a href="/faq#gateway" class="router-link">Learn more.</a>
-  <button
-    type="button"
-    class="btn btn-link close"
-    aria-label="Close"
-    @click="dismissBottleneck"
-  >
-    <span aria-hidden="true"
-      ><i class="bi bi-x-lg" title="Dismiss alert"></i
-    ></span>
-  </button>
 </template>
 
 <script>
