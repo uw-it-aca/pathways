@@ -25,8 +25,8 @@ class ViteTestClass(TestCase):
 
     def test_vite_scripts(self):
         entries = ("pathways_vue/main.js",)
-        link = vite_scripts(*entries)
+        script = vite_scripts(*entries)
         pattern = re.compile(
             '<script type="[\\w]*" src="[\\w\\D]*main.[\\d\\w]*.js"></script>'
         )
-        self.assertTrue(pattern.match(link))
+        self.assertTrue(pattern.match(script))
