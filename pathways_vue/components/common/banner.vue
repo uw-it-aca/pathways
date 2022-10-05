@@ -2,13 +2,8 @@
 
 <template>
 
-    <div class="alert alert-info alert-dismissible fade show text-center mb-0" v-if="show_bottleneck">
-        <strong>New Feature!</strong> DawgPath now shows which courses act as a gateway. Look for the gateway icon  <div class="round round-sm bg-success">
-      <span class="material-symbols-outlined fw-bold">call_split</span>
-    </div>  in course listings.  <a href="/faq#gateway" class="router-link">Learn more.</a>
-        <button type="button" class="btn btn-link close" aria-label="Close" @click="dismissBottleneck">
-            <span aria-hidden="true"><i class="bi bi-x-lg" title="Dismiss alert"></i></span>
-        </button>
+    <div v-for="message in banner_messages" class="alert alert-info alert-dismissible fade show text-center mb-0">
+      <p>{{message.content}}</p>
     </div>
 
 </template>
@@ -17,12 +12,21 @@
 export default {
     name: 'Banner',
     data() {
-        return {show_bottleneck: false};
+        return {
+          banner_messages: undefined
+        };
     },
     methods: {
-      dismissBottleneck: function (){
-        this.saveModalPref();
-        this.show_bottleneck = false;
+      getBannerMessages(){
+        let vue = this;
+        this.axios
+          .get('/api/v1/persistent_messages/')
+          .then((response) => {
+            vue.banner_messages = response.data;
+          })
+          .catch(function (error) {
+
+          });
       },
       saveModalPref() {
         this.axios({
@@ -38,9 +42,7 @@ export default {
     computed: {
     },
     mounted() {
-      if (window.show_bottleneck) {
-        this.show_bottleneck = true;
-      }
+      this.getBannerMessages();
     }
 };
 </script>

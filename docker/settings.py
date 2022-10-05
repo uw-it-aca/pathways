@@ -4,6 +4,9 @@ import os
 INSTALLED_APPS += [
     'pathways.apps.PathwaysConfig',
     'webpack_loader',
+    'userservice',
+    'supporttools',
+    'persistent_message',
 ]
 
 # Location of stats file that can be accessed during local development and
@@ -104,3 +107,11 @@ LOGGING = {
         }
     }
 }
+
+
+# Support Tools settings
+SUPPORTTOOLS_PARENT_APP = "DawgPath"
+SUPPORTTOOLS_PARENT_APP_URL = "/"
+
+USERSERVICE_OVERRIDE_AUTH_MODULE = "pathways.authorization.can_override_user"
+PERSISTENT_MESSAGE_AUTH_MODULE = 'pathways.authorization.is_pathways_admin'

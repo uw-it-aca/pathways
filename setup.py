@@ -27,6 +27,9 @@ setup(
         "django~=3.2",
         "UW-Django-SAML2~=1.5",
         "django-webpack-loader",
+        "Django-SupportTools",
+        "Django-UserService",
+        "Django-Persistent-Message"
     ],
     license="Apache License, Version 2.0",
     description="A tool for visually displaying UW course prerequisites",
