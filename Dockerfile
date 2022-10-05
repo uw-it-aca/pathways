@@ -32,7 +32,7 @@ RUN npm run build
 
 FROM app-prebundler-container as app-container
 
-COPY --chown=acait:acait --from=node-bundler /app/pathways/static /static
+COPY --chown=acait:acait --from=node-bundler /app/pathways/static /app/pathways/static
 
 RUN . /app/bin/activate && python manage.py collectstatic --noinput
 
