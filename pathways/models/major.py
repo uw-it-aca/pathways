@@ -21,6 +21,7 @@ class Major(models.Model):
     credential_title = models.TextField(null=True)
     credential_code = models.CharField(max_length=25, null=True)
     credential_description = models.TextField(null=True)
+    career_center_major = models.TextField(null=True)
 
     @staticmethod
     def get_major_list():
@@ -60,7 +61,8 @@ class Major(models.Model):
                 "gpa_5yr": Major.fix_gpa_json(self.gpa_5yr),
                 "credential_description": self.credential_description,
                 "credential_title": self.credential_title,
-                "credential_code": self.credential_code}
+                "credential_code": self.credential_code,
+                "career_center_major": self.career_center_major}
 
     @staticmethod
     def fix_gpa_json(json):

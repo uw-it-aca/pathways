@@ -35,7 +35,7 @@ export default {
         return [
           {"label": "Find your premajor adviser",
            "url": "https://www.washington.edu/uaa/advising/appointments/"},
-          {"label": "Find your premajor OMAD adviser",
+          {"label": "Find your Office of Minority Affairs & Diversity (OMA&D) adviser",
            "url": "https://depts.washington.edu/omadcs/location/"},
           {"label": "Find your departmental or major adviser",
            "url": "https://www.washington.edu/uaa/advising/degree-overview/" +
