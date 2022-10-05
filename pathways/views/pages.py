@@ -29,6 +29,8 @@ class PageView(TemplateView):
         banners = User.show_banners(uwnetid)
         context['show_welcome'] = "welcome" in banners
         context['show_bottleneck'] = "bottleneck" in banners
+        context['show_outcomes'] = "outcomes" in banners
+
         context["django_debug"] = getattr(settings, "DEBUG", False)
         return context
 

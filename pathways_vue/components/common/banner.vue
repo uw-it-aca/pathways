@@ -2,7 +2,7 @@
 
 <template>
 
-    <div class="alert alert-primary alert-dismissible fade show text-center mb-0"> <!-- v-if="show_outcomes" -->
+    <div v-if="show_outcomes" class="alert alert-primary alert-dismissible fade show text-center mb-0">
         <strong>New Feature!</strong> What have recent UW graduates done with their degree? Check out the "<strong>Career Outcomes</strong>" link, available for most majors.
         <button type="button" class="btn btn-link close" aria-label="Close" @click="dismissOutcomes">
             <span aria-hidden="true"><i class="bi bi-x-lg" title="Dismiss alert"></i></span>
