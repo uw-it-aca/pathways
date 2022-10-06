@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body">
-      <h2 class="h4 pw-font-encode-sans">Prerequisite Map</h2>
+      <h2 class="h4 axdd-font-encode-sans fw-bold">Prerequisite Map</h2>
       <ul class="nav nav-tabs" id="PrereqMapTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button
