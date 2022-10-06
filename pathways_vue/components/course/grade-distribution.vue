@@ -139,7 +139,7 @@ export default {
         rwidth = width + margin.left + margin.right,
         rheight = height + margin.top + margin.bottom;
 
-      var tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0);
+      var tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0).style('left', '-9999px');
 
       // set the ranges
       var x = d3.scaleBand().range([0, width]).padding(0.3);

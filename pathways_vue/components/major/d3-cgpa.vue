@@ -15,7 +15,7 @@
         </ul>
       </div>
     </div>
-    <div v-else class="card-body">
+    <div v-else class="card-body" id="blah">
       <h2 class="h4 pw-font-encode-sans">Declared major cumulative GPA distribution</h2>
       <div class="px-1 py-1">
         <p>
@@ -100,8 +100,8 @@
               Number of students in this sample:
               {{
                 total_count
-              }}. 
-              Data does not include pass/fail grades. 
+              }}.
+              Data does not include pass/fail grades.
             </caption>
             <thead>
               <tr>
@@ -123,10 +123,8 @@
           <table class="table" v-if="viewDataTable">
             <caption class="caption-top">
               Number of students in this sample:
-              {{
-                total_count
-              }}.
-              Data does not include pass/fail grades. 
+              {{ total_count }}.
+              Data does not include pass/fail grades.
             </caption>
             <thead>
               <tr>
@@ -271,7 +269,7 @@ export default {
           rwidth = width + margin.left + margin.right,
           rheight = height + margin.top + margin.bottom;
 
-        var tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0);
+        var tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0).style('left', '-9999px');
 
         // set the ranges
         var x = d3.scaleBand().range([0, width]).padding(0.3);

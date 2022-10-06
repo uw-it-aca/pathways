@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  name: "Banner",
+  name: "BannerComp",
   data() {
     return { show_outcomes: false };
   },
@@ -55,13 +55,11 @@ export default {
 <style lang="scss" scoped>
 .alert {
   border-radius: 0;
-}
-.alert {
+
   .round-sm {
     height: 18px;
     width: 18px;
     line-height: 18px;
-    -moz-border-radius: 15px;
     border-radius: 15px;
     font-size: 0.7em;
 
