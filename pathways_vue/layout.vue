@@ -37,48 +37,51 @@
     <template #footer>
       <!-- footer section override -->
       <div class="bg-dark">
-        <div class="container-xl d-flex justify-content-between">
+        <div class="container-xl">
           <div class="text-white font-weight-light py-3 small">
-            <ul class="list-inline mb-2">
-              <li class="list-inline-item item-dot">
-                <a
-                  href="mailto:help@uw.edu?subject=DawgPath Help, please route to Student and Instructor Success Analytics Service Offering"
-                  title="Contact the DawgPath team"
-                  class="text-white text-decoration-none me-2"
-                  ><i class="bi bi-envelope-fill me-0"></i> Contact</a
-                >
-              </li>
-              <li class="list-inline-item item-dot">
-                <a
-                  href="https://itconnect.uw.edu/learn/success-analytics/apps/#dawg"
-                  title="DawgPath Docs on IT Connect"
-                  class="text-white text-decoration-none me-2"
-                  >Documentation</a
-                >
-              </li>
-              <li class="list-inline-item item-dot">
-                <a
-                  href="https://www.washington.edu/online/terms/"
-                  title="UW Terms of Use"
-                  class="text-white text-decoration-none me-2"
-                  >Terms</a
-                >
-              </li>
-              <li class="list-inline-item">
-                <a
-                  href="https://www.washington.edu/online/privacy/"
-                  title="UW Privacy Policy"
-                  class="router-link text-white text-decoration-none me-2"
-                  >Privacy</a
-                >
-              </li>
-            </ul>
+
+            <!-- foot link slot -->
+            <div class="d-flex justify-content-between">
+              <ul class="list-inline mb-2">
+                <li class="list-inline-item item-dot">
+                  <a
+                    href="mailto:help@uw.edu?subject=DawgPath Help, please route to Student and Instructor Success Analytics Service Offering"
+                    title="Contact the DawgPath team"
+                    class="text-white text-decoration-none me-2"
+                    ><i class="bi bi-envelope-fill me-0"></i> Contact</a
+                  >
+                </li>
+                <li class="list-inline-item item-dot">
+                  <a
+                    href="https://itconnect.uw.edu/learn/success-analytics/apps/#dawg"
+                    title="DawgPath Docs on IT Connect"
+                    class="text-white text-decoration-none me-2"
+                    >Documentation</a
+                  >
+                </li>
+                <li class="list-inline-item item-dot">
+                  <a
+                    href="https://www.washington.edu/online/terms/"
+                    title="UW Terms of Use"
+                    class="text-white text-decoration-none me-2"
+                    >Terms</a
+                  >
+                </li>
+                <li class="list-inline-item">
+                  <a
+                    href="https://www.washington.edu/online/privacy/"
+                    title="UW Privacy Policy"
+                    class="router-link text-white text-decoration-none me-2"
+                    >Privacy</a
+                  >
+                </li>
+              </ul>
+              <Feedback />
+            </div>
+
             <div class="font-weight-light" style="color: #aaa">
               &copy; {{ new Date().getFullYear() }} University of Washington
             </div>
-          </div>
-          <div>
-            <Feedback />
           </div>
         </div>
       </div>

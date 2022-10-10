@@ -3,7 +3,7 @@
 <template>
   <button
     class="btn btn-sm btn-primary position-absolute end-0"
-    style="margin-top: -43px; margin-right: 10px; z-index: 1"
+    style="margin-top: -60px; margin-right: 10px; z-index: 1"
     type="button"
     data-bs-toggle="offcanvas"
     data-bs-target="#send_feedback"
