@@ -1,10 +1,16 @@
 @use "sass:map";
-@import 'axdd-components/src/assets/css/custom.scss';
+@import 'axdd-components/src/assets/css/theme';
+
+// https://getbootstrap.com/docs/5.1/customize/options/
+// TODO: enable bootstrap options for the app
+// $enable-cssgrid: true;
+// $enable-gradients: true;
+$enable-negative-margins: true;
 
 // override variables
 $nav-height: 52px;
 $bar-height: 40px;
-$link-color: #0069d9; //a11y blue
+$link-color: #0069d9; // a11y blue
 
 // pathways custom theme colors
 $custom-colors: (
@@ -25,10 +31,6 @@ $utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
 $utilities-text-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
 $utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
 
-// import bootstrap and bootstrap-icons
-@import "bootstrap/scss/bootstrap";
-@import "bootstrap-icons/font/bootstrap-icons.css";
-
 // additional non-bootstrap styles
 
 .blah { color: purple; }
@@ -45,14 +47,6 @@ a {
 .creamcicle { background-color: $orange-200; }
 .yellow { background-color: $yellow-200; }
 
-// custom fonts
-.pw-font-open-sans {
-  font-family: 'Open Sans', sans-serif !important;
-}
-.pw-font-encode-sans {
-  font-family: 'Encode Sans', sans-serif !important;
-}
-
 // custom course btn
 .btn-course {
   display: inline-block;
@@ -66,4 +60,6 @@ a {
   border-radius: 0.25rem;
 }
 
-
+// import bootstrap and bootstrap-icons
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";

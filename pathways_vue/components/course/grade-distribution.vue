@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body">
-      <h2 class="h4 pw-font-encode-sans">Course Grade Distribution</h2>
+      <h2 class="h4 axdd-font-encode-sans fw-bold">Course Grade Distribution</h2>
       <p aria-hidden="true">
         This graph represents the distribution of grades for every student who completed
         <strong>{{ course.course_id }}</strong> over the past 5 years.
@@ -139,7 +139,7 @@ export default {
         rwidth = width + margin.left + margin.right,
         rheight = height + margin.top + margin.bottom;
 
-      var tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0);
+      var tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0).style('left', '-9999px');
 
       // set the ranges
       var x = d3.scaleBand().range([0, width]).padding(0.3);

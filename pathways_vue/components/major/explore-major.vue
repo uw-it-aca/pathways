@@ -1,17 +1,23 @@
 // explore-major.vue
 
 <template>
-  <h2 class="h4 pw-font-encode-sans mb-3">Explore this Major</h2>
+  <h2 class="h4 axdd-font-encode-sans fw-bold mb-3">Explore this Major</h2>
   <div class="row mb-5">
     <div class="col-md-4" v-if="major['program_code']">
-      <a class="card-link p-0" :href="myplanProgramURL">
+      <a class="card-link p-0 text-decoration-none" :href="myplanProgramURL">
         <div class="card h-100">
           <div class="card-body d-flex">
-            <div class="pe-2"><i class="bi-journal-bookmark display-5 text-purple"></i></div>
+            <div class="pe-2">
+              <i class="bi-journal-bookmark display-5 text-purple"></i>
+            </div>
             <div class="">
-              <h3 class="h6 card-title mb-0 text-dark"><strong>Program Information</strong></h3>
+              <h3 class="h6 card-title mb-0 text-dark">
+                <strong>Program Information</strong>
+              </h3>
               <small>
-                <p class="card-text text-dark p-0">Learn more about this program and its degrees</p>
+                <p class="card-text text-dark p-0">
+                  Learn more about this program and its degrees
+                </p>
               </small>
             </div>
           </div>
@@ -19,14 +25,20 @@
       </a>
     </div>
     <div class="col-md-4" v-if="major['credential_code']">
-      <a class="card-link p-0" :href="myplanCredentialURL">
+      <a class="card-link p-0 text-decoration-none" :href="myplanCredentialURL">
         <div class="card h-100">
           <div class="card-body d-flex">
-            <div class="pe-2"><i class="bi-clipboard-check display-5 text-purple"></i></div>
+            <div class="pe-2">
+              <i class="bi-clipboard-check display-5 text-purple"></i>
+            </div>
             <div class="">
-              <h3 class="h6 card-title mb-0 text-dark"><strong>Degree Requirements</strong></h3>
+              <h3 class="h6 card-title mb-0 text-dark">
+                <strong>Degree Requirements</strong>
+              </h3>
               <small>
-                <p class="card-text p-0 text-dark">Review courses needed to complete this degree</p>
+                <p class="card-text p-0 text-dark">
+                  Review courses needed to complete this degree
+                </p>
               </small>
             </div>
           </div>
@@ -34,16 +46,25 @@
       </a>
     </div>
     <div class="col-md-4" v-if="major['career_center_major']">
-      <a class="card-link p-0" :href="careerCenterOutcomeURL">
+      <a
+        class="card-link p-0 text-decoration-none"
+        :href="careerCenterOutcomeURL"
+      >
         <div class="card h-100">
           <div class="card-body d-flex">
-            <div class="pe-2"><span class="material-symbols-outlined display-4 text-purple">
+            <div class="pe-2">
+              <span class="material-symbols-outlined display-4 text-purple">
                 donut_small
-              </span></div>
+              </span>
+            </div>
             <div class="">
-              <h3 class="h6 card-title mb-0 text-dark"><strong>Career Outcomes</strong></h3>
+              <h3 class="h6 card-title mb-0 text-dark">
+                <strong>Career Outcomes</strong>
+              </h3>
               <small>
-                <p class="card-text p-0 text-dark">Explore what UW graduates do with this degree</p>
+                <p class="card-text p-0 text-dark">
+                  Explore what UW graduates do with this degree
+                </p>
               </small>
             </div>
           </div>
@@ -55,7 +76,7 @@
 
 <script>
 export default {
-  name: 'ExploreMajor',
+  name: "ExploreMajor",
   props: {
     major: {
       type: Object,
@@ -67,28 +88,31 @@ export default {
   },
   computed: {
     myplanProgramURL() {
-      if (this.major['program_code'] !== null) {
-        return 'https://myplan.uw.edu/program/#/programs/' + this.major['program_code'];
+      if (this.major["program_code"] !== null) {
+        return (
+          "https://myplan.uw.edu/program/#/programs/" +
+          this.major["program_code"]
+        );
       }
     },
     myplanCredentialURL() {
-      if (this.major['credential_code'] !== null) {
+      if (this.major["credential_code"] !== null) {
         return (
-          'https://myplan.uw.edu/program/#/programs/' +
-          this.major['program_code'] +
-          '/' +
-          this.major['credential_code']
+          "https://myplan.uw.edu/program/#/programs/" +
+          this.major["program_code"] +
+          "/" +
+          this.major["credential_code"]
         );
       }
     },
     careerCenterOutcomeURL() {
-      if (this.major['career_center_major'] !== null) {
+      if (this.major["career_center_major"] !== null) {
         return (
-          'https://careers.uw.edu/outcomes/#!' +
-          this.major['career_center_major']
+          "https://careers.uw.edu/outcomes/#!" +
+          this.major["career_center_major"]
         );
       }
-    }
+    },
   },
   methods: {},
 };
@@ -111,7 +135,7 @@ export default {
 }
 @media (max-width: 767.98px) {
   .material-symbols-outlined {
-  top: 0.4rem;
+    top: 0.4rem;
   }
 }
 .card:hover {
