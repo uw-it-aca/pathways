@@ -7,11 +7,6 @@
 // $enable-gradients: true;
 $enable-negative-margins: true;
 
-// override variables
-$nav-height: 52px;
-$bar-height: 40px;
-$link-color: #0069d9; // a11y blue
-
 // pathways custom theme colors
 $custom-colors: (
   "test": red, // bg-test text-test
@@ -24,20 +19,45 @@ $custom-colors: (
   "light-gray": #F8F9FA,
 );
 
-// axdd-components + pathways custom colors
+// bootstrap theme + utility merging
 $theme-colors: map-merge($theme-colors, $custom-colors);
 $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
 $utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
 $utilities-text-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
 $utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
-
-// additional non-bootstrap styles
-
-.blah { color: purple; }
-
-a {
-  text-decoration: none;
-}
+$utilities: (
+  // MARK: bg-color-hover (changes bg-color on hover)
+  "background-color":
+    (
+      property: background-color,
+      class: bg,
+      state: hover focus,
+      values:
+        map-merge(
+          $theme-colors,
+          (
+            "body": $body-bg,
+            "white": $white,
+            "transparent": transparent,
+          )
+        ),
+    ),
+  // MARK: text-color-hover (changes text-color on hover)
+  "color":
+    (
+      property: color,
+      class: text,
+      state: hover focus,
+      values:
+        map-merge(
+          $theme-colors,
+          (
+            "white": $white,
+            "transparent": transparent,
+          )
+        ),
+    )
+);
 
 // global pathways colors
 
