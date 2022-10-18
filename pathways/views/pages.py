@@ -16,6 +16,8 @@ ALLOWED_USERS_GROUP = getattr(settings, "ALLOWED_USERS_GROUP", None)
 @method_decorator(eval_group_required(ALLOWED_USERS_GROUP),
                   name='dispatch')
 class PageView(TemplateView):
+    template_name = "index.html"
+
     """
     Superclass for all page views.
     """
@@ -23,8 +25,14 @@ class PageView(TemplateView):
         uwnetid = get_user(self.request)
         context = super().get_context_data(**kwargs)
         context["ga_key"] = getattr(settings, "GOOGLE_ANALYTICS_KEY", " ")
+        context["google_feedback_form"] = \
+            getattr(settings, "GOOGLE_FEEDBACK_FORM", "")
         context['user'] = uwnetid
-        context['show_welcome'] = User.show_welcome(uwnetid)
+        banners = User.show_banners(uwnetid)
+        context['show_welcome'] = "welcome" in banners
+        context['show_bottleneck'] = "bottleneck" in banners
+        context['show_outcomes'] = "outcomes" in banners
+
         context["django_debug"] = getattr(settings, "DEBUG", False)
         return context
 

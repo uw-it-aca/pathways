@@ -8,12 +8,22 @@ from django.core.exceptions import ObjectDoesNotExist
 class User(models.Model):
     uwnetid = models.CharField(max_length=32)
     has_viewed_welcome = models.BooleanField(default=False)
+    has_viewed_bottleneck_banner = models.BooleanField(default=False)
+    has_viewed_outcomes_banner = models.BooleanField(default=False)
     first_login = models.DateTimeField(auto_now_add=True)
 
     @staticmethod
-    def show_welcome(uwnetid):
+    def show_banners(uwnetid):
         try:
             user = User.objects.get(uwnetid=uwnetid)
-            return not user.has_viewed_welcome
+            banners = []
+            if not user.has_viewed_welcome:
+                banners.append("welcome")
+
+            if not user.has_viewed_bottleneck_banner:
+                banners.append("bottleneck")
+            if not user.has_viewed_outcomes_banner:
+                banners.append("outcomes")
+            return banners
         except ObjectDoesNotExist:
-            return True
+            return ["welcome", "bottleneck", "outcomes"]

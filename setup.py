@@ -26,7 +26,6 @@ setup(
     install_requires=[
         "django~=3.2",
         "UW-Django-SAML2~=1.5",
-        "django-webpack-loader",
     ],
     license="Apache License, Version 2.0",
     description="A tool for visually displaying UW course prerequisites",
@@ -37,6 +36,5 @@ setup(
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
     ],
 )

@@ -1,7 +1,7 @@
 <template>
-  <div class="card mb-5">
+  <div class="card mb-5 bg-light-beige border-0 p-3">
     <div class="card-body">
-      <h3>Are you considering this {{type}}?</h3>
+      <h2 class="h4">Are you considering this {{type}}?</h2>
       <p>
         We understand this can be a challenging process with many sources of information to
         consider. DawgPath is designed to be a useful tool but not a replacement for meeting
@@ -35,7 +35,7 @@ export default {
         return [
           {"label": "Find your premajor adviser",
            "url": "https://www.washington.edu/uaa/advising/appointments/"},
-          {"label": "Find your premajor OMAD adviser",
+          {"label": "Find your Office of Minority Affairs & Diversity (OMA&D) adviser",
            "url": "https://depts.washington.edu/omadcs/location/"},
           {"label": "Find your departmental or major adviser",
            "url": "https://www.washington.edu/uaa/advising/degree-overview/" +
@@ -43,7 +43,7 @@ export default {
       } else if (this.campus == "bothell") {
         return [
           {"label": "Find your Bothell adviser",
-           "url": "https://uwb.campus.eab.com/"}]
+           "url": "https://uwb.navigate.eab.com/"}]
       }
     }
   },

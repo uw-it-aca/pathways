@@ -6,6 +6,7 @@ from pathways.models.course import Course
 from pathways.models.curriculum import Curriculum
 from pathways.models.course_level import CourseLevel
 from pathways.models.coi_range import COIRange
+from django.core.exceptions import ObjectDoesNotExist
 import statistics
 import json
 
@@ -105,6 +106,38 @@ def import_level_coi(coi_data):
                 coi_score=round(statistics.mean(level_400))).save()
 
 
+def import_coi_ranges(coi_data):
+    COIRange.objects.all().delete()
+    course_count = len(coi_data)
+    range_0 = 0
+    range_1 = 0
+    range_2 = 0
+    range_3 = 0
+    range_4 = 0
+    for course in coi_data:
+        if 0 <= course['coi_score'] <= 1:
+            range_0 += 1
+            continue
+        if course['coi_score'] <= 2:
+            range_1 += 1
+            continue
+        if course['coi_score'] <= 3:
+            range_2 += 1
+            continue
+        if course['coi_score'] <= 4:
+            range_3 += 1
+            continue
+        if course['coi_score'] <= 5:
+            range_4 += 1
+            continue
+
+    COIRange(coi_range=0, percent_in_range=range_0 / course_count).save()
+    COIRange(coi_range=1, percent_in_range=range_1 / course_count).save()
+    COIRange(coi_range=2, percent_in_range=range_2 / course_count).save()
+    COIRange(coi_range=3, percent_in_range=range_3 / course_count).save()
+    COIRange(coi_range=4, percent_in_range=range_4 / course_count).save()
+
+
 def _get_curric_coi(coi_data):
     currics = {}
     for course in coi_data:
@@ -127,3 +160,41 @@ def _get_course_coi(course, coi_data):
 def _split_course_id(course_id):
     curric, delim, num = course_id.rpartition(" ")
     return curric, int(num)
+
+
+def import_gateway_courses(gateway_data):
+    gateway_course_objs = []
+    for row in gateway_data:
+        course_id = row[1] + " " + row[2]
+        try:
+            course = Course.objects.get(course_id=course_id)
+            course.is_gateway = True
+            gateway_course_objs.append(course)
+        except ObjectDoesNotExist:
+            pass
+        Course.objects.bulk_update(gateway_course_objs, ['is_gateway'])
+
+
+def import_bottleneck_courses(bottleneck_data):
+    bottleneck_course_objs = []
+    for row in bottleneck_data:
+        course_id = row[1] + " " + row[2]
+        try:
+            course = Course.objects.get(course_id=course_id)
+            course.is_bottleneck = True
+            bottleneck_course_objs.append(course)
+        except ObjectDoesNotExist:
+            pass
+        Course.objects.bulk_update(bottleneck_course_objs, ['is_bottleneck'])
+
+
+def import_career_center_mapping(career_major_data):
+    majors_to_update = []
+    for row in career_major_data:
+        try:
+            major = Major.objects.get(credential_code=row[0])
+            major.career_center_major = row[1]
+            majors_to_update.append(major)
+        except ObjectDoesNotExist:
+            pass
+    Major.objects.bulk_update(majors_to_update, ['career_center_major'])

@@ -18,12 +18,12 @@ services:
       - "${RUNSERVER_PORT:-8000}:8000"
     stdin_open: true
     tty: true
-  devtools:
+  node-bundler:
     build:
       context: .
-      target: wpack
+      target: node-bundler
     restart: always
-    container_name: pathways_devtools
+    container_name: pathways_node
     ports:
       - "${BUNDLE_ANALYZER_PORT:-8888}:8888" # Required when environment.BUNDLE_ANALYZER is true
     environment:
@@ -35,7 +35,7 @@ services:
       - ./pathways:/app/pathways # expose main django app so webpack-loader can output bundles here
       - ./pathways_vue:/app/pathways_vue
       - statics-volume:/static
-    command: npx webpack --watch --mode=development
+    command: npm run watch
     stdin_open: true
     tty: true
 volumes:

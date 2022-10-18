@@ -3,14 +3,13 @@
 <template>
   <div class="card mb-3">
     <div class="card-body">
-      <h4>Prerequisites <span class="badge rounded-pill bg-purple">{{prereqs.length}}</span></h4>
+      <h3>Prerequisites for {{ active_course }} <span class="badge rounded-pill bg-purple">{{prereqs.length}}</span></h3>
       <div class="mt-3">
         <ul class="list-unstyled mb-0">
           <li v-for="prereq in prereqs">
-            <a :href="'/course/?id='+prereq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
-              {{prereq.course_id}}
+            <a :href="'/course?id='+prereq.course_id" class="d-block mb-3">
+              {{prereq.course_id}}: {{prereq.course_title}}
             </a>
-            <span class="ms-3"><a :href="'/course/?id='+prereq.course_id">{{prereq.course_title}}</a></span>
           </li>
         </ul>
       </div>
@@ -18,16 +17,16 @@
   </div>
   <div class="card mb-3">
     <div class="card-body">
-      <h4>
-        Courses Available Upon Completion <span class="badge rounded-pill bg-purple">{{postreqs.length}}</span>
-      </h4>
+      <h3>
+        {{ active_course }} is a prerequisite for <span class="badge rounded-pill bg-purple">{{postreqs.length}}</span>
+      </h3>
+      <small>Some courses may require multiple prerequisites before completion.</small>
       <div class="mt-3">
         <ul class="list-unstyled mb-0">
           <li v-for="postreq in postreqs">
-            <a :href="'/course/?id='+postreq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
-              {{postreq.course_id}}
-            </a>
-            <span class="ms-3"><a :href="'/course/?id='+postreq.course_id" class="router-link-active" :title="'Go to course ' + postreq.course_id + ' ' + postreq.course_title">{{postreq.course_title}}</a></span>
+            <h4 class="fs-6"><a :href="'/course?id='+postreq.course_id" class="d-block mb-3" :title="'Go to course ' + postreq.course_id + ' ' + postreq.course_title">
+              {{postreq.course_id}}: {{postreq.course_title}}
+            </a></h4>
           </li>
         </ul>
       </div>
@@ -105,7 +104,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../css/custom.scss';
 li {
   list-style-type: none;
   padding-bottom: 0.5rem;
