@@ -37,7 +37,7 @@
       <div class="tab-content">
         <div class="tab-pane active" id="pm-course" role="tabpanel" aria-labelledby="course-tab">
           <div v-if="prereq_string">
-            <p><strong>Prerequisite: </strong> {{prereq_string}}</p>
+            <p class="mt-4"><strong>Prerequisite: </strong> {{prereq_string}}</p>
           </div>
           <prereq-course
             :graph_data="graph_data"
