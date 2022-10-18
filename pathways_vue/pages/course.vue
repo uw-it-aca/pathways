@@ -18,7 +18,11 @@
           </div>-->
           <!-- prereq map -->
           <div class="col-md-9">
-            <prereq-map :graph_data="courseData.prereq_graph" :active_course="courseId" />
+            <prereq-map
+              :graph_data="courseData.prereq_graph"
+              :active_course="courseId"
+              :prereq_string="courseData.prereq_string"
+            />
           </div>
 
           <div class="col-md-9">

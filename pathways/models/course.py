@@ -19,6 +19,7 @@ class Course(models.Model):
     prereq_graph = models.JSONField(null=True)
     course_description = models.TextField(null=True)
     course_offered = models.TextField(null=True)
+    prereq_string = models.TextField(null=True)
     coi_score = models.FloatField(null=True)
     is_bottleneck = models.BooleanField(default=False)
     is_gateway = models.BooleanField(default=False)
@@ -65,6 +66,7 @@ class Course(models.Model):
                 "gpa_distro": self.fix_gpa_json(self.gpa_distro),
                 "concurrent_courses": concurrrent,
                 "prereq_graph": graph,
+                "prereq_string": self.prereq_string,
                 "course_description": self.course_description,
                 "course_offered": self.course_offered,
                 "coi_data": self.get_coi_data(),
