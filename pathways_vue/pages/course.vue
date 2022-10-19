@@ -48,12 +48,8 @@
 
         <div class="order-1 row justify-content-center mb-5">
           <div class="col-md-9">
-            <search-chooser
-              :prefill-id="courseId"
-              :prefill-campus="courseCampus"
-              prefill-type="course"
-              @update:selected="switch_course"
-            />
+            <search-chooser :prefill-id="courseId" :prefill-campus="courseCampus" prefill-type="course"
+              @update:selected="switch_course" />
           </div>
         </div>
       </div>
@@ -141,4 +137,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>
