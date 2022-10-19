@@ -36,6 +36,9 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="pm-course" role="tabpanel" aria-labelledby="course-tab">
+          <div v-if="prereq_string">
+            <p class="mt-4"><strong>Prerequisite: </strong> {{prereq_string}}</p>
+          </div>
           <prereq-course
             :graph_data="graph_data"
             :active_course="active_course"
@@ -69,6 +72,10 @@ export default {
     graph_data: {
       type: Object,
       required: true,
+    },
+    prereq_string: {
+      type: String,
+      required: false,
     },
     active_course: {
       type: String,

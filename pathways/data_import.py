@@ -49,6 +49,7 @@ def import_course_data(data, coi_data):
             prereq_graph=course['prereq_graph'],
             course_description=course['course_description'],
             course_offered=course['offered_string'],
+            prereq_string=course['prereq_string'],
             coi_score=coi
         ))
     Course.objects.bulk_create(course_objs)
