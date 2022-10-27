@@ -18,11 +18,8 @@
           </div>-->
           <!-- prereq map -->
           <div class="col-md-9">
-            <prereq-map
-              :graph_data="courseData.prereq_graph"
-              :active_course="courseId"
-              :prereq_string="courseData.prereq_string"
-            />
+            <prereq-map :graph_data="courseData.prereq_graph" :active_course="courseId"
+              :prereq_string="courseData.prereq_string" />
           </div>
 
           <div class="col-md-9">
@@ -52,12 +49,8 @@
 
         <div class="order-1 row justify-content-center mb-5">
           <div class="col-md-9">
-            <search-chooser
-              :prefill-id="courseId"
-              :prefill-campus="courseCampus"
-              prefill-type="course"
-              @update:selected="switch_course"
-            />
+            <search-chooser :prefill-id="courseId" :prefill-campus="courseCampus" prefill-type="course"
+              @update:selected="switch_course" />
           </div>
         </div>
       </div>
@@ -95,12 +88,15 @@ export default {
       courseTitle: undefined,
       courseCampus: undefined,
       showError: false,
+      appName: "DawgPath",
     };
   },
   computed: {
     pageTitle: function () {
-      let no_title = this.showError ? 'Error' : 'Course';
-      return this.courseTitle !== undefined ? this.courseTitle + ' - Course' : no_title;
+      let no_title = this.showError ? "Error" : "Course";
+      return this.courseTitle !== undefined
+        ? (document.title = this.courseTitle + " - " + this.appName)
+        : no_title;
     },
   },
   mounted() {
@@ -111,7 +107,7 @@ export default {
       this.showError = true;
     }
 
-    this.emitter.on('update:selected', (selectedKey) => {
+    this.emitter.on("update:selected", (selectedKey) => {
       this.courseId = selectedKey;
     });
   },
@@ -124,13 +120,13 @@ export default {
       const vue = this;
       this.courseData = undefined;
       this.axios
-        .get('/api/v1/courses/details/' + course_id)
+        .get("/api/v1/courses/details/" + course_id)
         .then((response) => {
           vue.showError = false;
           vue.courseData = response.data;
           vue.courseCampus = response.data.course_campus;
           //vue.courseTitle = this.courseId + ': ' + response.data.course_title + ' - Course ';
-          vue.courseTitle = this.courseId + ': ' + response.data.course_title;
+          vue.courseTitle = this.courseId + ": " + response.data.course_title;
         })
         .catch(function (error) {
           vue.showError = true;
@@ -145,4 +141,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

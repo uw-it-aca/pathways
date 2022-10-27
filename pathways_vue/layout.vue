@@ -120,6 +120,10 @@ export default {
   mounted() {
     this.userName = window.user;
   },
+  created: function () {
+    // constructs page title in the following format "Page Title - AppName"
+    document.title = this.pageTitle + " - " + this.appName;
+  },
 };
 </script>
 
