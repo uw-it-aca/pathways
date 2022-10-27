@@ -206,7 +206,9 @@ export default {
         this.selectedLabel = "";
       }
     },
+    /*
     prefillCampus() {
+      console.log("prefillCampus");
       this.selectedCampus = this.prefillCampus;
       if (this.prefillType === "major") {
         this.fetch_major_data();
@@ -215,6 +217,7 @@ export default {
       }
       this.doPrefill = true;
     },
+    */
     majorList() {
       if (this.doPrefill) {
         this.prefillForm();
@@ -225,12 +228,14 @@ export default {
         this.prefillForm();
       }
     },
-    prefillCampus(pc) {
+    prefillCampus() {
+      // console.log("prefillCampus");
       this.startPrefill();
     },
   },
   methods: {
     startPrefill() {
+      console.log("startPrefill");
       if (
         this.prefillCampus !== null &&
         this.prefillType !== null &&
