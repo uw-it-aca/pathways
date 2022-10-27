@@ -207,6 +207,8 @@ export default {
       }
     },
     prefillCampus() {
+      console.log("prefill 1");
+
       this.selectedCampus = this.prefillCampus;
       if (this.prefillType === "major") {
         this.fetch_major_data();
@@ -225,9 +227,12 @@ export default {
         this.prefillForm();
       }
     },
+    /*
     prefillCampus(pc) {
+      console.log("prefill 2");
       this.startPrefill();
     },
+    */
   },
   methods: {
     startPrefill() {

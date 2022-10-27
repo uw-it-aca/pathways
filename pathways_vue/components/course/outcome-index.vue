@@ -240,9 +240,11 @@ svg {
 .bi {
   margin-right: 1rem;
 }
+
 .key-desc {
   font-weight: normal;
 }
+
 .display-none {
   display: none;
 }

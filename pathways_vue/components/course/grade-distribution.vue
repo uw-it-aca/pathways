@@ -41,7 +41,7 @@
           >
         </div>
       </div>
-      <div aria-hidden="true" id="gcd_graph" :class="[ viewDataTable ? 'visually-hidden' : '']" />
+      <div aria-hidden="true" id="gcd-graph" :class="[ viewDataTable ? 'visually-hidden' : '']" />
 
       <div v-if="total_count > 8" id="dataTable">
         <table class="table" v-if="viewDataTable">
@@ -122,7 +122,7 @@ export default {
       let vue = this;
 
       // clear chart
-      document.getElementById('gcd_graph').innerHTML = '';
+      document.getElementById('gcd-graph').innerHTML = '';
 
       // Update count
       var count = gpa_data.reduce(function (accumulator, currentValue) {
@@ -148,7 +148,7 @@ export default {
       // append a 'group' element to 'svg'
       // moves the 'group' element to the top left margin
       var svg = d3
-        .select('#gcd_graph')
+        .select('#gcd-graph')
         .append('svg')
         .attr('class', function (d) {
           if (s_count < 8) {
@@ -249,13 +249,15 @@ export default {
 .chart-label {
   color: red;
 }
-#gcd_graph {
+
+#gcd-graph {
   margin-bottom: 1rem;
 }
 
 .bar {
   fill: #4b2e83;
 }
+
 .bar:hover {
   fill: #333;
 }
@@ -264,7 +266,7 @@ export default {
 .axis line {
   fill: none;
   stroke: #000;
-  shape-rendering: crispEdges;
+  shape-rendering: crispedges;
 }
 
 div.tooltip {
@@ -278,7 +280,7 @@ div.tooltip {
   border-radius: 4px;
   width: 7.5rem;
   height: 2.5rem;
-  font: 12px sans-serif;
+  font-size: 12px sans-serif;
   pointer-events: none;
 }
 </style>

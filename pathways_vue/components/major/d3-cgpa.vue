@@ -378,6 +378,7 @@ export default {
 .bar {
   fill: #4b2e83;
 }
+
 .bar:hover {
   fill: #333;
 }
@@ -386,7 +387,7 @@ export default {
 .axis line {
   fill: none;
   stroke: #000;
-  shape-rendering: crispEdges;
+  shape-rendering: crispedges;
 }
 
 div.tooltip {
@@ -400,7 +401,7 @@ div.tooltip {
   border-radius: 4px;
   width: 7.5rem;
   height: 2.5rem;
-  font: 12px sans-serif;
+  font-size: 12px sans-serif;
   pointer-events: none;
 }
 </style>

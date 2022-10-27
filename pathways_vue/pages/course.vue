@@ -31,7 +31,7 @@
         </div>
         <div v-else class="row order-2 justify-content-sm-center">
           <div v-if="showError" class="col-md-9">
-            <div class="alert alert-purple" role="alert">
+            <div class="alert alert-purple border-0" role="alert">
               <p>Data is not available for selected course. Here are some possible reasons:</p>
               <ul>
                 <li>This course is no longer offered</li>
@@ -140,7 +140,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-
-</style>
