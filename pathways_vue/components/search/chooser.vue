@@ -330,8 +330,7 @@ export default {
 }
 
 .form-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  appearance: none;
   text-indent: 1px;
 }
 </style>
