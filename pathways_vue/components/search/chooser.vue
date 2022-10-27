@@ -70,6 +70,7 @@
             </option>
           </select>
           <!-- TODO: wire is-invalid class to datalist validation -->
+
           <input
             type="text"
             class="form-control"
@@ -82,10 +83,12 @@
             :disabled="searchType.length === 0"
             id="searchInput"
             @change="validateInput"
+            @keypress="validateInput"
+            @keydown="disableEnter($event)"
           />
           <button
             type="button"
-            class="btn btn-purple"
+            class="btn btn-purple rounded-end"
             :disabled="
               searchType.length === 0 ||
               loadingList ||
@@ -96,10 +99,11 @@
           >
             Go
           </button>
+          <div class="invalid-feedback">
+            Please select from the options in the dropdown
+          </div>
         </div>
-        <div class="invalid-feedback">
-          Please select from the options in the dropdown
-        </div>
+
         <datalist id="searchDataList">
           <option
             v-for="(option, i) in renderableOptions"
@@ -206,9 +210,9 @@ export default {
         this.selectedLabel = "";
       }
     },
+    /*
     prefillCampus() {
-      console.log("prefill 1");
-
+      console.log("prefillCampus");
       this.selectedCampus = this.prefillCampus;
       if (this.prefillType === "major") {
         this.fetch_major_data();
@@ -217,6 +221,7 @@ export default {
       }
       this.doPrefill = true;
     },
+    */
     majorList() {
       if (this.doPrefill) {
         this.prefillForm();
@@ -227,15 +232,14 @@ export default {
         this.prefillForm();
       }
     },
-    /*
-    prefillCampus(pc) {
-      console.log("prefill 2");
+    prefillCampus() {
+      // console.log("prefillCampus");
       this.startPrefill();
     },
-    */
   },
   methods: {
     startPrefill() {
+      console.log("startPrefill");
       if (
         this.prefillCampus !== null &&
         this.prefillType !== null &&
@@ -317,6 +321,13 @@ export default {
         this.isValidInput = true;
       } else {
         this.isValidInput = false;
+      }
+    },
+    disableEnter(e) {
+      if (e.keyCode == 13) {
+        // this.validateInput();
+        e.preventDefault();
+        return false;
       }
     },
   },
