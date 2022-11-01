@@ -79,12 +79,15 @@ export default {
       campus: undefined,
       major_data: undefined,
       showError: false,
+      appName: "DawgPath",
     };
   },
   computed: {
     pageTitle: function () {
-      let no_title = this.showError ? 'Error' : 'Major';
-      return this.majorTitle !== undefined ? this.majorTitle + ' - Major' : no_title;
+      let no_title = this.showError ? "Error" : "Major";
+      return this.majorTitle !== undefined
+        ? (document.title = this.majorTitle + " - " + this.appName)
+        : no_title;
     },
   },
   methods: {
@@ -125,5 +128,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss"></style>

@@ -2,7 +2,7 @@
 
 <template>
   <div class="mb-3">
-    <h1 class="h2 pw-font-encode-sans">{{ course.course_id }}: {{ course.course_title }}</h1>
+    <h1 class="h2 axdd-font-encode-sans fw-bold">{{ course.course_id }}: {{ course.course_title }}</h1>
       <icon-popover v-if="course.is_bottleneck" :variant="'bottleneck'"></icon-popover>
       <icon-popover v-if="course.is_gateway" :variant="'gateway'"></icon-popover>
     <div>
@@ -91,6 +91,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-</style>

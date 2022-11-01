@@ -35,6 +35,7 @@ export default {
   ul {
     padding-left: 0;
   }
+
   li {
     list-style-type: none;
     padding-bottom: 0.5rem;

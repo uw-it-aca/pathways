@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body">
-      <h2 class="h4 pw-font-encode-sans">Prerequisite Map</h2>
+      <h2 class="h4 axdd-font-encode-sans fw-bold">Prerequisite Map</h2>
       <ul class="nav nav-tabs" id="PrereqMapTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button
@@ -36,6 +36,9 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="pm-course" role="tabpanel" aria-labelledby="course-tab">
+          <div v-if="prereq_string">
+            <p class="mt-4"><strong>Prerequisite: </strong> {{prereq_string}}</p>
+          </div>
           <prereq-course
             :graph_data="graph_data"
             :active_course="active_course"
@@ -70,6 +73,10 @@ export default {
       type: Object,
       required: true,
     },
+    prereq_string: {
+      type: String,
+      required: false,
+    },
     active_course: {
       type: String,
       required: true,
@@ -86,5 +93,3 @@ export default {
   methods: {},
 };
 </script>
-
-<style lang="scss"></style>

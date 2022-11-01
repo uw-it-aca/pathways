@@ -1,10 +1,11 @@
 @use "sass:map";
-@import 'axdd-components/src/assets/css/custom.scss';
+@import 'axdd-components/src/assets/css/theme';
 
-// override variables
-$nav-height: 52px;
-$bar-height: 40px;
-$link-color: #0069d9; //a11y blue
+// https://getbootstrap.com/docs/5.1/customize/options/
+// TODO: enable bootstrap options for the app
+// $enable-cssgrid: true;
+// $enable-gradients: true;
+$enable-negative-margins: true;
 
 // pathways custom theme colors
 $custom-colors: (
@@ -18,24 +19,45 @@ $custom-colors: (
   "light-gray": #F8F9FA,
 );
 
-// axdd-components + pathways custom colors
+// bootstrap theme + utility merging
 $theme-colors: map-merge($theme-colors, $custom-colors);
 $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
 $utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
 $utilities-text-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
 $utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
-
-// import bootstrap and bootstrap-icons
-@import "bootstrap/scss/bootstrap";
-@import "bootstrap-icons/font/bootstrap-icons.css";
-
-// additional non-bootstrap styles
-
-.blah { color: purple; }
-
-a {
-  text-decoration: none;
-}
+$utilities: (
+  // MARK: bg-color-hover (changes bg-color on hover)
+  "background-color":
+    (
+      property: background-color,
+      class: bg,
+      state: hover focus,
+      values:
+        map-merge(
+          $theme-colors,
+          (
+            "body": $body-bg,
+            "white": $white,
+            "transparent": transparent,
+          )
+        ),
+    ),
+  // MARK: text-color-hover (changes text-color on hover)
+  "color":
+    (
+      property: color,
+      class: text,
+      state: hover focus,
+      values:
+        map-merge(
+          $theme-colors,
+          (
+            "white": $white,
+            "transparent": transparent,
+          )
+        ),
+    )
+);
 
 // global pathways colors
 
@@ -44,14 +66,6 @@ a {
 .pw-blue { background-color: $blue-200; }
 .creamcicle { background-color: $orange-200; }
 .yellow { background-color: $yellow-200; }
-
-// custom fonts
-.pw-font-open-sans {
-  font-family: 'Open Sans', sans-serif !important;
-}
-.pw-font-encode-sans {
-  font-family: 'Encode Sans', sans-serif !important;
-}
 
 // custom course btn
 .btn-course {
@@ -66,4 +80,6 @@ a {
   border-radius: 0.25rem;
 }
 
-
+// import bootstrap and bootstrap-icons
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";

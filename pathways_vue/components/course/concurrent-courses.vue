@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div v-if="concurrent_courses.length === 0" class="card-body">
-      <h2 class="h4 pw-font-encode-sans">Concurrent Courses</h2>
+      <h2 class="h4 axdd-font-encode-sans fw-bold">Concurrent Courses</h2>
       <div class="alert alert-purple" role="alert">
         <p>
           No concurrent courses available for <strong>{{ courseData.course_id }}</strong
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div v-else class="card-body">
-      <h2 class="h4 pw-font-encode-sans">Concurrent Courses</h2>
+      <h2 class="h4 axdd-font-encode-sans fw-bold">Concurrent Courses</h2>
       <p>
         Students who took <strong>{{ courseData.course_id }}</strong> in the past 2 years also took
         the following courses at the same time.
@@ -157,14 +157,14 @@ export default {
 
 <style lang="scss">
 .table {
-  --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
+  --bs-table-striped-bg: rgb(179 175 124 / 12%);
 }
+
 .icon-col {
   .round-sm {
     height: 18px;
     width: 18px;
     line-height: 18px;
-    -moz-border-radius: 15px;
     border-radius: 15px;
     font-size: 0.7em;
 
