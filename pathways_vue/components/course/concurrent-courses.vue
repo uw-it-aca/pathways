@@ -157,14 +157,14 @@ export default {
 
 <style lang="scss">
 .table {
-  --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
+  --bs-table-striped-bg: rgb(179 175 124 / 12%);
 }
+
 .icon-col {
   .round-sm {
     height: 18px;
     width: 18px;
     line-height: 18px;
-    -moz-border-radius: 15px;
     border-radius: 15px;
     font-size: 0.7em;
 

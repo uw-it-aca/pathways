@@ -127,14 +127,14 @@ export default {
 
 <style lang="scss" scoped>
 .table {
-  --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
+  --bs-table-striped-bg: rgb(179 175 124 / 12%);
 }
 
 tbody {
   counter-reset: rank;
 }
 
-tbody tr td.rank:not(:first-child):after {
+tbody tr td.rank:not(:first-child)::after {
   counter-increment: rank;
   content: counter(rank);
 }
