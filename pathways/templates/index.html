@@ -1,5 +1,6 @@
 {% load static %}
 {% load vite %}
+{% load hashing_tag %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,6 +36,7 @@
       window.show_bottleneck = {{  show_bottleneck | yesno:"true,false" }};
       window.show_outcomes = {{  show_outcomes | yesno:"true,false" }};
       window.csrf_token = '{{  csrf_token }}';
+      window.hashed_netid = '{% hash_netid user %}';
     </script>
 
     <!-- vue app will be injected here -->

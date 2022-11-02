@@ -31,11 +31,11 @@
     "mitt": "^3.0.0",
     "numeral": "^2.0.6",
     "vue": "^3.2.38",
-    "vue-gtag": "^2.0.1",
+    "vue-axios": "^3.3.6",
+    "vue-gtag-next": "^1.14.0",
     "vue-router": "^4.1.5",
     "vue3-cookies": "^1.0.6",
-    "vue3-mq": "^3.1.0",
-    "vue-axios": "^3.3.6"
+    "vue3-mq": "^3.1.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
