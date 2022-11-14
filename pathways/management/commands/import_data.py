@@ -53,10 +53,9 @@ class Command(BaseCommand):
             with open(GATEWAY_PATH) as gateway_file:
                 data = csv.reader(gateway_file)
                 import_gateway_courses(data)
-            # Omitting bottleneck courses from release
-            # with open(BOTTLENECK_PATH) as bottleneck_file:
-            #     data = csv.reader(bottleneck_file)
-            #     import_bottleneck_courses(data)
+            with open(BOTTLENECK_PATH) as bottleneck_file:
+                data = csv.reader(bottleneck_file)
+                import_bottleneck_courses(data)
             with open(CAREER_CENTER_PATH) as career_major_file:
                 data = csv.reader(career_major_file)
                 import_career_center_mapping(data)
