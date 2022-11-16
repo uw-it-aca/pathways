@@ -215,7 +215,17 @@
               <h2 id="bottleneck" class="fw-bold fs-5">
                 What are "bottleneck" courses?
               </h2>
-              <p>answer here</p>
+              <p>
+                A bottleneck course is one that can be major specific, difficult
+                to register for, and is necessary for a student's completion of
+                their major requirements. These courses may not be offered
+                frequently and are prerequisites for other courses. <br /><a
+                  href="https://itconnect.uw.edu/wp-content/uploads/2022/09/Gateway-and-Bottleneck-Courses.pdf"
+                  title="IT Connect Bottleneck courses PDF"
+                  >Learn about the process of identifying bottleneck courses
+                  (PDF).</a
+                >
+              </p>
               <h2 id="gateway" class="fw-bold fs-5">
                 What are "gateway" courses?
               </h2>
