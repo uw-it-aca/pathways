@@ -53,7 +53,7 @@
                 </li>
                 <li class="list-inline-item item-dot">
                   <a
-                    href="https://itconnect.uw.edu/learn/success-analytics/apps/#dawg"
+                    href="https://itconnect.uw.edu/tools-services-support/teaching-learning/research/success-analytics/apps/#dawg"
                     title="DawgPath Docs on IT Connect"
                     class="text-white text-decoration-none me-2"
                     >Documentation</a
