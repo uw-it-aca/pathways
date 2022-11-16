@@ -1,13 +1,13 @@
 // banner.vue
 
 <template>
-  <div
-    v-if="show_outcomes"
-    class="alert alert-primary alert-dismissible fade show text-center mb-0"
-  >
-    <strong>New Feature!</strong> What have recent UW graduates done with their
-    degree? Check out the "<strong>Career Outcomes</strong>" link, available for
-    most majors.
+  <div class="alert alert-info alert-dismissible fade show text-center mb-0"
+  > <!-- v-if="show_bottleneck" -->
+    <strong>New Feature!</strong> DawgPath now shows which courses act as a
+    bottleneck. Look for the bottleneck icon
+    <div class="round round-sm bg-danger">
+      <span class="material-symbols-outlined fw-bold">call_merge</span>
+    </div>  in course listings.  <a href="/faq#bottleneck" class="router-link">Learn more.</a>
     <button
       type="button"
       class="btn btn-link close"
