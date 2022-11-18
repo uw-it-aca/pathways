@@ -28,15 +28,16 @@ export default {
   },
   computed: {
     advisingInfo: function () {
+      let infoArray = [];
       if (this.campus == "tacoma") {
-        return [
+        infoArray = [
           {
             label: "Find your Tacoma adviser",
             url: "https://www.tacoma.uw.edu/gaa#permalink-37917",
           },
         ];
       } else if (this.campus == "seattle") {
-        return [
+        infoArray = [
           {
             label: "Find your premajor adviser",
             url: "https://www.washington.edu/uaa/advising/appointments/",
@@ -54,13 +55,14 @@ export default {
           },
         ];
       } else if (this.campus == "bothell") {
-        return [
+        infoArray = [
           {
             label: "Find your Bothell adviser",
             url: "https://uwb.navigate.eab.com/",
           },
         ];
       }
+      return infoArray;
     },
   },
   methods: {},

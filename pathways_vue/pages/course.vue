@@ -74,12 +74,13 @@ import SearchChooser from "../components/search/chooser.vue";
 import GradeDistribution from "../components/course/grade-distribution.vue";
 import CourseDetails from "../components/course/course-details.vue";
 import ExploreCourse from "../components/course/explore-course.vue";
-import OutcomeIndex from "../components/course/outcome-index.vue";
+//import OutcomeIndex from "../components/course/outcome-index.vue";
 import PrereqMap from "../components/course/prereq-map.vue";
 import ConcurrentCourses from "../components/course/concurrent-courses.vue";
 import ContactAdviser from "../components/common/contact-adviser.vue";
 
 export default {
+  name: "CourseComp",
   components: {
     layout: Layout,
     "search-chooser": SearchChooser,
@@ -138,7 +139,7 @@ export default {
           //vue.courseTitle = this.courseId + ': ' + response.data.course_title + ' - Course ';
           vue.courseTitle = this.courseId + ": " + response.data.course_title;
         })
-        .catch(function (error) {
+        .catch(function () {
           vue.showError = true;
         });
     },

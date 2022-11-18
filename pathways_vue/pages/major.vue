@@ -65,6 +65,7 @@ import D3Cgpa from "../components/major/d3-cgpa.vue";
 import ContactAdviser from "../components/common/contact-adviser.vue";
 
 export default {
+  name: "MajorComp",
   components: {
     layout: Layout,
     "search-chooser": SearchChooser,
@@ -109,7 +110,7 @@ export default {
             vue.majorTitle = vue.major_data.credential_title;
             vue.showError = false;
           })
-          .catch(function (error) {
+          .catch(function () {
             vue.showError = true;
           });
       } else {

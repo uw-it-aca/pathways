@@ -5,7 +5,8 @@
     <div class="alert alert-purple" role="alert">
       <p>
         The course
-        <strong>{{ active_course }}</strong> does not have prereqs and is not a prereq for other courses.
+        <strong>{{ active_course }}</strong> does not have prereqs and is not a
+        prereq for other courses.
       </p>
     </div>
   </div>
@@ -18,10 +19,9 @@
           v-model="viewCourseList"
           id="ToggleCourseList"
         />
-        <label
-          class="form-check-label"
-          for="ToggleCourseList"
-        >View {{ active_course }} prereqs as a list</label>
+        <label class="form-check-label" for="ToggleCourseList"
+          >View {{ active_course }} prereqs as a list</label
+        >
       </div>
     </div>
     <prereq-course-list
@@ -30,23 +30,30 @@
       :active_course="active_course"
     />
     <div class="card shadow-sm" id="ViewCourseMap" v-else>
-      <prereq-graph :graph_data="graph_data" graph_type="course" :active_course="active_course" />
+      <prereq-graph
+        :graph_data="graph_data"
+        graph_type="course"
+        :active_course="active_course"
+      />
       <div class="text-dark p-3 bg-light rounded-top rounded-sm">
-        <small>Use the scroll function on your mouse or touchpad to zoom in and out</small>
+        <small
+          >Use the scroll function on your mouse or touchpad to zoom in and
+          out</small
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import PrereqCourseList from './prereq-course-list.vue';
-import PrereqGraph from './prereq-graph.vue';
+import PrereqCourseList from "./prereq-course-list.vue";
+import PrereqGraph from "./prereq-graph.vue";
 
 export default {
-  name: 'PrereqCourse',
+  name: "PrereqCourse",
   components: {
     PrereqGraph,
-    'prereq-course-list': PrereqCourseList,
+    "prereq-course-list": PrereqCourseList,
   },
   data() {
     return {
@@ -68,8 +75,8 @@ export default {
       if (this.graph_data && this.graph_data.x) {
         return Object.keys(this.graph_data.x.edges.from).length > 0;
       }
-      return false
-    }
-  }
+      return false;
+    },
+  },
 };
 </script>

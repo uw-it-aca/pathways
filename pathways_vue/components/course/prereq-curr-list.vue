@@ -2,16 +2,35 @@
 
 <template>
   <p class="fw-bold">
-    NOTE: This is an overview of every course in the department. For information on majors,
-    please search for a major using the main search function. Some courses may require multiple prerequisites before completion.
+    NOTE: This is an overview of every course in the department. For information
+    on majors, please search for a major using the main search function. Some
+    courses may require multiple prerequisites before completion.
   </p>
   <ul class="list-unstyled">
     <li class="mb-3" v-for="(course, index) in courseData" :key="index">
       <div class="card shadow-sm">
         <div class="card-body p-3">
-          <h3 class="fs-6 d-flex justify-content-between"><a :href="'/course?id=' + course.course_id" class="d-inline-block mb-3" :title="'Go to course ' + course.course_id + ' ' + course.course_title">
-              {{course.course_id}}: {{course.course_title}}</a>
-              <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" :data-bs-target="'#collapsePrereqs_' + index" aria-expanded="false" aria-controls="collapsePrereqs">Show/hide list</button></h3>
+          <h3 class="fs-6 d-flex justify-content-between">
+            <a
+              :href="'/course?id=' + course.course_id"
+              class="d-inline-block mb-3"
+              :title="
+                'Go to course ' + course.course_id + ' ' + course.course_title
+              "
+            >
+              {{ course.course_id }}: {{ course.course_title }}</a
+            >
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              data-bs-toggle="collapse"
+              :data-bs-target="'#collapsePrereqs_' + index"
+              aria-expanded="false"
+              aria-controls="collapsePrereqs"
+            >
+              Show/hide list
+            </button>
+          </h3>
           <div class="collapse" :id="'collapsePrereqs_' + index">
             <div class="container">
               <div class="row">
@@ -19,36 +38,56 @@
                   <div>
                     <small
                       ><strong class="text-dark">Prerequisites</strong>
-                      <span class="badge rounded-pill bg-purple">{{course.prereqs.length}}</span
+                      <span class="badge rounded-pill bg-purple">{{
+                        course.prereqs.length
+                      }}</span
                       ><span class="visually-hidden">courses</span></small
                     >
                   </div>
                   <ul class="prereq-list" v-if="course.prereqs.length > 0">
-                    <li v-for="prereq in course.prereqs">
-                      <a :href="'/course?id=' + prereq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
-                        {{prereq.course_id}}</a
+                    <li v-for="(prereq, index) in course.prereqs" :key="index">
+                      <a
+                        :href="'/course?id=' + prereq.course_id"
+                        class="btn-primary btn-course router-link-active text-decoration-none"
+                      >
+                        {{ prereq.course_id }}</a
                       >
                     </li>
                   </ul>
 
-                  <div v-else><small>This course has no prerequisites.</small></div>
+                  <div v-else>
+                    <small>This course has no prerequisites.</small>
+                  </div>
                 </div>
                 <div class="p-0 col-sm-6">
                   <div>
                     <small
                       ><strong class="text-dark">Is a prerequisite for</strong>
-                      <span class="badge rounded-pill bg-purple">{{course.postreqs.length}}</span
+                      <span class="badge rounded-pill bg-purple">{{
+                        course.postreqs.length
+                      }}</span
                       ><span class="visually-hidden">courses</span></small
                     >
                   </div>
                   <ul class="prereq-list" v-if="course.postreqs.length > 0">
-                    <li v-for="postreq in course.postreqs">
-                      <a :href="'/course?id=' + postreq.course_id" class="btn-primary btn-course router-link-active text-decoration-none">
-                      {{postreq.course_id}}</a
+                    <li
+                      v-for="(postreq, index) in course.postreqs"
+                      :key="index"
+                    >
+                      <a
+                        :href="'/course?id=' + postreq.course_id"
+                        class="btn-primary btn-course router-link-active text-decoration-none"
+                      >
+                        {{ postreq.course_id }}</a
                       >
                     </li>
                   </ul>
-                  <div v-else><small>This course is not a prerequisite for other courses.</small></div>
+                  <div v-else>
+                    <small
+                      >This course is not a prerequisite for other
+                      courses.</small
+                    >
+                  </div>
                 </div>
               </div>
             </div>
@@ -61,7 +100,7 @@
 
 <script>
 export default {
-  name: 'PrereqCurrList',
+  name: "PrereqCurrList",
   data() {
     return {};
   },
@@ -69,7 +108,7 @@ export default {
     courseData: {
       type: Array,
       required: true,
-    }
+    },
   },
   methods: {},
 };
@@ -87,7 +126,7 @@ export default {
 }
 
 .prereq-list li:last-child a::after {
-  content: '';
+  content: "";
 }
 
 .rounded-pill {

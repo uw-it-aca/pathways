@@ -89,6 +89,7 @@ import SearchChooser from "../components/search/chooser.vue";
 import { Modal } from "bootstrap";
 
 export default {
+  name: "HomeComp",
   components: {
     layout: Layout,
     "search-chooser": SearchChooser,
@@ -106,7 +107,7 @@ export default {
     }
   },
   methods: {
-    showWelcomeModal(event) {
+    showWelcomeModal() {
       this.welcomeModal = new Modal(
         document.getElementById("exampleModal"),
         {}

@@ -51,7 +51,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="course in commonCourses" class="align-middle">
+          <tr
+            v-for="(course, index) in commonCourses"
+            :key="index"
+            class="align-middle"
+          >
             <td>
               <div class="icon-col">
                 <icon-popover
@@ -137,7 +141,7 @@ export default {
     },
   },
   watch: {
-    commonCourses: function (course) {
+    commonCourses: function () {
       if (this.commonCourses.length > 0) {
         // Hack to get popovers to only init once element has rendered
         setTimeout(function () {
