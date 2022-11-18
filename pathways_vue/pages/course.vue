@@ -18,8 +18,11 @@
           </div>-->
           <!-- prereq map -->
           <div class="col-md-9">
-            <prereq-map :graph_data="courseData.prereq_graph" :active_course="courseId"
-              :prereq_string="courseData.prereq_string" />
+            <prereq-map
+              :graph_data="courseData.prereq_graph"
+              :active_course="courseId"
+              :prereq_string="courseData.prereq_string"
+            />
           </div>
 
           <div class="col-md-9">
@@ -32,11 +35,14 @@
         <div v-else class="row order-2 justify-content-sm-center">
           <div v-if="showError" class="col-md-9">
             <div class="alert alert-purple border-0" role="alert">
-              <p>Data is not available for selected course. Here are some possible reasons:</p>
+              <p>
+                Data is not available for selected course. Here are some
+                possible reasons:
+              </p>
               <ul>
                 <li>This course is no longer offered</li>
                 <li>It is a graduate course</li>
-                <li>You made a typo -- the course code doesn’t exist.</li>
+                <li>You made a typo -- the course code doesn't exist.</li>
               </ul>
             </div>
           </div>
@@ -49,8 +55,12 @@
 
         <div class="order-1 row justify-content-center mb-5">
           <div class="col-md-9">
-            <search-chooser :prefill-id="courseId" :prefill-campus="courseCampus" prefill-type="course"
-              @update:selected="switch_course" />
+            <search-chooser
+              :prefill-id="courseId"
+              :prefill-campus="courseCampus"
+              prefill-type="course"
+              @update:selected="switch_course"
+            />
           </div>
         </div>
       </div>
@@ -59,27 +69,27 @@
 </template>
 
 <script>
-import Layout from '../layout.vue';
-import SearchChooser from '../components/search/chooser.vue';
-import GradeDistribution from '../components/course/grade-distribution.vue';
-import CourseDetails from '../components/course/course-details.vue';
-import ExploreCourse from '../components/course/explore-course.vue';
-import OutcomeIndex from '../components/course/outcome-index.vue';
-import PrereqMap from '../components/course/prereq-map.vue';
-import ConcurrentCourses from '../components/course/concurrent-courses.vue';
-import ContactAdviser from '../components/common/contact-adviser.vue';
+import Layout from "../layout.vue";
+import SearchChooser from "../components/search/chooser.vue";
+import GradeDistribution from "../components/course/grade-distribution.vue";
+import CourseDetails from "../components/course/course-details.vue";
+import ExploreCourse from "../components/course/explore-course.vue";
+import OutcomeIndex from "../components/course/outcome-index.vue";
+import PrereqMap from "../components/course/prereq-map.vue";
+import ConcurrentCourses from "../components/course/concurrent-courses.vue";
+import ContactAdviser from "../components/common/contact-adviser.vue";
 
 export default {
   components: {
     layout: Layout,
-    'search-chooser': SearchChooser,
-    'course-details': CourseDetails,
-    'explore-course': ExploreCourse,
-    'grade-distribution': GradeDistribution,
-    'outcome-index': OutcomeIndex,
-    'contact-adviser': ContactAdviser,
-    'prereq-map': PrereqMap,
-    'concurrent-courses': ConcurrentCourses,
+    "search-chooser": SearchChooser,
+    "course-details": CourseDetails,
+    "explore-course": ExploreCourse,
+    "grade-distribution": GradeDistribution,
+    //'outcome-index': OutcomeIndex,
+    "contact-adviser": ContactAdviser,
+    "prereq-map": PrereqMap,
+    "concurrent-courses": ConcurrentCourses,
   },
   data() {
     return {

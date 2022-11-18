@@ -9,7 +9,9 @@
     bottleneck. Look for the bottleneck icon
     <div class="round round-sm bg-danger">
       <span class="material-symbols-outlined fw-bold">call_merge</span>
-    </div>  in course listings.  <a href="/faq#bottleneck" class="router-link">Learn more.</a>
+    </div>
+    in course listings.
+    <a href="/faq#bottleneck" class="router-link">Learn more.</a>
     <button
       type="button"
       class="btn btn-link close"

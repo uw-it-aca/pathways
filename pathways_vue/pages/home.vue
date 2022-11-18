@@ -23,26 +23,32 @@
                   <h2 class="modal-title mb-2" id="welcome_modal">Welcome</h2>
                   <div>
                     <p>
-                      DawgPath helps you discover courses and majors you're interested in and
-                      enables you to be strategic when making decisions about your quarterly class
-                      schedule. It provides useful data when planning to apply to majors that have
-                      selective screening. A few things to keep in mind before getting started:
+                      DawgPath helps you discover courses and majors you're
+                      enables you to be strategic when making decisions about
+                      schedule. It provides useful data when planning to apply
+                      selective screening. A few things to keep in mind before
+                      getting started:
                     </p>
                     <ul>
                       <li>
-                        Grades are just one of the factors considered for admission to a
-                        capacity-constrained major. Reach out to your adviser to learn more.
+                        Grades are just one of the factors considered for
+                        capacity-constrained major. Reach out to your adviser to
+                        learn more.
                       </li>
                       <li>
-                        The median course grade and GPA data are only included for those students
+                        The median course grade and GPA data are only included
                         who had declared for the major.
                       </li>
 
                       <li>
-                        Discovering and applying for a major can be a challenging experience. Look
-                        for the "Find your adviser” links to connect with your adviser.
+                        Discovering and applying for a major can be a
+                        challenging experience. Look for the "Find your adviser”
+                        links to connect with your adviser.
                       </li>
-                      <li>Check out the <a href="/faq">DawgPath FAQ</a> for more info.</li>
+                      <li>
+                        Check out the <a href="/faq">DawgPath FAQ</a> for more
+                        info.
+                      </li>
                     </ul>
                   </div>
                   <div class="text-end">
@@ -77,19 +83,19 @@
 </template>
 
 <script>
-import Layout from '../layout.vue';
-import SearchChooser from '../components/search/chooser.vue';
+import Layout from "../layout.vue";
+import SearchChooser from "../components/search/chooser.vue";
 
-import { Modal } from 'bootstrap';
+import { Modal } from "bootstrap";
 
 export default {
   components: {
     layout: Layout,
-    'search-chooser': SearchChooser,
+    "search-chooser": SearchChooser,
   },
   data() {
     return {
-      pageTitle: 'Home',
+      pageTitle: "Home",
       welcomeModal: null,
     };
   },
@@ -101,14 +107,17 @@ export default {
   },
   methods: {
     showWelcomeModal(event) {
-      this.welcomeModal = new Modal(document.getElementById('exampleModal'), {});
+      this.welcomeModal = new Modal(
+        document.getElementById("exampleModal"),
+        {}
+      );
       this.welcomeModal.show();
     },
     saveModalPref() {
       this.axios({
-        method: 'post',
-        url: '/api/v1/user_pref/',
-        headers: { 'X-CSRFToken': window.csrf_token },
+        method: "post",
+        url: "/api/v1/user_pref/",
+        headers: { "X-CSRFToken": window.csrf_token },
         data: {
           viewed_welcome_display: true,
         },
