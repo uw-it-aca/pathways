@@ -101,7 +101,8 @@
             Go
           </button>
           <div class="invalid-feedback">
-            Please select from the options in the dropdown
+            <template v-if="isMobileSafari">This is a message for Mobile Safari users.</template>
+            <template v-else>Please select from the options in the dropdown</template>
           </div>
         </div>
 
@@ -191,6 +192,13 @@ export default {
     },
     searchValue() {
       return this.selectedLabel;
+    },
+    isMobileSafari() {
+      if(/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   watch: {
