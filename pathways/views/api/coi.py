@@ -3,24 +3,37 @@
 
 from pathways.views.api import RESTDispatch
 from pathways.models.course import Course
+from pathways.models.course import Curriculum
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
 
 @method_decorator(login_required, name="dispatch")
-class CourseList(RESTDispatch):
-    def get(self, request, course_campus, *args, **kwargs):
-        courses = Course.get_course_list_by_campus(course_campus)
-        return self.json_response(courses)
+class CourseCOI(RESTDispatch):
+    '''
+    Takes a course abbr and fetches COI data for all courses in that
+    course's curriculum.
+    '''
+    def get(self, request, department_abbrev, *args, **kwargs):
+        dept_courses = Course.objects.filter(
+            department_abbrev=department_abbrev)
+        course_cois = []
+        for course in dept_courses:
+            course_cois.append({'course_id': course.course_id,
+                                'coi': course.coi_score})
+        return self.json_response(course_cois)
 
 
 @method_decorator(login_required, name="dispatch")
-class CourseDetails(RESTDispatch):
-    def get(self, request, course_abbr, *args, **kwargs):
-        try:
-            course = Course.get_course_data(course_abbr)
-        except ObjectDoesNotExist as ex:
-            return self.error_response(404,
-                                       "Course %s not found" % course_abbr)
-        return self.json_response(course)
+class CurricCOI(RESTDispatch):
+    '''
+    Returns average COIs by curriculum for all curriculums.
+    '''
+    def get(self, request, *args, **kwargs):
+        currics = Curriculum.objects.all()
+        curric_scores = []
+        for dept in currics:
+            curric_scores.append({"curric_name": dept.curric_name,
+                                  "coi": dept.average_coi_score})
+        return self.json_response(curric_scores)

@@ -11,7 +11,6 @@ class Curriculum(models.Model):
     average_coi_score = models.FloatField(null=True)
     curric_name = models.TextField(null=True)
 
-
     @staticmethod
     def get_prereq(abbrev):
         curric = Curriculum.objects.get(abbrev=abbrev)
