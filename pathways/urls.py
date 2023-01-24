@@ -46,7 +46,7 @@ urlpatterns += [
         r'^api/v1/curric_prereq/(?P<curric_abbr>[^/]*)$',
         CurricPrereq.as_view(), name='curric-prereq'),
     re_path(
-        r'^api/v1/coi/course/(?P<curric_abbr>[^/]*)$',
+        r'^api/v1/coi/course/(?P<department_abbrev>[^/]*)$',
         CourseCOI.as_view(), name='course-coi'),
     re_path(
         r'^api/v1/coi/curric/$',
