@@ -11,6 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 class Course(models.Model):
     course_id = models.CharField(max_length=10)
+    department_abbrev = models.CharField(max_length=6, null=True)
     course_title = models.CharField(max_length=120)
     course_credits = models.CharField(max_length=12)
     course_campus = models.CharField(max_length=7)
