@@ -123,10 +123,15 @@ export default {
       // Get the major of the chosen course
       const cirricPicked = coursePicked.match(/\D+/)[0].trim();
 
+      const courseColor = "#ffbc24";
+      const majorColor = "#452a78";
+      const avgColor = "#6E757C";
+
       // Different layer options
       const layerOptions = {
+        single: coursePicked,
         chosen: cirricPicked + " Courses",
-        other: "Other Major Averages"
+        other: "Other Major Averages",
       };
 
       // Set radius here
@@ -134,16 +139,10 @@ export default {
       const yCenter = 65;
 
       // Create the 5.0 COI scale
-      const x = d3
-        .scaleLinear()
-        .domain([-5, 5])
-        .range([0, width]);
+      const x = d3.scaleLinear().domain([-5, 5]).range([0, width]);
 
       // Scale score from -5 to 5
-      var scaleScore = d3
-        .scaleLinear()
-        .domain([0, 5])
-        .range([5, -5]);
+      var scaleScore = d3.scaleLinear().domain([0, 5]).range([5, -5]);
 
       // Draw the axis
       var xAxis = d3.axisBottom(x).ticks(11);
@@ -156,7 +155,7 @@ export default {
           "transform",
           "translate(0," + (height - margin.bottom * 0.3) + ")"
           // "translate(0," + yCenter + ")"
-          )
+        )
         .call(
           xAxis
             .tickValues([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5])
@@ -170,10 +169,10 @@ export default {
 
       // Add some text to the container
       layerSelect
-          .append("a")
-          .text("View " + coursePicked + " in context")
-          .style("font-weight", "bold")
-          .append("br")
+        .append("a")
+        .text("View " + coursePicked + " in context")
+        .style("font-weight", "bold")
+        .append("br");
 
       // Add the two options as radio buttons
       for (var option in layerOptions) {
@@ -186,7 +185,8 @@ export default {
 
         // Add the text label
         // layerSelect.append("a").text(layerOptions[option]);
-        layerSelect.append("label")
+        layerSelect
+          .append("label")
           .text(layerOptions[option])
           .attr("for", layerOptions[option] + "-button");
 
@@ -196,6 +196,12 @@ export default {
 
       // Default selection
       layerSelect.select("input[value='chosen']").property("checked", true);
+
+      /*
+        get data to here...
+        var course_coi =
+        var cirric_coi =
+      */
 
       // Read in data
       d3.csv(
@@ -213,7 +219,7 @@ export default {
         createPoints("cirric");
 
         // Add an event listener to the radio buttons
-        d3.selectAll("input[name='toggle']").on("change", function (d) {
+        d3.selectAll("input[name='toggle']").on("change", function () {
           // Get the layer the user selected
           var selectedLayer = d3.select(this).property("value");
 
@@ -221,83 +227,64 @@ export default {
           var chosen = d3.selectAll(".chosen");
           var cirric = d3.selectAll(".cirric");
 
-          // If the user selected the major courses
-          if (selectedLayer == "chosen") {
-            // Make some cool transitions
-            cirric
-              .transition("moveOut")
-              .duration(1000)
-              .delay(function (d, i) {
-                return i / 2;
-              })
-              .style("opacity", 0)
-              .attr("cy", yCenter)
-              .attr("cx", x(0))
-              .each(function (d) {
-                d3.select(this).moveToBack();
-              })
-              .end()
-              .then(() => {
-                cirric.style("visibility", "hidden");
-                chosen.style("visibility", "visible");
+          if (selectedLayer == "single") {
+            var course = d3.select("#" + coursePicked.replace(/\s/g, ""));
+            var prevLayer;
 
-                chosen
-                  .transition("moveIn")
-                  .duration(1000)
-                  .delay(function (d, i) {
-                    return i;
-                  })
-                  .style("opacity", 1)
-                  .attr("cy", function (d) {
-                    return d.y;
-                  })
-                  .attr("cx", function (d) {
-                    return d.x;
-                  })
-                  .each(function (d) {
-                    d3.select(this).moveToFront();
-                  })
-                  .end();
-              });
-          // If the user selected the other major averages
+            if (d3.select(".chosen").style("visibility") == "visible") {
+              prevLayer = chosen;
+            } else {
+              prevLayer = cirric;
+            }
+
+            switchLayers(prevLayer, course);
+          } else if (selectedLayer == "chosen") {
+            // If the user selected the major courses
+
+            switchLayers(cirric, chosen);
           } else {
-            chosen
-              .transition("moveOut")
-              .duration(1000)
-              .delay(function (d, i) {
-                return i * 5;
-              })
-              .style("opacity", 0)
-              .attr("cy", yCenter)
-              .attr("cx", x(0))
-              .each(function (d) {
-                d3.select(this).moveToBack();
-              })
-              .end()
-              .then(() => {
-                chosen.style("visibility", "hidden");
-                cirric.style("visibility", "visible");
-
-                cirric
-                  .transition("moveIn")
-                  .duration(1000)
-                  .delay(function (d, i) {
-                    return i / 2;
-                  })
-                  .style("opacity", 1)
-                  .attr("cy", function (d) {
-                    return d.y;
-                  })
-                  .attr("cx", function (d) {
-                    return d.x;
-                  })
-                  .each(function (d) {
-                    d3.select(this).moveToFront();
-                  })
-                  .end();
-              });
+            // If the user selected the other major averages
+            switchLayers(chosen, cirric);
           }
         });
+
+        function switchLayers(hide, show) {
+          hide
+            .transition("moveOut")
+            .duration(1000)
+            .delay(function (d, i) {
+              return i / 3;
+            })
+            .style("opacity", 0)
+            .attr("cy", yCenter)
+            .attr("cx", x(0))
+            .each(function () {
+              d3.select(this).moveToBack();
+            })
+            .end()
+            .then(() => {
+              hide.style("visibility", "hidden");
+              show.style("visibility", "visible");
+
+              show
+                .transition("moveIn")
+                .duration(1000)
+                .delay(function (d, i) {
+                  return i / 3;
+                })
+                .style("opacity", 1)
+                .attr("cy", function (d) {
+                  return d.y;
+                })
+                .attr("cx", function (d) {
+                  return d.x;
+                })
+                .each(function () {
+                  d3.select(this).moveToFront();
+                })
+                .end();
+            });
+        }
 
         // Function to generate and hide all the points onto the svg
         function createPoints(selectedLayer) {
@@ -309,7 +296,7 @@ export default {
           }
 
           // Not exactly why I have to do this, but I do it
-          var nodes = data_sub.map(function (node, index) {
+          var nodes = data_sub.map(function (node) {
             return {
               opacity: 0.8,
               x: x(node.score),
@@ -364,11 +351,11 @@ export default {
             })
             .style("fill", function (d) {
               if (d.picked) {
-                return "#9C947C";
-                // return "#ffbc24";
+                return courseColor;
+              } else if (d.class == "chosen") {
+                return majorColor;
               } else {
-                return "#534072";
-                // return "#4d307f";
+                return avgColor;
               }
             })
             .style("opacity", function (d) {
@@ -570,7 +557,7 @@ div.tooltip {
   width: auto;
   height: auto;
   padding: 4px;
-  font: 10px Open Sans;
+  font-size: 10px;
   background: lightsteelblue;
   border: 0;
   border-radius: 8px;

@@ -1,4 +1,4 @@
-# Copyright 2022 UW-IT, University of Washington
+# Copyright 2023 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from django.db import models
@@ -11,6 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 class Course(models.Model):
     course_id = models.CharField(max_length=10)
+    department_abbrev = models.CharField(max_length=6, null=True)
     course_title = models.CharField(max_length=120)
     course_credits = models.CharField(max_length=12)
     course_campus = models.CharField(max_length=7)
