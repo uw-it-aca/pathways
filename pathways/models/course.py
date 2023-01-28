@@ -61,6 +61,7 @@ class Course(models.Model):
             graph = json.loads(self.prereq_graph)
         concurrrent = self.get_concurrent_with_coi_and_flags()
         return {"course_id": self.course_id,
+                "department_abbrev": self.department_abbrev,
                 "course_title": self.course_title,
                 "course_credits": self.course_credits,
                 "course_campus": self.course_campus,

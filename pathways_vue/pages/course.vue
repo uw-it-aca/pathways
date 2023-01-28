@@ -13,9 +13,9 @@
           <div class="col-md-9">
             <grade-distribution :course="courseData" />
           </div>
-          <!--<div class="col-md-9">
+          <div class="col-md-9">
             <outcome-index :course="courseData" />
-          </div>-->
+          </div>
           <!-- prereq map -->
           <div class="col-md-9">
             <prereq-map :graph_data="courseData.prereq_graph" :active_course="courseId"

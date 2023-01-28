@@ -17,11 +17,12 @@ class CourseCOI(RESTDispatch):
     '''
     def get(self, request, department_abbrev, *args, **kwargs):
         dept_courses = Course.objects.filter(
-            department_abbrev=department_abbrev)
+            department_abbrev=department_abbrev)\
+            .exclude(coi_score__isnull=True)
         course_cois = []
         for course in dept_courses:
             course_cois.append({'course_id': course.course_id,
-                                'coi': course.coi_score})
+                                'score': course.coi_score})
         return self.json_response(course_cois)
 
 
@@ -35,5 +36,5 @@ class CurricCOI(RESTDispatch):
         curric_scores = []
         for dept in currics:
             curric_scores.append({"curric_name": dept.curric_name,
-                                  "coi": dept.average_coi_score})
+                                  "score": dept.average_coi_score})
         return self.json_response(curric_scores)

@@ -46,6 +46,7 @@ export default {
       curric_abbr: null,
       course_num: null,
       course_level: null,
+      course_coi_data: null
     };
   },
   props: {
@@ -92,7 +93,7 @@ export default {
         this.course_id.substring(split_pos + 1, this.course_id.length)
       );
       this.course_level = Math.floor(this.course_num / 100) * 100;
-      this.generateRect();
+      this.getCourseCOI()
     },
     generateRect() {
       // Clear any previous graphs
@@ -203,338 +204,351 @@ export default {
         var cirric_coi =
       */
 
-      // Read in data
-      d3.csv(
-        "https://raw.githubusercontent.com/uw-it-aca/pathways/main/pathways/data/coi_scores.csv"
-      ).then(function (d) {
-        // Filter and go through data
-        var data = getData(d);
+      // Filter and go through data
+      var data = getData(this.course_coi_data);
 
-        // Add the different annotations
-        addScaleAnnotation();
+      // Add the different annotations
+      addScaleAnnotation();
 
-        // Create and add circles for chosen major
-        createPoints("chosen");
-        // Create and add circles for other majors
-        createPoints("cirric");
+      // Create and add circles for chosen major
+      createPoints("chosen");
+      // Create and add circles for other majors
+      createPoints("cirric");
 
-        // Add an event listener to the radio buttons
-        d3.selectAll("input[name='toggle']").on("change", function () {
-          // Get the layer the user selected
-          var selectedLayer = d3.select(this).property("value");
+      // Add an event listener to the radio buttons
+      d3.selectAll("input[name='toggle']").on("change", function () {
+        // Get the layer the user selected
+        var selectedLayer = d3.select(this).property("value");
 
-          // Select the different layers
-          var chosen = d3.selectAll(".chosen");
-          var cirric = d3.selectAll(".cirric");
+        // Select the different layers
+        var chosen = d3.selectAll(".chosen");
+        var cirric = d3.selectAll(".cirric");
 
-          if (selectedLayer == "single") {
-            var course = d3.select("#" + coursePicked.replace(/\s/g, ""));
-            var prevLayer;
+        if (selectedLayer == "single") {
+          var course = d3.select("#" + coursePicked.replace(/\s/g, ""));
+          var prevLayer;
 
-            if (d3.select(".chosen").style("visibility") == "visible") {
-              prevLayer = chosen;
-            } else {
-              prevLayer = cirric;
-            }
-
-            switchLayers(prevLayer, course);
-          } else if (selectedLayer == "chosen") {
-            // If the user selected the major courses
-
-            switchLayers(cirric, chosen);
+          if (d3.select(".chosen").style("visibility") == "visible") {
+            prevLayer = chosen;
           } else {
-            // If the user selected the other major averages
-            switchLayers(chosen, cirric);
+            prevLayer = cirric;
           }
+
+          switchLayers(prevLayer, course);
+        } else if (selectedLayer == "chosen") {
+          // If the user selected the major courses
+
+          switchLayers(cirric, chosen);
+        } else {
+          // If the user selected the other major averages
+          switchLayers(chosen, cirric);
+        }
+      });
+
+      function switchLayers(hide, show) {
+        hide
+          .transition("moveOut")
+          .duration(1000)
+          .delay(function (d, i) {
+            return i / 3;
+          })
+          .style("opacity", 0)
+          .attr("cy", yCenter)
+          .attr("cx", x(0))
+          .each(function () {
+            d3.select(this).moveToBack();
+          })
+          .end()
+          .then(() => {
+            hide.style("visibility", "hidden");
+            show.style("visibility", "visible");
+
+            show
+              .transition("moveIn")
+              .duration(1000)
+              .delay(function (d, i) {
+                return i / 3;
+              })
+              .style("opacity", 1)
+              .attr("cy", function (d) {
+                return d.y;
+              })
+              .attr("cx", function (d) {
+                return d.x;
+              })
+              .each(function () {
+                d3.select(this).moveToFront();
+              })
+              .end();
+          });
+      }
+
+      // Function to generate and hide all the points onto the svg
+      function createPoints(selectedLayer) {
+        var data_sub;
+        if (selectedLayer == "chosen") {
+          data_sub = Object.values(data[0]);
+        } else {
+          data_sub = Object.values(data[1]);
+        }
+
+        // Not exactly why I have to do this, but I do it
+        var nodes = data_sub.map(function (node) {
+          return {
+            opacity: 0.8,
+            x: x(node.score),
+            y: yCenter + Math.abs(Math.random()),
+            score: Math.round(node.score * 100) / 100,
+            course: node.name,
+            picked: node.picked,
+            isCourse: node.isCourse,
+            class: node.class,
+            radius: RADIUS,
+          };
         });
 
-        function switchLayers(hide, show) {
-          hide
-            .transition("moveOut")
-            .duration(1000)
-            .delay(function (d, i) {
-              return i / 3;
-            })
-            .style("opacity", 0)
-            .attr("cy", yCenter)
-            .attr("cx", x(0))
-            .each(function () {
-              d3.select(this).moveToBack();
-            })
-            .end()
-            .then(() => {
-              hide.style("visibility", "hidden");
-              show.style("visibility", "visible");
+        // Specify force specifications for the circles
+        var force = d3
+          .forceSimulation(nodes)
+          .force("forceX", d3.forceX((d) => d.x).strength(1))
+          .force("forceY", d3.forceY(yCenter).strength(0.1))
+          .force(
+            "charge",
+            d3.forceManyBody().distanceMax(2).distanceMin(1).strength(1)
+          )
+          .force("collide", d3.forceCollide().radius(RADIUS).strength(1))
+          .on("tick", tick)
+          .stop();
 
-              show
-                .transition("moveIn")
-                .duration(1000)
-                .delay(function (d, i) {
-                  return i / 3;
-                })
-                .style("opacity", 1)
-                .attr("cy", function (d) {
-                  return d.y;
-                })
-                .attr("cx", function (d) {
-                  return d.x;
-                })
-                .each(function () {
-                  d3.select(this).moveToFront();
-                })
-                .end();
-            });
-        }
-
-        // Function to generate and hide all the points onto the svg
-        function createPoints(selectedLayer) {
-          var data_sub;
-          if (selectedLayer == "chosen") {
-            data_sub = Object.values(data[0]);
-          } else {
-            data_sub = Object.values(data[1]);
+        function tick() {
+          for (var i = 0; i < nodes.length; i++) {
+            var node = nodes[i];
+            node.cx = node.x;
+            node.cy = node.y;
           }
-
-          // Not exactly why I have to do this, but I do it
-          var nodes = data_sub.map(function (node) {
-            return {
-              opacity: 0.8,
-              x: x(node.score),
-              y: yCenter + Math.abs(Math.random()),
-              score: Math.round(node.score * 100) / 100,
-              course: node.name,
-              picked: node.picked,
-              isCourse: node.isCourse,
-              class: node.class,
-              radius: RADIUS,
-            };
-          });
-
-          // Specify force specifications for the circles
-          var force = d3
-            .forceSimulation(nodes)
-            .force("forceX", d3.forceX((d) => d.x).strength(1))
-            .force("forceY", d3.forceY(yCenter).strength(0.1))
-            .force(
-              "charge",
-              d3.forceManyBody().distanceMax(2).distanceMin(1).strength(1)
-            )
-            .force("collide", d3.forceCollide().radius(RADIUS).strength(1))
-            .on("tick", tick)
-            .stop();
-
-          function tick() {
-            for (var i = 0; i < nodes.length; i++) {
-              var node = nodes[i];
-              node.cx = node.x;
-              node.cy = node.y;
-            }
-          }
-
-          const NUM_ITERATIONS = 500;
-          force.tick(NUM_ITERATIONS);
-          force.stop();
-
-          // Add the points to the plot
-          // Depending on whether the course is chosen, the fill color and opacity will be different
-          svg
-            .selectAll("circle ." + selectedLayer)
-            .data(nodes)
-            .enter()
-            .append("circle")
-            .style("visibility", function (d) {
-              if (d.class == "chosen") {
-                return "visible";
-              } else {
-                return "hidden";
-              }
-            })
-            .style("fill", function (d) {
-              if (d.picked) {
-                return courseColor;
-              } else if (d.class == "chosen") {
-                return majorColor;
-              } else {
-                return avgColor;
-              }
-            })
-            .style("opacity", function (d) {
-              if (d.class == "chosen") {
-                return 1;
-              } else {
-                return 0;
-              }
-            })
-            .attr("cx", function (d) {
-              if (d.class == "chosen") {
-                return d.x;
-              } else {
-                return x(0);
-              }
-            })
-            .attr("cy", function (d) {
-              if (d.class == "chosen") {
-                return d.y;
-              } else {
-                return yCenter;
-              }
-            })
-            .attr("r", function (d) {
-              return d.radius;
-            })
-            .attr("class", function (d) {
-              return d.class;
-            })
-            .attr("id", function (d) {
-              return d.course.replace(/\s/g, "");
-            })
-            .each(function () {
-              d3.select(this)
-                .on("mouseover", function (event, d) {
-                  d3.select(this)
-                    .moveToFront()
-                    .transition()
-                    .duration(100)
-                    .style("stroke", "black")
-                    .attr("r", RADIUS * 1.2);
-
-                  tooltip
-                    .style("opacity", 1)
-                    .html(d.course + "<br>" + "COI: " + d.score)
-                    .style("left", event.pageX + 5 + "px")
-                    .style("top", event.pageY - 50 + "px");
-                })
-                .on("mouseout", function () {
-                  d3.select(this)
-                    .transition()
-                    .duration(200)
-                    .style("stroke", "none")
-                    .attr("r", RADIUS);
-
-                  tooltip.style("opacity", 0);
-                });
-            });
         }
 
-        function addScaleAnnotation() {
-          // Add text annotation
-          var labelPosY = height / 1.3;
-          var fontSize = "12px";
+        const NUM_ITERATIONS = 500;
+        force.tick(NUM_ITERATIONS);
+        force.stop();
 
-          svg
-            .append("text")
-            .style("font-size", fontSize)
-            .attr("x", x(3.25))
-            .attr("y", labelPosY)
-            .attr("text-anchor", "middle")
-            .html('<tspan id="more">More</tspan> manageable &#128694;');
-
-          svg
-            .append("text")
-            .style("font-size", fontSize)
-            .attr("x", x(-3.25))
-            .attr("y", labelPosY)
-            .attr("text-anchor", "middle")
-            .html('&#127939; <tspan id="less">Less</tspan> manageable');
-        }
-
-        function getData(data) {
-          const average = (array) =>
-            array.reduce((a, b) => a + b) / array.length;
-
-          var majorAvg = {};
-          var major = {};
-          var course;
-
-          for (var element of data) {
-            if (element.course_id == coursePicked) {
-              course = element;
-            }
-
-            var cirric = element.course_id.match(/\D+/)[0].trim();
-
-            if (cirric in majorAvg) {
-              majorAvg[cirric]["score"].push(
-                scaleScore(parseFloat(element.score))
-              );
-              majorAvg[cirric]["numCourses"]++;
+        // Add the points to the plot
+        // Depending on whether the course is chosen, the fill color and opacity will be different
+        svg
+          .selectAll("circle ." + selectedLayer)
+          .data(nodes)
+          .enter()
+          .append("circle")
+          .style("visibility", function (d) {
+            if (d.class == "chosen") {
+              return "visible";
             } else {
-              majorAvg[cirric] = {
-                name: cirric,
-                score: [scaleScore(parseFloat(element.score))],
-                picked: false,
-                isCourse: false,
-                isCirric: false,
-                class: "cirric",
-                numCourses: 1,
-              };
+              return "hidden";
             }
+          })
+          .style("fill", function (d) {
+            if (d.picked) {
+              return courseColor;
+            } else if (d.class == "chosen") {
+              return majorColor;
+            } else {
+              return avgColor;
+            }
+          })
+          .style("opacity", function (d) {
+            if (d.class == "chosen") {
+              return 1;
+            } else {
+              return 0;
+            }
+          })
+          .attr("cx", function (d) {
+            if (d.class == "chosen") {
+              return d.x;
+            } else {
+              return x(0);
+            }
+          })
+          .attr("cy", function (d) {
+            if (d.class == "chosen") {
+              return d.y;
+            } else {
+              return yCenter;
+            }
+          })
+          .attr("r", function (d) {
+            return d.radius;
+          })
+          .attr("class", function (d) {
+            return d.class;
+          })
+          .attr("id", function (d) {
+            return d.course.replace(/\s/g, "");
+          })
+          .each(function () {
+            d3.select(this)
+              .on("mouseover", function (event, d) {
+                d3.select(this)
+                  .moveToFront()
+                  .transition()
+                  .duration(100)
+                  .style("stroke", "black")
+                  .attr("r", RADIUS * 1.2);
 
-            if (cirric == cirricPicked) {
-              major[element.course_id] = {
-                name: element.course_id,
-                score: scaleScore(parseFloat(element.score)),
-                picked: false,
-                isCourse: false,
-                isCirric: true,
-                class: "chosen",
-                numCourses: 1,
-              };
-            }
+                tooltip
+                  .style("opacity", 1)
+                  .html(d.course + "<br>" + "COI: " + d.score)
+                  .style("left", event.pageX + 5 + "px")
+                  .style("top", event.pageY - 50 + "px");
+              })
+              .on("mouseout", function () {
+                d3.select(this)
+                  .transition()
+                  .duration(200)
+                  .style("stroke", "none")
+                  .attr("r", RADIUS);
+
+                tooltip.style("opacity", 0);
+              });
+          });
+      }
+
+      function addScaleAnnotation() {
+        // Add text annotation
+        var labelPosY = height / 1.3;
+        var fontSize = "12px";
+
+        svg
+          .append("text")
+          .style("font-size", fontSize)
+          .attr("x", x(3.25))
+          .attr("y", labelPosY)
+          .attr("text-anchor", "middle")
+          .html('<tspan id="more">More</tspan> manageable &#128694;');
+
+        svg
+          .append("text")
+          .style("font-size", fontSize)
+          .attr("x", x(-3.25))
+          .attr("y", labelPosY)
+          .attr("text-anchor", "middle")
+          .html('&#127939; <tspan id="less">Less</tspan> manageable');
+      }
+
+      function getData(data) {
+        const average = (array) =>
+          array.reduce((a, b) => a + b) / array.length;
+
+        var majorAvg = {};
+        var major = {};
+        var course;
+
+        for (var element of data) {
+          if (element.course_id == coursePicked) {
+            course = element;
           }
 
-          for (var name in majorAvg) {
-            majorAvg[name]["score"] = average(majorAvg[name]["score"]);
-            if (name == cirricPicked) {
-              majorAvg[name]["picked"] = true;
-              majorAvg[name]["class"] = "pickedcirr";
-            }
+          var cirric = element.course_id.match(/\D+/)[0].trim();
+
+          if (cirric in majorAvg) {
+            majorAvg[cirric]["score"].push(
+              scaleScore(parseFloat(element.score))
+            );
+            majorAvg[cirric]["numCourses"]++;
+          } else {
+            majorAvg[cirric] = {
+              name: cirric,
+              score: [scaleScore(parseFloat(element.score))],
+              picked: false,
+              isCourse: false,
+              isCirric: false,
+              class: "cirric",
+              numCourses: 1,
+            };
           }
 
-          majorAvg[coursePicked] = {
-            name: course.course_id,
-            score: scaleScore(parseFloat(course.score)),
-            picked: true,
-            isCourse: true,
-            isCirric: false,
-            class: "cirric",
-            numCourses: 6,
-          };
-
-          major[coursePicked] = {
-            name: course.course_id,
-            score: scaleScore(parseFloat(course.score)),
-            picked: true,
-            isCourse: true,
-            isCirric: false,
-            class: "chosen",
-            numCourses: 6,
-          };
-
-          d3.select("#score").text(
-            "COI Score: " +
-              Math.round(scaleScore(parseFloat(course.score)) * 100) / 100
-          );
-
-          return [major, majorAvg];
+          if (cirric == cirricPicked) {
+            major[element.course_id] = {
+              name: element.course_id,
+              score: scaleScore(parseFloat(element.score)),
+              picked: false,
+              isCourse: false,
+              isCirric: true,
+              class: "chosen",
+              numCourses: 1,
+            };
+          }
         }
 
-        d3.selection.prototype.moveToFront = function () {
-          return this.each(function () {
-            this.parentNode.appendChild(this);
-          });
+        for (var name in majorAvg) {
+          majorAvg[name]["score"] = average(majorAvg[name]["score"]);
+          if (name == cirricPicked) {
+            majorAvg[name]["picked"] = true;
+            majorAvg[name]["class"] = "pickedcirr";
+          }
+        }
+
+        majorAvg[coursePicked] = {
+          name: course.course_id,
+          score: scaleScore(parseFloat(course.score)),
+          picked: true,
+          isCourse: true,
+          isCirric: false,
+          class: "cirric",
+          numCourses: 6,
         };
 
-        d3.selection.prototype.moveToBack = function () {
-          return this.each(function () {
-            var firstChild = this.parentNode.firstChild;
-            if (firstChild) {
-              this.parentNode.insertBefore(this, firstChild);
-            }
-          });
+        major[coursePicked] = {
+          name: course.course_id,
+          score: scaleScore(parseFloat(course.score)),
+          picked: true,
+          isCourse: true,
+          isCirric: false,
+          class: "chosen",
+          numCourses: 6,
         };
+
+        d3.select("#score").text(
+          "COI Score: " +
+          Math.round(scaleScore(parseFloat(course.score)) * 100) / 100
+        );
+
+        return [major, majorAvg];
+      }
+
+      d3.selection.prototype.moveToFront = function () {
+        return this.each(function () {
+          this.parentNode.appendChild(this);
+        });
+      };
+
+      d3.selection.prototype.moveToBack = function () {
+        return this.each(function () {
+          var firstChild = this.parentNode.firstChild;
+          if (firstChild) {
+            this.parentNode.insertBefore(this, firstChild);
+          }
+        });
+      };
+    },
+    getCourseCOI(){
+      let url = "/api/v1/coi/course/" + this.course.department_abbrev,
+        vue = this;
+      this.axios.get(url).then((response) => {
+        vue.course_coi_data = response.data;
+        this.generateRect();
+      }).catch(function (error) {
+        vue.course_coi_data = {};
       });
     },
+    getCurricCOI(){
+      let vue = this;
+      this.axios.get("/api/v1/coi/curric/").then((response) => {
+        vue.curric_coi_data = response.data;
+      }).catch(function (error) {
+        vue.curric_coi_data = {};
+      });
+    }
   },
 };
 </script>
