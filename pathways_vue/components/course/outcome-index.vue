@@ -46,7 +46,8 @@ export default {
       curric_abbr: null,
       course_num: null,
       course_level: null,
-      course_coi_data: null
+      course_coi_data: null,
+      curric_coi_data: null
     };
   },
   props: {
@@ -96,6 +97,7 @@ export default {
       this.getCourseCOI()
     },
     generateRect() {
+      let vue = this;
       // Clear any previous graphs
       document.getElementById("coiGraph").innerHTML = "";
       const margin = { top: 20, right: 10, bottom: 20, left: 10 };
@@ -241,7 +243,13 @@ export default {
           switchLayers(cirric, chosen);
         } else {
           // If the user selected the other major averages
-          switchLayers(chosen, cirric);
+          if(vue.curric_coi_data === null){
+            vue.getCurricCOI(function(){
+              switchLayers(chosen, cirric);
+            })
+          } else {
+            switchLayers(chosen, cirric);
+          }
         }
       });
 
@@ -541,10 +549,11 @@ export default {
         vue.course_coi_data = {};
       });
     },
-    getCurricCOI(){
+    getCurricCOI(callback){
       let vue = this;
       this.axios.get("/api/v1/coi/curric/").then((response) => {
         vue.curric_coi_data = response.data;
+        callback();
       }).catch(function (error) {
         vue.curric_coi_data = {};
       });
