@@ -88,30 +88,33 @@ export default {
   },
   computed: {
     myplanProgramURL() {
+      let url = "";
       if (this.major["program_code"] !== null) {
-        return (
+        url =
           "https://myplan.uw.edu/program/#/programs/" +
-          this.major["program_code"]
-        );
+          this.major["program_code"];
       }
+      return url;
     },
     myplanCredentialURL() {
+      let url = "";
       if (this.major["credential_code"] !== null) {
-        return (
+        url =
           "https://myplan.uw.edu/program/#/programs/" +
           this.major["program_code"] +
           "/" +
-          this.major["credential_code"]
-        );
+          this.major["credential_code"];
       }
+      return url;
     },
     careerCenterOutcomeURL() {
+      let url = "";
       if (this.major["career_center_major"] !== null) {
-        return (
+        url =
           "https://careers.uw.edu/outcomes/#!" +
-          this.major["career_center_major"]
-        );
+          this.major["career_center_major"];
       }
+      return url;
     },
   },
   methods: {},

@@ -171,11 +171,13 @@ export default {
       }
     },
     renderableOptions() {
+      let options = "";
       if (this.searchType === "major") {
-        return this.majorList.map((m) => m.value).sort();
+        options = this.majorList.map((m) => m.value).sort();
       } else if (this.searchType === "course") {
-        return this.courseList.map((m) => m.value).sort();
+        options = this.courseList.map((m) => m.value).sort();
       }
+      return options;
     },
     selectedKey() {
       let searchList = {};
@@ -187,6 +189,8 @@ export default {
       let selectedObj = searchList.find((o) => o.value === this.selectedLabel);
       if (selectedObj !== undefined) {
         return selectedObj.key;
+      } else {
+        return searchList;
       }
     },
     searchValue() {
