@@ -21,6 +21,44 @@
           <i class="bi bi-info-circle-fill"></i>
         </a>
       </p>
+      <div
+        class="modal fade"
+        role="dialog"
+        id="coi_modal"
+        tabindex="-1"
+        aria-modal="true"
+        aria-labelledby="coi_onboard"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-body">
+              <h2 class="modal-title mb-2" id="coi_onboard">COI</h2>
+              <div>
+                <p>Content for COI here</p>
+              </div>
+              <div class="text-end">
+                <button
+                  type="button"
+                  class="btn btn-purple"
+                  data-bs-dismiss="modal"
+                  aria-label="Next"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="btn btn-link mt-2 btn-sm text-decoration-none"
+        aria-label="Open modal"
+        @click="showCOIModal"
+      >
+        open modal
+      </button>
       <div id="sr-text"></div>
       <div id="upper">
         <div id="layer-select"></div>
@@ -33,7 +71,7 @@
 
 <script>
 import * as d3 from "d3";
-import { Popover } from "bootstrap";
+import { Modal, Popover } from "bootstrap";
 
 export default {
   name: "OutcomeScore",
@@ -82,6 +120,10 @@ export default {
     },
   },
   methods: {
+    showCOIModal() {
+      this.coiModal = new Modal(document.getElementById("coi_modal"), {});
+      this.coiModal.show();
+    },
     init() {
       this.percent_in_range = this.course.coi_data.percent_in_range;
       this.course_coi = this.course.coi_data.course_coi;
