@@ -21,6 +21,44 @@
           <i class="bi bi-info-circle-fill"></i>
         </a>
       </p>
+      <div
+        class="modal fade"
+        role="dialog"
+        id="coi_modal"
+        tabindex="-1"
+        aria-modal="true"
+        aria-labelledby="coi_onboard"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-body">
+              <h2 class="modal-title mb-2" id="coi_onboard">COI</h2>
+              <div>
+                <p>Content for COI here</p>
+              </div>
+              <div class="text-end">
+                <button
+                  type="button"
+                  class="btn btn-purple"
+                  data-bs-dismiss="modal"
+                  aria-label="Next"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="btn btn-link mt-2 btn-sm text-decoration-none"
+        aria-label="Open modal"
+        @click="showCOIModal"
+      >
+        open modal
+      </button>
       <div id="upper">
         <div id="layer-select"></div>
         <a id="score"></a>
@@ -32,7 +70,7 @@
 
 <script>
 import * as d3 from "d3";
-import { Popover } from "bootstrap";
+import { Modal, Popover } from "bootstrap";
 
 export default {
   name: "OutcomeScore",
@@ -47,7 +85,7 @@ export default {
       course_num: null,
       course_level: null,
       course_coi_data: null,
-      curric_coi_data: null
+      curric_coi_data: null,
     };
   },
   props: {
@@ -81,6 +119,10 @@ export default {
     },
   },
   methods: {
+    showCOIModal() {
+      this.coiModal = new Modal(document.getElementById("coi_modal"), {});
+      this.coiModal.show();
+    },
     init() {
       this.percent_in_range = this.course.coi_data.percent_in_range;
       this.course_coi = this.course.coi_data.course_coi;
@@ -94,7 +136,7 @@ export default {
         this.course_id.substring(split_pos + 1, this.course_id.length)
       );
       this.course_level = Math.floor(this.course_num / 100) * 100;
-      this.getCourseCOI()
+      this.getCourseCOI();
     },
     generateRect() {
       let vue = this;
@@ -243,10 +285,10 @@ export default {
           switchLayers(cirric, chosen);
         } else {
           // If the user selected the other major averages
-          if(vue.curric_coi_data === null){
-            vue.getCurricCOI(function(){
+          if (vue.curric_coi_data === null) {
+            vue.getCurricCOI(function () {
               switchLayers(chosen, cirric);
-            })
+            });
           } else {
             switchLayers(chosen, cirric);
           }
@@ -444,8 +486,7 @@ export default {
       }
 
       function getData(data) {
-        const average = (array) =>
-          array.reduce((a, b) => a + b) / array.length;
+        const average = (array) => array.reduce((a, b) => a + b) / array.length;
 
         var majorAvg = {};
         var major = {};
@@ -518,7 +559,7 @@ export default {
 
         d3.select("#score").text(
           "COI Score: " +
-          Math.round(scaleScore(parseFloat(course.score)) * 100) / 100
+            Math.round(scaleScore(parseFloat(course.score)) * 100) / 100
         );
 
         return [major, majorAvg];
@@ -539,25 +580,31 @@ export default {
         });
       };
     },
-    getCourseCOI(){
+    getCourseCOI() {
       let url = "/api/v1/coi/course/" + this.course.department_abbrev,
         vue = this;
-      this.axios.get(url).then((response) => {
-        vue.course_coi_data = response.data;
-        this.generateRect();
-      }).catch(function (error) {
-        vue.course_coi_data = {};
-      });
+      this.axios
+        .get(url)
+        .then((response) => {
+          vue.course_coi_data = response.data;
+          this.generateRect();
+        })
+        .catch(function (error) {
+          vue.course_coi_data = {};
+        });
     },
-    getCurricCOI(callback){
+    getCurricCOI(callback) {
       let vue = this;
-      this.axios.get("/api/v1/coi/curric/").then((response) => {
-        vue.curric_coi_data = response.data;
-        callback();
-      }).catch(function (error) {
-        vue.curric_coi_data = {};
-      });
-    }
+      this.axios
+        .get("/api/v1/coi/curric/")
+        .then((response) => {
+          vue.curric_coi_data = response.data;
+          callback();
+        })
+        .catch(function (error) {
+          vue.curric_coi_data = {};
+        });
+    },
   },
 };
 </script>
