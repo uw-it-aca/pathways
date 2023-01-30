@@ -13,7 +13,7 @@
           <div class="col-md-9">
             <grade-distribution :course="courseData" />
           </div>
-          <div class="col-md-9">
+          <div v-if="courseCampus == 'seattle'" class="col-md-9">
             <outcome-index :course="courseData" />
           </div>
           <!-- prereq map -->

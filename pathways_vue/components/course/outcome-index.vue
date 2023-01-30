@@ -21,6 +21,7 @@
           <i class="bi bi-info-circle-fill"></i>
         </a>
       </p>
+      <div id="sr-text"></div>
       <div id="upper">
         <div id="layer-select"></div>
         <a id="score"></a>
@@ -47,7 +48,7 @@ export default {
       course_num: null,
       course_level: null,
       course_coi_data: null,
-      curric_coi_data: null
+      curric_coi_data: null,
     };
   },
   props: {
@@ -94,10 +95,16 @@ export default {
         this.course_id.substring(split_pos + 1, this.course_id.length)
       );
       this.course_level = Math.floor(this.course_num / 100) * 100;
-      this.getCourseCOI()
+      this.getCourseCOI();
     },
+    getData() {
+      this.getCurricCOI();
+    },
+
     generateRect() {
       let vue = this;
+      var chosenCourse;
+      var chosenCurric;
       // Clear any previous graphs
       document.getElementById("coiGraph").innerHTML = "";
       const margin = { top: 20, right: 10, bottom: 20, left: 10 };
@@ -118,22 +125,24 @@ export default {
         .select("body")
         .append("div")
         .attr("class", "tooltip")
+        .attr("id", "coi-tooltip")
         .style("opacity", 0)
-        .style("left", "-9999px");
+        .style("left", "-9999px")
+        .style("visibility", "hidden");
 
       // Pull in data to plot on line
-      const coursePicked = this.course_id;
+      const coursePicked = vue.course_id;
       // Get the major of the chosen course
-      const cirricPicked = coursePicked.match(/\D+/)[0].trim();
+      const curricPicked = coursePicked.match(/\D+/)[0].trim();
 
-      const courseColor = "#ffbc24";
-      const majorColor = "#452a78";
+      const courseColor = "#452a78";
+      const majorColor = "#ab9765";
       const avgColor = "#6E757C";
 
       // Different layer options
       const layerOptions = {
         single: coursePicked,
-        chosen: cirricPicked + " Courses",
+        chosen: curricPicked + " Courses",
         other: "Other Major Averages",
       };
 
@@ -157,7 +166,6 @@ export default {
         .attr(
           "transform",
           "translate(0," + (height - margin.bottom * 0.3) + ")"
-          // "translate(0," + yCenter + ")"
         )
         .call(
           xAxis
@@ -198,61 +206,52 @@ export default {
       }
 
       // Default selection
-      layerSelect.select("input[value='chosen']").property("checked", true);
-
-      /*
-        get data to here...
-        var course_coi =
-        var cirric_coi =
-      */
-
-      // Filter and go through data
-      var data = getData(this.course_coi_data);
+      layerSelect.select("input[value='single']").property("checked", true);
 
       // Add the different annotations
       addScaleAnnotation();
 
       // Create and add circles for chosen major
-      createPoints("chosen");
+      createPoints(this.course_coi_data, "chosen");
       // Create and add circles for other majors
-      createPoints("cirric");
+      createPoints(this.curric_coi_data, "avg");
 
       // Add an event listener to the radio buttons
       d3.selectAll("input[name='toggle']").on("change", function () {
         // Get the layer the user selected
         var selectedLayer = d3.select(this).property("value");
 
+        // Chosen course point
+        var course = d3.select("#" + coursePicked.replace(/\s/g, "_"));
+
         // Select the different layers
         var chosen = d3.selectAll(".chosen");
-        var cirric = d3.selectAll(".cirric");
+        var curric = d3.selectAll(".curric");
+
+        d3.select("#sr-text").text(
+          chosenCourse.name + " has a score of " + chosenCourse.score + " compared to the major average of " + curricPicked.score
+        );
 
         if (selectedLayer == "single") {
-          var course = d3.select("#" + coursePicked.replace(/\s/g, ""));
           var prevLayer;
 
           if (d3.select(".chosen").style("visibility") == "visible") {
             prevLayer = chosen;
           } else {
-            prevLayer = cirric;
+            prevLayer = curric;
           }
 
           switchLayers(prevLayer, course);
         } else if (selectedLayer == "chosen") {
-          // If the user selected the major courses
-
-          switchLayers(cirric, chosen);
+          // If the user selected the major courses layer
+          switchLayers(curric, chosen);
         } else {
-          // If the user selected the other major averages
-          if(vue.curric_coi_data === null){
-            vue.getCurricCOI(function(){
-              switchLayers(chosen, cirric);
-            })
-          } else {
-            switchLayers(chosen, cirric);
-          }
+          // If the user selected the major averages layer
+          switchLayers(chosen, curric);
         }
       });
 
+      // Allow for the hiding and showing of different layers
       function switchLayers(hide, show) {
         hide
           .transition("moveOut")
@@ -292,28 +291,47 @@ export default {
       }
 
       // Function to generate and hide all the points onto the svg
-      function createPoints(selectedLayer) {
-        var data_sub;
-        if (selectedLayer == "chosen") {
-          data_sub = Object.values(data[0]);
+      function createPoints(data, layer) {
+        var labelName;
+        if (layer == "chosen") {
+          labelName = "course_id";
         } else {
-          data_sub = Object.values(data[1]);
+          labelName = "curric_name";
         }
 
-        // Not exactly why I have to do this, but I do it
-        var nodes = data_sub.map(function (node) {
-          return {
-            opacity: 0.8,
-            x: x(node.score),
-            y: yCenter + Math.abs(Math.random()),
-            score: Math.round(node.score * 100) / 100,
-            course: node.name,
-            picked: node.picked,
-            isCourse: node.isCourse,
-            class: node.class,
-            radius: RADIUS,
-          };
-        });
+        //
+        var nodes = data
+          .filter(function (node) {
+            if (
+              node[labelName].includes("BOTHELL") ||
+              node[labelName].includes("TACOMA")
+            ) {
+              return false;
+            } else if (node.score == null) {
+              return false;
+            } else {
+              return true;
+            }
+          })
+          .map(function (node) {
+            var score = scaleScore(node.score);
+            return {
+              x: x(score),
+              y: yCenter + Math.abs(Math.random()),
+              score: Math.round(score * 100) / 100,
+              name: node[labelName],
+            };
+          });
+
+        // Add chosen course to the major averages layer
+        if (layer != "chosen") {
+          nodes.push({
+            x: chosenCourse.x,
+            y: chosenCourse.y,
+            score: chosenCourse.score,
+            name: chosenCourse.name,
+          });
+        }
 
         // Specify force specifications for the circles
         var force = d3
@@ -343,55 +361,64 @@ export default {
         // Add the points to the plot
         // Depending on whether the course is chosen, the fill color and opacity will be different
         svg
-          .selectAll("circle ." + selectedLayer)
+          .selectAll("circle ." + layer)
           .data(nodes)
           .enter()
           .append("circle")
           .style("visibility", function (d) {
-            if (d.class == "chosen") {
+            if (d.name == coursePicked && layer == "chosen") {
               return "visible";
             } else {
               return "hidden";
             }
           })
           .style("fill", function (d) {
-            if (d.picked) {
+            if (d.name == vue.curric_abbr) {
+              chosenCurric = d;
+            }
+            if (d.name == vue.course_id) {
+              chosenCourse = d;
               return courseColor;
-            } else if (d.class == "chosen") {
+            } else if (layer == "chosen") {
               return majorColor;
             } else {
               return avgColor;
             }
           })
           .style("opacity", function (d) {
-            if (d.class == "chosen") {
+            if (d.name == coursePicked && layer == "chosen") {
               return 1;
             } else {
               return 0;
             }
           })
           .attr("cx", function (d) {
-            if (d.class == "chosen") {
+            if (d.name == coursePicked && layer == "chosen") {
               return d.x;
             } else {
               return x(0);
             }
           })
           .attr("cy", function (d) {
-            if (d.class == "chosen") {
+            if (d.name == coursePicked && layer == "chosen") {
               return d.y;
             } else {
               return yCenter;
             }
           })
-          .attr("r", function (d) {
-            return d.radius;
-          })
-          .attr("class", function (d) {
-            return d.class;
+          .attr("r", RADIUS)
+          .attr("class", function () {
+            if (layer == "chosen") {
+              return "chosen";
+            } else {
+              return "curric";
+            }
           })
           .attr("id", function (d) {
-            return d.course.replace(/\s/g, "");
+            return d.name.replace(/\s/g, "_");
+          })
+          .attr("score", function (d) {
+            return d.score;
           })
           .each(function () {
             d3.select(this)
@@ -405,7 +432,7 @@ export default {
 
                 tooltip
                   .style("opacity", 1)
-                  .html(d.course + "<br>" + "COI: " + d.score)
+                  .html(d.name + "<br>" + "COI: " + d.score)
                   .style("left", event.pageX + 5 + "px")
                   .style("top", event.pageY - 50 + "px");
               })
@@ -432,7 +459,7 @@ export default {
           .attr("x", x(3.25))
           .attr("y", labelPosY)
           .attr("text-anchor", "middle")
-          .html('<tspan id="more">More</tspan> manageable &#128694;');
+          .html("More manageable &#128694;");
 
         svg
           .append("text")
@@ -440,88 +467,7 @@ export default {
           .attr("x", x(-3.25))
           .attr("y", labelPosY)
           .attr("text-anchor", "middle")
-          .html('&#127939; <tspan id="less">Less</tspan> manageable');
-      }
-
-      function getData(data) {
-        const average = (array) =>
-          array.reduce((a, b) => a + b) / array.length;
-
-        var majorAvg = {};
-        var major = {};
-        var course;
-
-        for (var element of data) {
-          if (element.course_id == coursePicked) {
-            course = element;
-          }
-
-          var cirric = element.course_id.match(/\D+/)[0].trim();
-
-          if (cirric in majorAvg) {
-            majorAvg[cirric]["score"].push(
-              scaleScore(parseFloat(element.score))
-            );
-            majorAvg[cirric]["numCourses"]++;
-          } else {
-            majorAvg[cirric] = {
-              name: cirric,
-              score: [scaleScore(parseFloat(element.score))],
-              picked: false,
-              isCourse: false,
-              isCirric: false,
-              class: "cirric",
-              numCourses: 1,
-            };
-          }
-
-          if (cirric == cirricPicked) {
-            major[element.course_id] = {
-              name: element.course_id,
-              score: scaleScore(parseFloat(element.score)),
-              picked: false,
-              isCourse: false,
-              isCirric: true,
-              class: "chosen",
-              numCourses: 1,
-            };
-          }
-        }
-
-        for (var name in majorAvg) {
-          majorAvg[name]["score"] = average(majorAvg[name]["score"]);
-          if (name == cirricPicked) {
-            majorAvg[name]["picked"] = true;
-            majorAvg[name]["class"] = "pickedcirr";
-          }
-        }
-
-        majorAvg[coursePicked] = {
-          name: course.course_id,
-          score: scaleScore(parseFloat(course.score)),
-          picked: true,
-          isCourse: true,
-          isCirric: false,
-          class: "cirric",
-          numCourses: 6,
-        };
-
-        major[coursePicked] = {
-          name: course.course_id,
-          score: scaleScore(parseFloat(course.score)),
-          picked: true,
-          isCourse: true,
-          isCirric: false,
-          class: "chosen",
-          numCourses: 6,
-        };
-
-        d3.select("#score").text(
-          "COI Score: " +
-          Math.round(scaleScore(parseFloat(course.score)) * 100) / 100
-        );
-
-        return [major, majorAvg];
+          .html("&#127939; Less manageable");
       }
 
       d3.selection.prototype.moveToFront = function () {
@@ -539,25 +485,31 @@ export default {
         });
       };
     },
-    getCourseCOI(){
+    getCourseCOI() {
       let url = "/api/v1/coi/course/" + this.course.department_abbrev,
         vue = this;
-      this.axios.get(url).then((response) => {
-        vue.course_coi_data = response.data;
-        this.generateRect();
-      }).catch(function (error) {
-        vue.course_coi_data = {};
-      });
+      this.axios
+        .get(url)
+        .then((response) => {
+          vue.course_coi_data = response.data;
+          this.getData();
+        })
+        .catch(function (error) {
+          vue.course_coi_data = {};
+        });
     },
-    getCurricCOI(callback){
+    getCurricCOI() {
       let vue = this;
-      this.axios.get("/api/v1/coi/curric/").then((response) => {
-        vue.curric_coi_data = response.data;
-        callback();
-      }).catch(function (error) {
-        vue.curric_coi_data = {};
-      });
-    }
+      this.axios
+        .get("/api/v1/coi/curric/")
+        .then((response) => {
+          vue.curric_coi_data = response.data;
+          this.generateRect();
+        })
+        .catch(function (error) {
+          vue.curric_coi_data = {};
+        });
+    },
   },
 };
 </script>
@@ -574,17 +526,8 @@ text {
   margin-left: auto;
 }
 
-div.tooltip {
-  position: absolute;
-  text-align: center;
+#coi-tooltip {
   width: auto;
-  height: auto;
-  padding: 4px;
-  font-size: 10px;
-  background: lightsteelblue;
-  border: 0;
-  border-radius: 8px;
-  pointer-events: none;
 }
 
 .axis text {
