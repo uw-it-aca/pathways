@@ -18,7 +18,7 @@
                 value="seattle"
               />
               <label class="form-check-label" for="SeattleCampus"
-                >Seattle Campus</label
+                >Seattle</label
               >
             </div>
             <div class="form-check form-check-inline">
@@ -30,9 +30,7 @@
                 v-model="selectedCampus"
                 value="tacoma"
               />
-              <label class="form-check-label" for="TacomaCampus"
-                >Tacoma Campus</label
-              >
+              <label class="form-check-label" for="TacomaCampus">Tacoma</label>
             </div>
             <div class="form-check form-check-inline">
               <input
@@ -44,21 +42,86 @@
                 value="bothell"
               />
               <label class="form-check-label" for="BothellCampus"
-                >Bothell Campus</label
+                >Bothell</label
               >
             </div>
           </div>
         </fieldset>
+
+        <div v-if="mq.smPlus" :class="selectedCampus ? 'enabled' : 'disabled'">
+          <div class="input-group my-3">
+            <select
+              aria-label="Select major or course"
+              class="form-select"
+              id="inputGroupSelect01"
+              v-model="searchType"
+              style="max-width: 110px"
+            >
+              <option value="" selected disabled hidden>Select...</option>
+              <option
+                v-for="(option, index) in searchTypeOptions"
+                v-bind:value="option.value"
+                :key="index"
+              >
+                {{ option.text }}
+              </option>
+            </select>
+            <!-- TODO: wire is-invalid class to datalist validation -->
+
+            <input
+              type="text"
+              class="form-control rounded-end"
+              :class="isValidInput || isValidInput == null ? '' : 'is-invalid'"
+              :placeholder="searchPlaceholder"
+              aria-autocomplete="list"
+              autocomplete="off"
+              aria-label="Start typing for major or course search options"
+              v-model="selectedLabel"
+              list="searchDataList"
+              :disabled="searchType.length === 0"
+              id="searchInput"
+              @change="validateInput"
+              @keypress="validateInput"
+              @keydown="disableEnter($event)"
+            />
+            <div class="invalid-feedback text-end">
+              Please clear and select from the dropdown options
+            </div>
+          </div>
+          <div class="text-end mt-4">
+            <button
+              class="btn btn-outline-purple rounded-end me-2"
+              :disabled="selectedLabel.length === 0"
+              @click="clearInput"
+            >
+              Clear
+            </button>
+            <button
+              type="button"
+              class="btn btn-purple"
+              :disabled="
+                searchType.length === 0 ||
+                loadingList ||
+                !isValidInput ||
+                !this.searchValue
+              "
+              @click="onSelected"
+            >
+              Search
+            </button>
+          </div>
+        </div>
+
         <div
-          class="input-group my-3"
+          v-else
+          class="my-3"
           :class="selectedCampus ? 'enabled' : 'disabled'"
         >
           <select
             aria-label="Select major or course"
-            class="form-select"
+            class="form-select mb-2"
             id="inputGroupSelect01"
             v-model="searchType"
-            style="max-width: 110px"
           >
             <option value="" selected disabled hidden>Select...</option>
             <option
@@ -69,11 +132,9 @@
               {{ option.text }}
             </option>
           </select>
-          <!-- TODO: wire is-invalid class to datalist validation -->
 
           <input
-            type="text"
-            class="form-control"
+            class="form-control mb-2"
             :class="isValidInput || isValidInput == null ? '' : 'is-invalid'"
             :placeholder="searchPlaceholder"
             aria-autocomplete="list"
@@ -87,21 +148,32 @@
             @keypress="validateInput"
             @keydown="disableEnter($event)"
           />
-          <button
-            type="button"
-            class="btn btn-purple rounded-end"
-            :disabled="
-              searchType.length === 0 ||
-              loadingList ||
-              !isValidInput ||
-              !this.searchValue
-            "
-            @click="onSelected"
-          >
-            Go
-          </button>
-          <div class="invalid-feedback">
-            Please select from the options in the dropdown
+
+          <div class="invalid-feedback text-end">
+            Please clear and select from the dropdown options
+          </div>
+
+          <div class="text-end mt-4">
+            <button
+              class="btn btn-outline-purple rounded-end me-2"
+              :disabled="selectedLabel.length === 0"
+              @click="clearInput"
+            >
+              Clear
+            </button>
+            <button
+              type="button"
+              class="btn btn-purple rounded-end"
+              :disabled="
+                searchType.length === 0 ||
+                loadingList ||
+                !isValidInput ||
+                !this.searchValue
+              "
+              @click="onSelected"
+            >
+              Search
+            </button>
           </div>
         </div>
 
@@ -117,11 +189,13 @@
       </form>
     </div>
   </div>
+
   <data-update />
 </template>
 <script>
 import DataUpdate from "../common/data-update.vue";
 export default {
+  inject: ["mq"],
   name: "SearchChooser",
   components: {
     "data-update": DataUpdate,
@@ -163,11 +237,11 @@ export default {
   computed: {
     searchPlaceholder() {
       if (this.searchType === "major") {
-        return "Start typing to select a major (e.g. Math, Environmental Studies, design)";
+        return "Start typing to select a major...";
       } else if (this.searchType === "course") {
-        return "Start typing to select a course (e.g. CSE 142, Calculus, climate change)";
+        return "Start typing to select a course...";
       } else {
-        return "Please select a campus and a major or course";
+        return "Please select a campus...";
       }
     },
     renderableOptions() {
@@ -334,6 +408,10 @@ export default {
         e.preventDefault();
         return false;
       }
+    },
+    clearInput() {
+      //this.searchType = "";
+      this.selectedLabel = "";
     },
   },
 };
