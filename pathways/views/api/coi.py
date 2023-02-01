@@ -39,6 +39,5 @@ class CurricCOI(RESTDispatch):
         for dept in currics:
             curric_scores.append({"curric_name": dept.curric_name,
                                   "curric": dept.abbrev,
-                                  "campus": dept.course_data,
                                   "score": dept.average_coi_score})
         return self.json_response(curric_scores)

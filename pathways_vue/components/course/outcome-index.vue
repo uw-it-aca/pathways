@@ -59,12 +59,23 @@
       >
         open modal
       </button>
-      <div id="sr-text"></div>
-      <div id="upper">
-        <div id="layer-select"></div>
-        <a id="score"></a>
+      <div v-if="course_coi == null">
+        <div class="alert alert-purple" role="alert">
+          <p>
+            The COI is not available for
+            <strong>{{ course.course_id }}</strong> because there isn't enough
+            data to generate a score as it is a new course.
+          </p>
+        </div>
       </div>
-      <div aria-hidden="true" id="coiGraph" />
+      <div v-else>
+        <div id="sr-text" class="screen-reader-only"></div>
+        <div id="upper">
+          <div id="layer-select"></div>
+          <a id="score"></a>
+        </div>
+        <div aria-hidden="true" id="coiGraph" />
+      </div>
     </div>
   </div>
 </template>
@@ -105,19 +116,19 @@ export default {
     this.init();
   },
   computed: {
-    range_text: function () {
-      if (this.course_coi <= 1) {
-        return "0 - 1";
-      } else if (this.course_coi <= 2) {
-        return "1 - 2";
-      } else if (this.course_coi <= 3) {
-        return "2 - 3";
-      } else if (this.course_coi <= 4) {
-        return "3 - 4";
-      } else if (this.course_coi <= 5) {
-        return "4 - 5";
-      }
-    },
+    // range_text: function () {
+    //   if (this.course_coi <= 1) {
+    //     return "0 - 1";
+    //   } else if (this.course_coi <= 2) {
+    //     return "1 - 2";
+    //   } else if (this.course_coi <= 3) {
+    //     return "2 - 3";
+    //   } else if (this.course_coi <= 4) {
+    //     return "3 - 4";
+    //   } else if (this.course_coi <= 5) {
+    //     return "4 - 5";
+    //   }
+    // },
   },
   methods: {
     showCOIModal() {
@@ -145,8 +156,11 @@ export default {
 
     generateRect() {
       let vue = this;
+      // Store chosen course
       var chosenCourse;
-      var chosenCurric;
+      // Store chosen major
+      var chosenMajor;
+
       // Clear any previous graphs
       document.getElementById("coiGraph").innerHTML = "";
       const margin = { top: 20, right: 10, bottom: 20, left: 10 };
@@ -163,6 +177,7 @@ export default {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+      // Tooltip for hover
       const tooltip = d3
         .select("body")
         .append("div")
@@ -177,8 +192,11 @@ export default {
       // Get the major of the chosen course
       const curricPicked = coursePicked.match(/\D+/)[0].trim();
 
+      // Specific course color (purple)
       const courseColor = "#452a78";
+      // Major course color (gold)
       const majorColor = "#ab9765";
+      // Major averages (grey)
       const avgColor = "#6E757C";
 
       // Different layer options
@@ -189,7 +207,7 @@ export default {
       };
 
       // Set radius here
-      const RADIUS = 4;
+      const RADIUS = 4.2;
       const yCenter = 65;
 
       // Create the 5.0 COI scale
@@ -219,6 +237,9 @@ export default {
 
       // Where the layer select buttons will be
       var layerSelect = d3.select("#layer-select");
+
+      // Clear legend so new data can be added
+      layerSelect.html("");
 
       // Add some text to the container
       layerSelect
@@ -250,6 +271,9 @@ export default {
       // Default selection
       layerSelect.select("input[value='single']").property("checked", true);
 
+      // Make legend visible
+      layerSelect.style("visibility", "visible");
+
       // Add the different annotations
       addScaleAnnotation();
 
@@ -258,25 +282,31 @@ export default {
       // Create and add circles for other majors
       createPoints(this.curric_coi_data, "avg");
 
+      // Populate the title with course title and score
+      d3.select("#score").text("COI: " + chosenCourse.score);
+
       // Add an event listener to the radio buttons
       d3.selectAll("input[name='toggle']").on("change", function () {
         // Get the layer the user selected
         var selectedLayer = d3.select(this).property("value");
 
+        var courseId = "#" + coursePicked.replace(/\s/g, "_");
         // Chosen course point
-        var course = d3.select("#" + coursePicked.replace(/\s/g, "_"));
+        var course = d3.select(courseId);
 
         // Select the different layers
-        var chosen = d3.selectAll(".chosen");
-        var curric = d3.selectAll(".curric");
-
-        d3.select("#sr-text").text(
-          chosenCourse.name + " has a score of " + chosenCourse.score + " compared to the major average of " + curricPicked.score
-        );
+        var chosen = d3.selectAll(".chosen ");
+        var curric = d3.selectAll(".curric ");
 
         if (selectedLayer == "single") {
           var prevLayer;
 
+          // Screen reader text for the specific course
+          d3.select("#sr-text").text(
+            `${chosenCourse.name} has a score of ${chosenCourse.score}.`
+          );
+
+          // Determine which layer to hide/unhide
           if (d3.select(".chosen").style("visibility") == "visible") {
             prevLayer = chosen;
           } else {
@@ -285,9 +315,19 @@ export default {
 
           switchLayers(prevLayer, course);
         } else if (selectedLayer == "chosen") {
+          // Screen reader text for the chosen major
+          d3.select("#sr-text").text(
+            `${chosenCourse.name} has a score of ${chosenCourse.score} compared to the major average of ${chosenCourse.score}.`
+          );
+
           // If the user selected the major courses layer
           switchLayers(curric, chosen);
         } else {
+          // Screen reader text for layer with average scores
+          d3.select("#sr-text").text(
+            `${chosenMajor.name} has a score of ${chosenMajor.score} compared to the average of around 0.`
+          );
+
           // If the user selected the major averages layer
           switchLayers(chosen, curric);
         }
@@ -295,40 +335,63 @@ export default {
 
       // Allow for the hiding and showing of different layers
       function switchLayers(hide, show) {
-        hide
-          .transition("moveOut")
+        d3.selectAll("circle")
+          .transition()
           .duration(1000)
           .delay(function (d, i) {
             return i / 3;
           })
-          .style("opacity", 0)
           .attr("cy", yCenter)
-          .attr("cx", x(0))
-          .each(function () {
-            d3.select(this).moveToBack();
-          })
           .end()
           .then(() => {
-            hide.style("visibility", "hidden");
-            show.style("visibility", "visible");
-
-            show
-              .transition("moveIn")
-              .duration(1000)
+            d3.selectAll("circle")
+              .transition()
+              .duration(500)
               .delay(function (d, i) {
                 return i / 3;
               })
-              .style("opacity", 1)
-              .attr("cy", function (d) {
-                return d.y;
-              })
-              .attr("cx", function (d) {
-                return d.x;
-              })
+              .attr("cx", x(0))
+              .style("opacity", 0)
               .each(function () {
-                d3.select(this).moveToFront();
+                d3.select(this).moveToBack();
               })
-              .end();
+              .end()
+              .then(() => {
+                hide.style("visibility", "hidden");
+                show.style("visibility", "visible");
+
+                show
+                  .transition()
+                  .duration(1000)
+                  .delay(function (d, i) {
+                    return i / 3;
+                  })
+                  .style("opacity", 1)
+
+                  .attr("cx", function (d) {
+                    return d.x;
+                  })
+                  .each(function () {
+                    d3.select(this).moveToFront();
+                  })
+                  .end()
+                  .then(() => {
+                    show
+                      .transition()
+                      .duration(500)
+                      .delay(function (d, i) {
+                        return i / 3;
+                      })
+                      .attr("cy", function (d) {
+                        if (show._groups[0].length == 1) {
+                          return yCenter;
+                        } else {
+                          return d.y;
+                        }
+                      })
+                      .end();
+                  });
+              });
           });
       }
 
@@ -341,12 +404,15 @@ export default {
           labelName = "curric_name";
         }
 
-        //
+        // Filter out data and create a new array to feed into force simulation
         var nodes = data
           .filter(function (node) {
             if (
               node[labelName].includes("BOTHELL") ||
-              node[labelName].includes("TACOMA")
+              node[labelName].includes("TACOMA") ||
+              node[labelName].includes("BOTHL") ||
+              node[labelName].includes("UWT") ||
+              node[labelName].includes("UWB")
             ) {
               return false;
             } else if (node.score == null) {
@@ -362,6 +428,7 @@ export default {
               y: yCenter + Math.abs(Math.random()),
               score: Math.round(score * 100) / 100,
               name: node[labelName],
+              major: "curric" in node ? node.curric : curricPicked,
             };
           });
 
@@ -415,8 +482,8 @@ export default {
             }
           })
           .style("fill", function (d) {
-            if (d.name == vue.curric_abbr) {
-              chosenCurric = d;
+            if (d.major == chosenMajor) {
+              chosenMajor = d;
             }
             if (d.name == vue.course_id) {
               chosenCourse = d;
@@ -441,12 +508,8 @@ export default {
               return x(0);
             }
           })
-          .attr("cy", function (d) {
-            if (d.name == coursePicked && layer == "chosen") {
-              return d.y;
-            } else {
-              return yCenter;
-            }
+          .attr("cy", function () {
+            return yCenter;
           })
           .attr("r", RADIUS)
           .attr("class", function () {
@@ -474,7 +537,11 @@ export default {
 
                 tooltip
                   .style("opacity", 1)
-                  .html(d.name + "<br>" + "COI: " + d.score)
+                  .style("visibility", "visible")
+                  .html(d.name + "<br>" + "COI: " + d.score);
+              })
+              .on("mousemove", function (event) {
+                tooltip
                   .style("left", event.pageX + 5 + "px")
                   .style("top", event.pageY - 50 + "px");
               })
@@ -485,15 +552,15 @@ export default {
                   .style("stroke", "none")
                   .attr("r", RADIUS);
 
-                tooltip.style("opacity", 0);
+                tooltip.style("opacity", 0).style("visibility", "visible");
               });
           });
       }
 
+      // Add text annotation
       function addScaleAnnotation() {
-        // Add text annotation
         var labelPosY = height / 1.3;
-        var fontSize = "12px";
+        var fontSize = "14px";
 
         svg
           .append("text")
@@ -501,7 +568,7 @@ export default {
           .attr("x", x(3.25))
           .attr("y", labelPosY)
           .attr("text-anchor", "middle")
-          .html("More manageable &#128694;");
+          .html("&#10145;&#65039; More manageable &#128694;");
 
         svg
           .append("text")
@@ -509,7 +576,7 @@ export default {
           .attr("x", x(-3.25))
           .attr("y", labelPosY)
           .attr("text-anchor", "middle")
-          .html("&#127939; Less manageable");
+          .html("&#127939; Less manageable &#11013;&#65039;");
       }
 
       d3.selection.prototype.moveToFront = function () {
@@ -568,7 +635,7 @@ text {
   margin-left: auto;
 }
 
-#coi-tooltip {
+.tooltip {
   width: auto;
 }
 
@@ -576,11 +643,7 @@ text {
   fill: black;
 }
 
-.axis line {
-  stroke: gray;
-  stroke-width: 2px;
-}
-
+.axis line,
 .axis path {
   stroke: gray;
   stroke-width: 2px;
@@ -601,10 +664,11 @@ text {
 }
 
 #layer-select {
+  visibility: hidden;
   border-radius: 15px;
-  width: 26%;
-  padding: 10px;
-  background-color: rgb(234, 234, 234);
+  width: auto;
+  padding: 1% 2%;
+  background-color: #EAEAEA;
 }
 
 #layer-select label {
@@ -631,5 +695,20 @@ text {
 
 #coiGraph g.tick line {
   stroke-width: 1px;
+}
+
+.screen-reader-only {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  clip: rect(1px 1px 1px 1px); // IE 6 and 7
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
+  -webkit-clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
+  overflow: hidden !important;
+}
+
+#coi-tooltip {
+  width: auto;
 }
 </style>
