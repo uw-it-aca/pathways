@@ -85,7 +85,7 @@
               @keydown="disableEnter($event)"
             />
             <div class="invalid-feedback text-end">
-              Please clear and select from the dropdown options
+              Please clear your selection and search again
             </div>
           </div>
           <div class="text-end mt-4">
@@ -150,13 +150,12 @@
           />
 
           <div class="invalid-feedback text-end">
-            Please clear and select from the dropdown options
+            Please clear your selection and search again
           </div>
 
           <div class="text-end mt-4">
             <button
               class="btn btn-outline-purple rounded-end me-2"
-              :disabled="selectedLabel.length === 0"
               @click="clearInput"
             >
               Clear
@@ -273,7 +272,10 @@ export default {
   },
   watch: {
     searchType(type) {
+      // clear any validation and set to empty
+      document.getElementById("searchInput").classList.remove("is-invalid");
       this.selectedLabel = "";
+
       if (type === "major") {
         this.loadingList = true;
         this.fetch_major_data();
@@ -410,8 +412,8 @@ export default {
       }
     },
     clearInput() {
-      //this.searchType = "";
       this.selectedLabel = "";
+      document.getElementById("searchInput").classList.remove("is-invalid");
     },
   },
 };
