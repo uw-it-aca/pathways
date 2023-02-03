@@ -3,10 +3,12 @@
 <template>
   <div class="card mb-5">
     <div class="card-body">
-      <h2 class="h4 axdd-font-encode-sans fw-bold">Course Outcome Index (COI)</h2>
+      <h2 class="h4 axdd-font-encode-sans fw-bold">
+        Course Outcome Index (COI)
+      </h2>
       <p>
-        Using prior course data, this index compares estimated pass/completion rates against actual
-        pass/completion rates.
+        Using prior course data, this index compares estimated pass/completion
+        rates against actual pass/completion rates.
         <a
           tabindex="0"
           class="info-popper"
@@ -26,25 +28,44 @@
         <dl class="row">
           <dt class="col-sm-6">
             <i style="color: #ff8c00" class="bi bi-triangle-fill"></i>
-            <span class="key-desc">{{course_id}}</span>
+            <span class="key-desc">{{ course_id }}</span>
           </dt>
-          <dd v-if="course_coi" class="col-sm-6 key-coi"><span aria-label="Course Outcome Index">COI:</span> <strong>{{course_coi}}</strong></dd>
+          <dd v-if="course_coi" class="col-sm-6 key-coi">
+            <span aria-label="Course Outcome Index">COI:</span>
+            <strong>{{ course_coi }}</strong>
+          </dd>
           <dd v-else class="col-sm-6 key-coi">No Data</dd>
           <dt class="col-sm-6">
             <i class="bi bi-circle-fill"></i>
-            <span class="key-desc">Average course in {{curric_abbr}} curriculum</span>
+            <span class="key-desc"
+              >Average course in {{ curric_abbr }} curriculum</span
+            >
           </dt>
-          <dd v-if="curric_coi" class="col-sm-6 key-coi"><span aria-label="Course Outcome Index">COI:</span> <strong>{{curric_coi}}</strong></dd>
+          <dd v-if="curric_coi" class="col-sm-6 key-coi">
+            <span aria-label="Course Outcome Index">COI:</span>
+            <strong>{{ curric_coi }}</strong>
+          </dd>
           <dd v-else class="col-sm-6 key-coi">No Data</dd>
           <dt class="col-sm-6">
             <i class="bi bi-square-fill"></i>
-            <span class="key-desc">Average {{course_level}} Level Course at UW</span>
+            <span class="key-desc"
+              >Average {{ course_level }} Level Course at UW</span
+            >
           </dt>
-          <dd v-if="course_level_coi" class="col-sm-6 key-coi"><span aria-label="Course Outcome Index">COI:</span> <strong>{{course_level_coi}}</strong></dd>
+          <dd v-if="course_level_coi" class="col-sm-6 key-coi">
+            <span aria-label="Course Outcome Index">COI:</span>
+            <strong>{{ course_level_coi }}</strong>
+          </dd>
           <dd v-else class="col-sm-6 key-coi">No Data</dd>
         </dl>
-        <p>*<!--{{percent_in_range}}--> <small>54% of all UW courses fall within the <!--{{range_text}}-->2 - 3 range.<br>
-          <strong>No Data</strong> indicates there is not enough data to generate a COI plot.</small>
+        <p>
+          *<!--{{percent_in_range}}-->
+          <small
+            >54% of all UW courses fall within the
+            <!--{{range_text}}-->2 - 3 range.<br />
+            <strong>No Data</strong> indicates there is not enough data to
+            generate a COI plot.</small
+          >
         </p>
       </div>
     </div>
@@ -52,11 +73,11 @@
 </template>
 
 <script>
-import * as d3 from 'd3';
-import { Popover } from 'bootstrap';
+import * as d3 from "d3";
+import { Popover } from "bootstrap";
 
 export default {
-  name: 'OutcomeScore',
+  name: "OutcomeScore",
   data() {
     return {
       percent_in_range: null,
@@ -66,41 +87,43 @@ export default {
       curric_id: null,
       curric_abbr: null,
       course_num: null,
-      course_level: null
+      course_level: null,
     };
   },
-    props: {
+  props: {
     course: {
       type: Object,
       required: true,
     },
   },
   watch: {
-    course: function (course){
+    course: function () {
       this.init();
-    }
+    },
   },
   mounted() {
-    var popover = new Popover(document.querySelector('.info-popper'));
+    var popover = new Popover(document.querySelector(".info-popper"));
     this.init();
   },
   computed: {
-    range_text: function (){
-      if(this.course_coi <= 1){
-        return "0 - 1"
-      } else if(this.course_coi <= 2){
-        return "1 - 2"
-      } else if(this.course_coi <= 3){
-        return "2 - 3"
-      }else if(this.course_coi <= 4){
-        return "3 - 4"
-      }else if(this.course_coi <= 5){
-        return "4 - 5"
+    range_text: function () {
+      let rangeText = "";
+      if (this.course_coi <= 1) {
+        rangeText = "0 - 1";
+      } else if (this.course_coi <= 2) {
+        rangeText = "1 - 2";
+      } else if (this.course_coi <= 3) {
+        rangeText = "2 - 3";
+      } else if (this.course_coi <= 4) {
+        rangeText = "3 - 4";
+      } else if (this.course_coi <= 5) {
+        rangeText = "4 - 5";
       }
-    }
+      return rangeText;
+    },
   },
   methods: {
-    init(){
+    init() {
       this.percent_in_range = this.course.coi_data.percent_in_range;
       this.course_coi = this.course.coi_data.course_coi;
       this.course_level_coi = this.course.coi_data.course_level_coi;
@@ -109,9 +132,10 @@ export default {
 
       var split_pos = this.course_id.lastIndexOf(" ");
       this.curric_abbr = this.course_id.substring(0, split_pos);
-      this.course_num = parseInt(this.course_id.substring(split_pos + 1,
-        this.course_id.length));
-      this.course_level = Math.floor(this.course_num/100)*100;
+      this.course_num = parseInt(
+        this.course_id.substring(split_pos + 1, this.course_id.length)
+      );
+      this.course_level = Math.floor(this.course_num / 100) * 100;
       this.generateRect();
     },
     generateRect() {
@@ -131,31 +155,31 @@ export default {
 
       // Append SVG to container
       const svg = d3
-        .select('#coiGraph')
-        .append('svg')
+        .select("#coiGraph")
+        .append("svg")
         .attr("viewBox", `0 0 ${rwidth} ${rheight}`)
         .append("g")
-        .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
       // Draw the rect that expands width, light blue
       svg
-        .append('rect')
-        .attr('x', 0)
-        .attr('y', 52)
-        .attr('width', width)
-        .attr('height', 7)
-        .attr('fill-opacity', '0.6')
-        .attr('fill', '#A2D3FF');
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", 52)
+        .attr("width", width)
+        .attr("height", 7)
+        .attr("fill-opacity", "0.6")
+        .attr("fill", "#A2D3FF");
 
       // Draw the middle rect, dark blue
       svg
-        .append('rect')
-        .attr('x', 232)
-        .attr('y', 52)
-        .attr('width', 116)
-        .attr('height', 7)
-        .attr('fill-opacity', '0.6')
-        .attr('fill', '#055CAA');
+        .append("rect")
+        .attr("x", 232)
+        .attr("y", 52)
+        .attr("width", 116)
+        .attr("height", 7)
+        .attr("fill-opacity", "0.6")
+        .attr("fill", "#055CAA");
 
       // Pull in data to plot on line
       const CourseCOI = this.course_coi;
@@ -164,61 +188,70 @@ export default {
 
       // Draw the axis
       let xAxisGenerator = d3.axisBottom(x).ticks(5).tickSize(-20);
-      let xAxis = svg.append('g');
+      let xAxis = svg.append("g");
 
       xAxis
-        .attr('transform', 'translate(0,65)') // This controls the vertical position of the Axis
+        .attr("transform", "translate(0,65)") // This controls the vertical position of the Axis
         .call(xAxisGenerator)
-        .select('.domain')
+        .select(".domain")
         .remove();
 
-      const g = svg.append('g');
+      const g = svg.append("g");
 
-      g.append('path') // creates a triangle symbol for course COI and plots on x axis
-        .attr('d', d3.symbol().type(d3.symbolTriangle).size(180))
-        .attr('class', function(d) {
-            if (CourseCOI == null) { return "d-none" }
-            else { return "display" }
-            ;})
-        .attr('transform', 'translate(' + x(CourseCOI) + ', 55)')
-        .style('fill', '#FF8C00');
+      g.append("path") // creates a triangle symbol for course COI and plots on x axis
+        .attr("d", d3.symbol().type(d3.symbolTriangle).size(180))
+        .attr("class", function () {
+          if (CourseCOI == null) {
+            return "d-none";
+          } else {
+            return "display";
+          }
+        })
+        .attr("transform", "translate(" + x(CourseCOI) + ", 55)")
+        .style("fill", "#FF8C00");
 
-      g.append('path') // creates a square symbol for all uw COI and plots on x axis
-        .attr('d', d3.symbol().type(d3.symbolSquare).size(180))
-        .attr('class', function(d) {
-            if (UwCOI == null) { return "d-none" }
-            else { return "display" }
-            ;})
-        .attr('transform', 'translate(' + x(UwCOI) + ', 55)');
+      g.append("path") // creates a square symbol for all uw COI and plots on x axis
+        .attr("d", d3.symbol().type(d3.symbolSquare).size(180))
+        .attr("class", function () {
+          if (UwCOI == null) {
+            return "d-none";
+          } else {
+            return "display";
+          }
+        })
+        .attr("transform", "translate(" + x(UwCOI) + ", 55)");
 
-      g.append('path') // creates a circle symbol for curriculum COI and plots on x axis
-        .attr('d', d3.symbol().type(d3.symbolCircle).size(180))
-        .attr('class', function(d) {
-            if (CurrCOI == null) { return "d-none" }
-            else { return "display" }
-            ;})
-        .attr('transform', 'translate(' + x(CurrCOI) + ', 55)');
+      g.append("path") // creates a circle symbol for curriculum COI and plots on x axis
+        .attr("d", d3.symbol().type(d3.symbolCircle).size(180))
+        .attr("class", function () {
+          if (CurrCOI == null) {
+            return "d-none";
+          } else {
+            return "display";
+          }
+        })
+        .attr("transform", "translate(" + x(CurrCOI) + ", 55)");
 
-      g.append('text')
-        .attr('x', -2)
-        .attr('y', 25)
-        .attr('text-anchor', 'left')
-        .style('font-size', '11px')
-        .text('fewer completions than expected');
+      g.append("text")
+        .attr("x", -2)
+        .attr("y", 25)
+        .attr("text-anchor", "left")
+        .style("font-size", "11px")
+        .text("fewer completions than expected");
 
-      g.append('text')
-        .attr('x', 290)
-        .attr('y', 25)
-        .attr('text-anchor', 'middle')
-        .style('font-size', '11px')
-        .text('on target with expectations*');
+      g.append("text")
+        .attr("x", 290)
+        .attr("y", 25)
+        .attr("text-anchor", "middle")
+        .style("font-size", "11px")
+        .text("on target with expectations*");
 
-      g.append('text')
-        .attr('x', 410)
-        .attr('y', 25)
-        .attr('text-anchor', 'right')
-        .style('font-size', '11px')
-        .text('more completions than expected');
+      g.append("text")
+        .attr("x", 410)
+        .attr("y", 25)
+        .attr("text-anchor", "right")
+        .style("font-size", "11px")
+        .text("more completions than expected");
     },
   },
 };

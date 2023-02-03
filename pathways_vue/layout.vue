@@ -39,7 +39,6 @@
       <div class="bg-dark">
         <div class="container-xl">
           <div class="text-white font-weight-light py-3 small">
-
             <!-- foot link slot -->
             <div class="d-flex justify-content-between">
               <ul class="list-inline mb-2">

@@ -3,9 +3,12 @@
 <template>
   <div class="card mb-5">
     <div class="card-body">
-      <h2 class="h4 axdd-font-encode-sans fw-bold">Course Grade Distribution</h2>
+      <h2 class="h4 axdd-font-encode-sans fw-bold">
+        Course Grade Distribution
+      </h2>
       <p aria-hidden="true">
-        This graph represents the distribution of grades for every student who completed
+        This graph represents the distribution of grades for every student who
+        completed
         <strong>{{ course.course_id }}</strong> over the past 5 years.
         <a
           tabindex="0"
@@ -23,8 +26,8 @@
         <div class="alert alert-purple" role="alert">
           <p>
             Course grade distribution is not available for
-            <strong>{{ course.course_id }}</strong> because there isn’t enough final grade data to
-            generate plots.
+            <strong>{{ course.course_id }}</strong> because there isn’t enough
+            final grade data to generate plots.
           </p>
         </div>
       </div>
@@ -41,12 +44,20 @@
           >
         </div>
       </div>
-      <div aria-hidden="true" id="gcd-graph" :class="[ viewDataTable ? 'visually-hidden' : '']" />
+      <div
+        aria-hidden="true"
+        id="gcd-graph"
+        :class="[viewDataTable ? 'visually-hidden' : '']"
+      />
 
       <div v-if="total_count > 8" id="dataTable">
         <table class="table" v-if="viewDataTable">
           <caption class="caption-top">
-            Number of grades in this sample: {{ total_count }} (5 years). Data does not include pass/fail grades.
+            Number of grades in this sample:
+            {{
+              total_count
+            }}
+            (5 years). Data does not include pass/fail grades.
           </caption>
           <thead>
             <tr>
@@ -64,21 +75,24 @@
           </tbody>
         </table>
       </div>
-      <p :class="[ viewDataTable ? 'visually-hidden' : '']">
-        <small>Number of grades in this sample: <strong>{{ total_count }}</strong> (5 years).<br />
-          The graph does not include pass/fail grades. </small>
+      <p :class="[viewDataTable ? 'visually-hidden' : '']">
+        <small
+          >Number of grades in this sample:
+          <strong>{{ total_count }}</strong> (5 years).<br />
+          The graph does not include pass/fail grades.
+        </small>
       </p>
     </div>
   </div>
 </template>
 
 <script>
-import * as d3 from 'd3';
-import { Popover } from 'bootstrap';
-import numeral from 'numeral';
+import * as d3 from "d3";
+import { Popover } from "bootstrap";
+//import numeral from "numeral";
 
 export default {
-  name: 'GradeDistribution',
+  name: "GradeDistribution",
   data() {
     return {
       total_count: 0,
@@ -92,7 +106,7 @@ export default {
     },
   },
   mounted() {
-    var popover = new Popover(document.querySelector('.info-gcd'));
+    var popover = new Popover(document.querySelector(".info-gcd"));
     this.generateChart(this.course.gpa_distro);
   },
   watch: {
@@ -102,11 +116,13 @@ export default {
   },
   computed: {
     formatGPA() {
-      if (d.gpa == '50') {
-        var newFormat = d3.format('');
+      var newFormat = "";
+      if (this.gpa == "50") {
+        newFormat = d3.format("");
       } else {
-        var newFormat = d3.format('.2n');
+        newFormat = d3.format(".2n");
       }
+      return newFormat;
     },
     zeroCount: function () {
       return this.course.gpa_distro.filter(function (value) {
@@ -122,7 +138,7 @@ export default {
       let vue = this;
 
       // clear chart
-      document.getElementById('gcd-graph').innerHTML = '';
+      document.getElementById("gcd-graph").innerHTML = "";
 
       // Update count
       var count = gpa_data.reduce(function (accumulator, currentValue) {
@@ -139,7 +155,12 @@ export default {
         rwidth = width + margin.left + margin.right,
         rheight = height + margin.top + margin.bottom;
 
-      var tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0).style('left', '-9999px');
+      var tooltip = d3
+        .select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0)
+        .style("left", "-9999px");
 
       // set the ranges
       var x = d3.scaleBand().range([0, width]).padding(0.3);
@@ -148,18 +169,18 @@ export default {
       // append a 'group' element to 'svg'
       // moves the 'group' element to the top left margin
       var svg = d3
-        .select('#gcd-graph')
-        .append('svg')
-        .attr('class', function (d) {
+        .select("#gcd-graph")
+        .append("svg")
+        .attr("class", function () {
           if (s_count < 8) {
-            return 'd-none';
+            return "d-none";
           } else {
-            return 'display';
+            return "display";
           }
         })
-        .attr('viewBox', `0 0 ${rwidth} ${rheight}`)
-        .append('g')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        .attr("viewBox", `0 0 ${rwidth} ${rheight}`)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
       // Scale the range of the data in the domains
       x.domain(
@@ -175,58 +196,58 @@ export default {
       ]);
       // append the rectangles for the bar chart
       svg
-        .selectAll('.bar')
+        .selectAll(".bar")
         .data(gpa_data)
         .enter()
-        .append('rect')
-        .attr('class', 'bar')
-        .attr('x', function (d) {
+        .append("rect")
+        .attr("class", "bar")
+        .attr("x", function (d) {
           return x(d.gpa / 10);
         })
-        .attr('width', x.bandwidth())
-        .attr('y', function (d) {
+        .attr("width", x.bandwidth())
+        .attr("y", function (d) {
           return y(d.count);
         })
-        .attr('height', function (d) {
+        .attr("height", function (d) {
           return height - y(d.count);
         })
-        .on('mouseover', function (event, d) {
-          tooltip.transition().style('opacity', 1);
+        .on("mouseover", function (event, d) {
+          tooltip.transition().style("opacity", 1);
           tooltip
             .html(
               `Grade ${d.gpa / 10}<br/>
               ${vue.distributionPercentage(d.count)}% (${d.count} total)`
             )
-            .style('left', event.pageX + 'px')
-            .style('top', event.pageY - 28 + 'px');
+            .style("left", event.pageX + "px")
+            .style("top", event.pageY - 28 + "px");
         })
-        .on('mouseout', function (d) {
-          tooltip.transition().style('opacity', 0);
+        .on("mouseout", function () {
+          tooltip.transition().style("opacity", 0);
         });
 
       svg
-        .append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', 5 - margin.left)
-        .attr('x', 0 - height / 2)
-        .attr('dy', '0.5em')
-        .style('text-anchor', 'middle')
-        .style('font-size', '0.85rem')
-        .classed('chart-label', true)
-        .text('Number of Students');
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 5 - margin.left)
+        .attr("x", 0 - height / 2)
+        .attr("dy", "0.5em")
+        .style("text-anchor", "middle")
+        .style("font-size", "0.85rem")
+        .classed("chart-label", true)
+        .text("Number of Students");
 
       svg
-        .append('text')
-        .attr('x', width / 2)
-        .attr('y', height + margin.bottom)
-        .style('text-anchor', 'middle')
-        .style('font-size', '0.85rem')
-        .text('Course Grade');
+        .append("text")
+        .attr("x", width / 2)
+        .attr("y", height + margin.bottom)
+        .style("text-anchor", "middle")
+        .style("font-size", "0.85rem")
+        .text("Course Grade");
 
       // add the x Axis
       svg
-        .append('g')
-        .attr('transform', 'translate(0,' + height + ')')
+        .append("g")
+        .attr("transform", "translate(0," + height + ")")
         .call(
           d3
             .axisBottom(x)
@@ -239,7 +260,7 @@ export default {
         );
 
       // add the y Axis
-      svg.append('g').call(d3.axisLeft(y));
+      svg.append("g").call(d3.axisLeft(y));
     },
   },
 };
