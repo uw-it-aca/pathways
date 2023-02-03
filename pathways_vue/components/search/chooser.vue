@@ -7,8 +7,8 @@
       <form @submit.prevent="onSelected" role="search">
         <fieldset>
           <legend class="visually-hidden">Select a campus to search</legend>
-          <div class="my-3">
-            <div class="form-check form-check-inline">
+          <div class="mt-3">
+            <div class="form-check form-check-inline mb-0">
               <input
                 class="form-check-input"
                 type="radio"
@@ -21,7 +21,7 @@
                 >Seattle</label
               >
             </div>
-            <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline mb-0">
               <input
                 class="form-check-input"
                 type="radio"
@@ -32,7 +32,7 @@
               />
               <label class="form-check-label" for="TacomaCampus">Tacoma</label>
             </div>
-            <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline mb-0">
               <input
                 class="form-check-input"
                 type="radio"
@@ -85,30 +85,8 @@
               @keydown="disableEnter($event)"
             />
             <div class="invalid-feedback text-end">
-              Please clear and select from the dropdown options
+              Please clear your selection and search again
             </div>
-          </div>
-          <div class="text-end mt-4">
-            <button
-              class="btn btn-outline-purple rounded-end me-2"
-              :disabled="selectedLabel.length === 0"
-              @click="clearInput"
-            >
-              Clear
-            </button>
-            <button
-              type="button"
-              class="btn btn-purple"
-              :disabled="
-                searchType.length === 0 ||
-                loadingList ||
-                !isValidInput ||
-                !this.searchValue
-              "
-              @click="onSelected"
-            >
-              Search
-            </button>
           </div>
         </div>
 
@@ -150,31 +128,30 @@
           />
 
           <div class="invalid-feedback text-end">
-            Please clear and select from the dropdown options
+            Please clear your selection and search again
           </div>
-
-          <div class="text-end mt-4">
-            <button
-              class="btn btn-outline-purple rounded-end me-2"
-              :disabled="selectedLabel.length === 0"
-              @click="clearInput"
-            >
-              Clear
-            </button>
-            <button
-              type="button"
-              class="btn btn-purple rounded-end"
-              :disabled="
-                searchType.length === 0 ||
-                loadingList ||
-                !isValidInput ||
-                !this.searchValue
-              "
-              @click="onSelected"
-            >
-              Search
-            </button>
-          </div>
+        </div>
+        <div class="text-end mt-4">
+          <button
+            class="btn btn-outline-purple rounded-3 me-2"
+            :disabled="selectedLabel.length === 0"
+            @click="clearInput"
+          >
+            Clear
+          </button>
+          <button
+            type="button"
+            class="btn btn-purple rounded-3"
+            :disabled="
+              searchType.length === 0 ||
+              loadingList ||
+              !isValidInput ||
+              !this.searchValue
+            "
+            @click="onSelected"
+          >
+            Search
+          </button>
         </div>
 
         <datalist id="searchDataList">
@@ -273,7 +250,10 @@ export default {
   },
   watch: {
     searchType(type) {
+      // clear any validation and set to empty
+      document.getElementById("searchInput").classList.remove("is-invalid");
       this.selectedLabel = "";
+
       if (type === "major") {
         this.loadingList = true;
         this.fetch_major_data();
@@ -410,8 +390,8 @@ export default {
       }
     },
     clearInput() {
-      //this.searchType = "";
       this.selectedLabel = "";
+      document.getElementById("searchInput").classList.remove("is-invalid");
     },
   },
 };
