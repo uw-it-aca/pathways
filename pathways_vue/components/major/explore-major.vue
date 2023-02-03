@@ -3,7 +3,7 @@
 <template>
   <h2 class="h4 axdd-font-encode-sans fw-bold mb-3">Explore this Major</h2>
   <div class="row mb-5">
-    <div class="col-md-4" v-if="major['program_code']">
+    <div class="col-md-4 mb-3" v-if="major['program_code']">
       <a class="card-link p-0 text-decoration-none" :href="myplanProgramURL">
         <div class="card h-100">
           <div class="card-body d-flex">
@@ -24,7 +24,7 @@
         </div>
       </a>
     </div>
-    <div class="col-md-4" v-if="major['credential_code']">
+    <div class="col-md-4 mb-3" v-if="major['credential_code']">
       <a class="card-link p-0 text-decoration-none" :href="myplanCredentialURL">
         <div class="card h-100">
           <div class="card-body d-flex">
@@ -45,7 +45,7 @@
         </div>
       </a>
     </div>
-    <div class="col-md-4" v-if="major['career_center_major']">
+    <div class="col-md-4 mb-3" v-if="major['career_center_major']">
       <a
         class="card-link p-0 text-decoration-none"
         :href="careerCenterOutcomeURL"
