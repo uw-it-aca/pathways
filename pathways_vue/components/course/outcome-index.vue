@@ -7,18 +7,16 @@
         Course Outcome Index (COI)
       </h2>
       <p>
-        Using prior course data, this index compares estimated pass/completion
-        rates against actual pass/completion rates.
+        This visualization provides insight into how challenging a course may
+        be.
+
         <a
-          tabindex="0"
-          class="info-popper"
-          role="button"
-          data-bs-toggle="popover"
-          data-bs-trigger="focus"
-          title="Course Outcome Indicator"
-          data-bs-content="A negative COI indicates that fewer people completed the course than expected. COI around 0 indicates the course is on target with expectations. A positive COI indicates that more people completed the course than anticipated."
+          type="button"
+          class="btn-link text-decoration-none"
+          aria-label="Open modal"
+          @click="showCOIModal"
         >
-          <i class="bi bi-info-circle-fill"></i>
+          Walk me through the COI <i class="bi bi-info-circle"></i>
         </a>
       </p>
       <div
@@ -33,9 +31,116 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
             <div class="modal-body">
-              <h2 class="modal-title mb-2" id="coi_onboard">COI</h2>
               <div>
-                <p>Content for COI here</p>
+                <div id="coi_onboard_steps" class="carousel slide">
+                  <div class="carousel-indicators">
+                    <button
+                      type="button"
+                      data-bs-target="#coi_onboard_steps"
+                      data-bs-slide-to="0"
+                      class="bg-purple active"
+                      aria-current="true"
+                      aria-label="Slide 1"
+                    ></button>
+                    <button
+                      type="button"
+                      data-bs-target="#coi_onboard_steps"
+                      data-bs-slide-to="1"
+                      class="bg-purple"
+                      aria-label="Slide 2"
+                    ></button>
+                    <button
+                      type="button"
+                      data-bs-target="#coi_onboard_steps"
+                      data-bs-slide-to="2"
+                      class="bg-purple"
+                      aria-label="Slide 3"
+                    ></button>
+                  </div>
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img
+                        src="/pathways/static/pathways/img/test-img-modal.png"
+                        class="d-block w-100"
+                        alt="alt text"
+                      />
+                      <div class="carousel-caption d-none d-md-block">
+                        <h5>As a student, why should I care about COI?</h5>
+                        <p class="text-start">
+                          Lower numbers indicate that the class may be
+                          challenging for some students. Numbers in the middle
+                          of the scale indicate a course that is typical at the
+                          UW. Positive numbers indicate that the class may be
+                          less challenging for some students. Explore how the
+                          course compares to other classes in that major or
+                          other majors at the UW.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="carousel-item">
+                      <img
+                        src="/pathways/static/pathways/img/test-img-modal.png"
+                        class="d-block w-100"
+                        alt="alt text"
+                      />
+                      <div class="carousel-caption d-none d-md-block">
+                        <h5>
+                          Concerned that your schedule may be too challenging?
+                        </h5>
+                        <p class="text-start">
+                          Some students do poorly in a quarter or drop courses
+                          as a result of taking too many difficult courses in
+                          the same quarter. If feasible, try to keep a good
+                          balance of negative and positive COI scores each
+                          quarter.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="carousel-item">
+                      <img
+                        src="/pathways/static/pathways/img/test-img-modal.png"
+                        class="d-block w-100"
+                        alt="alt text"
+                      />
+                      <div class="carousel-caption d-none d-md-block">
+                        <h5>How is the number in the scale calculated?</h5>
+                        <p class="text-start">
+                          The COI score is calculated by using a model to
+                          predict how well students will do in a class, then
+                          comparing the predictions with actual outcomes. Keep
+                          in mind that this score is just a prediction and may
+                          not be your actual experience. If you’re concerned
+                          about your potential course load, reach out to an
+                          adviser.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    class="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#coi_onboard_steps"
+                    data-bs-slide="prev"
+                  >
+                    <span
+                      class="carousel-control-prev-icon bg-purple"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button
+                    class="carousel-control-next"
+                    type="button"
+                    data-bs-target="#coi_onboard_steps"
+                    data-bs-slide="next"
+                  >
+                    <span
+                      class="carousel-control-next-icon bg-purple"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
               </div>
               <div class="text-end">
                 <button
@@ -44,21 +149,13 @@
                   data-bs-dismiss="modal"
                   aria-label="Next"
                 >
-                  Next
+                  Close
                 </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <button
-        type="button"
-        class="btn btn-link mt-2 btn-sm text-decoration-none"
-        aria-label="Open modal"
-        @click="showCOIModal"
-      >
-        open modal
-      </button>
       <div v-if="course_coi == null">
         <div class="alert alert-purple" role="alert">
           <p>
@@ -82,7 +179,7 @@
 
 <script>
 import * as d3 from "d3";
-import { Modal, Popover } from "bootstrap";
+import { Modal } from "bootstrap";
 
 export default {
   name: "OutcomeScore",
@@ -112,7 +209,7 @@ export default {
     },
   },
   mounted() {
-    var popover = new Popover(document.querySelector(".info-popper"));
+    //var popover = new Popover(document.querySelector(".info-popper"));
     this.init();
   },
   computed: {
@@ -623,7 +720,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 
 text {
@@ -668,7 +765,7 @@ text {
   border-radius: 15px;
   width: auto;
   padding: 1% 2%;
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
 }
 
 #layer-select label {
@@ -710,5 +807,15 @@ text {
 
 #coi-tooltip {
   width: auto;
+}
+
+.carousel-caption {
+  position: initial;
+  right: 15%;
+  bottom: 1.25rem;
+  left: 15%;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  color: #000;
 }
 </style>
