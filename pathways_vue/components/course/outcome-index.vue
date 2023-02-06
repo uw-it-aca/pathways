@@ -64,7 +64,7 @@
           <p>
             The COI is not available for
             <strong>{{ course.course_id }}</strong> because there isn't enough
-            data to generate a score as it is a new course.
+            data for this course.
           </p>
         </div>
       </div>
@@ -83,6 +83,7 @@
 <script>
 import * as d3 from "d3";
 import { Modal, Popover } from "bootstrap";
+import { select } from "d3";
 
 export default {
   name: "OutcomeScore",
@@ -190,7 +191,7 @@ export default {
       // Pull in data to plot on line
       const coursePicked = vue.course_id;
       // Get the major of the chosen course
-      const curricPicked = coursePicked.match(/\D+/)[0].trim();
+      const majorPicked = coursePicked.match(/\D+/)[0].trim();
 
       // Specific course color (purple)
       const courseColor = "#452a78";
@@ -201,9 +202,18 @@ export default {
 
       // Different layer options
       const layerOptions = {
-        single: coursePicked,
-        chosen: curricPicked + " Courses",
-        other: "Other Major Averages",
+        single: {
+          name: coursePicked,
+          color: courseColor,
+        },
+        chosen: {
+          name: majorPicked + " Courses",
+          color: majorColor,
+        },
+        other: {
+          name: "Other Major Averages",
+          color: avgColor,
+        },
       };
 
       // Set radius here
@@ -248,21 +258,32 @@ export default {
         .style("font-weight", "bold")
         .append("br");
 
+      var selectID;
+
       // Add the two options as radio buttons
       for (var option in layerOptions) {
+        selectID = layerOptions[option].name.replace(" ", "-");
+
         layerSelect
           .append("input")
           .attr("type", "radio")
           .attr("value", option)
-          .attr("id", layerOptions[option] + "-button")
+          .attr("id", selectID + "-button")
           .attr("name", "toggle");
 
         // Add the text label
         // layerSelect.append("a").text(layerOptions[option]);
         layerSelect
           .append("label")
-          .text(layerOptions[option])
-          .attr("for", layerOptions[option] + "-button");
+          .text(layerOptions[option].name)
+          .attr("for", selectID + "-button");
+
+        // console.log(layerSelect.select("label").getBoundingClientRect())
+
+        layerSelect
+          .append("circle")
+          .attr("r", RADIUS)
+          .style("fill", layerOptions[option].color);
 
         // Line break
         layerSelect.append("br");
@@ -291,29 +312,22 @@ export default {
         var selectedLayer = d3.select(this).property("value");
 
         var courseId = "#" + coursePicked.replace(/\s/g, "_");
-        // Chosen course point
-        var course = d3.select(courseId);
 
-        // Select the different layers
-        var chosen = d3.selectAll(".chosen ");
-        var curric = d3.selectAll(".curric ");
+        var prev = d3.selectAll(".shown, " + courseId);
+        var selected;
 
         if (selectedLayer == "single") {
-          var prevLayer;
+          if (d3.select(".shown").attr("class").includes("chosen")) {
+            selected = d3.select(courseId + ".chosen");
+          } else {
+            selected = d3.select(courseId + ".avg");
+          }
 
           // Screen reader text for the specific course
           d3.select("#sr-text").text(
             `${chosenCourse.name} has a score of ${chosenCourse.score}.`
           );
 
-          // Determine which layer to hide/unhide
-          if (d3.select(".chosen").style("visibility") == "visible") {
-            prevLayer = chosen;
-          } else {
-            prevLayer = curric;
-          }
-
-          switchLayers(prevLayer, course);
         } else if (selectedLayer == "chosen") {
           // Screen reader text for the chosen major
           d3.select("#sr-text").text(
@@ -321,7 +335,7 @@ export default {
           );
 
           // If the user selected the major courses layer
-          switchLayers(curric, chosen);
+          selected = d3.selectAll(".chosen");
         } else {
           // Screen reader text for layer with average scores
           d3.select("#sr-text").text(
@@ -329,14 +343,18 @@ export default {
           );
 
           // If the user selected the major averages layer
-          switchLayers(chosen, curric);
+          selected = d3.selectAll(".avg");
         }
+
+        switchLayers(prev, selected);
       });
 
       // Allow for the hiding and showing of different layers
       function switchLayers(hide, show) {
-        d3.selectAll("circle")
-          .transition()
+        // Hiding the previous layer
+        // First transition: move circle(s) to the center of y axis
+        hide
+          .transition("moveout-vcenter")
           .duration(1000)
           .delay(function (d, i) {
             return i / 3;
@@ -344,24 +362,24 @@ export default {
           .attr("cy", yCenter)
           .end()
           .then(() => {
-            d3.selectAll("circle")
-              .transition()
+            // Second transition: move circle(s) to the center of x axis
+            hide
+              .transition("moveout-hcenter")
               .duration(500)
               .delay(function (d, i) {
                 return i / 3;
               })
               .attr("cx", x(0))
               .style("opacity", 0)
-              .each(function () {
-                d3.select(this).moveToBack();
-              })
               .end()
               .then(() => {
-                hide.style("visibility", "hidden");
-                show.style("visibility", "visible");
+                hide.classed("shown", false);
+                show.classed("shown", true);
 
+                // Layer to show
+                // Third transition: move circle(s) to their respective x positions
                 show
-                  .transition()
+                  .transition("movein-vpoints")
                   .duration(1000)
                   .delay(function (d, i) {
                     return i / 3;
@@ -371,13 +389,11 @@ export default {
                   .attr("cx", function (d) {
                     return d.x;
                   })
-                  .each(function () {
-                    d3.select(this).moveToFront();
-                  })
                   .end()
                   .then(() => {
+                    // Fourth transition: move circle(s) to their respective y positions
                     show
-                      .transition()
+                      .transition("movein-hpoints")
                       .duration(500)
                       .delay(function (d, i) {
                         return i / 3;
@@ -407,6 +423,7 @@ export default {
         // Filter out data and create a new array to feed into force simulation
         var nodes = data
           .filter(function (node) {
+            // Filter out UWB and UWT courses/majors
             if (
               node[labelName].includes("BOTHELL") ||
               node[labelName].includes("TACOMA") ||
@@ -424,11 +441,11 @@ export default {
           .map(function (node) {
             var score = scaleScore(node.score);
             return {
-              x: x(score),
-              y: yCenter + Math.abs(Math.random()),
-              score: Math.round(score * 100) / 100,
-              name: node[labelName],
-              major: "curric" in node ? node.curric : curricPicked,
+              x: x(score), // Scale the score from -5 to 5
+              y: yCenter, // Set the default height of the point
+              score: Math.round(score * 100) / 100, // Round the score to two decimal places
+              name: node[labelName], // Give the course/major its name
+              major: "curric" in node ? node.curric : majorPicked, // Major codes to each point
             };
           });
 
@@ -439,6 +456,7 @@ export default {
             y: chosenCourse.y,
             score: chosenCourse.score,
             name: chosenCourse.name,
+            major: chosenCourse.major,
           });
         }
 
@@ -470,19 +488,17 @@ export default {
         // Add the points to the plot
         // Depending on whether the course is chosen, the fill color and opacity will be different
         svg
-          .selectAll("circle ." + layer)
+          .selectAll("." + layer + " circle")
           .data(nodes)
           .enter()
           .append("circle")
-          .style("visibility", function (d) {
-            if (d.name == coursePicked && layer == "chosen") {
-              return "visible";
-            } else {
-              return "hidden";
-            }
+          .classed("shown", function (d) {
+            console.log(d.name)
+            console.log(layer)
+            return d.name == vue.course_id && layer == "chosen";
           })
           .style("fill", function (d) {
-            if (d.major == chosenMajor) {
+            if (d.major == majorPicked && layer == "avg") {
               chosenMajor = d;
             }
             if (d.name == vue.course_id) {
@@ -495,14 +511,14 @@ export default {
             }
           })
           .style("opacity", function (d) {
-            if (d.name == coursePicked && layer == "chosen") {
+            if (d.name == vue.course_id && layer == "chosen") {
               return 1;
             } else {
               return 0;
             }
           })
           .attr("cx", function (d) {
-            if (d.name == coursePicked && layer == "chosen") {
+            if (d.name == vue.course_id && layer == "chosen") {
               return d.x;
             } else {
               return x(0);
@@ -516,7 +532,7 @@ export default {
             if (layer == "chosen") {
               return "chosen";
             } else {
-              return "curric";
+              return "avg";
             }
           })
           .attr("id", function (d) {
@@ -568,7 +584,8 @@ export default {
           .attr("x", x(3.25))
           .attr("y", labelPosY)
           .attr("text-anchor", "middle")
-          .html("&#10145;&#65039; More manageable &#128694;");
+          .html("More manageable &#128694;");
+        // .html("&#10145;&#65039; More manageable &#128694;");
 
         svg
           .append("text")
@@ -576,7 +593,8 @@ export default {
           .attr("x", x(-3.25))
           .attr("y", labelPosY)
           .attr("text-anchor", "middle")
-          .html("&#127939; Less manageable &#11013;&#65039;");
+          .html("&#127939; Less manageable");
+        // .html("&#127939; Less manageable &#11013;&#65039;");
       }
 
       d3.selection.prototype.moveToFront = function () {
@@ -664,19 +682,20 @@ text {
 }
 
 #layer-select {
+  font-size: 100%;
   visibility: hidden;
   border-radius: 15px;
   width: auto;
   padding: 1% 2%;
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
 }
 
 #layer-select label {
-  padding: 5px;
+  padding: 3%;
 }
 
 #score {
-  font-size: 20px;
+  font-size: 100%;
   font-weight: bold;
 }
 
@@ -685,7 +704,7 @@ text {
   display: flex;
   justify-content: start;
   align-items: center;
-  gap: 15%;
+  gap: 20%;
 }
 
 #coiGraph path.domain,
@@ -710,5 +729,9 @@ text {
 
 #coi-tooltip {
   width: auto;
+}
+
+.shown {
+  visibility: visible;
 }
 </style>
