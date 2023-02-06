@@ -818,4 +818,10 @@ text {
   padding-bottom: 1.25rem;
   color: #000;
 }
+
+.carousel-indicators [data-bs-target] {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
 </style>
