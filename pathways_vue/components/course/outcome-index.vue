@@ -7,18 +7,16 @@
         Course Outcome Index (COI)
       </h2>
       <p>
-        Using prior course data, this index compares estimated pass/completion
-        rates against actual pass/completion rates.
+        This visualization provides insight into how challenging a course may
+        be.
+
         <a
-          tabindex="0"
-          class="info-popper"
-          role="button"
-          data-bs-toggle="popover"
-          data-bs-trigger="focus"
-          title="Course Outcome Indicator"
-          data-bs-content="A negative COI indicates that fewer people completed the course than expected. COI around 0 indicates the course is on target with expectations. A positive COI indicates that more people completed the course than anticipated."
+          type="button"
+          class="btn-link text-decoration-none"
+          aria-label="Open modal"
+          @click="showCOIModal"
         >
-          <i class="bi bi-info-circle-fill"></i>
+          Walk me through the COI <i class="bi bi-info-circle"></i>
         </a>
       </p>
       <div
@@ -33,9 +31,116 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
             <div class="modal-body">
-              <h2 class="modal-title mb-2" id="coi_onboard">COI</h2>
               <div>
-                <p>Content for COI here</p>
+                <div id="coi_onboard_steps" class="carousel slide">
+                  <div class="carousel-indicators">
+                    <button
+                      type="button"
+                      data-bs-target="#coi_onboard_steps"
+                      data-bs-slide-to="0"
+                      class="bg-purple active"
+                      aria-current="true"
+                      aria-label="Slide 1"
+                    ></button>
+                    <button
+                      type="button"
+                      data-bs-target="#coi_onboard_steps"
+                      data-bs-slide-to="1"
+                      class="bg-purple"
+                      aria-label="Slide 2"
+                    ></button>
+                    <button
+                      type="button"
+                      data-bs-target="#coi_onboard_steps"
+                      data-bs-slide-to="2"
+                      class="bg-purple"
+                      aria-label="Slide 3"
+                    ></button>
+                  </div>
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img
+                        src="/pathways/static/pathways/img/test-img-modal.png"
+                        class="d-block w-100"
+                        alt="alt text"
+                      />
+                      <div class="carousel-caption d-none d-md-block">
+                        <h5>As a student, why should I care about COI?</h5>
+                        <p class="text-start">
+                          Lower numbers indicate that the class may be
+                          challenging for some students. Numbers in the middle
+                          of the scale indicate a course that is typical at the
+                          UW. Positive numbers indicate that the class may be
+                          less challenging for some students. Explore how the
+                          course compares to other classes in that major or
+                          other majors at the UW.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="carousel-item">
+                      <img
+                        src="/pathways/static/pathways/img/test-img-modal.png"
+                        class="d-block w-100"
+                        alt="alt text"
+                      />
+                      <div class="carousel-caption d-none d-md-block">
+                        <h5>
+                          Concerned that your schedule may be too challenging?
+                        </h5>
+                        <p class="text-start">
+                          Some students do poorly in a quarter or drop courses
+                          as a result of taking too many difficult courses in
+                          the same quarter. If feasible, try to keep a good
+                          balance of negative and positive COI scores each
+                          quarter.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="carousel-item">
+                      <img
+                        src="/pathways/static/pathways/img/test-img-modal.png"
+                        class="d-block w-100"
+                        alt="alt text"
+                      />
+                      <div class="carousel-caption d-none d-md-block">
+                        <h5>How is the number in the scale calculated?</h5>
+                        <p class="text-start">
+                          The COI score is calculated by using a model to
+                          predict how well students will do in a class, then
+                          comparing the predictions with actual outcomes. Keep
+                          in mind that this score is just a prediction and may
+                          not be your actual experience. If you’re concerned
+                          about your potential course load, reach out to an
+                          adviser.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    class="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#coi_onboard_steps"
+                    data-bs-slide="prev"
+                  >
+                    <span
+                      class="carousel-control-prev-icon bg-purple"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button
+                    class="carousel-control-next"
+                    type="button"
+                    data-bs-target="#coi_onboard_steps"
+                    data-bs-slide="next"
+                  >
+                    <span
+                      class="carousel-control-next-icon bg-purple"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
               </div>
               <div class="text-end">
                 <button
@@ -44,21 +149,13 @@
                   data-bs-dismiss="modal"
                   aria-label="Next"
                 >
-                  Next
+                  Close
                 </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <button
-        type="button"
-        class="btn btn-link mt-2 btn-sm text-decoration-none"
-        aria-label="Open modal"
-        @click="showCOIModal"
-      >
-        open modal
-      </button>
       <div v-if="course_coi == null">
         <div class="alert alert-purple" role="alert">
           <p>
@@ -76,6 +173,7 @@
         </div>
         <div aria-hidden="true" id="coiGraph" />
       </div>
+      <span class="dot"></span>
     </div>
   </div>
 </template>
@@ -113,24 +211,10 @@ export default {
     },
   },
   mounted() {
-    var popover = new Popover(document.querySelector(".info-popper"));
+    //var popover = new Popover(document.querySelector(".info-popper"));
     this.init();
   },
-  computed: {
-    // range_text: function () {
-    //   if (this.course_coi <= 1) {
-    //     return "0 - 1";
-    //   } else if (this.course_coi <= 2) {
-    //     return "1 - 2";
-    //   } else if (this.course_coi <= 3) {
-    //     return "2 - 3";
-    //   } else if (this.course_coi <= 4) {
-    //     return "3 - 4";
-    //   } else if (this.course_coi <= 5) {
-    //     return "4 - 5";
-    //   }
-    // },
-  },
+  computed: {},
   methods: {
     showCOIModal() {
       this.coiModal = new Modal(document.getElementById("coi_modal"), {});
@@ -183,7 +267,9 @@ export default {
         .select("body")
         .append("div")
         .attr("class", "tooltip")
-        .attr("id", "coi-tooltip")
+        .style("color", "#000")
+        .style("background-color", "#eaeaea")
+        .style("width", "auto")
         .style("opacity", 0)
         .style("left", "-9999px")
         .style("visibility", "hidden");
@@ -218,6 +304,7 @@ export default {
 
       // Set radius here
       const RADIUS = 4.2;
+      // Where the points will hover around vertically
       const yCenter = 65;
 
       // Create the 5.0 COI scale
@@ -264,29 +351,30 @@ export default {
       for (var option in layerOptions) {
         selectID = layerOptions[option].name.replace(" ", "-");
 
-        layerSelect
+        var inputRow = layerSelect.append("div").attr("class", "form-check");
+
+        inputRow
           .append("input")
           .attr("type", "radio")
           .attr("value", option)
           .attr("id", selectID + "-button")
-          .attr("name", "toggle");
+          .attr("name", "toggle")
+          .attr("class", "form-check-input");
 
         // Add the text label
-        // layerSelect.append("a").text(layerOptions[option]);
-        layerSelect
+        inputRow
           .append("label")
           .text(layerOptions[option].name)
-          .attr("for", selectID + "-button");
+          .attr("for", selectID + "-button")
+          .attr("class", "form-check-label");
 
-        // console.log(layerSelect.select("label").getBoundingClientRect())
-
-        layerSelect
-          .append("circle")
-          .attr("r", RADIUS)
-          .style("fill", layerOptions[option].color);
-
-        // Line break
-        layerSelect.append("br");
+        inputRow
+          .append("div")
+          .attr("class", "rounded-circle d-inline-block")
+          .style("margin-left", "5px")
+          .style("width", RADIUS * 3 + "px")
+          .style("height", RADIUS * 3 + "px")
+          .style("background-color", layerOptions[option].color);
       }
 
       // Default selection
@@ -327,7 +415,6 @@ export default {
           d3.select("#sr-text").text(
             `${chosenCourse.name} has a score of ${chosenCourse.score}.`
           );
-
         } else if (selectedLayer == "chosen") {
           // Screen reader text for the chosen major
           d3.select("#sr-text").text(
@@ -463,13 +550,13 @@ export default {
         // Specify force specifications for the circles
         var force = d3
           .forceSimulation(nodes)
-          .force("forceX", d3.forceX((d) => d.x).strength(1))
-          .force("forceY", d3.forceY(yCenter).strength(0.1))
+          .force("forceX", d3.forceX((d) => d.x).strength(1)) // Force points to their respective x position
+          .force("forceY", d3.forceY(yCenter).strength(0.1)) // Push points towards the center of the svg
           .force(
             "charge",
-            d3.forceManyBody().distanceMax(2).distanceMin(1).strength(1)
+            d3.forceManyBody().distanceMax(2).distanceMin(1).strength(1) // Set minimum and maximum distance between all of the points
           )
-          .force("collide", d3.forceCollide().radius(RADIUS).strength(1))
+          .force("collide", d3.forceCollide().radius(RADIUS).strength(1)) // Specify the seperation of points
           .on("tick", tick)
           .stop();
 
@@ -481,6 +568,7 @@ export default {
           }
         }
 
+        // Run force simulation n times
         const NUM_ITERATIONS = 500;
         force.tick(NUM_ITERATIONS);
         force.stop();
@@ -488,21 +576,20 @@ export default {
         // Add the points to the plot
         // Depending on whether the course is chosen, the fill color and opacity will be different
         svg
-          .selectAll("." + layer + " circle")
-          .data(nodes)
+          .selectAll("." + layer + " circle") // Select current layer
+          .data(nodes) // Input data
           .enter()
           .append("circle")
           .classed("shown", function (d) {
-            console.log(d.name)
-            console.log(layer)
-            return d.name == vue.course_id && layer == "chosen";
+            return d.name == vue.course_id && layer == "chosen"; // Only show the first layer
           })
           .style("fill", function (d) {
             if (d.major == majorPicked && layer == "avg") {
-              chosenMajor = d;
+              chosenMajor = d; // Keep track of chosen major
             }
+            // Color circles by cateogry
             if (d.name == vue.course_id) {
-              chosenCourse = d;
+              chosenCourse = d; // Keep track of chosen course
               return courseColor;
             } else if (layer == "chosen") {
               return majorColor;
@@ -512,38 +599,40 @@ export default {
           })
           .style("opacity", function (d) {
             if (d.name == vue.course_id && layer == "chosen") {
-              return 1;
+              return 1; // Show the chosen course
             } else {
-              return 0;
+              return 0; // Hide everything else
             }
           })
           .attr("cx", function (d) {
             if (d.name == vue.course_id && layer == "chosen") {
-              return d.x;
+              return d.x; // Set horizontal position of the chosen course
             } else {
-              return x(0);
+              return x(0); // Set the default point of all other points
             }
           })
           .attr("cy", function () {
-            return yCenter;
+            return yCenter; // Start off in the middle of the svg
           })
-          .attr("r", RADIUS)
+          .attr("r", RADIUS) // Set radius of the circle
           .attr("class", function () {
             if (layer == "chosen") {
-              return "chosen";
+              return "chosen"; // Set class of the circle
             } else {
-              return "avg";
+              return "avg"; // Set class of the circle
             }
           })
           .attr("id", function (d) {
-            return d.name.replace(/\s/g, "_");
+            return d.name.replace(/\s/g, "_"); // Set id for each course
           })
           .attr("score", function (d) {
-            return d.score;
+            return d.score; // Keep track of score for each course -- not sure this is needed
           })
           .each(function () {
+            // Enable mouse over interaction
             d3.select(this)
               .on("mouseover", function (event, d) {
+                // Change point properties when hovered over
                 d3.select(this)
                   .moveToFront()
                   .transition()
@@ -551,23 +640,34 @@ export default {
                   .style("stroke", "black")
                   .attr("r", RADIUS * 1.2);
 
+                // Make the tooltip visible when point is hovered
                 tooltip
                   .style("opacity", 1)
                   .style("visibility", "visible")
-                  .html(d.name + "<br>" + "COI: " + d.score);
+                  .html(
+                    "<i>" +
+                      d.name +
+                      "</i><br>" +
+                      "COI: <strong>" +
+                      d.score +
+                      "</strong>"
+                  );
               })
               .on("mousemove", function (event) {
+                // Move the tooltip as the user moves the pointer
                 tooltip
                   .style("left", event.pageX + 5 + "px")
                   .style("top", event.pageY - 50 + "px");
               })
               .on("mouseout", function () {
+                // Return point to default properties
                 d3.select(this)
                   .transition()
                   .duration(200)
                   .style("stroke", "none")
                   .attr("r", RADIUS);
 
+                // Hide the tooltip
                 tooltip.style("opacity", 0).style("visibility", "visible");
               });
           });
@@ -576,7 +676,7 @@ export default {
       // Add text annotation
       function addScaleAnnotation() {
         var labelPosY = height / 1.3;
-        var fontSize = "14px";
+        var fontSize = "70%";
 
         svg
           .append("text")
@@ -584,7 +684,8 @@ export default {
           .attr("x", x(3.25))
           .attr("y", labelPosY)
           .attr("text-anchor", "middle")
-          .html("More manageable &#128694;");
+          .html("Less Challenging");
+        // .html("More manageable &#128694;");
         // .html("&#10145;&#65039; More manageable &#128694;");
 
         svg
@@ -593,7 +694,8 @@ export default {
           .attr("x", x(-3.25))
           .attr("y", labelPosY)
           .attr("text-anchor", "middle")
-          .html("&#127939; Less manageable");
+          .html("More Challenging");
+        // .html("&#127939; Less manageable");
         // .html("&#127939; Less manageable &#11013;&#65039;");
       }
 
@@ -641,7 +743,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 
 text {
@@ -687,11 +789,8 @@ text {
   border-radius: 15px;
   width: auto;
   padding: 1% 2%;
+  border-color: #e9ecef;
   background-color: #eaeaea;
-}
-
-#layer-select label {
-  padding: 3%;
 }
 
 #score {
@@ -727,11 +826,13 @@ text {
   overflow: hidden !important;
 }
 
-#coi-tooltip {
-  width: auto;
-}
-
-.shown {
-  visibility: visible;
+.carousel-caption {
+  position: initial;
+  right: 15%;
+  bottom: 1.25rem;
+  left: 15%;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  color: #000;
 }
 </style>
