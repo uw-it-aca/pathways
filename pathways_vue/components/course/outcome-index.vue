@@ -173,7 +173,6 @@
         </div>
         <div aria-hidden="true" id="coiGraph" />
       </div>
-      <span class="dot"></span>
     </div>
   </div>
 </template>
@@ -233,7 +232,10 @@ export default {
         this.course_id.substring(split_pos + 1, this.course_id.length)
       );
       this.course_level = Math.floor(this.course_num / 100) * 100;
-      this.getCourseCOI();
+
+      if (this.course_coi != null) {
+        this.getCourseCOI();
+      }
     },
     getData() {
       this.getCurricCOI();
