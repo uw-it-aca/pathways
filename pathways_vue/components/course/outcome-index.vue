@@ -156,7 +156,7 @@
           </div>
         </div>
       </div>
-      <div v-if="course_coi == null">
+      <div class="bg-light" v-if="course_coi == null">
         <div class="alert alert-purple" role="alert">
           <p>
             The COI is not available for
@@ -165,7 +165,7 @@
           </p>
         </div>
       </div>
-      <div v-else>
+      <div class="bg-light" v-else>
         <div id="sr-text" class="screen-reader-only"></div>
         <div id="upper">
           <div id="layer-select"></div>
@@ -289,12 +289,12 @@ export default {
       // Get the major of the chosen course
       const curricPicked = coursePicked.match(/\D+/)[0].trim();
 
-      // Specific course color (purple)
-      const courseColor = "#452a78";
-      // Major course color (gold)
-      const majorColor = "#ab9765";
-      // Major averages (grey)
-      const avgColor = "#6E757C";
+      // Specific course color (gold)
+      const courseColor = "#ffbc24";
+      // Major course color (teal)
+      const majorColor = "#4c7286";
+      // Major averages (purple)
+      const avgColor = "#452a78";
 
       // Different layer options
       const layerOptions = {
@@ -608,7 +608,6 @@ export default {
           .attr("cy", function () {
             return yCenter;
           })
-          .attr("r", RADIUS)
           .attr("class", function () {
             if (layer == "chosen") {
               return "chosen";
@@ -621,6 +620,14 @@ export default {
           })
           .attr("score", function (d) {
             return d.score;
+          })
+          .attr("r", function (d) {
+            if (d.name == vue.course_id) {
+              chosenCourse = d;
+              return RADIUS * 1.5;
+            } else {
+              return RADIUS;
+            }
           })
           .each(function () {
             d3.select(this)
@@ -657,7 +664,7 @@ export default {
       // Add text annotation
       function addScaleAnnotation() {
         var labelPosY = height / 1.3;
-        var fontSize = "14px";
+        var fontSize = "12px";
 
         svg
           .append("text")
@@ -665,7 +672,7 @@ export default {
           .attr("x", x(3.25))
           .attr("y", labelPosY)
           .attr("text-anchor", "middle")
-          .html("&#10145;&#65039; More manageable &#128694;");
+          .html("more challenging ");
 
         svg
           .append("text")
@@ -673,7 +680,7 @@ export default {
           .attr("x", x(-3.25))
           .attr("y", labelPosY)
           .attr("text-anchor", "middle")
-          .html("&#127939; Less manageable &#11013;&#65039;");
+          .html("less challenging");
       }
 
       d3.selection.prototype.moveToFront = function () {
@@ -807,6 +814,12 @@ text {
 
 #coi-tooltip {
   width: auto;
+}
+
+.circle-test {
+  display: block;
+  width: 16px;
+  height: 16px;
 }
 
 .carousel-caption {
