@@ -10,8 +10,9 @@
         >
       </h2>
       <p>
-        This visualization provides insight into how challenging a course may
-        be.
+        The COI score is calculated by using a new model to predict how well
+        students will do in a class, then comparing the predictions with actual
+        course outcomes.
 
         <a
           type="button"
@@ -171,8 +172,8 @@
       <div class="bg-light" v-else>
         <div id="sr-text" class="screen-reader-only"></div>
         <div id="upper">
-          <div id="layer-select"></div>
-          <a id="score"></a>
+          <div id="layer-select" class="card"></div>
+          <div id="score" class="badge rounded-pill text-bg-gold"></div>
         </div>
         <div aria-hidden="true" id="coiGraph" />
       </div>
@@ -182,7 +183,7 @@
 
 <script>
 import * as d3 from "d3";
-import { Modal, Popover } from "bootstrap";
+import { Modal } from "bootstrap";
 import { select } from "d3";
 
 export default {
@@ -345,10 +346,9 @@ export default {
 
       // Add some text to the container
       layerSelect
-        .append("a")
+        .append("p")
         .text("View " + coursePicked + " in context")
-        .style("font-weight", "bold")
-        .append("br");
+        .style("font-weight", "bold");
 
       var selectID;
 
@@ -397,7 +397,12 @@ export default {
       createPoints(this.curric_coi_data, "avg");
 
       // Populate the title with course title and score
-      d3.select("#score").text("COI: " + chosenCourse.score);
+      d3.select("#score")
+        .text(chosenCourse.score)
+        .attr(
+          "title",
+          chosenCourse.name + " has a COI score of " + chosenCourse.score
+        );
 
       // Add an event listener to the radio buttons
       d3.selectAll("input[name='toggle']").on("change", function () {
@@ -609,6 +614,14 @@ export default {
               return 0; // Hide everything else
             }
           })
+          .style("stroke", function (d) {
+            if (d.name == vue.course_id) {
+              chosenCourse = d;
+              return "black";
+            } else {
+              return "none";
+            }
+          })
           .attr("cx", function (d) {
             if (d.name == vue.course_id && layer == "chosen") {
               return d.x; // Set horizontal position of the chosen course
@@ -676,7 +689,14 @@ export default {
                 d3.select(this)
                   .transition()
                   .duration(200)
-                  .style("stroke", "none")
+                  .style("stroke", function (d) {
+                    if (d.name == vue.course_id) {
+                      chosenCourse = d;
+                      return "black";
+                    } else {
+                      return "none";
+                    }
+                  })
                   .attr("r", function (d) {
                     if (d.name == vue.course_id) {
                       chosenCourse = d;
@@ -695,27 +715,40 @@ export default {
       // Add text annotation
       function addScaleAnnotation() {
         var labelPosY = height / 1.3;
-        var fontSize = "70%";
+        var sublabelPosY = height / 1.15;
+        var fontSize = "80%";
 
         svg
           .append("text")
           .style("font-size", fontSize)
+          .style("font-weight", "bold")
           .attr("x", x(3.25))
           .attr("y", labelPosY)
           .attr("text-anchor", "middle")
-          .html("Less Challenging");
-        // .html("More manageable &#128694;");
-        // .html("&#10145;&#65039; More manageable &#128694;");
+          .html("positive outcomes")
+          .append("tspan")
+          .style("font-weight", "normal")
+          .style("font-size", fontSize)
+          .attr("x", x(3.25))
+          .attr("y", sublabelPosY)
+          .attr("text-anchor", "middle")
+          .html("more students earned credit than predicted");
 
         svg
           .append("text")
           .style("font-size", fontSize)
+          .style("font-weight", "bold")
           .attr("x", x(-3.25))
           .attr("y", labelPosY)
           .attr("text-anchor", "middle")
-          .html("More Challenging");
-        // .html("&#127939; Less manageable");
-        // .html("&#127939; Less manageable &#11013;&#65039;");
+          .html("negative outcomes")
+          .append("tspan")
+          .style("font-weight", "normal")
+          .style("font-size", fontSize)
+          .attr("x", x(-3.25))
+          .attr("y", sublabelPosY)
+          .attr("text-anchor", "middle")
+          .html("fewer students earned credit than predicted");
       }
 
       d3.selection.prototype.moveToFront = function () {
@@ -805,16 +838,12 @@ text {
 #layer-select {
   font-size: 100%;
   visibility: hidden;
-  border-radius: 15px;
-  width: auto;
   padding: 1% 2%;
   margin: 1rem;
-  border-color: #e9ecef;
-  background-color: #eaeaea;
 }
 
 #score {
-  font-size: 100%;
+  font-size: 160%;
   font-weight: bold;
 }
 
