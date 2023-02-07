@@ -5,6 +5,9 @@
     <div class="card-body">
       <h2 class="h4 axdd-font-encode-sans fw-bold">
         Course Outcome Index (COI)
+        <small class="align-top"
+          ><span class="h2 badge text-bg-info">BETA</span></small
+        >
       </h2>
       <p>
         This visualization provides insight into how challenging a course may
@@ -109,7 +112,7 @@
                           predict how well students will do in a class, then
                           comparing the predictions with actual outcomes. Keep
                           in mind that this score is just a prediction and may
-                          not be your actual experience. If you’re concerned
+                          not be your actual experience. If you're concerned
                           about your potential course load, reach out to an
                           adviser.
                         </p>
@@ -637,14 +640,6 @@ export default {
               return RADIUS;
             }
           })
-          .attr("r", function (d) {
-            if (d.name == vue.course_id) {
-              chosenCourse = d;
-              return RADIUS * 1.5;
-            } else {
-              return RADIUS;
-            }
-          })
           .each(function () {
             // Enable mouse over interaction
             d3.select(this)
@@ -682,7 +677,14 @@ export default {
                   .transition()
                   .duration(200)
                   .style("stroke", "none")
-                  .attr("r", RADIUS);
+                  .attr("r", function (d) {
+                    if (d.name == vue.course_id) {
+                      chosenCourse = d;
+                      return RADIUS * 1.5;
+                    } else {
+                      return RADIUS;
+                    }
+                  });
 
                 // Hide the tooltip
                 tooltip.style("opacity", 0).style("visibility", "visible");
@@ -806,6 +808,7 @@ text {
   border-radius: 15px;
   width: auto;
   padding: 1% 2%;
+  margin: 1rem;
   border-color: #e9ecef;
   background-color: #eaeaea;
 }
@@ -816,7 +819,7 @@ text {
 }
 
 #upper {
-  margin-top: 5%;
+  margin-top: 1rem;
   display: flex;
   justify-content: start;
   align-items: center;
