@@ -64,7 +64,7 @@
                   <div class="carousel-inner">
                     <div class="carousel-item active">
                       <img
-                        src="/pathways/static/pathways/img/test-img-modal.png"
+                        src="/pathways/static/pathways/img/modal-1-scale.png"
                         class="d-block w-100"
                         alt="alt text"
                       />
