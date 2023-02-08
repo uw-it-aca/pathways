@@ -83,7 +83,7 @@
                     </div>
                     <div class="carousel-item">
                       <img
-                        src="/pathways/static/pathways/img/test-img-modal.png"
+                        src="/pathways/static/pathways/img/modal-2-scale.png"
                         class="d-block w-100"
                         alt="alt text"
                       />
@@ -381,7 +381,7 @@ export default {
 
         inputRow
           .append("div")
-          .attr("class", "rounded-circle d-inline-block")
+          .attr("class", "rounded-circle d-inline-block align-middle")
           .style("margin-left", "5px")
           .style("width", RADIUS * 3 + "px")
           .style("height", RADIUS * 3 + "px")
