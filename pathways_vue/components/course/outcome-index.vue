@@ -171,9 +171,15 @@
       </div>
       <div class="bg-light" v-else>
         <div id="sr-text" class="screen-reader-only"></div>
-        <div id="upper">
+        <div
+          id="upper"
+          class="d-flex justify-content-between align-items-start"
+        >
+          <div class="card coi-score text-bg-gold">
+            <span class="fw-bold">{{ course.course_id }}</span>
+            <div id="score"></div>
+          </div>
           <div id="layer-select" class="card"></div>
-          <div id="score" class="badge rounded-pill text-bg-gold"></div>
         </div>
         <div aria-hidden="true" id="coiGraph" />
       </div>
@@ -299,7 +305,7 @@ export default {
           color: courseColor,
         },
         chosen: {
-          name: majorPicked + " Courses",
+          name: "All " + majorPicked + " Courses",
           color: majorColor,
         },
         other: {
@@ -843,16 +849,17 @@ text {
 }
 
 #score {
-  font-size: 160%;
+  font-size: 200%;
   font-weight: bold;
+}
+
+.coi-score {
+  padding: 1% 2%;
+  margin: 1rem;
 }
 
 #upper {
   margin-top: 1rem;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  gap: 20%;
 }
 
 #coiGraph path.domain,
