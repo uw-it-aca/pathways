@@ -175,7 +175,7 @@
           id="upper"
           class="d-flex justify-content-between align-items-start"
         >
-          <div class="card coi-score text-bg-gold">
+          <div class="card coi-score text-bg-gold text-center">
             <span class="fw-bold">{{ course.course_id }}</span>
             <div id="score"></div>
           </div>
@@ -722,19 +722,20 @@ export default {
       function addScaleAnnotation() {
         var labelPosY = height / 1.3;
         var sublabelPosY = height / 1.15;
-        var fontSize = "80%";
+        var fontSize = "65%";
 
         svg
           .append("text")
+          .attr("class", "coi-labels fw-bold")
           .style("font-size", fontSize)
-          .style("font-weight", "bold")
-          .attr("x", x(3))
+          //.style("font-weight", "bold")
+          .attr("x", x(3.31))
           .attr("y", labelPosY)
           .attr("text-anchor", "right")
           .html("positive outcomes")
           .append("tspan")
           .style("font-weight", "normal")
-          .style("font-size", fontSize)
+          .style("font-size", "95%")
           .attr("x", x(1.45))
           .attr("y", sublabelPosY)
           .attr("text-anchor", "right")
@@ -750,7 +751,7 @@ export default {
           .html("negative outcomes")
           .append("tspan")
           .style("font-weight", "normal")
-          .style("font-size", fontSize)
+          .style("font-size", "95%")
           .attr("x", x(-5))
           .attr("y", sublabelPosY)
           .attr("text-anchor", "left")
