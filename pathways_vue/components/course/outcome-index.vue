@@ -728,32 +728,32 @@ export default {
           .append("text")
           .style("font-size", fontSize)
           .style("font-weight", "bold")
-          .attr("x", x(3.25))
+          .attr("x", x(3))
           .attr("y", labelPosY)
-          .attr("text-anchor", "middle")
+          .attr("text-anchor", "right")
           .html("positive outcomes")
           .append("tspan")
           .style("font-weight", "normal")
           .style("font-size", fontSize)
-          .attr("x", x(3.25))
+          .attr("x", x(1.45))
           .attr("y", sublabelPosY)
-          .attr("text-anchor", "middle")
+          .attr("text-anchor", "right")
           .html("more students earned credit than predicted");
 
         svg
           .append("text")
           .style("font-size", fontSize)
           .style("font-weight", "bold")
-          .attr("x", x(-3.25))
+          .attr("x", x(-5))
           .attr("y", labelPosY)
-          .attr("text-anchor", "middle")
+          .attr("text-anchor", "left")
           .html("negative outcomes")
           .append("tspan")
           .style("font-weight", "normal")
           .style("font-size", fontSize)
-          .attr("x", x(-3.25))
+          .attr("x", x(-5))
           .attr("y", sublabelPosY)
-          .attr("text-anchor", "middle")
+          .attr("text-anchor", "left")
           .html("fewer students earned credit than predicted");
       }
 
@@ -824,7 +824,7 @@ text {
 .axis line,
 .axis path {
   stroke: gray;
-  stroke-width: 2px;
+  stroke-width: 1px;
 }
 
 .grid {
