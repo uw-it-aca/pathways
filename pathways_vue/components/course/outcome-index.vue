@@ -290,6 +290,8 @@ export default {
       const coursePicked = vue.course_id;
       // Get the major of the chosen course
       const majorPicked = coursePicked.match(/\D+/)[0].trim();
+      // Specify ID of course
+      var courseId = "#" + coursePicked.replace(/\s/g, "_");
 
       // Specific course color (gold)
       const courseColor = "#ffbc24";
@@ -364,6 +366,7 @@ export default {
 
         var inputRow = layerSelect.append("div").attr("class", "form-check");
 
+        // Add the radio buttons
         inputRow
           .append("input")
           .attr("type", "radio")
@@ -379,6 +382,7 @@ export default {
           .attr("for", selectID + "-button")
           .attr("class", "form-check-label");
 
+        // Add the circles for legend
         inputRow
           .append("div")
           .attr("class", "rounded-circle d-inline-block align-middle")
@@ -415,11 +419,13 @@ export default {
         // Get the layer the user selected
         var selectedLayer = d3.select(this).property("value");
 
-        var courseId = "#" + coursePicked.replace(/\s/g, "_");
-
+        // Select the previously chosen layer
         var prev = d3.selectAll(".shown, " + courseId);
+
+        // Variable to keep the currently selected layer
         var selected;
 
+        // Check which layer is chosen
         if (selectedLayer == "single") {
           if (d3.select(".shown").attr("class").includes("chosen")) {
             selected = d3.select(courseId + ".chosen");
@@ -449,6 +455,7 @@ export default {
           selected = d3.selectAll(".avg");
         }
 
+        // Switch the layers
         switchLayers(prev, selected);
       });
 
@@ -457,6 +464,11 @@ export default {
         // Hiding the previous layer
         // First transition: move circle(s) to the center of y axis
         hide
+          .each(function (d) {
+            if (d.name == vue.course_id) {
+              d3.select(this).raise();
+            }
+          })
           .transition("moveout-vcenter")
           .duration(1000)
           .delay(function (d, i) {
@@ -476,19 +488,25 @@ export default {
               .style("opacity", 0)
               .end()
               .then(() => {
+                hide.style("visibility", "hidden");
+                show.style("visibility", "visible");
                 hide.classed("shown", false);
                 show.classed("shown", true);
 
                 // Layer to show
                 // Third transition: move circle(s) to their respective x positions
                 show
+                  .each(function (d) {
+                    if (d.name == vue.course_id) {
+                      d3.select(this).raise();
+                    }
+                  })
                   .transition("movein-vpoints")
                   .duration(1000)
                   .delay(function (d, i) {
                     return i / 3;
                   })
                   .style("opacity", 1)
-
                   .attr("cx", function (d) {
                     return d.x;
                   })
@@ -570,9 +588,15 @@ export default {
           .force("forceY", d3.forceY(yCenter).strength(0.1)) // Push points towards the center of the svg
           .force(
             "charge",
-            d3.forceManyBody().distanceMax(2).distanceMin(1).strength(1) // Set minimum and maximum distance between all of the points
+            d3.forceManyBody().distanceMax(3).distanceMin(2).strength(1) // Set minimum and maximum distance between all of the points
           )
-          .force("collide", d3.forceCollide().radius(RADIUS).strength(1)) // Specify the seperation of points
+          .force(
+            "collide",
+            d3
+              .forceCollide()
+              .radius(RADIUS * 1.1)
+              .strength(1)
+          ) // Specify the seperation of points
           .on("tick", tick)
           .stop();
 
@@ -585,7 +609,7 @@ export default {
         }
 
         // Run force simulation n times
-        const NUM_ITERATIONS = 500;
+        const NUM_ITERATIONS = 200;
         force.tick(NUM_ITERATIONS);
         force.stop();
 
@@ -596,10 +620,15 @@ export default {
           .data(nodes) // Input data
           .enter()
           .append("circle")
-          .classed("shown", function (d) {
-            return d.name == vue.course_id && layer == "chosen"; // Only show the first layer
+          .style("visibility", function (d) {
+            // Hide point if not picked
+            if (d.name == vue.course_id) {
+              return "visible";
+            } else {
+              return "hidden";
+            }
           })
-          .style("fill", function (d) {
+          .attr("fill", function (d) {
             if (d.major == majorPicked && layer == "avg") {
               chosenMajor = d; // Keep track of chosen major
             }
@@ -613,16 +642,15 @@ export default {
               return avgColor;
             }
           })
-          .style("opacity", function (d) {
+          .attr("opacity", function (d) {
             if (d.name == vue.course_id && layer == "chosen") {
               return 1; // Show the chosen course
             } else {
               return 0; // Hide everything else
             }
           })
-          .style("stroke", function (d) {
+          .attr("stroke", function (d) {
             if (d.name == vue.course_id) {
-              chosenCourse = d;
               return "black";
             } else {
               return "none";
@@ -638,12 +666,19 @@ export default {
           .attr("cy", function () {
             return yCenter; // Start off in the middle of the svg
           })
-          .attr("class", function () {
-            if (layer == "chosen") {
-              return "chosen"; // Set class of the circle
-            } else {
-              return "avg"; // Set class of the circle
+          .attr("class", function (d) {
+            var fullClass = "";
+            if (d.name == vue.course_id) {
+              fullClass += "shown ";
             }
+
+            if (layer == "chosen") {
+              fullClass += "chosen"; // Set class of the circle
+            } else {
+              fullClass += "avg"; // Set class of the circle
+            }
+
+            return fullClass;
           })
           .attr("id", function (d) {
             return d.name.replace(/\s/g, "_"); // Set id for each course
@@ -653,7 +688,6 @@ export default {
           })
           .attr("r", function (d) {
             if (d.name == vue.course_id) {
-              chosenCourse = d;
               return RADIUS * 1.5;
             } else {
               return RADIUS;
@@ -665,11 +699,11 @@ export default {
               .on("mouseover", function (event, d) {
                 // Change point properties when hovered over
                 d3.select(this)
-                  .moveToFront()
+                  .raise()
                   .transition()
-                  .duration(100)
+                  .duration(50)
                   .style("stroke", "black")
-                  .attr("r", RADIUS * 1.2);
+                  .attr("r", d3.select(this).attr("r") * 1.2);
 
                 // Make the tooltip visible when point is hovered
                 tooltip
@@ -694,10 +728,9 @@ export default {
                 // Return point to default properties
                 d3.select(this)
                   .transition()
-                  .duration(200)
+                  .duration(50)
                   .style("stroke", function (d) {
                     if (d.name == vue.course_id) {
-                      chosenCourse = d;
                       return "black";
                     } else {
                       return "none";
@@ -705,12 +738,13 @@ export default {
                   })
                   .attr("r", function (d) {
                     if (d.name == vue.course_id) {
-                      chosenCourse = d;
                       return RADIUS * 1.5;
                     } else {
                       return RADIUS;
                     }
                   });
+
+                d3.select(courseId).raise();
 
                 // Hide the tooltip
                 tooltip.style("opacity", 0).style("visibility", "visible");
@@ -722,12 +756,13 @@ export default {
       function addScaleAnnotation() {
         var labelPosY = height / 1.3;
         var sublabelPosY = height / 1.15;
-        var fontSize = "65%";
+        var mainSize = "65%";
+        var subSize = "95%";
 
         svg
           .append("text")
           .attr("class", "coi-labels fw-bold")
-          .style("font-size", fontSize)
+          .style("font-size", mainSize)
           //.style("font-weight", "bold")
           .attr("x", x(3.31))
           .attr("y", labelPosY)
@@ -735,7 +770,7 @@ export default {
           .html("positive outcomes")
           .append("tspan")
           .style("font-weight", "normal")
-          .style("font-size", "95%")
+          .style("font-size", subSize)
           .attr("x", x(1.45))
           .attr("y", sublabelPosY)
           .attr("text-anchor", "right")
@@ -743,7 +778,7 @@ export default {
 
         svg
           .append("text")
-          .style("font-size", fontSize)
+          .style("font-size", mainSize)
           .style("font-weight", "bold")
           .attr("x", x(-5))
           .attr("y", labelPosY)
@@ -751,27 +786,12 @@ export default {
           .html("negative outcomes")
           .append("tspan")
           .style("font-weight", "normal")
-          .style("font-size", "95%")
+          .style("font-size", subSize)
           .attr("x", x(-5))
           .attr("y", sublabelPosY)
           .attr("text-anchor", "left")
           .html("fewer students earned credit than predicted");
       }
-
-      d3.selection.prototype.moveToFront = function () {
-        return this.each(function () {
-          this.parentNode.appendChild(this);
-        });
-      };
-
-      d3.selection.prototype.moveToBack = function () {
-        return this.each(function () {
-          var firstChild = this.parentNode.firstChild;
-          if (firstChild) {
-            this.parentNode.insertBefore(this, firstChild);
-          }
-        });
-      };
     },
     getCourseCOI() {
       let url = "/api/v1/coi/course/" + this.course.department_abbrev,
@@ -901,5 +921,10 @@ text {
   width: 10px;
   height: 10px;
   border-radius: 50%;
+}
+
+.shown {
+  visibility: visible;
+  pointer-events: all;
 }
 </style>
