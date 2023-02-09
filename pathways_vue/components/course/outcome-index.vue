@@ -71,13 +71,15 @@
                       <div class="carousel-caption d-none d-md-block">
                         <h5>As a student, why should I care about COI?</h5>
                         <p class="text-start">
-                          Lower numbers indicate that the class may be
-                          challenging for some students. Numbers in the middle
-                          of the scale indicate a course that is typical at the
-                          UW. Positive numbers indicate that the class may be
-                          less challenging for some students. Explore how the
-                          course compares to other classes in that major or
-                          other majors at the UW.
+                          Lower numbers indicate that the class had fewer
+                          students earning credit than predicted. Numbers in the
+                          middle of the scale indicate a course that is typical
+                          at the UW. Positive numbers indicate that the class
+                          had more students earning credit than predicted.
+                          <strong
+                            >Explore how the course compares to other classes in
+                            that major or other majors at the UW.</strong
+                          >
                         </p>
                       </div>
                     </div>
@@ -94,9 +96,11 @@
                         <p class="text-start">
                           Some students do poorly in a quarter or drop courses
                           as a result of taking too many difficult courses in
-                          the same quarter. If feasible, try to keep a good
-                          balance of negative and positive COI scores each
-                          quarter.
+                          the same quarter.
+                          <strong
+                            >If feasible, try to keep a good balance of negative
+                            and positive COI scores each quarter.</strong
+                          >
                         </p>
                       </div>
                     </div>
@@ -111,11 +115,13 @@
                         <p class="text-start">
                           The COI score is calculated by using a model to
                           predict how well students will do in a class, then
-                          comparing the predictions with actual outcomes. Keep
-                          in mind that this score is just a prediction and may
-                          not be your actual experience. If you're concerned
-                          about your potential course load, reach out to an
-                          adviser.
+                          comparing the predictions with actual outcomes.
+                          <strong
+                            >Keep in mind that this score is just a prediction
+                            and may not be your actual experience.</strong
+                          >
+                          If you're concerned about your potential course load,
+                          reach out to an adviser.
                         </p>
                       </div>
                     </div>
