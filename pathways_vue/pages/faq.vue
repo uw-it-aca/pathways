@@ -276,7 +276,7 @@
                 of taking too many challenging courses. The COI addresses this
                 issue by providing insight into how challenging a course may be.
                 <a
-                  href="https://itconnect.uw.edu/wp-content/uploads/2022/09/Gateway-and-Bottleneck-Courses.pdf"
+                  href="https://itconnect.uw.edu/wp-content/uploads/2021/11/Course-Outcome-Scoring.pdf"
                   class="router-link"
                   >Learn more about how the Index is calculated (PDF).</a
                 >
