@@ -37,7 +37,7 @@
             <div class="modal-body">
               <div>
                 <div id="coi_onboard_steps" class="carousel slide">
-                  <div class="carousel-indicators">
+                  <div class="carousel-indicators mb-0">
                     <button
                       type="button"
                       data-bs-target="#coi_onboard_steps"
@@ -71,15 +71,12 @@
                       <div class="carousel-caption d-none d-md-block">
                         <h5>As a student, why should I care about COI?</h5>
                         <p class="text-start">
-                          Lower numbers indicate that the class had fewer
-                          students earning credit than predicted. Numbers in the
-                          middle of the scale indicate a course that is typical
-                          at the UW. Positive numbers indicate that the class
-                          had more students earning credit than predicted.
-                          <strong
-                            >Explore how the course compares to other classes in
-                            that major or other majors at the UW.</strong
-                          >
+                          The COI provides insight into how challenging a course
+                          may be. Lower numbers indicate that the class had
+                          fewer students earning credit than predicted. Numbers
+                          in the middle of the scale indicate a course that is
+                          typical at the UW. Positive numbers indicate that the
+                          class had more students earning credit than predicted.
                         </p>
                       </div>
                     </div>
@@ -101,12 +98,14 @@
                             >If feasible, try to keep a good balance of negative
                             and positive COI scores each quarter.</strong
                           >
+                          If you're concerned about your potential course load,
+                          reach out to an adviser.
                         </p>
                       </div>
                     </div>
                     <div class="carousel-item">
                       <img
-                        src="/pathways/static/pathways/img/test-img-modal.png"
+                        src="/pathways/static/pathways/img/modal-3-scale.png"
                         class="d-block w-100"
                         alt="alt text"
                       />
@@ -120,8 +119,8 @@
                             >Keep in mind that this score is just a prediction
                             and may not be your actual experience.</strong
                           >
-                          If you're concerned about your potential course load,
-                          reach out to an adviser.
+                          Explore how the course compares to other classes in
+                          that major, and other majors at the UW.
                         </p>
                       </div>
                     </div>
