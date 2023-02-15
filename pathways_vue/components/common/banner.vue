@@ -7,9 +7,9 @@
     <!-- v-if="show_coi" -->
     <div class="container-xl text-start">
       <strong>New Feature!</strong> DawgPath has new data to help you plan a
-      balanced schedule. Search a course to get a walk through of the
-      <strong>Course Outcome Index</strong>. <br />Coming soon for Bothell and
-      Tacoma.
+      balanced schedule. Search for a Seattle course to get a walk through of
+      the <strong>Course Outcome Index</strong>. <br />Coming soon for Bothell
+      and Tacoma.
       <a href="/faq#coi" class="router-link">Learn more.</a>
       <button
         type="button"
