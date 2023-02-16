@@ -10,6 +10,7 @@ class User(models.Model):
     has_viewed_welcome = models.BooleanField(default=False)
     has_viewed_bottleneck_banner = models.BooleanField(default=False)
     has_viewed_outcomes_banner = models.BooleanField(default=False)
+    has_viewed_coi_banner = models.BooleanField(default=False)
     first_login = models.DateTimeField(auto_now_add=True)
 
     @staticmethod
@@ -19,11 +20,12 @@ class User(models.Model):
             banners = []
             if not user.has_viewed_welcome:
                 banners.append("welcome")
-
             if not user.has_viewed_bottleneck_banner:
                 banners.append("bottleneck")
             if not user.has_viewed_outcomes_banner:
                 banners.append("outcomes")
+            if not user.has_viewed_coi_banner:
+                banners.append("coi")
             return banners
         except ObjectDoesNotExist:
-            return ["welcome", "bottleneck", "outcomes"]
+            return ["welcome", "bottleneck", "outcomes", "coi"]

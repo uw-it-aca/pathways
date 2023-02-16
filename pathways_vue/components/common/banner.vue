@@ -2,9 +2,9 @@
 
 <template>
   <div
+    v-if="show_coi"
     class="alert alert-warning alert-dismissible fade show text-center mb-0 pe-3"
   >
-    <!-- v-if="show_coi" -->
     <div class="container-xl text-start">
       <strong>New Feature!</strong> DawgPath has new data to help you plan a
       balanced schedule. Search for a Seattle course to get a walk through of

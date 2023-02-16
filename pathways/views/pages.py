@@ -32,6 +32,7 @@ class PageView(TemplateView):
         context['show_welcome'] = "welcome" in banners
         context['show_bottleneck'] = "bottleneck" in banners
         context['show_outcomes'] = "outcomes" in banners
+        context['show_coi'] = "coi" in banners
 
         context["django_debug"] = getattr(settings, "DEBUG", False)
         return context
