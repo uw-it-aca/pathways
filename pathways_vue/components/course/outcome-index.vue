@@ -327,10 +327,10 @@ export default {
       const yCenter = 65;
 
       // Create the 5.0 COI scale
-      const x = d3.scaleLinear().domain([-5, 5]).range([0, width]);
+      const x = d3.scaleLinear().domain([0, 5]).range([0, width]);
 
       // Scale score from -5 to 5
-      var scaleScore = d3.scaleLinear().domain([0, 5]).range([5, -5]);
+      // var scaleScore = d3.scaleLinear().domain([0, 5]).range([5, -5]);
 
       // Draw the axis
       var xAxis = d3.axisBottom(x).ticks(11);
@@ -548,24 +548,24 @@ export default {
 
         // Filter out data and create a new array to feed into force simulation
         var nodes = data
-          .filter(function (node) {
-            // Filter out UWB and UWT courses/majors
-            if (
-              node[labelName].includes("BOTHELL") ||
-              node[labelName].includes("TACOMA") ||
-              node[labelName].includes("BOTHL") ||
-              node[labelName].includes("UWT") ||
-              node[labelName].includes("UWB")
-            ) {
-              return false;
-            } else if (node.score == null) {
-              return false;
-            } else {
-              return true;
-            }
-          })
+          // .filter(function (node) {
+          //   // Filter out UWB and UWT courses/majors
+          //   if (
+          //     node[labelName].includes("BOTHELL") ||
+          //     node[labelName].includes("TACOMA") ||
+          //     node[labelName].includes("BOTHL") ||
+          //     node[labelName].includes("UWT") ||
+          //     node[labelName].includes("UWB")
+          //   ) {
+          //     return false;
+          //   } else if (node.score == null) {
+          //     return false;
+          //   } else {
+          //     return true;
+          //   }
+          // })
           .map(function (node) {
-            var score = scaleScore(node.score);
+            var score = node.score;
             return {
               x: x(score), // Scale the score from -5 to 5
               y: yCenter, // Set the default height of the point
