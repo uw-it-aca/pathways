@@ -327,7 +327,7 @@ export default {
       const yCenter = 65;
 
       // Create the 5.0 COI scale
-      const x = d3.scaleLinear().domain([0, 5]).range([0, width]);
+      const x = d3.scaleLinear().domain([-5, 5]).range([0, width]);
 
       // Scale score from -5 to 5
       // var scaleScore = d3.scaleLinear().domain([0, 5]).range([5, -5]);
