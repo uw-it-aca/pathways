@@ -9,6 +9,7 @@ from pathways.views.api.major import MajorDetails, MajorList
 from pathways.views.api.course import CourseList, CourseDetails
 from pathways.views.api.curric import CurricPrereq
 from pathways.views.api.user import UserPreference
+from pathways.views.api.coi import CourseCOI, CurricCOI
 
 # start with an empty url array
 urlpatterns = []
@@ -44,6 +45,12 @@ urlpatterns += [
     re_path(
         r'^api/v1/curric_prereq/(?P<curric_abbr>[^/]*)$',
         CurricPrereq.as_view(), name='curric-prereq'),
+    re_path(
+        r'^api/v1/coi/course/(?P<department_abbrev>[^/]*)$',
+        CourseCOI.as_view(), name='course-coi'),
+    re_path(
+        r'^api/v1/coi/curric/$',
+        CurricCOI.as_view(), name='curric-coi'),
 
     re_path(r'^(major|course|faq)$', DefaultPageView.as_view()),
     re_path(r'^$', DefaultPageView.as_view()),

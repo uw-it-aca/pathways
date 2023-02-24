@@ -2,26 +2,23 @@
 
 <template>
   <div
-    class="alert alert-info alert-dismissible fade show text-center mb-0"
-    v-if="show_bottleneck"
+    v-if="show_coi"
+    class="alert alert-warning alert-dismissible fade show text-center mb-0 pe-3"
   >
-    <strong>New Feature!</strong> DawgPath now shows which courses act as a
-    bottleneck. Look for the bottleneck icon
-    <div class="round round-sm bg-danger">
-      <span class="material-symbols-outlined fw-bold">call_merge</span>
+    <div class="container-xl text-start">
+      <strong>New Feature!</strong> DawgPath has new data to help you plan a
+      balanced schedule. Search for a Seattle course to get a walk through of
+      the <strong>Course Outcome Index</strong>. <br />Coming soon for Bothell
+      and Tacoma.
+      <a href="/faq#coi" class="router-link">Learn more.</a>
+      <button
+        type="button"
+        class="btn btn-link btn-close"
+        aria-label="Close"
+        title="Dismiss alert"
+        @click="dismiss"
+      ></button>
     </div>
-    in course listings.
-    <a href="/faq#bottleneck" class="router-link">Learn more.</a>
-    <button
-      type="button"
-      class="btn btn-link close"
-      aria-label="Close"
-      @click="dismiss"
-    >
-      <span aria-hidden="true"
-        ><i class="bi bi-x-lg" title="Dismiss alert"></i
-      ></span>
-    </button>
   </div>
 </template>
 
@@ -29,12 +26,12 @@
 export default {
   name: "BannerComp",
   data() {
-    return { show_bottleneck: false };
+    return { show_coi: false };
   },
   methods: {
     dismiss: function () {
       this.saveModalPref();
-      this.show_bottleneck = false;
+      this.show_coi = false;
     },
     saveModalPref() {
       this.axios({
@@ -42,15 +39,15 @@ export default {
         url: "/api/v1/user_pref/",
         headers: { "X-CSRFToken": window.csrf_token },
         data: {
-          viewed_bottleneck_banner: true,
+          viewed_coi_banner: true,
         },
       });
     },
   },
   computed: {},
   mounted() {
-    if (window.show_bottleneck) {
-      this.show_bottleneck = true;
+    if (window.show_coi) {
+      this.show_coi = true;
     }
   },
 };

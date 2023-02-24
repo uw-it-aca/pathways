@@ -63,21 +63,11 @@
                 >Which instructors taught the course listed?</a
               >
             </li>
-            <!-- <li>
-                      <a href="#coi" class="text-decoration-none">What is the course outcome index?</a>
-                    </li>
-                    <li>
-                      <a
-                        href="#coi_level_course"
-                        class="text-decoration-none"
-                      >What does “average X00 level course” mean?</a>
-                    </li>
-                    <li>
-                      <a
-                        href="#coi_curriculum"
-                        class="text-decoration-none"
-                      >What does “average course in XXX curriculum” mean?</a>
-                    </li>-->
+            <li>
+              <a href="#coi" class="text-decoration-none"
+                >What is the Course Outcome Index (COI)?</a
+              >
+            </li>
             <li>
               <a href="#pm_reqs" class="text-decoration-none"
                 >Does Prereq Map consider specific requirements for majors and
@@ -278,21 +268,19 @@
                 chosen timeframe are included and the results are aggregated.
               </p>
 
-              <!-- <h2 id="coi" class="fw-bold fs-5">What is the course outcome index?</h2>
-                  <p>
-                    This index is calculated by estimating the number of PCs (pass/completion) for a course and subtracting the estimated PCs from the actual PCs to create an index rescaled to -5 to 5. The index is calculated using the previous five years of course data.
-                  </p>
-
-                  <h2 id="coi_level_course" class="fw-bold fs-5">What does “average X00 level course” mean?</h2>
-                  <p>This is the average course outcome index for all X00 courses. For example, the average COI for all 100 level courses would include Biology 140, Chem 142 and all other 100-level courses.</p>
-
-                  <h2
-                    id="coi_curriculum"
-                    class="fw-bold fs-5"
-                  >What does “average course in XXX curriculum” mean?</h2>
-                  <p>
-                    This is the average course outcome index for all courses in a particular curriculum (e.g. CHEM/Chemistry).
-                  </p> -->
+              <h2 id="coi" class="fw-bold fs-5">
+                What is the Course Outcome Index (COI)?
+              </h2>
+              <p>
+                Some students do poorly in a quarter or drop courses as a result
+                of taking too many challenging courses. The COI addresses this
+                issue by providing insight into how challenging a course may be.
+                <a
+                  href="https://itconnect.uw.edu/wp-content/uploads/2023/02/A-Review-of-Course-Outcome-Scoring-2.pdf"
+                  class="router-link"
+                  >Learn more about how the Index is calculated (PDF).</a
+                >
+              </p>
 
               <h2 id="pm_reqs" class="fw-bold fs-5">
                 Does Prereq Map consider specific requirements for majors and

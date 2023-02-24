@@ -11,6 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 class Course(models.Model):
     course_id = models.CharField(max_length=10)
+    department_abbrev = models.CharField(max_length=6, null=True)
     course_title = models.CharField(max_length=120)
     course_credits = models.CharField(max_length=12)
     course_campus = models.CharField(max_length=7)
@@ -60,6 +61,7 @@ class Course(models.Model):
             graph = json.loads(self.prereq_graph)
         concurrrent = self.get_concurrent_with_coi_and_flags()
         return {"course_id": self.course_id,
+                "department_abbrev": self.department_abbrev,
                 "course_title": self.course_title,
                 "course_credits": self.course_credits,
                 "course_campus": self.course_campus,
