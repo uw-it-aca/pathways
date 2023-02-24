@@ -13,7 +13,6 @@
         The COI score is calculated by using a new model to predict how well
         students will do in a class, then comparing the predictions with actual
         course outcomes.
-
         <a
           type="button"
           class="btn-link text-decoration-none"

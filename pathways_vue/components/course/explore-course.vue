@@ -6,10 +6,9 @@
   </div>
 </template>
 
-
 <script>
 export default {
-  name: 'ExploreCourse',
+  name: "ExploreCourse",
   data() {
     return {};
   },
@@ -21,9 +20,13 @@ export default {
   },
   computed: {
     myplanURL() {
-      if (this.course['course_id'] !== null) {
-        return "https://myplan.uw.edu/course/#/courses/" + encodeURIComponent(this.course['course_id']);
+      let url = "";
+      if (this.course["course_id"] !== null) {
+        url =
+          "https://myplan.uw.edu/course/#/courses/" +
+          encodeURIComponent(this.course["course_id"]);
       }
+      return url;
     },
   },
   methods: {},
