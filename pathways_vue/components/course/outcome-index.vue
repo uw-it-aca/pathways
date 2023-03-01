@@ -98,7 +98,7 @@
                             and positive COI scores each quarter.</strong
                           >
                           If you're concerned about your potential course load,
-                          reach out to an adviser.
+                          reach out to an adviser. <br />&nbsp;
                         </p>
                       </div>
                     </div>
