@@ -551,7 +551,9 @@ export default {
             if (
               node.score == null ||
               node[labelName].includes("MASTERS") ||
-              node[labelName].startsWith("MS")
+              node[labelName].startsWith("MS") ||
+              node[labelName].trim() == "GRADUATE SCHOOL" ||
+              node[labelName].trim() == "UW ACADEMY"
             ) {
               return false;
             } else {
