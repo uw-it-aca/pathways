@@ -63,11 +63,11 @@
                   <div class="carousel-inner">
                     <div class="carousel-item active">
                       <img
-                        src="/pathways/static/pathways/img/modal-1-scale.png"
+                        src="/pathways/static/pathways/img/modal-1-scale1.png"
                         class="d-block w-100"
                         alt="alt text"
                       />
-                      <div class="carousel-caption d-none d-md-block">
+                      <div class="carousel-caption d-md-block">
                         <h5>As a student, why should I care about COI?</h5>
                         <p class="text-start">
                           The COI provides insight into how challenging a course
@@ -81,11 +81,11 @@
                     </div>
                     <div class="carousel-item">
                       <img
-                        src="/pathways/static/pathways/img/modal-2-scale.png"
+                        src="/pathways/static/pathways/img/modal-2-scale2.png"
                         class="d-block w-100"
                         alt="alt text"
                       />
-                      <div class="carousel-caption d-none d-md-block">
+                      <div class="carousel-caption d-md-block">
                         <h5>
                           Concerned that your schedule may be too challenging?
                         </h5>
@@ -98,17 +98,17 @@
                             and positive COI scores each quarter.</strong
                           >
                           If you're concerned about your potential course load,
-                          reach out to an adviser.
+                          reach out to an adviser. <br />&nbsp;
                         </p>
                       </div>
                     </div>
                     <div class="carousel-item">
                       <img
-                        src="/pathways/static/pathways/img/modal-3-scale.png"
+                        src="/pathways/static/pathways/img/modal-3-scale3.png"
                         class="d-block w-100"
                         alt="alt text"
                       />
-                      <div class="carousel-caption d-none d-md-block">
+                      <div class="carousel-caption d-md-block">
                         <h5>How is the number in the scale calculated?</h5>
                         <p class="text-start">
                           The COI score is calculated by using a model to
@@ -124,38 +124,40 @@
                       </div>
                     </div>
                   </div>
-                  <button
-                    class="carousel-control-prev"
-                    type="button"
-                    data-bs-target="#coi_onboard_steps"
-                    data-bs-slide="prev"
-                  >
-                    <span
-                      class="carousel-control-prev-icon bg-purple"
-                      aria-hidden="true"
-                    ></span>
-                    <span class="visually-hidden">Previous</span>
-                  </button>
-                  <button
-                    class="carousel-control-next"
-                    type="button"
-                    data-bs-target="#coi_onboard_steps"
-                    data-bs-slide="next"
-                  >
-                    <span
-                      class="carousel-control-next-icon bg-purple"
-                      aria-hidden="true"
-                    ></span>
-                    <span class="visually-hidden">Next</span>
-                  </button>
                 </div>
+              </div>
+              <div class="slide-controls d-flex justify-content-evenly">
+                <button
+                  class="carousel-control-prev"
+                  type="button"
+                  data-bs-target="#coi_onboard_steps"
+                  data-bs-slide="prev"
+                >
+                  <span
+                    class="carousel-control-prev-icon bg-purple"
+                    aria-hidden="true"
+                  ></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button
+                  class="carousel-control-next"
+                  type="button"
+                  data-bs-target="#coi_onboard_steps"
+                  data-bs-slide="next"
+                >
+                  <span
+                    class="carousel-control-next-icon bg-purple"
+                    aria-hidden="true"
+                  ></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
               </div>
               <div class="text-end">
                 <button
                   type="button"
-                  class="btn btn-purple"
+                  class="btn btn-purple text-end"
                   data-bs-dismiss="modal"
-                  aria-label="Next"
+                  aria-label="Close"
                 >
                   Close
                 </button>
@@ -916,6 +918,11 @@ text {
   width: 10px;
   height: 10px;
   border-radius: 50%;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  position: relative;
 }
 
 .shown {
