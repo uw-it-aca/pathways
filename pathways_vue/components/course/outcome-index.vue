@@ -63,7 +63,7 @@
                   <div class="carousel-inner">
                     <div class="carousel-item active">
                       <img
-                        src="/pathways/static/pathways/img/modal-1-scale.png"
+                        src="/pathways/static/pathways/img/modal-1-scale1.png"
                         class="d-block w-100"
                         alt="alt text"
                       />
@@ -81,7 +81,7 @@
                     </div>
                     <div class="carousel-item">
                       <img
-                        src="/pathways/static/pathways/img/modal-2-scale.png"
+                        src="/pathways/static/pathways/img/modal-2-scale2.png"
                         class="d-block w-100"
                         alt="alt text"
                       />
@@ -104,7 +104,7 @@
                     </div>
                     <div class="carousel-item">
                       <img
-                        src="/pathways/static/pathways/img/modal-3-scale.png"
+                        src="/pathways/static/pathways/img/modal-3-scale3.png"
                         class="d-block w-100"
                         alt="alt text"
                       />
