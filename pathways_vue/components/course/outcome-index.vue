@@ -828,6 +828,9 @@ export default {
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
 
 text {
   font-family: "Open Sans", sans-serif;
@@ -937,7 +940,7 @@ text {
   pointer-events: all;
 }
 
-@media (min-width: 576px) {
+@include media-breakpoint-up(sm) {
   #layer-select {
     font-size: 100%;
     margin: 1rem;
