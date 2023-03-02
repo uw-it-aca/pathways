@@ -867,10 +867,10 @@ text {
 }
 
 #layer-select {
-  font-size: 100%;
+  font-size: 75%;
   visibility: hidden;
   padding: 1% 2%;
-  margin: 1rem;
+  margin: 0.5rem;
 }
 
 #score {
@@ -880,7 +880,7 @@ text {
 
 .coi-score {
   padding: 1% 2%;
-  margin: 1rem;
+  margin: 0.5rem;
 }
 
 #upper {
@@ -935,5 +935,16 @@ text {
 .shown {
   visibility: visible;
   pointer-events: all;
+}
+
+@media (min-width: 576px) {
+  #layer-select {
+    font-size: 100%;
+    margin: 1rem;
+  }
+
+  .coi-score {
+    margin: 1rem;
+  }
 }
 </style>
