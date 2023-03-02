@@ -550,7 +550,13 @@ export default {
         // Filter out data and create a new array to feed into force simulation
         var nodes = data
           .filter(function (node) {
-            if (node.score == null) {
+            if (
+              node.score == null ||
+              node[labelName].includes("MASTERS") ||
+              node[labelName].startsWith("MS") ||
+              node[labelName].trim() == "GRADUATE SCHOOL" ||
+              node[labelName].trim() == "UW ACADEMY"
+            ) {
               return false;
             } else {
               return true;
@@ -558,6 +564,7 @@ export default {
           })
           .map(function (node) {
             var score = node.score;
+
             return {
               x: x(score), // Scale the score from -5 to 5
               y: yCenter, // Set the default height of the point
