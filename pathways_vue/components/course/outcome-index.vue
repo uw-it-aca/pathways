@@ -175,17 +175,21 @@
           </p>
         </div>
       </div>
-      <div class="bg-light" v-else>
+      <div class="bg-light" :class="mq.smPlus ? 'p-3' : 'p-2'" v-else>
         <div id="sr-text" class="screen-reader-only"></div>
         <div
           id="upper"
           class="d-flex justify-content-between align-items-start"
         >
-          <div class="card coi-score text-bg-gold text-center">
-            <span class="fw-bold">{{ course.course_id }}</span>
-            <div id="score"></div>
+          <div class="card bg-gold me-2">
+            <div class="card-body small text-center p-2">
+              <span class="fw-bold">{{ course.course_id }}</span>
+              <div id="score" class="fw-bold fs-3"></div>
+            </div>
           </div>
-          <div id="layer-select" class="card"></div>
+          <div class="card">
+            <div id="layer-select" class="card-body small"></div>
+          </div>
         </div>
         <div aria-hidden="true" id="coiGraph" />
       </div>
@@ -196,9 +200,9 @@
 <script>
 import * as d3 from "d3";
 import { Modal } from "bootstrap";
-import { select } from "d3";
 
 export default {
+  inject: ["mq"],
   name: "OutcomeScore",
   data() {
     return {
@@ -221,7 +225,7 @@ export default {
     },
   },
   watch: {
-    course: function (course) {
+    course: function () {
       this.init();
     },
   },
@@ -370,7 +374,9 @@ export default {
       for (var option in layerOptions) {
         selectID = layerOptions[option].name.replace(" ", "-");
 
-        var inputRow = layerSelect.append("div").attr("class", "form-check");
+        var inputRow = layerSelect
+          .append("div")
+          .attr("class", "form-check text-nowrap");
 
         // Add the radio buttons
         inputRow
@@ -808,6 +814,7 @@ export default {
         })
         .catch(function (error) {
           vue.course_coi_data = {};
+          console.log(error);
         });
     },
     getCurricCOI() {
@@ -820,6 +827,7 @@ export default {
         })
         .catch(function (error) {
           vue.curric_coi_data = {};
+          console.log(error);
         });
     },
   },
@@ -827,86 +835,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/mixins";
-
-text {
-  font-family: "Open Sans", sans-serif;
-}
-
-#scatter svg {
-  margin-right: auto;
-  margin-left: auto;
-}
-
-.tooltip {
-  width: auto;
-}
-
-.axis text {
-  fill: black;
-}
-
-.axis line,
-.axis path {
-  stroke: gray;
-  stroke-width: 1px;
-}
-
-.grid {
-  stroke: grey;
-}
-
-#more {
-  font-style: italic;
-  fill: green;
-}
-
-#less {
-  font-style: italic;
-  fill: red;
-}
-
-#layer-select {
-  font-size: 75%;
-  visibility: hidden;
-  padding: 1% 2%;
-  margin: 0.5rem;
-}
-
-#score {
-  font-size: 200%;
-  font-weight: bold;
-}
-
-.coi-score {
-  padding: 1% 2%;
-  margin: 0.5rem;
-}
-
-#upper {
-  margin-top: 1rem;
-}
-
-#coiGraph path.domain,
-#coiGraph g.tick {
-  stroke-width: 1px;
-}
-
-#coiGraph g.tick line {
-  stroke-width: 1px;
-}
-
 .screen-reader-only {
   position: absolute;
   height: 1px;
   width: 1px;
   clip: rect(1px 1px 1px 1px); // IE 6 and 7
   clip: rect(1px, 1px, 1px, 1px);
-  clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
-  -webkit-clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
+  clip-path: polygon(0 0, 0 0, 0 0);
   overflow: hidden !important;
 }
 
@@ -938,16 +873,5 @@ text {
 .shown {
   visibility: visible;
   pointer-events: all;
-}
-
-@include media-breakpoint-up(sm) {
-  #layer-select {
-    font-size: 100%;
-    margin: 1rem;
-  }
-
-  .coi-score {
-    margin: 1rem;
-  }
 }
 </style>
