@@ -365,8 +365,9 @@ export default {
       // Add some text to the container
       layerSelect
         .append("p")
+        .attr("class", "fw-bold text-nowrap")
         .text("View " + coursePicked + " in context")
-        .style("font-weight", "bold");
+        //.style("font-weight", "bold");
 
       var selectID;
 
