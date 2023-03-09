@@ -2,7 +2,7 @@
 
 <template>
   <div class="fw-lighter float-end mt-2 text-secondary small">
-    <i class="bi-bar-chart-fill"></i> Data updated: Summer 2022
+    <i class="bi-bar-chart-fill"></i> Data updated: Winter 2023
   </div>
 </template>
 
