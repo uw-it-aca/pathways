@@ -13,9 +13,9 @@
           <div class="col-md-9">
             <grade-distribution :course="courseData" />
           </div>
-          <!--<div class="col-md-9">
+          <div v-if="courseCampus == 'seattle'" class="col-md-9">
             <outcome-index :course="courseData" />
-          </div>-->
+          </div>
           <!-- prereq map -->
           <div class="col-md-9">
             <prereq-map
@@ -74,7 +74,7 @@ import SearchChooser from "../components/search/chooser.vue";
 import GradeDistribution from "../components/course/grade-distribution.vue";
 import CourseDetails from "../components/course/course-details.vue";
 import ExploreCourse from "../components/course/explore-course.vue";
-//import OutcomeIndex from "../components/course/outcome-index.vue";
+import OutcomeIndex from "../components/course/outcome-index.vue";
 import PrereqMap from "../components/course/prereq-map.vue";
 import ConcurrentCourses from "../components/course/concurrent-courses.vue";
 import ContactAdviser from "../components/common/contact-adviser.vue";
@@ -87,7 +87,7 @@ export default {
     "course-details": CourseDetails,
     "explore-course": ExploreCourse,
     "grade-distribution": GradeDistribution,
-    //'outcome-index': OutcomeIndex,
+    'outcome-index': OutcomeIndex,
     "contact-adviser": ContactAdviser,
     "prereq-map": PrereqMap,
     "concurrent-courses": ConcurrentCourses,

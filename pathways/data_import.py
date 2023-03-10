@@ -50,7 +50,8 @@ def import_course_data(data, coi_data):
             course_description=course['course_description'],
             course_offered=course['offered_string'],
             prereq_string=course['prereq_string'],
-            coi_score=coi
+            coi_score=coi,
+            department_abbrev=course['department_abbrev']
         ))
     Course.objects.bulk_create(course_objs)
 
@@ -71,7 +72,8 @@ def import_curric_data(data, coi_data):
             abbrev=curric['curric_abbrev'],
             prereq_graph=pr_graph,
             course_data=json.loads(curric['course_data']),
-            average_coi_score=coi
+            average_coi_score=coi,
+            curric_name=curric['curric_name']
         ))
     Curriculum.objects.bulk_create(curric_objs)
 
