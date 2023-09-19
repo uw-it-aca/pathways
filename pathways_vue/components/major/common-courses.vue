@@ -93,7 +93,7 @@
 
 <script>
 import { Popover } from "bootstrap";
-import IconPopover from "../common/icon-popover.vue";
+import IconPopover from "@/components/common/icon-popover.vue";
 
 export default {
   name: "CommonCourses",

@@ -35,7 +35,7 @@
 r
 
 <script>
-import IconPopover from "../common/icon-popover.vue";
+import IconPopover from "@/components/common/icon-popover.vue";
 
 export default {
   name: "CourseDetails",

@@ -83,8 +83,8 @@
 </template>
 
 <script>
-import Layout from "../layout.vue";
-import SearchChooser from "../components/search/chooser.vue";
+import Layout from "@/layout.vue";
+import SearchChooser from "@/components/search/chooser.vue";
 
 import { Modal } from "bootstrap";
 

@@ -46,8 +46,8 @@
 </template>
 
 <script>
-import PrereqCourseList from "./prereq-course-list.vue";
-import PrereqGraph from "./prereq-graph.vue";
+import PrereqCourseList from "@/components/course/prereq-course-list.vue";
+import PrereqGraph from "@/components/course/prereq-graph.vue";
 
 export default {
   name: "PrereqCourse",

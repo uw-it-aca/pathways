@@ -1,6 +1,4 @@
 import { createApp } from "vue";
-import App from "./app.vue";
-import router from "./router";
 
 import VueGtag from "vue-gtag-next";
 import { Vue3Mq, MqResponsive } from "vue3-mq";
@@ -8,11 +6,19 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 import mitt from "mitt";
 
-// bootstrap js
-import "bootstrap";
+// import axdd-components
+import AxddComponents from "axdd-components";
 
-// custom bootstrap theming
-import "./css/custom.scss";
+import App from "@/app.vue";
+import router from "@/router";
+
+// bootstrap js + bootstrap-icons
+import "bootstrap";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
+// bootstrap (axdd) and axdd-components
+import "@/css/custom.scss";
+import "axdd-components/dist/style.css";
 
 const app = createApp(App);
 
@@ -47,6 +53,10 @@ app.component("mq-responsive", MqResponsive);
 
 // vue-axios
 app.use(VueAxios, axios);
+
+// axdd-components
+app.use(AxddComponents);
+
 // vue-router
 app.use(router);
 

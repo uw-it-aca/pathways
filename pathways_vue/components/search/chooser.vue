@@ -170,7 +170,7 @@
   <data-update />
 </template>
 <script>
-import DataUpdate from "../common/data-update.vue";
+import DataUpdate from "@/components/common/data-update.vue";
 export default {
   inject: ["mq"],
   name: "SearchChooser",
