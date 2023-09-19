@@ -68,8 +68,8 @@
 </template>
 
 <script>
-import PrereqCourse from "./prereq-course.vue";
-import PrereqCurriculum from "./prereq-curriculum.vue";
+import PrereqCourse from "@/components/course/prereq-course.vue";
+import PrereqCurriculum from "@/components/course/prereq-curriculum.vue";
 
 export default {
   name: "PrereqMap",
