@@ -69,15 +69,15 @@
 </template>
 
 <script>
-import Layout from "../layout.vue";
-import SearchChooser from "../components/search/chooser.vue";
-import GradeDistribution from "../components/course/grade-distribution.vue";
-import CourseDetails from "../components/course/course-details.vue";
-import ExploreCourse from "../components/course/explore-course.vue";
-import OutcomeIndex from "../components/course/outcome-index.vue";
-import PrereqMap from "../components/course/prereq-map.vue";
-import ConcurrentCourses from "../components/course/concurrent-courses.vue";
-import ContactAdviser from "../components/common/contact-adviser.vue";
+import Layout from "@/layout.vue";
+import SearchChooser from "@/components/search/chooser.vue";
+import GradeDistribution from "@/components/course/grade-distribution.vue";
+import CourseDetails from "@/components/course/course-details.vue";
+import ExploreCourse from "@/components/course/explore-course.vue";
+import OutcomeIndex from "@/components/course/outcome-index.vue";
+import PrereqMap from "@/components/course/prereq-map.vue";
+import ConcurrentCourses from "@/components/course/concurrent-courses.vue";
+import ContactAdviser from "@/components/common/contact-adviser.vue";
 
 export default {
   name: "CourseComp",
@@ -87,7 +87,7 @@ export default {
     "course-details": CourseDetails,
     "explore-course": ExploreCourse,
     "grade-distribution": GradeDistribution,
-    'outcome-index': OutcomeIndex,
+    "outcome-index": OutcomeIndex,
     "contact-adviser": ContactAdviser,
     "prereq-map": PrereqMap,
     "concurrent-courses": ConcurrentCourses,
