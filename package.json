@@ -24,7 +24,7 @@
     "@popperjs/core": "^2.11.6",
     "axdd-components": "git+https://github.com/uw-it-aca/axdd-components.git#1.0.5",
     "axios": "^0.27.2",
-    "bootstrap": "^5.2.3",
+    "bootstrap": "5.2.3",
     "bootstrap-icons": "^1.10.3",
     "d3": "^7.8.2",
     "jquery": "^3.6.3",
