@@ -366,8 +366,8 @@ export default {
       layerSelect
         .append("p")
         .attr("class", "fw-bold text-nowrap")
-        .text("View " + coursePicked + " in context")
-        //.style("font-weight", "bold");
+        .text("View " + coursePicked + " in context");
+      //.style("font-weight", "bold");
 
       var selectID;
 
