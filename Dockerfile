@@ -1,6 +1,6 @@
 ARG DJANGO_CONTAINER_VERSION=1.4.1
 
-FROM gcr.io/uwit-mci-axdd/django-container:${DJANGO_CONTAINER_VERSION} as app-prebundler-container
+FROM us-docker.pkg.dev/uwit-mci-axdd/containers/django-container:${DJANGO_CONTAINER_VERSION} as app-prebundler-container
 
 USER root
 
@@ -36,7 +36,7 @@ COPY --chown=acait:acait --from=node-bundler /app/pathways/static /app/pathways/
 
 RUN . /app/bin/activate && python manage.py collectstatic --noinput
 
-FROM gcr.io/uwit-mci-axdd/django-test-container:${DJANGO_CONTAINER_VERSION} as app-test-container
+FROM us-docker.pkg.dev/uwit-mci-axdd/containers/django-test-container:${DJANGO_CONTAINER_VERSION} as app-test-container
 
 ENV NODE_PATH=/app/lib/node_modules
 COPY --from=app-container /app/ /app/
