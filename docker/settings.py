@@ -13,6 +13,7 @@ if os.getenv("ENV") == "localdev":
         BASE_DIR, "pathways", "static", "manifest.json"
     )
 else:
+    CSRF_TRUSTED_ORIGINS = ['https://' + os.getenv('CLUSTER_CNAME')]
     VITE_MANIFEST_PATH = os.path.join(os.sep, "static", "manifest.json")
 
 # If you have file data, define the path here

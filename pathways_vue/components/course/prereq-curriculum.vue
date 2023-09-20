@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import PrereqCurrList from "./prereq-curr-list.vue";
+import PrereqCurrList from "@/components/course/prereq-curr-list.vue";
 
 export default {
   name: "PrereqCurriculum",

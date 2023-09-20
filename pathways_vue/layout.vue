@@ -89,14 +89,12 @@
 </template>
 
 <script>
-import { Topbar } from "axdd-components";
-import Feedback from "./components/common/feedback.vue";
-import Banner from "./components/common/banner.vue";
+import Feedback from "@/components/common/feedback.vue";
+import Banner from "@/components/common/banner.vue";
 
 export default {
   name: "DawgPath",
   components: {
-    "axdd-topbar": Topbar,
     Feedback,
     Banner,
   },

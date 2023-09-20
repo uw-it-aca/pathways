@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.conf import settings
-from django.urls import include, path, re_path
+from django.urls import re_path
 from django.views.generic import TemplateView
 from pathways.views.pages import DefaultPageView
 from pathways.views.api.major import MajorDetails, MajorList

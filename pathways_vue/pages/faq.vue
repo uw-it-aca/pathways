@@ -372,7 +372,7 @@
 </style>
 
 <script>
-import Layout from "../layout.vue";
+import Layout from "@/layout.vue";
 
 export default {
   name: "App",
