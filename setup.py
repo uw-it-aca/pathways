@@ -20,7 +20,7 @@ setup(
     name="pathways",
     version=VERSION,
     packages=["pathways"],
-    author="UW-IT AXDD",
+    author="UW-IT T&LS",
     author_email="aca-it@uw.edu",
     include_package_data=True,
     install_requires=[
