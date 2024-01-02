@@ -41,7 +41,3 @@ class Command(BaseCommand):
                         row_count += 1
             print("wrote %s courses" % write_count)
             print("wrote %s rows" % row_count)
-
-
-
-
