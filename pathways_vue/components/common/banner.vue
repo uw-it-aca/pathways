@@ -10,7 +10,7 @@
       by participating in a feedback session for our new DawgPath feature. Be the
       first to sign up and share your valuable insights with us!
       <a target="_blank"
-      href="https://docs.google.com/forms/d/1jx4f5UYBaKDXv6TMJK8-08kfzrsHWfKWNLPXFP7xIpQ/edit">
+      href="https://docs.google.com/forms/d/e/1FAIpQLSetsq9KtmiTV8JMj1QM9R62pdrTUwiPlTAHK8bt9sq59FzlDw/viewform">
       Sign up for a feedback session.</a>
       <button
         type="button"
