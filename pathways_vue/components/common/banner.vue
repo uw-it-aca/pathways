@@ -6,11 +6,12 @@
     class="alert alert-warning alert-dismissible fade show text-center mb-0 pe-3"
   >
     <div class="container-xl text-start">
-      <strong>New Feature!</strong> DawgPath has new data to help you plan a
-      balanced schedule. Search for a Seattle course to get a walk through of
-      the <strong>Course Outcome Index</strong>. Coming soon for Bothell and
-      Tacoma.
-      <a href="/faq#coi" class="router-link">Learn more.</a>
+      <strong>Join us as research participants!</strong> Get $20 Husky Card credit
+      by participating in a feedback session for our new DawgPath feature. Be the
+      first to sign up and share your valuable insights with us!
+      <a target="_blank"
+      href="https://docs.google.com/forms/d/e/1FAIpQLSetsq9KtmiTV8JMj1QM9R62pdrTUwiPlTAHK8bt9sq59FzlDw/viewform">
+      Sign up for a feedback session.</a>
       <button
         type="button"
         class="btn btn-link btn-close"
