@@ -48,7 +48,7 @@ export default {
   computed: {},
   mounted() {
     if (window.show_coi) {
-      this.show_coi = true;
+      this.show_coi = false;
     }
   },
 };
