@@ -3,19 +3,20 @@
 <template>
   <div class="card mb-5">
     <div v-if="concurrent_courses.length === 0" class="card-body">
-      <h2 class="h4 pw-font-encode-sans">Concurrent Courses</h2>
+      <h2 class="h4 axdd-font-encode-sans fw-bold">Concurrent Courses</h2>
       <div class="alert alert-purple" role="alert">
         <p>
-          No concurrent courses available for <strong>{{ courseData.course_id }}</strong
+          No concurrent courses available for
+          <strong>{{ courseData.course_id }}</strong
           >.
         </p>
       </div>
     </div>
     <div v-else class="card-body">
-      <h2 class="h4 pw-font-encode-sans">Concurrent Courses</h2>
+      <h2 class="h4 axdd-font-encode-sans fw-bold">Concurrent Courses</h2>
       <p>
-        Students who took <strong>{{ courseData.course_id }}</strong> in the past 2 years also took
-        the following courses at the same time.
+        Students who took <strong>{{ courseData.course_id }}</strong> in the
+        past 2 years also took the following courses at the same time.
       </p>
       <table class="table table-borderless table-striped">
         <thead>
@@ -39,7 +40,11 @@
             <!-- <th scope="col" class="visually-hidden" style="width: 20%">Percentage Graph</th> -->
             <th scope="col" style="width: 90%">Concurrent Course</th>
             <!-- change this % to 62 when adding COI back in -->
-            <th scope="col" class="px-0" style="width: 10%; min-width: 60px; display: none">
+            <th
+              scope="col"
+              class="px-0"
+              style="width: 10%; min-width: 60px; display: none"
+            >
               <!-- hidden -->
               <abbr title="Course Outcome Index Score">COI </abbr>
               <a
@@ -58,10 +63,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="align-middle" v-for="course in concurrent_courses">
+          <tr
+            class="align-middle"
+            v-for="(course, index) in concurrent_courses"
+            :key="index"
+          >
             <th scope="row">
               <div class="icon-col">
-                <icon-popover v-if="course.is_bottleneck" :variant="'bottleneck'" />
+                <icon-popover
+                  v-if="course.is_bottleneck"
+                  :variant="'bottleneck'"
+                />
                 <icon-popover v-if="course.is_gateway" :variant="'gateway'" />
               </div>
             </th>
@@ -93,7 +105,9 @@
                 {{ course.title }}</a
               >
             </td>
-            <td v-if="course.coi_score" style="display: none">{{ course.coi_score }}</td>
+            <td v-if="course.coi_score" style="display: none">
+              {{ course.coi_score }}
+            </td>
             <!-- hidden -->
             <td v-else style="display: none">No Data</td>
             <!-- hidden -->
@@ -105,13 +119,13 @@
 </template>
 
 <script>
-import { Popover } from 'bootstrap';
-import IconPopover from '../common/icon-popover.vue';
+import { Popover } from "bootstrap";
+import IconPopover from "@/components/common/icon-popover.vue";
 
 export default {
-  name: 'ConcurrentCourses',
+  name: "ConcurrentCourses",
   components: {
-    'icon-popover': IconPopover,
+    "icon-popover": IconPopover,
   },
   props: {
     courseData: {
@@ -124,7 +138,9 @@ export default {
   },
   mounted() {
     if (this.concurrent_courses.length > 0) {
-      var popover = new Popover(document.querySelector('.info-course-concurrent'));
+      var popover = new Popover(
+        document.querySelector(".info-course-concurrent")
+      );
       //var popover = new Popover(document.querySelector('.info-common-coi'));
     }
   },
@@ -135,21 +151,25 @@ export default {
         return [];
       }
       let processed_courses = [];
-      for (const [course, data] of Object.entries(this.courseData.concurrent_courses)) {
-        let percent = Math.round(data['percent'] * 100);
+      for (const [course, data] of Object.entries(
+        this.courseData.concurrent_courses
+      )) {
+        let percent = Math.round(data["percent"] * 100);
         let style_string = `width: ${percent}%`;
 
         processed_courses.push({
           course: course,
           percent: percent,
-          title: data['title'],
+          title: data["title"],
           width: style_string,
-          coi_score: data['coi_score'],
-          is_bottleneck: data['is_bottleneck'],
-          is_gateway: data['is_gateway']
+          coi_score: data["coi_score"],
+          is_bottleneck: data["is_bottleneck"],
+          is_gateway: data["is_gateway"],
         });
       }
-      return processed_courses.sort((a, b) => (a.percent < b.percent ? 1 : -1)).slice(0, 10);
+      return processed_courses
+        .sort((a, b) => (a.percent < b.percent ? 1 : -1))
+        .slice(0, 10);
     },
   },
 };
@@ -157,14 +177,14 @@ export default {
 
 <style lang="scss">
 .table {
-  --bs-table-striped-bg: rgba(179, 175, 124, 0.12);
+  --bs-table-striped-bg: rgb(179 175 124 / 12%);
 }
+
 .icon-col {
   .round-sm {
     height: 18px;
     width: 18px;
     line-height: 18px;
-    -moz-border-radius: 15px;
     border-radius: 15px;
     font-size: 0.7em;
 

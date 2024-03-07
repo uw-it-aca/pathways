@@ -1,4 +1,4 @@
-# Copyright 2022 UW-IT, University of Washington
+# Copyright 2024 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from pathways.views.api import RESTDispatch
@@ -16,6 +16,8 @@ class UserPreference(RESTDispatch):
         request_params = json.loads(request.body)
         welcome_display = request_params.get("viewed_welcome_display")
         bottleneck_display = request_params.get("viewed_bottleneck_banner")
+        outcomes_display = request_params.get("viewed_outcomes_banner")
+        coi_display = request_params.get("viewed_coi_banner")
 
         user, created = \
             User.objects.get_or_create(uwnetid=uwnetid)
@@ -28,6 +30,14 @@ class UserPreference(RESTDispatch):
             if bottleneck_display != user.has_viewed_bottleneck_banner:
                 user_updated = True
                 user.has_viewed_bottleneck_banner = bottleneck_display
+        if outcomes_display is not None:
+            if outcomes_display != user.has_viewed_outcomes_banner:
+                user_updated = True
+                user.has_viewed_outcomes_banner = outcomes_display
+        if coi_display is not None:
+            if coi_display != user.has_viewed_outcomes_banner:
+                user_updated = True
+                user.has_viewed_coi_banner = coi_display
         if user_updated:
             user.save()
             return self.json_response(status=200)

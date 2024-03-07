@@ -1,17 +1,20 @@
-# Copyright 2022 UW-IT, University of Washington
+# Copyright 2024 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from django.test import RequestFactory, TestCase
 from django.contrib.auth.models import User
 from django.contrib.sessions.middleware import SessionMiddleware
 from pathways.views.pages import DefaultPageView
+import mock
 
 
 class PagesViewTest(TestCase):
     def setUp(self):
         self.request = RequestFactory().get('/')
         self.request.user = User()
-        SessionMiddleware().process_request(self.request)
+        get_response = mock.MagicMock()
+        middleware = SessionMiddleware(get_response)
+        response = middleware(self.request)
         self.request.session.save()
 
     def test_context(self):

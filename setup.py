@@ -20,13 +20,13 @@ setup(
     name="pathways",
     version=VERSION,
     packages=["pathways"],
-    author="UW-IT AXDD",
+    author="UW-IT T&LS",
     author_email="aca-it@uw.edu",
     include_package_data=True,
     install_requires=[
-        "django~=3.2",
-        "UW-Django-SAML2~=1.5",
-        "django-webpack-loader",
+        "django~=4.2",
+        "UW-Django-SAML2~=1.7",
+        "lxml==4.9.4",
         "whoosh~=2.7"
     ],
     license="Apache License, Version 2.0",

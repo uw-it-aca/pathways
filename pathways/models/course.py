@@ -1,4 +1,4 @@
-# Copyright 2022 UW-IT, University of Washington
+# Copyright 2024 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from django.db import models
@@ -11,6 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 class Course(models.Model):
     course_id = models.CharField(max_length=10)
+    department_abbrev = models.CharField(max_length=6, null=True)
     course_title = models.CharField(max_length=120)
     course_credits = models.CharField(max_length=12)
     course_campus = models.CharField(max_length=7)
@@ -19,6 +20,7 @@ class Course(models.Model):
     prereq_graph = models.JSONField(null=True)
     course_description = models.TextField(null=True)
     course_offered = models.TextField(null=True)
+    prereq_string = models.TextField(null=True)
     coi_score = models.FloatField(null=True)
     is_bottleneck = models.BooleanField(default=False)
     is_gateway = models.BooleanField(default=False)
@@ -65,12 +67,14 @@ class Course(models.Model):
             graph = json.loads(self.prereq_graph)
         concurrrent = self.get_concurrent_with_coi_and_flags()
         return {"course_id": self.course_id,
+                "department_abbrev": self.department_abbrev,
                 "course_title": self.course_title,
                 "course_credits": self.course_credits,
                 "course_campus": self.course_campus,
                 "gpa_distro": self.fix_gpa_json(self.gpa_distro),
                 "concurrent_courses": concurrrent,
                 "prereq_graph": graph,
+                "prereq_string": self.prereq_string,
                 "course_description": self.course_description,
                 "course_offered": self.course_offered,
                 "coi_data": self.get_coi_data(),

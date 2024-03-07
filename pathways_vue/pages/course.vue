@@ -13,12 +13,16 @@
           <div class="col-md-9">
             <grade-distribution :course="courseData" />
           </div>
-          <!--<div class="col-md-9">
+          <div v-if="courseCampus == 'seattle'" class="col-md-9">
             <outcome-index :course="courseData" />
-          </div>-->
+          </div>
           <!-- prereq map -->
           <div class="col-md-9">
-            <prereq-map :graph_data="courseData.prereq_graph" :active_course="courseId" />
+            <prereq-map
+              :graph_data="courseData.prereq_graph"
+              :active_course="courseId"
+              :prereq_string="courseData.prereq_string"
+            />
           </div>
 
           <div class="col-md-9">
@@ -30,12 +34,15 @@
         </div>
         <div v-else class="row order-2 justify-content-sm-center">
           <div v-if="showError" class="col-md-9">
-            <div class="alert alert-purple" role="alert">
-              <p>Data is not available for selected course. Here are some possible reasons:</p>
+            <div class="alert alert-purple border-0" role="alert">
+              <p>
+                Data is not available for selected course. Here are some
+                possible reasons:
+              </p>
               <ul>
                 <li>This course is no longer offered</li>
                 <li>It is a graduate course</li>
-                <li>You made a typo -- the course code doesn’t exist.</li>
+                <li>You made a typo -- the course code doesn't exist.</li>
               </ul>
             </div>
           </div>
@@ -62,27 +69,28 @@
 </template>
 
 <script>
-import Layout from '../layout.vue';
-import SearchChooser from '../components/search/chooser.vue';
-import GradeDistribution from '../components/course/grade-distribution.vue';
-import CourseDetails from '../components/course/course-details.vue';
-import ExploreCourse from '../components/course/explore-course.vue';
-import OutcomeIndex from '../components/course/outcome-index.vue';
-import PrereqMap from '../components/course/prereq-map.vue';
-import ConcurrentCourses from '../components/course/concurrent-courses.vue';
-import ContactAdviser from '../components/common/contact-adviser.vue';
+import Layout from "@/layout.vue";
+import SearchChooser from "@/components/search/chooser.vue";
+import GradeDistribution from "@/components/course/grade-distribution.vue";
+import CourseDetails from "@/components/course/course-details.vue";
+import ExploreCourse from "@/components/course/explore-course.vue";
+import OutcomeIndex from "@/components/course/outcome-index.vue";
+import PrereqMap from "@/components/course/prereq-map.vue";
+import ConcurrentCourses from "@/components/course/concurrent-courses.vue";
+import ContactAdviser from "@/components/common/contact-adviser.vue";
 
 export default {
+  name: "CourseComp",
   components: {
     layout: Layout,
-    'search-chooser': SearchChooser,
-    'course-details': CourseDetails,
-    'explore-course': ExploreCourse,
-    'grade-distribution': GradeDistribution,
-    'outcome-index': OutcomeIndex,
-    'contact-adviser': ContactAdviser,
-    'prereq-map': PrereqMap,
-    'concurrent-courses': ConcurrentCourses,
+    "search-chooser": SearchChooser,
+    "course-details": CourseDetails,
+    "explore-course": ExploreCourse,
+    "grade-distribution": GradeDistribution,
+    "outcome-index": OutcomeIndex,
+    "contact-adviser": ContactAdviser,
+    "prereq-map": PrereqMap,
+    "concurrent-courses": ConcurrentCourses,
   },
   data() {
     return {
@@ -91,12 +99,15 @@ export default {
       courseTitle: undefined,
       courseCampus: undefined,
       showError: false,
+      appName: "DawgPath",
     };
   },
   computed: {
     pageTitle: function () {
-      let no_title = this.showError ? 'Error' : 'Course';
-      return this.courseTitle !== undefined ? this.courseTitle + ' - Course' : no_title;
+      let no_title = this.showError ? "Error" : "Course";
+      return this.courseTitle !== undefined
+        ? (document.title = this.courseTitle + " - " + this.appName)
+        : no_title;
     },
   },
   mounted() {
@@ -107,7 +118,7 @@ export default {
       this.showError = true;
     }
 
-    this.emitter.on('update:selected', (selectedKey) => {
+    this.emitter.on("update:selected", (selectedKey) => {
       this.courseId = selectedKey;
     });
   },
@@ -120,15 +131,15 @@ export default {
       const vue = this;
       this.courseData = undefined;
       this.axios
-        .get('/api/v1/courses/details/' + course_id)
+        .get("/api/v1/courses/details/" + course_id)
         .then((response) => {
           vue.showError = false;
           vue.courseData = response.data;
           vue.courseCampus = response.data.course_campus;
           //vue.courseTitle = this.courseId + ': ' + response.data.course_title + ' - Course ';
-          vue.courseTitle = this.courseId + ': ' + response.data.course_title;
+          vue.courseTitle = this.courseId + ": " + response.data.course_title;
         })
-        .catch(function (error) {
+        .catch(function () {
           vue.showError = true;
         });
     },
@@ -140,5 +151,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>

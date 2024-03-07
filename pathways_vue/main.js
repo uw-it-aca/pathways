@@ -1,53 +1,63 @@
-import { createApp } from 'vue';
-import App from './app.vue';
-import router from './router';
-import store from './store';
+import { createApp } from "vue";
 
-import VueGtag from 'vue-gtag-next';
-import VueMq from 'vue3-mq';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
-import mitt from 'mitt';
+import VueGtag from "vue-gtag-next";
+import { Vue3Mq, MqResponsive } from "vue3-mq";
+import axios from "axios";
+import VueAxios from "vue-axios";
+import mitt from "mitt";
 
-// bootstrap js
-import 'bootstrap';
+// import solstice-vue
+import SolsticeVue from "solstice-vue";
 
-// custom bootstrap theming
-import './css/custom.scss';
+import App from "@/app.vue";
+import router from "@/router";
+
+// bootstrap js + bootstrap-icons
+import "bootstrap";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
+// bootstrap and solstice-vue
+import "@/css/custom.scss";
+import "solstice-vue/dist/style.css";
 
 const app = createApp(App);
 
-// MARK: google analytics data stream measurement_id
-const gaCode = document.body.getAttribute('data-google-analytics');
-const debugMode = document.body.getAttribute('data-django-debug');
-
-const emitter = mitt()
-app.config.globalProperties.emitter = emitter;
+// google analytics data stream measurement and user hashed ids
+const gaCode = document.body.getAttribute("data-google-analytics");
+const debugMode = document.body.getAttribute("data-django-debug");
+const hashedId = window.hashed_netid;
 
 app.config.productionTip = false;
 
+// mitt
+const emitter = mitt();
+app.config.globalProperties.emitter = emitter;
+
 // vue-gtag-next
 app.use(VueGtag, {
-  isEnabled: debugMode == 'false',
+  isEnabled: debugMode == "false",
   property: {
     id: gaCode,
     params: {
       anonymize_ip: true,
+      user_id: hashedId,
     },
-  }
+  },
 });
 
 // vue-mq (media queries)
-app.use(VueMq, {
-  breakpoints: {
-    // breakpoints == min-widths of next size
-    mobile: 768, // tablet begins 768px
-    tablet: 992, // desktop begins 992px
-    desktop: Infinity,
-  },
+app.use(Vue3Mq, {
+  preset: "bootstrap5",
 });
-app.use(router);
-app.use(store);
+app.component("mq-responsive", MqResponsive);
+
+// vue-axios
 app.use(VueAxios, axios);
+
+// solstice-vue
+app.use(SolsticeVue);
+
+// vue-router
+app.use(router);
 
 app.mount("#app");

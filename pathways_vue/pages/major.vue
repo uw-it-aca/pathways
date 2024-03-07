@@ -22,11 +22,14 @@
         <div v-else class="row order-2 justify-content-sm-center">
           <div v-if="showError" class="col-md-9">
             <div class="alert alert-purple" role="alert">
-              <p>Data is not available for selected major. Here are some possible reasons:</p>
+              <p>
+                Data is not available for selected major. Here are some possible
+                reasons:
+              </p>
               <ul>
                 <li>This major is no longer offered</li>
                 <li>It is a graduate degree</li>
-                <li>You made a typo -- the major doesn’t exist.</li>
+                <li>You made a typo -- the major doesn't exist.</li>
               </ul>
             </div>
           </div>
@@ -53,23 +56,24 @@
 </template>
 
 <script>
-import Layout from '../layout.vue';
-import MajorDetails from '../components/major/major-details.vue';
-import ExploreMajor from '../components/major/explore-major.vue';
-import CommonCourses from '../components/major/common-courses.vue';
-import SearchChooser from '../components/search/chooser.vue';
-import D3Cgpa from '../components/major/d3-cgpa.vue';
-import ContactAdviser from '../components/common/contact-adviser.vue';
+import Layout from "@/layout.vue";
+import MajorDetails from "@/components/major/major-details.vue";
+import ExploreMajor from "@/components/major/explore-major.vue";
+import CommonCourses from "@/components/major/common-courses.vue";
+import SearchChooser from "@/components/search/chooser.vue";
+import D3Cgpa from "@/components/major/d3-cgpa.vue";
+import ContactAdviser from "@/components/common/contact-adviser.vue";
 
 export default {
+  name: "MajorComp",
   components: {
     layout: Layout,
-    'search-chooser': SearchChooser,
-    'd3-cgpa': D3Cgpa,
-    'contact-adviser': ContactAdviser,
-    'major-details': MajorDetails,
-    'explore-major': ExploreMajor,
-    'common-courses': CommonCourses,
+    "search-chooser": SearchChooser,
+    "d3-cgpa": D3Cgpa,
+    "contact-adviser": ContactAdviser,
+    "major-details": MajorDetails,
+    "explore-major": ExploreMajor,
+    "common-courses": CommonCourses,
   },
   data() {
     return {
@@ -79,12 +83,15 @@ export default {
       campus: undefined,
       major_data: undefined,
       showError: false,
+      appName: "DawgPath",
     };
   },
   computed: {
     pageTitle: function () {
-      let no_title = this.showError ? 'Error' : 'Major';
-      return this.majorTitle !== undefined ? this.majorTitle + ' - Major' : no_title;
+      let no_title = this.showError ? "Error" : "Major";
+      return this.majorTitle !== undefined
+        ? (document.title = this.majorTitle + " - " + this.appName)
+        : no_title;
     },
   },
   methods: {
@@ -97,13 +104,13 @@ export default {
       this.major_data = undefined;
       if (this.majorID !== undefined) {
         this.axios
-          .get('/api/v1/majors/details/' + this.majorID)
+          .get("/api/v1/majors/details/" + this.majorID)
           .then((response) => {
             vue.major_data = response.data;
             vue.majorTitle = vue.major_data.credential_title;
             vue.showError = false;
           })
-          .catch(function (error) {
+          .catch(function () {
             vue.showError = true;
           });
       } else {
@@ -125,5 +132,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss"></style>

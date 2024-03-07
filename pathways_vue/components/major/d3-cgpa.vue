@@ -3,23 +3,31 @@
 <template>
   <div class="card mb-5">
     <div class="card-body" v-if="!showCard">
-      <h2 class="h4 pw-font-encode-sans">Declared major cumulative GPA distribution</h2>
+      <h2 class="h4 axdd-font-encode-sans fw-bold">
+        Declared major cumulative GPA distribution
+      </h2>
       <div class="alert alert-purple" role="alert">
         <p>
-          No major GPA information for {{ this.majorData.major_title }} was found. Here are some
-          possible reasons:
+          No major GPA information for {{ this.majorData.major_title }} was
+          found. Here are some possible reasons:
         </p>
         <ul>
-          <li>The major is new and doesn’t have enough student data to generate plots</li>
+          <li>
+            The major is new and doesn't have enough student data to generate
+            plots
+          </li>
           <li>This major is no longer offered</li>
         </ul>
       </div>
     </div>
-    <div v-else class="card-body">
-      <h2 class="h4 pw-font-encode-sans">Declared major cumulative GPA distribution</h2>
+    <div v-else class="card-body" id="blah">
+      <h2 class="h4 axdd-font-encode-sans fw-bold">
+        Declared major cumulative GPA distribution
+      </h2>
       <div class="px-1 py-1">
         <p>
-          Every student’s cumulative GPA at time of major declaration over the last
+          Every student's cumulative GPA at time of major declaration over the
+          last
           {{ yearCount }} years.
           <a
             tabindex="0"
@@ -35,8 +43,8 @@
         </p>
         <p class="fst-italic">
           <small>
-            <i class="bi bi-exclamation-circle me-1"></i>Remember that GPA is just one of many
-            factors that goes into major admissions decisions.
+            <i class="bi bi-exclamation-circle me-1"></i>Remember that GPA is
+            just one of many factors that goes into major admissions decisions.
           </small>
         </p>
       </div>
@@ -69,13 +77,16 @@
             v-model="viewDataTable"
             id="ToggleDataTable"
           />
-          <label class="form-check-label" for="ToggleDataTable">Display data as a table</label>
+          <label class="form-check-label" for="ToggleDataTable"
+            >Display data as a table</label
+          >
         </div>
       </div>
       <div v-if="yearCount === 2 && !show2Year">
         <div class="alert alert-purple mt-2" role="alert">
           <p>
-            In the last 2 years <strong>{{ majorData.credential_title }}</strong> did not have
+            In the last 2 years
+            <strong>{{ majorData.credential_title }}</strong> did not have
             enough students to generate a GPA graph.
           </p>
         </div>
@@ -83,7 +94,8 @@
       <div v-else-if="yearCount === 5 && !show5Year">
         <div class="alert alert-purple mt-2" role="alert">
           <p>
-            In the last 5 years <strong>{{ majorData.credential_title }}</strong> did not have
+            In the last 5 years
+            <strong>{{ majorData.credential_title }}</strong> did not have
             enough students to generate a GPA graph.
           </p>
         </div>
@@ -100,7 +112,7 @@
               Number of students in this sample:
               {{
                 total_count
-              }}
+              }}. Data does not include pass/fail grades.
             </caption>
             <thead>
               <tr>
@@ -124,7 +136,7 @@
               Number of students in this sample:
               {{
                 total_count
-              }}
+              }}. Data does not include pass/fail grades.
             </caption>
             <thead>
               <tr>
@@ -143,7 +155,11 @@
           </table>
         </div>
         <p :class="[viewDataTable ? 'visually-hidden' : '']">
-          <small> Number of students in this sample: {{ total_count }} </small>
+          <small>
+            Number of students in this sample:
+            <strong>{{ total_count }}</strong> <br />
+            The graph does not include pass/fail grades.
+          </small>
         </p>
       </div>
     </div>
@@ -151,12 +167,12 @@
 </template>
 
 <script>
-import * as d3 from 'd3';
-import { Popover } from 'bootstrap';
-import numeral from 'numeral';
+import * as d3 from "d3";
+import { Popover } from "bootstrap";
+//import numeral from "numeral";
 
 export default {
-  name: 'D3Cgpa',
+  name: "D3Cgpa",
   data() {
     return {
       gpa_2yr_active: true,
@@ -172,7 +188,7 @@ export default {
   },
   mounted() {
     if (this.showCard) {
-      var popover = new Popover(document.querySelector('.info-gpa'));
+      var popover = new Popover(document.querySelector(".info-gpa"));
     }
 
     this.generateChart(this.majorData.gpa_2yr);
@@ -184,7 +200,9 @@ export default {
   },
   computed: {
     showCard() {
-      return this.majorData.gpa_2yr.length > 0 || this.majorData.gpa_5yr.length > 0;
+      return (
+        this.majorData.gpa_2yr.length > 0 || this.majorData.gpa_5yr.length > 0
+      );
     },
     yearCount() {
       if (this.gpa_2yr_active) {
@@ -194,11 +212,13 @@ export default {
       }
     },
     formatGPA() {
-      if (d.gpa == '50') {
-        var newFormat = d3.format('');
+      var newFormat = "";
+      if (this.gpa == "50") {
+        newFormat = d3.format("");
       } else {
-        var newFormat = d3.format('.2n');
+        newFormat = d3.format(".2n");
       }
+      return newFormat;
     },
     zeroCount2yr() {
       return this.majorData.gpa_2yr.filter(function (value) {
@@ -225,19 +245,21 @@ export default {
       return count > 0;
     },
     showGraph() {
+      let showYears = "";
       if (this.yearCount === 2) {
-        return this.show2Year;
+        showYears = this.show2Year;
       } else if (this.yearCount === 5) {
-        return this.show5Year;
+        showYears = this.show5Year;
       }
+      return showYears;
     },
   },
   methods: {
     selectChart(year) {
-      if (year === '2yr') {
+      if (year === "2yr") {
         this.gpa_2yr_active = true;
         this.generateChart(this.majorData.gpa_2yr);
-      } else if (year === '5yr') {
+      } else if (year === "5yr") {
         this.gpa_2yr_active = false;
         this.generateChart(this.majorData.gpa_5yr);
       }
@@ -248,12 +270,15 @@ export default {
     generateChart(gpa_data) {
       let vue = this;
 
-      if ((this.yearCount === 2 && !this.show2Year) || (this.yearCount === 5 && !this.show5Year)) {
+      if (
+        (this.yearCount === 2 && !this.show2Year) ||
+        (this.yearCount === 5 && !this.show5Year)
+      ) {
         return;
       }
       if (this.showCard) {
         // clear chart
-        document.getElementById('histogram').innerHTML = '';
+        document.getElementById("histogram").innerHTML = "";
 
         // Update count
         var count = gpa_data.reduce(function (accumulator, currentValue) {
@@ -268,7 +293,12 @@ export default {
           rwidth = width + margin.left + margin.right,
           rheight = height + margin.top + margin.bottom;
 
-        var tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0);
+        var tooltip = d3
+          .select("body")
+          .append("div")
+          .attr("class", "tooltip")
+          .style("opacity", 0)
+          .style("left", "-9999px");
 
         // set the ranges
         var x = d3.scaleBand().range([0, width]).padding(0.3);
@@ -278,13 +308,16 @@ export default {
         // append a 'group' element to 'svg'
         // moves the 'group' element to the top left margin
         var svg = d3
-          .select('#histogram')
-          .append('svg')
+          .select("#histogram")
+          .append("svg")
           //.attr("width", width + margin.left + margin.right)
           //.attr("height", height + margin.top + margin.bottom)
-          .attr('viewBox', `0 0 ${rwidth} ${rheight}`)
-          .append('g')
-          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+          .attr("viewBox", `0 0 ${rwidth} ${rheight}`)
+          .append("g")
+          .attr(
+            "transform",
+            "translate(" + margin.left + "," + margin.top + ")"
+          );
 
         // Scale the range of the data in the domains
         x.domain(
@@ -301,59 +334,59 @@ export default {
 
         // append the rectangles for the bar chart
         svg
-          .selectAll('.bar')
+          .selectAll(".bar")
           .data(gpa_data)
           .enter()
-          .append('rect')
-          .attr('class', 'bar')
-          .attr('x', function (d) {
+          .append("rect")
+          .attr("class", "bar")
+          .attr("x", function (d) {
             return x(d.gpa / 10);
           })
-          .attr('width', x.bandwidth())
-          .attr('y', function (d) {
+          .attr("width", x.bandwidth())
+          .attr("y", function (d) {
             return y(d.count);
           })
-          .attr('height', function (d) {
+          .attr("height", function (d) {
             return height - y(d.count);
           })
-          .on('mouseover', function (event, d) {
-            tooltip.transition().style('opacity', 1);
+          .on("mouseover", function (event, d) {
+            tooltip.transition().style("opacity", 1);
             tooltip
               .html(
                 `GPA: ${d.gpa / 10}<br/>
-               Total: ${d.count} (${vue.distributionPercentage(d.count)}%)`
+               ${vue.distributionPercentage(d.count)}% (${d.count} total)`
               )
-              .style('left', event.pageX + 'px')
-              .style('top', event.pageY - 28 + 'px');
+              .style("left", event.pageX + "px")
+              .style("top", event.pageY - 28 + "px");
           })
-          .on('mouseout', function (d) {
-            tooltip.transition().style('opacity', 0);
+          .on("mouseout", function () {
+            tooltip.transition().style("opacity", 0);
           });
 
         svg
-          .append('text')
-          .attr('transform', 'rotate(-90)')
-          .attr('y', 5 - margin.left)
-          .attr('x', 0 - height / 2)
-          .attr('dy', '0.5em')
-          .style('text-anchor', 'middle')
-          .style('font-size', '0.85rem')
-          .classed('chart-label', true)
-          .text('Number of students');
+          .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 5 - margin.left)
+          .attr("x", 0 - height / 2)
+          .attr("dy", "0.5em")
+          .style("text-anchor", "middle")
+          .style("font-size", "0.85rem")
+          .classed("chart-label", true)
+          .text("Number of students");
 
         svg
-          .append('text')
-          .attr('x', width / 2)
-          .attr('y', height + margin.bottom)
-          .style('text-anchor', 'middle')
-          .style('font-size', '0.85rem')
-          .text('GPA');
+          .append("text")
+          .attr("x", width / 2)
+          .attr("y", height + margin.bottom)
+          .style("text-anchor", "middle")
+          .style("font-size", "0.85rem")
+          .text("GPA");
 
         // add the x Axis
         svg
-          .append('g')
-          .attr('class', 'x axis')
-          .attr('transform', 'translate(0,' + height + ')')
+          .append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
           .call(
             d3
               .axisBottom(x)
@@ -366,7 +399,7 @@ export default {
           );
 
         // add the y Axis
-        svg.append('g').call(d3.axisLeft(y));
+        svg.append("g").call(d3.axisLeft(y));
       }
     },
   },
@@ -377,6 +410,7 @@ export default {
 .bar {
   fill: #4b2e83;
 }
+
 .bar:hover {
   fill: #333;
 }
@@ -385,7 +419,7 @@ export default {
 .axis line {
   fill: none;
   stroke: #000;
-  shape-rendering: crispEdges;
+  shape-rendering: crispedges;
 }
 
 div.tooltip {
@@ -399,7 +433,7 @@ div.tooltip {
   border-radius: 4px;
   width: 7.5rem;
   height: 2.5rem;
-  font: 12px sans-serif;
+  font-size: 12px sans-serif;
   pointer-events: none;
 }
 </style>

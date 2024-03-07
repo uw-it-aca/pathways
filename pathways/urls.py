@@ -1,14 +1,15 @@
-# Copyright 2022 UW-IT, University of Washington
+# Copyright 2024 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from django.conf import settings
-from django.urls import include, path, re_path
+from django.urls import re_path
 from django.views.generic import TemplateView
 from pathways.views.pages import DefaultPageView
 from pathways.views.api.major import MajorDetails, MajorList
 from pathways.views.api.course import CourseList, CourseDetails, CourseSearch
 from pathways.views.api.curric import CurricPrereq
 from pathways.views.api.user import UserPreference
+from pathways.views.api.coi import CourseCOI, CurricCOI
 
 # start with an empty url array
 urlpatterns = []
@@ -47,6 +48,12 @@ urlpatterns += [
     re_path(
         r'^api/v1/curric_prereq/(?P<curric_abbr>[^/]*)$',
         CurricPrereq.as_view(), name='curric-prereq'),
+    re_path(
+        r'^api/v1/coi/course/(?P<department_abbrev>[^/]*)$',
+        CourseCOI.as_view(), name='course-coi'),
+    re_path(
+        r'^api/v1/coi/curric/$',
+        CurricCOI.as_view(), name='curric-coi'),
 
     re_path(r'^(major|course|faq)$', DefaultPageView.as_view()),
     re_path(r'^$', DefaultPageView.as_view()),

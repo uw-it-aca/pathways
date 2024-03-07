@@ -1,0 +1,14 @@
+# Copyright 2024 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
+from django import template
+import hashlib
+
+register = template.Library()
+
+
+@register.simple_tag(name="hash_netid")
+def hash_netid(netid):
+    if netid is not None:
+        return hashlib.md5(netid.encode('utf-8')).hexdigest()
+    return ''

@@ -5,85 +5,178 @@
     <div class="card-body">
       <h2 class="fw-bold mt-2 fs-5">Search for a major or course</h2>
       <form @submit.prevent="onSelected" role="search">
-      <fieldset>
-        <legend class="visually-hidden">Select a campus to search</legend>
-      <div class="my-3">
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="flexRadioDefault"
-            id="SeattleCampus"
-            v-model="selectedCampus"
-            value="seattle"
-          />
-          <label class="form-check-label" for="SeattleCampus">Seattle Campus</label>
+        <fieldset>
+          <legend class="visually-hidden">Select a campus to search</legend>
+          <div class="mt-3">
+            <div class="form-check form-check-inline mb-0">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="SeattleCampus"
+                v-model="selectedCampus"
+                value="seattle"
+              />
+              <label class="form-check-label" for="SeattleCampus"
+                >Seattle</label
+              >
+            </div>
+            <div class="form-check form-check-inline mb-0">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="TacomaCampus"
+                v-model="selectedCampus"
+                value="tacoma"
+              />
+              <label class="form-check-label" for="TacomaCampus">Tacoma</label>
+            </div>
+            <div class="form-check form-check-inline mb-0">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="BothellCampus"
+                v-model="selectedCampus"
+                value="bothell"
+              />
+              <label class="form-check-label" for="BothellCampus"
+                >Bothell</label
+              >
+            </div>
+          </div>
+        </fieldset>
+
+        <div v-if="mq.smPlus" :class="selectedCampus ? 'enabled' : 'disabled'">
+          <div class="input-group my-3">
+            <select
+              aria-label="Select major or course"
+              class="form-select"
+              id="inputGroupSelect01"
+              v-model="searchType"
+              style="max-width: 110px"
+            >
+              <option value="" selected disabled hidden>Select...</option>
+              <option
+                v-for="(option, index) in searchTypeOptions"
+                v-bind:value="option.value"
+                :key="index"
+              >
+                {{ option.text }}
+              </option>
+            </select>
+            <!-- TODO: wire is-invalid class to datalist validation -->
+
+            <input
+              type="text"
+              class="form-control rounded-end"
+              :class="isValidInput || isValidInput == null ? '' : 'is-invalid'"
+              :placeholder="searchPlaceholder"
+              aria-autocomplete="list"
+              autocomplete="off"
+              aria-label="Start typing for major or course search options"
+              v-model="selectedLabel"
+              list="searchDataList"
+              :disabled="searchType.length === 0"
+              id="searchInput"
+              @change="validateInput"
+              @keypress="validateInput"
+              @keydown="disableEnter($event)"
+            />
+            <div class="invalid-feedback text-end">
+              Please clear your selection and search again
+            </div>
+          </div>
         </div>
-        <div class="form-check form-check-inline">
+
+        <div
+          v-else
+          class="my-3"
+          :class="selectedCampus ? 'enabled' : 'disabled'"
+        >
+          <select
+            aria-label="Select major or course"
+            class="form-select mb-2"
+            id="inputGroupSelect01"
+            v-model="searchType"
+          >
+            <option value="" selected disabled hidden>Select...</option>
+            <option
+              v-for="(option, index) in searchTypeOptions"
+              v-bind:value="option.value"
+              :key="index"
+            >
+              {{ option.text }}
+            </option>
+          </select>
+
           <input
-            class="form-check-input"
-            type="radio"
-            name="flexRadioDefault"
-            id="TacomaCampus"
-            v-model="selectedCampus"
-            value="tacoma"
+            class="form-control mb-2"
+            :class="isValidInput || isValidInput == null ? '' : 'is-invalid'"
+            :placeholder="searchPlaceholder"
+            aria-autocomplete="list"
+            autocomplete="off"
+            aria-label="Start typing for major or course search options"
+            v-model="selectedLabel"
+            list="searchDataList"
+            :disabled="searchType.length === 0"
+            id="searchInput"
+            @change="validateInput"
+            @keypress="validateInput"
+            @keydown="disableEnter($event)"
           />
-          <label class="form-check-label" for="TacomaCampus">Tacoma Campus</label>
+
+          <div class="invalid-feedback text-end">
+            Please clear your selection and search again
+          </div>
         </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="flexRadioDefault"
-            id="BothellCampus"
-            v-model="selectedCampus"
-            value="bothell"
-          />
-          <label class="form-check-label" for="BothellCampus">Bothell Campus</label>
+        <div class="text-end mt-4">
+          <button
+            class="btn btn-outline-purple rounded-3 me-2"
+            :disabled="selectedLabel.length === 0"
+            @click="clearInput"
+          >
+            Clear
+          </button>
+          <button
+            type="button"
+            class="btn btn-purple rounded-3"
+            :disabled="
+              searchType.length === 0 ||
+              loadingList ||
+              !isValidInput ||
+              !this.searchValue
+            "
+            @click="onSelected"
+          >
+            Search
+          </button>
         </div>
-      </div>
-      </fieldset>
-      <div class="input-group my-3" :class="selectedCampus ? 'enabled' : 'disabled'">
-        <select aria-label="Select major or course" class="form-select" id="inputGroupSelect01" v-model="searchType" style="max-width: 110px;">
-          <option value="" selected disabled hidden>Select...</option>
-          <option v-for="option in searchTypeOptions" v-bind:value="option.value">
-            {{option.text}}
+
+        <datalist id="searchDataList">
+          <option
+            v-for="(option, i) in renderableOptions"
+            :value="option"
+            :key="i"
+          >
+            {{ option }}
           </option>
-        </select>
-        <!-- TODO: wire is-invalid class to datalist validation -->
-        <input
-          type="text"
-          class="form-control"
-          :class="isValidInput || isValidInput == null ? '' : 'is-invalid'"
-          :placeholder="searchPlaceholder"
-          aria-autocomplete="both"
-          aria-label="Start typing for major or course search options"
-          v-model="selectedLabel"
-          list="searchDataList"
-          :disabled="searchType.length === 0"
-          id="searchInput"
-          @change="validateInput"
-        />
-        <button type="button"
-                class="btn btn-purple"
-                :disabled="searchType.length === 0 || loadingList || !isValidInput || !this.searchValue "
-                @click="onSelected">
-          Go
-        </button>
-        <!-- TODO: update this message -->
-        <div class="invalid-feedback">Please select from the options in the dropdown</div>
-      </div>
-      <datalist id="searchDataList">
-        <option v-for="(option, i) in renderableOptions" :value="option" :key="i">{{ option }}</option>
-      </datalist>
+        </datalist>
       </form>
     </div>
   </div>
+
+  <data-update />
 </template>
 <script>
-
+import DataUpdate from "@/components/common/data-update.vue";
 export default {
-  name: 'SearchChooser',
+  inject: ["mq"],
+  name: "SearchChooser",
+  components: {
+    "data-update": DataUpdate,
+  },
   props: {
     syncQueryParam: {
       default: null,
@@ -100,18 +193,18 @@ export default {
     prefillType: {
       default: null,
       type: String,
-    }
+    },
   },
   data() {
     return {
       selectedCampus: false,
       searchTypeOptions: [
-        {text: "Major", value:"major"},
-        {text: "Course", value:"course"},
+        { text: "Major", value: "major" },
+        { text: "Course", value: "course" },
       ],
       searchType: "",
-      majorList:[],
-      courseList:[],
+      majorList: [],
+      courseList: [],
       loadingList: false,
       selectedLabel: "",
       doPrefill: false,
@@ -120,40 +213,47 @@ export default {
   },
   computed: {
     searchPlaceholder() {
-      if(this.searchType === "major"){
-        return "Start typing to select a major (e.g. Math, Environmental Studies, design)"
-      } else if(this.searchType === "course"){
-        return "Start typing to select a course (e.g. CSE 142, Calculus, climate change)"
+      if (this.searchType === "major") {
+        return "Start typing to select a major...";
+      } else if (this.searchType === "course") {
+        return "Start typing to select a course...";
       } else {
-        return "Please select a campus and a major or course"
+        return "Please select a campus...";
       }
     },
     renderableOptions() {
-      if(this.searchType==="major"){
-        return this.majorList.map(m => m.value).sort();
-      }else if(this.searchType==="course"){
-        return this.courseList.map(m => m.value).sort();
+      let options = "";
+      if (this.searchType === "major") {
+        options = this.majorList.map((m) => m.value).sort();
+      } else if (this.searchType === "course") {
+        options = this.courseList.map((m) => m.value).sort();
       }
+      return options;
     },
     selectedKey() {
       let searchList = {};
-      if(this.searchType==="major"){
+      if (this.searchType === "major") {
         searchList = this.majorList;
-      }else if(this.searchType==="course"){
+      } else if (this.searchType === "course") {
         searchList = this.courseList;
       }
-      let selectedObj = searchList.find(o => o.value === this.selectedLabel);
-      if (selectedObj !== undefined){
+      let selectedObj = searchList.find((o) => o.value === this.selectedLabel);
+      if (selectedObj !== undefined) {
         return selectedObj.key;
+      } else {
+        return searchList;
       }
     },
     searchValue() {
       return this.selectedLabel;
-    }
+    },
   },
   watch: {
     searchType(type) {
+      // clear any validation and set to empty
+      document.getElementById("searchInput").classList.remove("is-invalid");
       this.selectedLabel = "";
+
       if (type === "major") {
         this.loadingList = true;
         this.fetch_major_data();
@@ -162,42 +262,48 @@ export default {
         this.fetch_course_data();
       }
     },
-    selectedCampus(){
+    selectedCampus() {
       // reset selected type (don't reset on prefill initialization)
-      if(!this.doPrefill){
+      if (!this.doPrefill) {
         this.searchType = "";
         this.selectedLabel = "";
       }
-
     },
-    prefillCampus(){
+    /*
+    prefillCampus() {
+      console.log("prefillCampus");
       this.selectedCampus = this.prefillCampus;
-      if(this.prefillType==="major"){
-        this.fetch_major_data()
-      }else if(this.prefillType==="course"){
-        this.fetch_course_data()
+      if (this.prefillType === "major") {
+        this.fetch_major_data();
+      } else if (this.prefillType === "course") {
+        this.fetch_course_data();
       }
       this.doPrefill = true;
     },
-    majorList(){
-      if(this.doPrefill){
+    */
+    majorList() {
+      if (this.doPrefill) {
         this.prefillForm();
       }
     },
-    courseList(){
-      if(this.doPrefill){
+    courseList() {
+      if (this.doPrefill) {
         this.prefillForm();
       }
     },
-    prefillCampus(pc){
+    prefillCampus() {
+      // console.log("prefillCampus");
       this.startPrefill();
-    }
+    },
   },
   methods: {
-    startPrefill(){
-      if(this.prefillCampus !== null
-        && this.prefillType !== null
-        && this.prefillId !== null) {
+    startPrefill() {
+      console.log("startPrefill");
+      if (
+        this.prefillCampus !== null &&
+        this.prefillType !== null &&
+        this.prefillId !== null
+      ) {
         this.doPrefill = true;
         this.selectedCampus = this.prefillCampus;
         this.searchType = this.prefillType;
@@ -206,13 +312,13 @@ export default {
     prefillForm() {
       let prefillLabel = undefined;
       let searchList = {};
-      if(this.searchType==="major"){
+      if (this.searchType === "major") {
         searchList = this.majorList;
-      }else if(this.searchType==="course"){
+      } else if (this.searchType === "course") {
         searchList = this.courseList;
       }
-      let selectedObj = searchList.find(o => o.key === this.prefillId);
-      if (selectedObj !== undefined){
+      let selectedObj = searchList.find((o) => o.key === this.prefillId);
+      if (selectedObj !== undefined) {
         prefillLabel = selectedObj.value;
       }
       this.selectedLabel = prefillLabel;
@@ -222,69 +328,83 @@ export default {
       let url = "/" + this.searchType;
       this.$router.push({
         path: url,
-        query: { ['id']: this.selectedKey,
-          ['campus']: this.selectedCampus}
+        query: { ["id"]: this.selectedKey, ["campus"]: this.selectedCampus },
       });
 
-      this.$emit('update:selected', {id: this.selectedKey,
-        campus: this.selectedCampus});
+      this.$emit("update:selected", {
+        id: this.selectedKey,
+        campus: this.selectedCampus,
+      });
     },
 
-    fetch_course_data(){
+    fetch_course_data() {
       const vue = this;
-      this.axios.get("/api/v1/courses/" + this.selectedCampus).then((response) => {
-        vue.courseList = response.data;
-        this.loadingList = false;
-      });
+      this.axios
+        .get("/api/v1/courses/" + this.selectedCampus)
+        .then((response) => {
+          vue.courseList = response.data;
+          this.loadingList = false;
+        });
     },
-    fetch_major_data(){
+    fetch_major_data() {
       const vue = this;
-      this.axios.get("/api/v1/majors/" + this.selectedCampus).then((response) => {
-        vue.majorList = response.data;
-        this.loadingList = false;
-      });
+      this.axios
+        .get("/api/v1/majors/" + this.selectedCampus)
+        .then((response) => {
+          vue.majorList = response.data;
+          this.loadingList = false;
+        });
     },
     validateInput() {
-
       let found;
 
       // clear validation for empty inputs
-      if (this.searchValue == '') {
+      if (this.searchValue == "") {
         this.isValidInput = true;
-        return
+        return;
       }
 
       // search for the searchValue based on search type
-      if (this.searchType == 'major') {
-        found =  Array.from(this.majorList).find(element => (element.value == this.searchValue))
+      if (this.searchType == "major") {
+        found = Array.from(this.majorList).find(
+          (element) => element.value == this.searchValue
+        );
       } else {
-        found =  Array.from(this.courseList).find(element => (element.value == this.searchValue))
+        found = Array.from(this.courseList).find(
+          (element) => element.value == this.searchValue
+        );
       }
 
       // set validation based on the found value
-      if(found != undefined && found.value) {
-          this.isValidInput = true;
+      if (found != undefined && found.value) {
+        this.isValidInput = true;
+      } else {
+        this.isValidInput = false;
       }
-      else {
-          this.isValidInput = false;
+    },
+    disableEnter(e) {
+      if (e.keyCode == 13) {
+        // this.validateInput();
+        e.preventDefault();
+        return false;
       }
-
-    }
+    },
+    clearInput() {
+      this.selectedLabel = "";
+      document.getElementById("searchInput").classList.remove("is-invalid");
+    },
   },
 };
 </script>
 
 <style lang="scss">
-
 .disabled {
-    pointer-events: none;
-    opacity: 0.4;
+  pointer-events: none;
+  opacity: 0.4;
 }
 
 .form-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  appearance: none;
   text-indent: 1px;
 }
-
 </style>

@@ -1,4 +1,4 @@
-# Copyright 2022 UW-IT, University of Washington
+# Copyright 2024 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from pathways.models.major import Major
@@ -49,7 +49,9 @@ def import_course_data(data, coi_data):
             prereq_graph=course['prereq_graph'],
             course_description=course['course_description'],
             course_offered=course['offered_string'],
-            coi_score=coi
+            prereq_string=course['prereq_string'],
+            coi_score=coi,
+            department_abbrev=course['department_abbrev']
         ))
     Course.objects.bulk_create(course_objs)
 
@@ -70,7 +72,8 @@ def import_curric_data(data, coi_data):
             abbrev=curric['curric_abbrev'],
             prereq_graph=pr_graph,
             course_data=json.loads(curric['course_data']),
-            average_coi_score=coi
+            average_coi_score=coi,
+            curric_name=curric['curric_name']
         ))
     Curriculum.objects.bulk_create(curric_objs)
 
@@ -188,3 +191,15 @@ def import_bottleneck_courses(bottleneck_data):
         except ObjectDoesNotExist:
             pass
         Course.objects.bulk_update(bottleneck_course_objs, ['is_bottleneck'])
+
+
+def import_career_center_mapping(career_major_data):
+    majors_to_update = []
+    for row in career_major_data:
+        try:
+            major = Major.objects.get(credential_code=row[0])
+            major.career_center_major = row[1]
+            majors_to_update.append(major)
+        except ObjectDoesNotExist:
+            pass
+    Major.objects.bulk_update(majors_to_update, ['career_center_major'])

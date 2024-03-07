@@ -1,4 +1,4 @@
-# Copyright 2022 UW-IT, University of Washington
+# Copyright 2024 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from django.core.management.base import BaseCommand
@@ -6,7 +6,8 @@ import json
 import csv
 from pathways.data_import import import_major_data, import_course_data, \
     import_curric_data, import_level_coi, import_coi_ranges, \
-    import_gateway_courses, import_bottleneck_courses
+    import_gateway_courses, import_bottleneck_courses, \
+    import_career_center_mapping
 from logging import getLogger
 import time
 import hashlib
@@ -20,6 +21,7 @@ COURSE_PATH = "pathways/data/course_data.json"
 CURRIC_PATH = "pathways/data/curric_data.json"
 BOTTLENECK_PATH = "pathways/data/bottleneck_courses.csv"
 GATEWAY_PATH = "pathways/data/gateway_courses.csv"
+CAREER_CENTER_PATH = "pathways/data/career_center_major_mapping.csv"
 
 
 class Command(BaseCommand):
@@ -54,6 +56,9 @@ class Command(BaseCommand):
             with open(BOTTLENECK_PATH) as bottleneck_file:
                 data = csv.reader(bottleneck_file)
                 import_bottleneck_courses(data)
+            with open(CAREER_CENTER_PATH) as career_major_file:
+                data = csv.reader(career_major_file)
+                import_career_center_mapping(data)
 
         total_time = time.time() - start
         logger.info("Imported data in: %s" % total_time)
@@ -88,14 +93,20 @@ class Command(BaseCommand):
         if DataImport.needs_import('gateway', gateway_hash):
             needs_update = True
             DataImport.objects \
-                .update_or_create(type='curric',
+                .update_or_create(type='gateway',
                                   defaults={'hash': gateway_hash})
         bottleneck_hash = self._get_hash_by_path(BOTTLENECK_PATH)
         if DataImport.needs_import('bottleneck', bottleneck_hash):
             needs_update = True
             DataImport.objects \
-                .update_or_create(type='curric',
+                .update_or_create(type='bottleneck',
                                   defaults={'hash': bottleneck_hash})
+        career_hash = self._get_hash_by_path(CAREER_CENTER_PATH)
+        if DataImport.needs_import('cc_major', career_hash):
+            needs_update = True
+            DataImport.objects \
+                .update_or_create(type='cc_major',
+                                  defaults={'hash': career_hash})
         return needs_update
 
     def _get_hash_by_path(self, path):

@@ -1,4 +1,4 @@
-# Copyright 2022 UW-IT, University of Washington
+# Copyright 2024 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from django.views.generic import TemplateView
@@ -16,6 +16,8 @@ ALLOWED_USERS_GROUP = getattr(settings, "ALLOWED_USERS_GROUP", None)
 @method_decorator(eval_group_required(ALLOWED_USERS_GROUP),
                   name='dispatch')
 class PageView(TemplateView):
+    template_name = "index.html"
+
     """
     Superclass for all page views.
     """
@@ -29,6 +31,9 @@ class PageView(TemplateView):
         banners = User.show_banners(uwnetid)
         context['show_welcome'] = "welcome" in banners
         context['show_bottleneck'] = "bottleneck" in banners
+        context['show_outcomes'] = "outcomes" in banners
+        context['show_coi'] = "coi" in banners
+
         context["django_debug"] = getattr(settings, "DEBUG", False)
         return context
 
