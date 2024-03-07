@@ -25,7 +25,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "django~=4.2",
-        "UW-Django-SAML2~=1.7",
+        "UW-Django-SAML2~=1.8",
         'lxml==4.9.4'
     ],
     license="Apache License, Version 2.0",
