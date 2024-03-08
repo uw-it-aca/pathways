@@ -85,7 +85,7 @@
 <script>
 import Layout from "@/layout.vue";
 // import SearchChooser from "@/components/search/chooser.vue";
-import CourseSearch from "@/components/search/course";
+import CourseSearch from "@/components/search/course.vue";
 
 import { Modal } from "bootstrap";
 

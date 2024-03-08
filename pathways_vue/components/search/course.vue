@@ -42,8 +42,7 @@
 </template>
 <script>
 import MultiRangeSlider from "multi-range-slider-vue";
-var qs = require('qs');
-
+import qs from "qs";
 
 export default {
   name: 'CourseSearch',
