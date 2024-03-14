@@ -38,6 +38,14 @@
         <button type="submit" @click="runSearch">Search</button>
       </form>
     </div>
+    <div>
+      <h2>Results - {{ result_count }}</h2>
+      <ul>
+        <li v-for="result in search_results" :key="result.id">
+          {{ result.score }} - {{ result.contents }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 <script>
@@ -60,10 +68,18 @@ export default {
         is_bottleneck: null,
         min_coi_score: 0,
         max_coi_score: 5,
-      }
+      },
+      search_results: null,
     };
   },
   computed: {
+    result_count() {
+      if (this.search_results === null) {
+        return 0;
+      } else {
+        return this.search_results.length;
+      }
+    }
   },
   watch: {
   },
@@ -80,9 +96,7 @@ export default {
           return qs.stringify(params, {skipNulls: true})
         }
       }).then((response) => {
-        console.log(response.data)
-        // vue.majorList = response.data;
-        // this.loadingList = false;
+        this.search_results = response.data;
       });
     }
   },
