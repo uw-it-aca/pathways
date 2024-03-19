@@ -23,6 +23,12 @@ class Major(models.Model):
     credential_description = models.TextField(null=True)
     career_center_major = models.TextField(null=True)
 
+    def get_search_string(self):
+        string = "{abbr} {title} {description}"
+        return string.format(abbr=self.major_abbr,
+                             title=self.credential_title,
+                             description=self.credential_description)
+
     @staticmethod
     def get_major_list():
         majors = Major.objects.only("major_abbr", "major_title")

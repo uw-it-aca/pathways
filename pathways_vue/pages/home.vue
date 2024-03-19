@@ -66,7 +66,7 @@
               </div>
             </div>
           </div>
-          <course-search />
+          <search />
           <!-- Button trigger modal -->
           <button
             type="button"
@@ -85,7 +85,7 @@
 <script>
 import Layout from "@/layout.vue";
 // import SearchChooser from "@/components/search/chooser.vue";
-import CourseSearch from "@/components/search/course.vue";
+import Search from "@/components/search/search.vue";
 
 import { Modal } from "bootstrap";
 
@@ -94,7 +94,7 @@ export default {
   components: {
     layout: Layout,
     // 'search-chooser': SearchChooser,
-    'course-search': CourseSearch
+    'search': Search
   },
   data() {
     return {

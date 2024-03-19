@@ -3,7 +3,7 @@
 <template>
   <div class="card bg-light mt-5">
     <div class="card-body">
-      <h2 class="fw-bold mt-2 fs-5">Search for a course</h2>
+      <h2 class="fw-bold mt-2 fs-5">Search</h2>
       <form @submit.prevent="onSelected" role="search">
         <label for="text_search">Search:</label>
         <input id="text_search" v-model="form_data.search_string">
@@ -53,7 +53,7 @@ import MultiRangeSlider from "multi-range-slider-vue";
 import qs from "qs";
 
 export default {
-  name: 'CourseSearch',
+  name: 'Search',
   components: {
     MultiRangeSlider
   },
@@ -69,7 +69,9 @@ export default {
         min_coi_score: 0,
         max_coi_score: 5,
       },
-      search_results: null,
+      major_matches: [],
+      course_matches: [],
+      text_matches: [],
     };
   },
   computed: {
@@ -79,6 +81,9 @@ export default {
       } else {
         return this.search_results.length;
       }
+    },
+    search_results(){
+      return this.major_matches.concat(this.course_matches).concat(this.text_matches);
     }
   },
   watch: {
@@ -96,7 +101,9 @@ export default {
           return qs.stringify(params, {skipNulls: true})
         }
       }).then((response) => {
-        this.search_results = response.data;
+        this.course_matches = response.data.course_matches;
+        this.major_matches = response.data.major_matches;
+        this.text_matches = response.data.text_matches;
       });
     }
   },
