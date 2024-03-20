@@ -11,27 +11,47 @@ from whoosh.query import *
 logger = getLogger(__name__)
 
 
-def search_courses(search_string, campus=None, is_bottleneck=None,
+def search(search_string, campus_values=None, types=None, is_bottleneck=None,
                    is_gateway=None, min_coi_score=None, max_coi_score=None):
-    if len(campus) == 0:
-        campus = None
-    course_results = course_id_search(search_string, campus)
-    major_results = major_title_search(search_string, campus)
-    text_results = text_search(search_string, campus, is_bottleneck,
-                               is_gateway, min_coi_score, max_coi_score)
+    course_results = course_id_search(search_string,
+                                      campus_values) if "course" in types or \
+                                                        not types else []
+    major_results = major_title_search(search_string,
+                                       campus_values) if "major" in types or \
+                                                         not types else []
+
+    text_results = text_search(search_string, campus_values, types,
+                               is_bottleneck, is_gateway, min_coi_score,
+                               max_coi_score)
 
     return {"course_matches": course_results,
             "major_matches": major_results,
             "text_matches": text_results}
 
 
+def _get_campus_filters(campus_values):
+    campus_filter = []
+    if campus_values:
+        campus_queries = [Term('campus', campus) for campus in campus_values]
+        campus_filter = Or(campus_queries)
+    return campus_filter
+
+
+def _get_type_filters(types):
+    type_filter = []
+    if types:
+        type_queries = [Term('type', type) for type in types]
+        type_filter = Or(type_queries)
+    return type_filter
+
+
 def major_title_search(major_title, campus=None):
     ix = open_dir("indexdir")
     with ix.searcher() as searcher:
         parser = qparser.QueryParser('major_title', ix.schema)
-        campus_query = Term('campus', campus) if campus else None
+        campus_query = _get_campus_filters(campus)
         major_query = parser.parse(major_title)
-        results = searcher.search(major_query, filter=campus_query)
+        results = searcher.search(major_query, filter=campus_query, limit=200)
         response = []
         for result in results:
             response.append({"id": result["major_id"],
@@ -44,9 +64,9 @@ def course_id_search(course_id, campus=None):
     ix = open_dir("indexdir")
     with ix.searcher() as searcher:
         parser = qparser.QueryParser('course_id', ix.schema)
-        campus_query = Term('campus', campus) if campus else None
+        campus_query = _get_campus_filters(campus)
         course_query = parser.parse(course_id)
-        results = searcher.search(course_query, filter=campus_query)
+        results = searcher.search(course_query, filter=campus_query, limit=200)
         response = []
         for result in results:
             response.append({"id": result["course_id"],
@@ -55,8 +75,9 @@ def course_id_search(course_id, campus=None):
         return response
 
 
-def text_search(search_string, campus=None, is_bottleneck=None,
-                is_gateway=None, min_coi_score=None, max_coi_score=None):
+def text_search(search_string, campus_values=None, types=None,
+                is_bottleneck=None, is_gateway=None, min_coi_score=None,
+                max_coi_score=None):
     ix = open_dir("indexdir")
     with ix.searcher() as searcher:
         filter_queries = []
@@ -75,8 +96,10 @@ def text_search(search_string, campus=None, is_bottleneck=None,
             filter_queries.append(NumericRange('coi_score',
                                                min_coi,
                                                max_coi))
-        if campus is not None:
-            filter_queries.append(Term('campus', campus))
+        if campus_values is not None:
+            filter_queries += _get_campus_filters(campus_values)
+        if types is not None:
+            filter_queries += _get_type_filters(types)
         parser = qparser.MultifieldParser(["contents"],
                                           ix.schema,
                                           group=qparser.OrGroup)
@@ -84,7 +107,7 @@ def text_search(search_string, campus=None, is_bottleneck=None,
 
         results = searcher.search(query,
                                   filter=And(filter_queries),
-                                  limit=20)
+                                  limit=200)
         response = []
         for result in results:
             response.append({"id": result["course_id"],

@@ -24,8 +24,7 @@ class Command(BaseCommand):
         schema = Schema(course_id=TEXT(stored=True),
                         major_id=TEXT(stored=True),
                         major_title=TEXT(stored=True),
-                        is_course=BOOLEAN(),
-                        is_major=BOOLEAN(),
+                        type=TEXT(stored=True),
                         contents=TEXT(analyzer=stem_ana,
                                       stored=True),
                         campus=TEXT(),
@@ -39,7 +38,7 @@ class Command(BaseCommand):
         courses = Course.objects.all()
         for course in courses:
             writer.add_document(course_id=course.course_id,
-                                is_course=True,
+                                type="course",
                                 contents=course.get_search_string(),
                                 campus=course.course_campus,
                                 is_gateway=course.is_gateway,
@@ -49,7 +48,7 @@ class Command(BaseCommand):
         for major in majors:
             writer.add_document(major_id=major.major_abbr,
                                 major_title=major.credential_title,
-                                is_major=True,
+                                type="major",
                                 contents=major.get_search_string(),
                                 campus=major.major_campus)
 

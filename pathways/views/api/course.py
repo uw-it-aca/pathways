@@ -6,7 +6,6 @@ from pathways.models.course import Course
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from pathways.search import search_courses
 
 
 @method_decorator(login_required, name="dispatch")
@@ -25,26 +24,3 @@ class CourseDetails(RESTDispatch):
             return self.error_response(404,
                                        "Course %s not found" % course_abbr)
         return self.json_response(course)
-
-
-@method_decorator(login_required, name="dispatch")
-class CourseSearch(RESTDispatch):
-    def get(self, request, *args, **kwargs):
-        search_string = request.GET.get("search_string")
-        is_bottleneck = False
-
-        def to_bool(value):
-            return value is not None and value == "true"
-
-        is_gateway = to_bool(request.GET.get("is_gateway"))
-        is_bottleneck = to_bool(request.GET.get("is_bottleneck"))
-        min_coi_score = request.GET.get("min_coi_score")
-        max_coi_score = request.GET.get("max_coi_score")
-        campus = request.GET.get("campus")
-
-        courses = search_courses(search_string, campus,
-                                 is_gateway=is_bottleneck,
-                                 is_bottleneck=is_gateway,
-                                 min_coi_score=min_coi_score,
-                                 max_coi_score=max_coi_score)
-        return self.json_response(courses)

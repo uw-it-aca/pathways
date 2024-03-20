@@ -2,42 +2,91 @@
 
 <template>
   <div class="card bg-light mt-5">
+    <!--  Search Bar  -->
     <div class="card-body">
-      <h2 class="fw-bold mt-2 fs-5">Search</h2>
       <form @submit.prevent="onSelected" role="search">
-        <label for="text_search">Search:</label>
-        <input id="text_search" v-model="form_data.search_string">
-        <fieldset>
-          <legend>Campus</legend>
-          <input type="radio" id="seattle" value="seattle" v-model="form_data.campus" />
-          <label for="seattle">Seattle</label>
-          <input type="radio" id="bothell" value="bothell" v-model="form_data.campus" />
-          <label for="bothell">Bothell</label>
-          <input type="radio" id="tacoma" value="tacoma" v-model="form_data.campus" />
-          <label for="tacoma">Tacoma</label>
-        </fieldset>
-        <input type="checkbox" id="gateway" v-model="form_data.is_gateway" />
-        <label for="gateway">Gateway Course</label>
-        <br />
-        <input type="checkbox" id="bottleneck" v-model="form_data.is_bottleneck" />
-        <label for="bottleneck">Bottleneck Course</label>
-        <div class="coi-slider-container">
-          <MultiRangeSlider
-            id="coi-slider"
-            class="coi-range-slider"
-            :min="0"
-            :max="5"
-            :step="1"
-            :ruler="false"
-            :label="true"
-            :minValue="0"
-            :maxValue="5"
-            @input="updateValues"
-          />
+        <div class="form-group">
+          <input
+            type="text"
+            v-model="form_data.search_string"
+            class="form-control"
+            id="search-string"
+            placeholder="Start typing to search for courses, majors, or subjects">
         </div>
+        <div class="btn-group-toggle" data-toggle="buttons">
+          <h4>Type</h4>
+          <label class="btn btn-secondary active">
+            <input
+              id="course"
+              value="course"
+              v-model="form_data.type"
+              type="checkbox"
+              autocomplete="off">
+            Course
+          </label>
+          <label class="btn btn-secondary active">
+            <input
+              id="major"
+              value="major"
+              v-model="form_data.type"
+              type="checkbox"
+              autocomplete="off">
+            Major
+          </label>
+        </div>
+        <div class="btn-group-toggle" data-toggle="buttons">
+          <h4>Campus</h4>
+          <label class="btn btn-secondary active">
+            <input
+              id="seattle"
+              value="seattle"
+              v-model="form_data.campus"
+              type="checkbox"
+              autocomplete="off">
+            Seattle
+          </label>
+          <label class="btn btn-secondary active">
+            <input
+              id="tacoma"
+              value="tacoma"
+              v-model="form_data.campus"
+              type="checkbox"
+              autocomplete="off">
+            Tacoma
+          </label>
+          <label class="btn btn-secondary active">
+            <input
+              id="bothell"
+              value="bothell"
+              v-model="form_data.campus"
+              type="checkbox"
+              autocomplete="off">
+            Bothell
+          </label>
+        </div>
+<!--        <input type="checkbox" id="gateway" v-model="form_data.is_gateway" />-->
+<!--        <label for="gateway">Gateway Course</label>-->
+<!--        <br />-->
+<!--        <input type="checkbox" id="bottleneck" v-model="form_data.is_bottleneck" />-->
+<!--        <label for="bottleneck">Bottleneck Course</label>-->
+<!--        <div class="coi-slider-container">-->
+<!--          <MultiRangeSlider-->
+<!--            id="coi-slider"-->
+<!--            class="coi-range-slider"-->
+<!--            :min="0"-->
+<!--            :max="5"-->
+<!--            :step="1"-->
+<!--            :ruler="false"-->
+<!--            :label="true"-->
+<!--            :minValue="0"-->
+<!--            :maxValue="5"-->
+<!--            @input="updateValues"-->
+<!--          />-->
+<!--        </div>-->
         <button type="submit" @click="runSearch">Search</button>
       </form>
     </div>
+    <!--  Results  -->
     <div>
       <h2>Results - {{ result_count }}</h2>
       <ul>
@@ -45,6 +94,14 @@
           {{ result.score }} - {{ result.contents }}
         </li>
       </ul>
+    </div>
+    <!--  Recently Viewed  -->
+    <div>
+
+    </div>
+    <!-- Recent Searches -->
+    <div>
+
     </div>
   </div>
 </template>
@@ -62,8 +119,9 @@ export default {
   data() {
     return {
       form_data: {
-        search_string: "",
-        campus: "",
+        search_string: "business",
+        campus: [],
+        type: [],
         is_gateway: null,
         is_bottleneck: null,
         min_coi_score: 0,
@@ -95,7 +153,7 @@ export default {
     },
     runSearch(){
       const vue = this;
-      this.axios.get("api/v1/course_search/", {
+      this.axios.get("api/v1/search/", {
         params: vue.form_data,
         paramsSerializer: params => {
           return qs.stringify(params, {skipNulls: true})
