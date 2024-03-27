@@ -4,8 +4,9 @@
 import json
 
 from django.test import TestCase
-from pathways.data_import import import_major_data, import_level_coi,\
-    import_coi_ranges, _get_course_coi, _get_curric_coi
+from pathways.data_import import (
+    import_major_data, import_level_coi, import_coi_ranges, _get_course_coi,
+    _get_curric_coi)
 from pathways.models.major import Major
 from pathways.models.course_level import CourseLevel
 from pathways.models.coi_range import COIRange
