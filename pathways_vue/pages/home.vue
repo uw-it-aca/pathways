@@ -23,11 +23,11 @@
                   <h2 class="modal-title mb-2" id="welcome_modal">Welcome</h2>
                   <div>
                     <p>
-                      DawgPath helps you discover courses and majors you're
+                      DawgPath helps you discover courses and majors, and
                       enables you to be strategic when making decisions about
-                      schedule. It provides useful data when planning to apply
-                      selective screening. A few things to keep in mind before
-                      getting started:
+                      your schedule. It also provides useful data when you're
+                      planning to apply to highly selective majors. A few things
+                      to keep in mind before getting started:
                     </p>
                     <ul>
                       <li>
