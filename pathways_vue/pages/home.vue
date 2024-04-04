@@ -37,7 +37,7 @@
                       </li>
                       <li>
                         The median course grade and GPA data are only included
-                        who had declared for the major.
+                        for those who had declared for the major.
                       </li>
 
                       <li>
