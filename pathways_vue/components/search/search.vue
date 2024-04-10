@@ -11,9 +11,12 @@
             v-model="form_data.search_string"
             class="form-control"
             id="search-string"
-            placeholder="Start typing to search for courses, majors, or subjects">
+            placeholder="Start typing to search for courses, majors, or subjects"
+            @focus="input_active = true"
+            @blur="input_active = false"
+          >
         </div>
-        <div class="btn-group-toggle" data-toggle="buttons">
+        <div v-if="show_filters" class="btn-group-toggle" data-toggle="buttons">
           <h4>Type</h4>
           <label class="btn btn-secondary active">
             <input
@@ -34,7 +37,7 @@
             Major
           </label>
         </div>
-        <div class="btn-group-toggle" data-toggle="buttons">
+        <div v-if="show_filters" class="btn-group-toggle" data-toggle="buttons">
           <h4>Campus</h4>
           <label class="btn btn-secondary active">
             <input
@@ -64,25 +67,6 @@
             Bothell
           </label>
         </div>
-<!--        <input type="checkbox" id="gateway" v-model="form_data.is_gateway" />-->
-<!--        <label for="gateway">Gateway Course</label>-->
-<!--        <br />-->
-<!--        <input type="checkbox" id="bottleneck" v-model="form_data.is_bottleneck" />-->
-<!--        <label for="bottleneck">Bottleneck Course</label>-->
-<!--        <div class="coi-slider-container">-->
-<!--          <MultiRangeSlider-->
-<!--            id="coi-slider"-->
-<!--            class="coi-range-slider"-->
-<!--            :min="0"-->
-<!--            :max="5"-->
-<!--            :step="1"-->
-<!--            :ruler="false"-->
-<!--            :label="true"-->
-<!--            :minValue="0"-->
-<!--            :maxValue="5"-->
-<!--            @input="updateValues"-->
-<!--          />-->
-<!--        </div>-->
         <button type="submit" @click="runSearch">Search</button>
       </form>
     </div>
@@ -119,7 +103,7 @@ export default {
   data() {
     return {
       form_data: {
-        search_string: "business",
+        search_string: "",
         campus: [],
         type: [],
         is_gateway: null,
@@ -127,6 +111,7 @@ export default {
         min_coi_score: 0,
         max_coi_score: 5,
       },
+      input_active: false,
       major_matches: [],
       course_matches: [],
       text_matches: [],
@@ -142,6 +127,9 @@ export default {
     },
     search_results(){
       return this.major_matches.concat(this.course_matches).concat(this.text_matches);
+    },
+    show_filters() {
+      return this.form_data.search_string.length > 0 || this.input_active
     }
   },
   watch: {
