@@ -79,24 +79,26 @@
         </li>
       </ul>
     </div>
-    <!--  Recently Viewed  -->
+    <recent-views/>
     <div>
 
     </div>
-    <!-- Recent Searches -->
+    <recent-searches/>
     <div>
 
     </div>
   </div>
 </template>
 <script>
-import MultiRangeSlider from "multi-range-slider-vue";
 import qs from "qs";
+import RecentSearches from "./recent_searches.vue";
+import RecentViews from "./recent_views.vue";
 
 export default {
   name: 'Search',
   components: {
-    MultiRangeSlider
+    RecentSearches,
+    RecentViews
   },
   props: {
   },

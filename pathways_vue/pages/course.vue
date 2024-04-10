@@ -78,6 +78,7 @@ import OutcomeIndex from "@/components/course/outcome-index.vue";
 import PrereqMap from "@/components/course/prereq-map.vue";
 import ConcurrentCourses from "@/components/course/concurrent-courses.vue";
 import ContactAdviser from "@/components/common/contact-adviser.vue";
+import utils from "@/utils.js";
 
 export default {
   name: "CourseComp",
@@ -101,6 +102,9 @@ export default {
       showError: false,
       appName: "DawgPath",
     };
+  },
+  created() {
+    this.recentViewManager = utils.recentViewManager;
   },
   computed: {
     pageTitle: function () {
@@ -138,6 +142,7 @@ export default {
           vue.courseCampus = response.data.course_campus;
           //vue.courseTitle = this.courseId + ': ' + response.data.course_title + ' - Course ';
           vue.courseTitle = this.courseId + ": " + response.data.course_title;
+          vue.recentViewManager(vue.courseId, "course?id=" + vue.courseId, vue.courseCampus);
         })
         .catch(function () {
           vue.showError = true;

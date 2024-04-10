@@ -63,6 +63,7 @@ import CommonCourses from "@/components/major/common-courses.vue";
 import SearchChooser from "@/components/search/chooser.vue";
 import D3Cgpa from "@/components/major/d3-cgpa.vue";
 import ContactAdviser from "@/components/common/contact-adviser.vue";
+import utils from "@/utils.js";
 
 export default {
   name: "MajorComp",
@@ -85,6 +86,9 @@ export default {
       showError: false,
       appName: "DawgPath",
     };
+  },
+  created() {
+    this.recentViewManager = utils.recentViewManager;
   },
   computed: {
     pageTitle: function () {
@@ -109,6 +113,7 @@ export default {
             vue.major_data = response.data;
             vue.majorTitle = vue.major_data.credential_title;
             vue.showError = false;
+            vue.recentViewManager(vue.majorTitle, "major?id=" + vue.majorID, vue.major_data.major_campus);
           })
           .catch(function () {
             vue.showError = true;
