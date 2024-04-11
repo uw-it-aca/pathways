@@ -2,10 +2,29 @@
   <div>
     <h2>Results - {{ result_count }}</h2>
     <ul>
-      <li v-for="result in search_results" :key="result.id">
+      <li v-for="result in displayed_results" :key="result.id">
         <a v-bind:href="result.url">{{ result.score }} - {{ result.contents }}</a>({{result.campus}})
       </li>
     </ul>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Previous" @click.prevent="goToPrevious">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li v-for="pagenum in page_numbers" class="page-item">
+          <a class="page-link"
+             :class="pagenum == page? 'active' : '' "
+             href="#" @click.prevent="goToPage(pagenum)">{{pagenum}}</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next" @click.prevent="goToNext">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 <script>
@@ -22,6 +41,8 @@ export default {
   },
   data() {
     return {
+      page: 1,
+      pageSize: 10,
     };
   },
   computed: {
@@ -32,11 +53,30 @@ export default {
         return this.search_results.length;
       }
     },
+    displayed_results() {
+      return this.search_results.slice((this.page - 1) * this.pageSize, this.page * this.pageSize);
+    },
+    page_numbers(){
+      return Array.from({length: Math.ceil(this.result_count / this.pageSize)}, (_, i) => i + 1);
+    }
   },
   watch: {
   },
   methods: {
-  },
+    goToPage(pagenum){
+      this.page = pagenum;
+    },
+    goToPrevious(){
+      if (this.page > 1){
+        this.page -= 1;
+      }
+    },
+    goToNext(){
+      if (this.page < this.page_numbers.length){
+        this.page += 1;
+      }
+    }
+  }
 };
 </script>
 
