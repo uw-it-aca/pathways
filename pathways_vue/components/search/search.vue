@@ -70,22 +70,12 @@
         <button type="submit" @click="runSearch">Search</button>
       </form>
     </div>
-    <!--  Results  -->
+    <results v-if="show_results" :search_results="search_results"/>
+    <template v-else>
+      <recent-views/>
+      <recent-searches @set-search="setSearch"/>
+    </template>
     <div>
-      <h2>Results - {{ result_count }}</h2>
-      <ul>
-        <li v-for="result in search_results" :key="result.id">
-          {{ result.score }} - {{ result.contents }}
-        </li>
-      </ul>
-    </div>
-    <recent-views/>
-    <div>
-
-    </div>
-    <recent-searches @set-search="setSearch"/>
-    <div>
-
     </div>
   </div>
 </template>
@@ -93,12 +83,14 @@
 import qs from "qs";
 import RecentSearches from "./recent_searches.vue";
 import RecentViews from "./recent_views.vue";
+import Results from "./results.vue";
 
 export default {
   name: 'Search',
   components: {
     RecentSearches,
-    RecentViews
+    RecentViews,
+    Results,
   },
   props: {
   },
@@ -120,18 +112,14 @@ export default {
     };
   },
   computed: {
-    result_count() {
-      if (this.search_results === null) {
-        return 0;
-      } else {
-        return this.search_results.length;
-      }
-    },
     search_results(){
       return this.major_matches.concat(this.course_matches).concat(this.text_matches);
     },
     show_filters() {
       return this.form_data.search_string.length > 0 || this.input_active
+    },
+    show_results() {
+      return this.search_results.length > 0 || this.form_data.search_string.length > 0;
     }
   },
   watch: {
