@@ -1,13 +1,11 @@
 <template>
   <div>
-    <div>
-      <h2>Results - {{ result_count }}</h2>
-      <ul>
-        <li v-for="result in search_results" :key="result.id">
-          {{ result.score }} - {{ result.contents }}
-        </li>
-      </ul>
-    </div>
+    <h2>Results - {{ result_count }}</h2>
+    <ul>
+      <li v-for="result in search_results" :key="result.id">
+        {{ result.score }} - {{ result.contents }}
+      </li>
+    </ul>
   </div>
 </template>
 <script>

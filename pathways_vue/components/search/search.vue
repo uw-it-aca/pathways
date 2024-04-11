@@ -3,7 +3,8 @@
 <template>
   <div class="card bg-light mt-5">
     <!--  Search Bar  -->
-    <div class="card-body">
+    <div class="card-body" @click="openSearch">
+      <i class="bi bi-search" @click="runSearch"></i>
       <form @submit.prevent="onSelected" role="search">
         <div class="form-group">
           <input
@@ -12,75 +13,79 @@
             class="form-control"
             id="search-string"
             placeholder="Start typing to search for courses, majors, or subjects"
-            @focus="input_active = true"
-            @blur="input_active = false"
           >
         </div>
-        <div v-if="show_filters" class="btn-group-toggle" data-toggle="buttons">
-          <h4>Type</h4>
-          <label class="btn btn-secondary active">
-            <input
-              id="course"
-              value="course"
-              v-model="form_data.type"
-              type="checkbox"
-              autocomplete="off">
-            Course
-          </label>
-          <label class="btn btn-secondary active">
-            <input
-              id="major"
-              value="major"
-              v-model="form_data.type"
-              type="checkbox"
-              autocomplete="off">
-            Major
-          </label>
-        </div>
-        <div v-if="show_filters" class="btn-group-toggle" data-toggle="buttons">
-          <h4>Campus</h4>
-          <label class="btn btn-secondary active">
-            <input
-              id="seattle"
-              value="seattle"
-              v-model="form_data.campus"
-              type="checkbox"
-              autocomplete="off">
-            Seattle
-          </label>
-          <label class="btn btn-secondary active">
-            <input
-              id="tacoma"
-              value="tacoma"
-              v-model="form_data.campus"
-              type="checkbox"
-              autocomplete="off">
-            Tacoma
-          </label>
-          <label class="btn btn-secondary active">
-            <input
-              id="bothell"
-              value="bothell"
-              v-model="form_data.campus"
-              type="checkbox"
-              autocomplete="off">
-            Bothell
-          </label>
-        </div>
+        <template v-if="show_filters">
+          <div class="btn-group-toggle" data-toggle="buttons">
+            <h4>Type</h4>
+            <label class="btn btn-secondary active">
+              <input
+                id="course"
+                value="course"
+                v-model="form_data.type"
+                type="checkbox"
+                autocomplete="off">
+              Course
+            </label>
+            <label class="btn btn-secondary active">
+              <input
+                id="major"
+                value="major"
+                v-model="form_data.type"
+                type="checkbox"
+                autocomplete="off">
+              Major
+            </label>
+          </div>
+          <div class="btn-group-toggle" data-toggle="buttons">
+            <h4>Campus</h4>
+            <label class="btn btn-secondary active">
+              <input
+                id="seattle"
+                value="seattle"
+                v-model="form_data.campus"
+                type="checkbox"
+                autocomplete="off">
+              Seattle
+            </label>
+            <label class="btn btn-secondary active">
+              <input
+                id="tacoma"
+                value="tacoma"
+                v-model="form_data.campus"
+                type="checkbox"
+                autocomplete="off">
+              Tacoma
+            </label>
+            <label class="btn btn-secondary active">
+              <input
+                id="bothell"
+                value="bothell"
+                v-model="form_data.campus"
+                type="checkbox"
+                autocomplete="off">
+              Bothell
+            </label>
+          </div>
+        </template>
+        <a href="#" @click.prevent="clearSearch">Clear</a>
         <button type="submit" @click="runSearch">Search</button>
       </form>
+      <p v-if="search_error">Error running search</p>
     </div>
-    <results v-if="show_results" :search_results="search_results"/>
-    <template v-else>
-      <recent-views/>
-      <recent-searches @set-search="setSearch"/>
+    <i @click="closeSearch" class="bi bi-x-circle-fill"></i>
+    <template v-if="show_search">
+      <results v-if="show_results" :search_results="search_results"/>
+      <template v-else>
+        <recent-views/>
+        <recent-searches @set-search="setSearch"/>
+      </template>
     </template>
     <div>
     </div>
   </div>
 </template>
 <script>
-import qs from "qs";
 import RecentSearches from "./recent_searches.vue";
 import RecentViews from "./recent_views.vue";
 import Results from "./results.vue";
@@ -100,15 +105,12 @@ export default {
         search_string: "",
         campus: [],
         type: [],
-        is_gateway: null,
-        is_bottleneck: null,
-        min_coi_score: 0,
-        max_coi_score: 5,
       },
-      input_active: false,
       major_matches: [],
       course_matches: [],
       text_matches: [],
+      show_search: false,
+      search_error: false
     };
   },
   computed: {
@@ -116,15 +118,27 @@ export default {
       return this.major_matches.concat(this.course_matches).concat(this.text_matches);
     },
     show_filters() {
-      return this.form_data.search_string.length > 0 || this.input_active
+      return this.form_data.search_string.length > 0 && this.show_search;
     },
     show_results() {
-      return this.search_results.length > 0 || this.form_data.search_string.length > 0;
+      return this.search_results.length > 0;
     }
   },
   watch: {
   },
   methods: {
+    openSearch(){
+      this.show_search = true;
+    },
+    closeSearch(){
+      this.show_search = false;
+    },
+    clearSearch(){
+      this.form_data.search_string = "";
+      this.major_matches = [];
+      this.course_matches = [];
+      this.text_matches = [];
+    },
     updateValues(e) {
       this.form_data.min_coi_score = e.minValue;
       this.form_data.max_coi_score = e.maxValue;
@@ -134,13 +148,13 @@ export default {
       this.addToRecent(this.form_data.search_string);
       this.axios.get("api/v1/search/", {
         params: vue.form_data,
-        paramsSerializer: params => {
-          return qs.stringify(params, {skipNulls: true})
-        }
       }).then((response) => {
         this.course_matches = response.data.course_matches;
         this.major_matches = response.data.major_matches;
         this.text_matches = response.data.text_matches;
+        this.search_error = false;
+      }).catch((error) => {
+        this.search_error = true;
       });
     },
     addToRecent(searchString){

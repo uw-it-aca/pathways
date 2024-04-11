@@ -29,6 +29,18 @@ def search(search_string, campus_values=None, types=None, is_bottleneck=None,
             "text_matches": text_results}
 
 
+def _get_major_dict(result):
+    return {"id": result["major_id"],
+            "contents": result["contents"],
+            "score": result.score}
+
+
+def _get_course_dict(result):
+    return {"id": result["course_id"],
+            "contents": result["contents"],
+            "score": result.score}
+
+
 def _get_campus_filters(campus_values):
     campus_filter = []
     if campus_values:
@@ -54,9 +66,7 @@ def major_title_search(major_title, campus=None):
         results = searcher.search(major_query, filter=campus_query, limit=200)
         response = []
         for result in results:
-            response.append({"id": result["major_id"],
-                             "contents": result["contents"],
-                             "score": result.score})
+            response.append(_get_major_dict(result))
         return response
 
 
@@ -69,9 +79,7 @@ def course_id_search(course_id, campus=None):
         results = searcher.search(course_query, filter=campus_query, limit=200)
         response = []
         for result in results:
-            response.append({"id": result["course_id"],
-                             "contents": result["contents"],
-                             "score": result.score})
+            response.append(_get_course_dict(result))
         return response
 
 
@@ -110,7 +118,8 @@ def text_search(search_string, campus_values=None, types=None,
                                   limit=200)
         response = []
         for result in results:
-            response.append({"id": result["course_id"],
-                             "contents": result["contents"],
-                             "score": result.score})
+            try:
+                response.append(_get_course_dict(result))
+            except KeyError:
+                response.append(_get_major_dict(result))
         return response
