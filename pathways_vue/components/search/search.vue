@@ -123,6 +123,9 @@ export default {
     },
     show_results() {
       return this.search_results.length > 0 || this.has_searched;
+    },
+    search_string() {
+      return this.form_data.search_string.trim();
     }
   },
   watch: {
@@ -139,6 +142,7 @@ export default {
       this.major_matches = [];
       this.course_matches = [];
       this.text_matches = [];
+      this.has_searched = false;
     },
     updateValues(e) {
       this.form_data.min_coi_score = e.minValue;
@@ -146,7 +150,7 @@ export default {
     },
     runSearch(){
       const vue = this;
-      this.addToRecent(this.form_data.search_string);
+      this.addToRecent(this.search_string);
       this.axios.get("api/v1/search/", {
         params: vue.form_data,
       }).then((response) => {
@@ -160,6 +164,9 @@ export default {
       });
     },
     addToRecent(searchString){
+      if (searchString.length === 0) {
+        return;
+      }
       let currentRecentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
       // add the new view to the front of the array
       if (!currentRecentSearches.includes(searchString)){

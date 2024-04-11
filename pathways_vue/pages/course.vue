@@ -55,12 +55,7 @@
 
         <div class="order-1 row justify-content-center mb-5">
           <div class="col-md-9">
-            <search-chooser
-              :prefill-id="courseId"
-              :prefill-campus="courseCampus"
-              prefill-type="course"
-              @update:selected="switch_course"
-            />
+            <search />
           </div>
         </div>
       </div>
@@ -70,7 +65,7 @@
 
 <script>
 import Layout from "@/layout.vue";
-import SearchChooser from "@/components/search/chooser.vue";
+import Search from "@/components/search/search.vue";
 import GradeDistribution from "@/components/course/grade-distribution.vue";
 import CourseDetails from "@/components/course/course-details.vue";
 import ExploreCourse from "@/components/course/explore-course.vue";
@@ -84,7 +79,7 @@ export default {
   name: "CourseComp",
   components: {
     layout: Layout,
-    "search-chooser": SearchChooser,
+    "search": Search,
     "course-details": CourseDetails,
     "explore-course": ExploreCourse,
     "grade-distribution": GradeDistribution,
