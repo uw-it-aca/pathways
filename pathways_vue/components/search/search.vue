@@ -83,7 +83,7 @@
     <div>
 
     </div>
-    <recent-searches/>
+    <recent-searches @set-search="setSearch"/>
     <div>
 
     </div>
@@ -143,6 +143,7 @@ export default {
     },
     runSearch(){
       const vue = this;
+      this.addToRecent(this.form_data.search_string);
       this.axios.get("api/v1/search/", {
         params: vue.form_data,
         paramsSerializer: params => {
@@ -153,7 +154,24 @@ export default {
         this.major_matches = response.data.major_matches;
         this.text_matches = response.data.text_matches;
       });
-    }
+    },
+    addToRecent(searchString){
+      let currentRecentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+      // add the new view to the front of the array
+      if (!currentRecentSearches.includes(searchString)){
+        currentRecentSearches.push(searchString)
+      }
+      // keep the array to 5 items
+      if (currentRecentSearches.length > 5){
+        currentRecentSearches = currentRecentSearches.slice(0, 5)
+      }
+      localStorage.setItem('recentSearches', JSON.stringify(currentRecentSearches));
+    },
+    setSearch(search_string){
+      this.form_data.search_string = search_string;
+      this.runSearch();
+    },
+
   },
 };
 </script>
