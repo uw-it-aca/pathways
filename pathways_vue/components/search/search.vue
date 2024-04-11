@@ -4,8 +4,8 @@
   <div class="card bg-light mt-5">
     <!--  Search Bar  -->
     <div class="card-body" @click="openSearch">
-      <i class="bi bi-search" @click="runSearch"></i>
       <form @submit.prevent="onSelected" role="search">
+        <i class="bi bi-search" @click="runSearch"></i>
         <div class="form-group">
           <input
             type="text"
@@ -14,6 +14,7 @@
             id="search-string"
             placeholder="Start typing to search for courses, majors, or subjects"
           >
+          <a href="#" @click.prevent="clearSearch">Clear</a>
         </div>
         <template v-if="show_filters">
           <div class="btn-group-toggle" data-toggle="buttons">
@@ -68,7 +69,6 @@
             </label>
           </div>
         </template>
-        <a href="#" @click.prevent="clearSearch">Clear</a>
         <button type="submit" @click="runSearch">Search</button>
       </form>
       <p v-if="search_error">Error running search</p>
@@ -161,7 +161,7 @@ export default {
       let currentRecentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
       // add the new view to the front of the array
       if (!currentRecentSearches.includes(searchString)){
-        currentRecentSearches.push(searchString)
+        currentRecentSearches.unshift(searchString)
       }
       // keep the array to 5 items
       if (currentRecentSearches.length > 5){
@@ -181,8 +181,8 @@ export default {
 <style lang="scss">
 
 .disabled {
-    pointer-events: none;
-    opacity: 0.4;
+  pointer-events: none;
+  opacity: 0.4;
 }
 
 .form-select {
@@ -190,56 +190,4 @@ export default {
   -moz-appearance: none;
   text-indent: 1px;
 }
-
-.coi-slider-container {
-  max-width: 300px;
-  margin-top: 50px;
-  margin-bottom: 20px;
-}
-
-
-.coi-range-slider {
-  display: flex;
-	position: relative;
-	border: none;
-	border-radius: 0px;
-	padding: 10px;
-	box-shadow: none;
-	flex-direction: column;
-	-webkit-touch-callout: none; /* iOS Safari */
-	-webkit-user-select: none; /* Safari */
-	-khtml-user-select: none; /* Konqueror HTML */
-	-moz-user-select: none; /* Old versions of Firefox */
-	-ms-user-select: none; /* Internet Explorer/Edge */
-	user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge,*/
-}
-
-.coi-range-slider .caption {
-	position: absolute;
-	bottom: 45px;
-	width: 2px;
-	height: 2px;
-	left: 1px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	overflow: visible;
-	/* display: none; */
-}
-.coi-range-slider .thumb .caption * {
-	position: absolute;
-	min-width: 30px;
-	height: 30px;
-	font-size: 75%;
-	text-align: center;
-	line-height: 30px;
-	background-color: blue;
-	border-radius: 5px;
-	color: white;
-	box-shadow: 0px 0px 5px black;
-	padding: 0px 5px;
-	white-space: nowrap;
-}
-
-
 </style>

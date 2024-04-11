@@ -27,7 +27,7 @@ class Command(BaseCommand):
                         type=TEXT(stored=True),
                         contents=TEXT(analyzer=stem_ana,
                                       stored=True),
-                        campus=TEXT(),
+                        campus=TEXT(stored=True),
                         is_gateway=BOOLEAN(),
                         is_bottleneck=BOOLEAN(),
                         coi_score=NUMERIC()

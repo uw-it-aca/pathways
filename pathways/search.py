@@ -32,13 +32,15 @@ def search(search_string, campus_values=None, types=None, is_bottleneck=None,
 def _get_major_dict(result):
     return {"id": result["major_id"],
             "contents": result["contents"],
-            "score": result.score}
+            "score": result.score,
+            "campus": result["campus"]}
 
 
 def _get_course_dict(result):
     return {"id": result["course_id"],
             "contents": result["contents"],
-            "score": result.score}
+            "score": result.score,
+            "campus": result["campus"],}
 
 
 def _get_campus_filters(campus_values):
