@@ -6,6 +6,7 @@ from logging import getLogger
 from whoosh.index import open_dir
 from whoosh import qparser
 from whoosh.query import *
+from urllib.parse import urlencode
 
 
 logger = getLogger(__name__)
@@ -30,17 +31,22 @@ def search(search_string, campus_values=None, types=None, is_bottleneck=None,
 
 
 def _get_major_dict(result):
+    url = urlencode({"id": result["major_id"]})
     return {"id": result["major_id"],
             "contents": result["contents"],
+            "abbr": result["major_abbr"],
             "score": result.score,
-            "campus": result["campus"]}
+            "campus": result["campus"],
+            "url": "/major?" + url}
 
 
 def _get_course_dict(result):
+    url = urlencode({"id": result["course_id"]})
     return {"id": result["course_id"],
             "contents": result["contents"],
             "score": result.score,
-            "campus": result["campus"],}
+            "campus": result["campus"],
+            "url": "/course?" + url}
 
 
 def _get_campus_filters(campus_values):

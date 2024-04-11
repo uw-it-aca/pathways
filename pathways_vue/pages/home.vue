@@ -84,7 +84,6 @@
 
 <script>
 import Layout from "@/layout.vue";
-// import SearchChooser from "@/components/search/chooser.vue";
 import Search from "@/components/search/search.vue";
 
 import { Modal } from "bootstrap";

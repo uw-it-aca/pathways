@@ -3,7 +3,7 @@
     <h2>Results - {{ result_count }}</h2>
     <ul>
       <li v-for="result in search_results" :key="result.id">
-        {{ result.score }} - {{ result.contents }} <strong>({{result.campus}})</strong>
+        <a v-bind:href="result.url">{{ result.score }} - {{ result.contents }}</a>({{result.campus}})
       </li>
     </ul>
   </div>

@@ -23,6 +23,7 @@ class Command(BaseCommand):
         stem_ana = StemmingAnalyzer()
         schema = Schema(course_id=TEXT(stored=True),
                         major_id=TEXT(stored=True),
+                        major_abbr=TEXT(stored=True),
                         major_title=TEXT(stored=True),
                         type=TEXT(stored=True),
                         contents=TEXT(analyzer=stem_ana,
@@ -46,7 +47,8 @@ class Command(BaseCommand):
                                 coi_score=course.coi_score)
         majors = Major.objects.all()
         for major in majors:
-            writer.add_document(major_id=major.major_abbr,
+            writer.add_document(major_id=major.credential_code,
+                                major_abbr=major.major_abbr,
                                 major_title=major.credential_title,
                                 type="major",
                                 contents=major.get_search_string(),
