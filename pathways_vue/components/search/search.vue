@@ -110,7 +110,8 @@ export default {
       course_matches: [],
       text_matches: [],
       show_search: false,
-      search_error: false
+      search_error: false,
+      has_searched: false,
     };
   },
   computed: {
@@ -121,7 +122,7 @@ export default {
       return this.form_data.search_string.length > 0 && this.show_search;
     },
     show_results() {
-      return this.search_results.length > 0;
+      return this.search_results.length > 0 || this.has_searched;
     }
   },
   watch: {
@@ -153,6 +154,7 @@ export default {
         this.major_matches = response.data.major_matches;
         this.text_matches = response.data.text_matches;
         this.search_error = false;
+        this.has_searched = true;
       }).catch((error) => {
         this.search_error = true;
       });
