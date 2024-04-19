@@ -1,7 +1,4 @@
 {
-  "python.linting.pycodestyleEnabled": true,
-  "python.linting.enabled": true,
-  "python.formatting.autopep8Args": ["--max-line-length=79"],
-  "python.formatting.blackArgs": ["--line-length=79"],
+  "black-formatter.args": ["--line-length=79"],
   "stylelint.validate": ["vue", "scss"]
 }
