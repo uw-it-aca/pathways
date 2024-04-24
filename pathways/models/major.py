@@ -4,6 +4,7 @@
 from django.db import models
 from pathways.models.course import Course
 from django.core.exceptions import ObjectDoesNotExist
+from urllib.parse import urlencode
 
 
 class Major(models.Model):
@@ -29,6 +30,14 @@ class Major(models.Model):
                              title=self.credential_title,
                              description=self.credential_description)
 
+    def get_search_results_dict(self):
+        url = urlencode({"id": self.major_abbr})
+        return {"id": self.major_abbr,
+                "contents": self.get_search_string(),
+                "abbr": self.major_abbr,
+                "score": 10,
+                "campus": self.major_campus,
+                "url": "/major?" + url}
     @staticmethod
     def get_major_list():
         majors = Major.objects.only("major_abbr", "major_title")

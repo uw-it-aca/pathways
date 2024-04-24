@@ -139,10 +139,13 @@ export default {
     },
     clearSearch(){
       this.form_data.search_string = "";
+      this.clearResults();
+      this.has_searched = false;
+    },
+    clearResults(){
       this.major_matches = [];
       this.course_matches = [];
       this.text_matches = [];
-      this.has_searched = false;
     },
     updateValues(e) {
       this.form_data.min_coi_score = e.minValue;
@@ -150,6 +153,7 @@ export default {
     },
     runSearch(){
       const vue = this;
+      this.clearResults()
       this.addToRecent(this.search_string);
       this.axios.get("api/v1/search/", {
         params: vue.form_data,
