@@ -35,7 +35,7 @@ class Major(models.Model):
         return {"id": self.major_abbr,
                 "contents": self.get_search_string(),
                 "abbr": self.major_abbr,
-                "score": 10,
+                "score": 100,
                 "campus": self.major_campus,
                 "url": "/major?" + url}
     @staticmethod

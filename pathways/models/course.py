@@ -30,7 +30,7 @@ class Course(models.Model):
         url = urlencode({"id": self.course_id})
         return {"id": self.course_id,
                 "contents": self.get_search_string(),
-                "score": 10,
+                "score": 100,
                 "campus": self.course_campus,
                 "url": "/course?" + url}
 

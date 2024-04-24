@@ -6,7 +6,10 @@ from logging import getLogger
 from whoosh.index import open_dir
 from whoosh import qparser
 from whoosh.query import *
+from whoosh.qparser import MultifieldParser
 from urllib.parse import urlencode
+from pathways.models.course import Course
+from pathways.models.major import Major
 
 
 logger = getLogger(__name__)
@@ -14,9 +17,10 @@ logger = getLogger(__name__)
 
 def search(search_string, campus_values=None, types=None, is_bottleneck=None,
                    is_gateway=None, min_coi_score=None, max_coi_score=None):
-    course_results = course_id_search(search_string,
-                                      campus_values) if "course" in types or \
-                                                        not types else []
+    course_results = \
+        course_id_direct_match(search_string.upper(),
+                               campus_values) if "course" in types or \
+                                                 not types else []
     major_results = major_title_search(search_string,
                                        campus_values) if "major" in types or \
                                                          not types else []
@@ -91,6 +95,28 @@ def course_id_search(course_id, campus=None):
         return response
 
 
+def course_id_direct_match(course_id, campus=None):
+    course_match = Course.objects.filter(course_id=course_id)
+    if campus:
+        course_match = course_match.filter(course_campus=campus)
+
+    response = []
+    for course in course_match:
+        response.append(course.get_search_results_dict())
+    return response
+
+
+def major_name_direct_match(major_name, campus=None):
+    major_match = Major.objects.filter(credential_title__icontains=major_name)
+    if campus:
+        major_match = major_match.filter(major_campus=campus)
+
+    response = []
+    for major in major_match:
+        response.append(major.get_search_results_dict())
+    return response
+
+
 def text_search(search_string, campus_values=None, types=None,
                 is_bottleneck=None, is_gateway=None, min_coi_score=None,
                 max_coi_score=None):
@@ -123,7 +149,14 @@ def text_search(search_string, campus_values=None, types=None,
 
         results = searcher.search(query,
                                   filter=And(filter_queries),
-                                  limit=200)
+                                  limit=2000)
+        phrase_parser = qparser.MultifieldParser(["contents"],
+                                                 ix.schema)
+        phrase_parser.add_plugin(qparser.SequencePlugin())
+        phrase_quyery = phrase_parser.parse("\"%s\"" % search_string)
+        phrase_results = searcher.search(phrase_quyery,
+                                         limit=2000)
+        results.upgrade(phrase_results)
         response = []
         for result in results:
             try:
