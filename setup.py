@@ -25,10 +25,10 @@ setup(
     include_package_data=True,
     install_requires=[
         "django~=4.2",
-        "UW-Django-SAML2~=1.7",
-        "lxml==4.9.4",
+        "UW-Django-SAML2~=1.8",
+        'lxml==4.9.4',
         "whoosh~=2.7",
-        "xmlsec==1.3.13",
+        'xmlsec==1.3.13'
     ],
     license="Apache License, Version 2.0",
     description="A tool for visually displaying UW course prerequisites",

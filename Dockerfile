@@ -17,7 +17,10 @@ RUN /app/bin/pip install psycopg2
 ADD --chown=acait:acait docker/app_start.sh /scripts
 RUN chmod u+x /scripts/app_start.sh
 
-FROM node:lts-bullseye AS node-bundler
+# latest node + ubuntu
+FROM node:lts AS node-base
+FROM ubuntu:latest AS node-bundler
+COPY --from=node-base / /
 
 ADD ./package.json /app/
 WORKDIR /app/
