@@ -53,7 +53,7 @@
           </div>
         </div>
 
-        <div class="order-1 row justify-content-center mb-5">
+        <div class="order-1 row justify-content-center">
           <div class="col-md-9">
             <search />
           </div>

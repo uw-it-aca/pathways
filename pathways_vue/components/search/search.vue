@@ -1,17 +1,18 @@
 // course.vue
 
 <template>
-  <button
-    type="button"
-    class="btn btn-primary"
-    data-bs-toggle="modal"
-    data-bs-target="#searchModal"
-    @click="openSearch"
-  >
-    <i class="bi bi-search"></i>
-    <span>style faux search bar (button)</span>
-  </button>
-
+  <div class="my-5 row justify-content-center">
+    <button
+      type="button"
+      class="btn btn-lg btn-link border-purple border-2 text-start w-75 bg-transparent-hover text-decoration-none mx-auto"
+      data-bs-toggle="modal"
+      data-bs-target="#searchModal"
+      @click="openSearch"
+    >
+      <i class="bi bi-search me-3 text-secondary"></i>
+      <span class="text-secondary">Search here</span>
+    </button>
+  </div>
   <!-- Modal -->
   <div
     class="modal fade"
@@ -29,12 +30,12 @@
               <div class="w-100">
                 <div class="position-relative">
                   <i
-                    class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3"
+                    class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary"
                   ></i>
                   <input
                     type="text"
                     role="search"
-                    class="form-control form-control-lg px-5 mb-2"
+                    class="form-control form-control-lg px-5 mb-2 border-purple border-2"
                     id="search-string"
                     autocomplete="off"
                     autocorrect="off"
@@ -50,7 +51,7 @@
                     v-if="show_results"
                     type="button"
                     @click="clearSearch"
-                    class="btn btn-link position-absolute top-50 end-0 translate-middle-y p-1 me-2"
+                    class="btn btn-link text-secondary text-purple-hover position-absolute top-50 end-0 translate-middle-y p-1 me-2"
                   >
                     <i class="bi bi-x-lg"></i>
                   </button>

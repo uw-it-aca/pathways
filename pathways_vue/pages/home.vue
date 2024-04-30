@@ -7,6 +7,10 @@
         <div class="col-md-9">
           <h1 class="visually-hidden">{{ pageTitle }}</h1>
 
+
+          <search />
+
+
           <!-- Modal -->
           <div
             class="modal fade"
@@ -66,7 +70,7 @@
               </div>
             </div>
           </div>
-          <search />
+
           <!-- Button trigger modal -->
           <button
             type="button"
@@ -93,7 +97,7 @@ export default {
   components: {
     layout: Layout,
     // 'search-chooser': SearchChooser,
-    'search': Search
+    search: Search,
   },
   data() {
     return {
