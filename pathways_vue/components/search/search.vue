@@ -72,61 +72,94 @@
           <template v-if="show_search">
             <template v-if="show_results">
               <div class="d-flex mb-3">
-                <div class="btn-group-toggle me-3" data-toggle="buttons">
-                  <h6>Type</h6>
-                  <label class="btn btn-secondary active">
-                    <input
-                      id="course"
-                      value="course"
-                      v-model="form_data.type"
-                      type="checkbox"
-                      autocomplete="off"
-                    />
-                    Course
-                  </label>
-                  <label class="btn btn-secondary active">
-                    <input
-                      id="major"
-                      value="major"
-                      v-model="form_data.type"
-                      type="checkbox"
-                      autocomplete="off"
-                    />
-                    Major
-                  </label>
+                <div class="me-3">
+                  <div>
+                    <label class="form-label small fw-bold me-2">Type</label>
+                  </div>
+                  <ul class="list-inline">
+                    <li class="list-inline-item mb-1 me-1">
+                      <input
+                        id="course"
+                        value="course"
+                        v-model="form_data.type"
+                        type="checkbox"
+                        autocomplete="off"
+                        class="btn-check"
+                      />
+                      <label
+                        class="btn btn-sm btn-outline-dark-beige fs-9 rounded-pill"
+                        for="course"
+                        >Course</label
+                      >
+                    </li>
+                    <li class="list-inline-item mb-1 me-1">
+                      <input
+                        id="major"
+                        value="major"
+                        v-model="form_data.type"
+                        type="checkbox"
+                        autocomplete="off"
+                        class="btn-check"
+                      />
+                      <label
+                        class="btn btn-sm btn-outline-dark-beige fs-9 rounded-pill"
+                        for="major"
+                        >Major</label
+                      >
+                    </li>
+                  </ul>
                 </div>
                 <div class="btn-group-toggle" data-toggle="buttons">
-                  <h6>Campus</h6>
-                  <label class="btn btn-secondary active">
-                    <input
-                      id="seattle"
-                      value="seattle"
-                      v-model="form_data.campus"
-                      type="checkbox"
-                      autocomplete="off"
-                    />
-                    Seattle
-                  </label>
-                  <label class="btn btn-secondary active">
-                    <input
-                      id="tacoma"
-                      value="tacoma"
-                      v-model="form_data.campus"
-                      type="checkbox"
-                      autocomplete="off"
-                    />
-                    Tacoma
-                  </label>
-                  <label class="btn btn-secondary active">
-                    <input
-                      id="bothell"
-                      value="bothell"
-                      v-model="form_data.campus"
-                      type="checkbox"
-                      autocomplete="off"
-                    />
-                    Bothell
-                  </label>
+                  <div>
+                    <label class="form-label small fw-bold me-2">Campus</label>
+                  </div>
+                  <ul class="list-inline">
+                    <li class="list-inline-item mb-1 me-1">
+                      <input
+                        id="seattle"
+                        value="seattle"
+                        v-model="form_data.campus"
+                        type="checkbox"
+                        autocomplete="off"
+                        class="btn-check"
+                      />
+                      <label
+                        class="btn btn-sm btn-outline-dark-beige fs-9 rounded-pill"
+                        for="seattle"
+                        >Seattle</label
+                      >
+                    </li>
+                    <li class="list-inline-item mb-1 me-1">
+                      <input
+                        id="tacoma"
+                        value="tacoma"
+                        v-model="form_data.campus"
+                        type="checkbox"
+                        autocomplete="off"
+                        class="btn-check"
+                      />
+                      <label
+                        class="btn btn-sm btn-outline-dark-beige fs-9 rounded-pill"
+                        for="tacoma"
+                        >Tacoma</label
+                      >
+                    </li>
+                    <li class="list-inline-item mb-1 me-1">
+                      <input
+                        id="bothell"
+                        value="bothell"
+                        v-model="form_data.campus"
+                        type="checkbox"
+                        autocomplete="off"
+                        class="btn-check"
+                      />
+                      <label
+                        class="btn btn-sm btn-outline-dark-beige fs-9 rounded-pill"
+                        for="bothell"
+                        >Bothell</label
+                      >
+                    </li>
+                  </ul>
                 </div>
               </div>
             </template>
