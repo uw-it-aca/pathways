@@ -7,9 +7,18 @@
         <div class="col-md-9">
           <h1 class="visually-hidden">{{ pageTitle }}</h1>
 
-
           <search />
 
+          <p class="lead">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+          </p>
+
+          <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente
+            voluptate excepturi dignissimos reprehenderit sed, odit, porro et
+            sint quia iure ad? Ratione provident ea recusandae molestias
+            adipisci vitae assumenda nobis.
+          </p>
 
           <!-- Modal -->
           <div
