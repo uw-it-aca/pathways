@@ -3,23 +3,39 @@
     <h2>Results - {{ result_count }}</h2>
     <ul>
       <li v-for="result in displayed_results" :key="result.id">
-        <a v-bind:href="result.url">{{ result.score }} - {{ result.contents }}</a>({{result.campus}})
+        <a v-bind:href="result.url"
+          >{{ result.score }} - {{ result.contents }}</a
+        >({{ result.campus }})
       </li>
     </ul>
     <nav aria-label="Page navigation example">
-      <ul class="pagination">
+      <ul class="pagination justify-content-center">
         <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous" @click.prevent="goToPrevious">
+          <a
+            class="page-link"
+            href="#"
+            aria-label="Previous"
+            @click.prevent="goToPrevious"
+          >
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
         <li v-for="pagenum in page_numbers" class="page-item">
-          <a class="page-link"
-             :class="pagenum == page? 'active' : '' "
-             href="#" @click.prevent="goToPage(pagenum)">{{pagenum}}</a>
+          <a
+            class="page-link"
+            :class="pagenum == page ? 'active' : ''"
+            href="#"
+            @click.prevent="goToPage(pagenum)"
+            >{{ pagenum }}</a
+          >
         </li>
         <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next" @click.prevent="goToNext">
+          <a
+            class="page-link"
+            href="#"
+            aria-label="Next"
+            @click.prevent="goToNext"
+          >
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
@@ -28,11 +44,9 @@
   </div>
 </template>
 <script>
-
 export default {
-  name: 'Results',
-  components: {
-  },
+  name: "Results",
+  components: {},
   props: {
     search_results: {
       type: Array,
@@ -42,7 +56,7 @@ export default {
   data() {
     return {
       page: 1,
-      pageSize: 10,
+      pageSize: 30,
     };
   },
   computed: {
@@ -54,32 +68,33 @@ export default {
       }
     },
     displayed_results() {
-      return this.search_results.slice((this.page - 1) * this.pageSize, this.page * this.pageSize);
+      return this.search_results.slice(
+        (this.page - 1) * this.pageSize,
+        this.page * this.pageSize
+      );
     },
-    page_numbers(){
-      return Array.from({length: Math.ceil(this.result_count / this.pageSize)}, (_, i) => i + 1);
-    }
+    page_numbers() {
+      return Array.from(
+        { length: Math.ceil(this.result_count / this.pageSize) },
+        (_, i) => i + 1
+      );
+    },
   },
-  watch: {
-  },
+  watch: {},
   methods: {
-    goToPage(pagenum){
+    goToPage(pagenum) {
       this.page = pagenum;
     },
-    goToPrevious(){
-      if (this.page > 1){
+    goToPrevious() {
+      if (this.page > 1) {
         this.page -= 1;
       }
     },
-    goToNext(){
-      if (this.page < this.page_numbers.length){
+    goToNext() {
+      if (this.page < this.page_numbers.length) {
         this.page += 1;
       }
-    }
-  }
+    },
+  },
 };
 </script>
-
-<style lang="scss">
-
-</style>

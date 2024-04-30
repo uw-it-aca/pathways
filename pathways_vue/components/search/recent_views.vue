@@ -2,32 +2,30 @@
   <div>
     <h2>Recent Views</h2>
     <ul v-for="view in recent_views">
-      <li><a v-bind:href="view.url" class="recent_view_link">{{ view.title }} ({{view.campus}})</a></li>
+      <li>
+        <a v-bind:href="view.url" class="recent_view_link"
+          >{{ view.title }} ({{ view.campus }})</a
+        >
+      </li>
     </ul>
   </div>
 </template>
 <script>
-
 export default {
-  name: 'RecentViews',
-  components: {
-  },
-  props: {
-  },
+  name: "RecentViews",
+  components: {},
+  props: {},
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
     recent_views() {
-      let recent_views = JSON.parse(localStorage.getItem('recentViews'));
+      let recent_views = JSON.parse(localStorage.getItem("recentViews"));
       return recent_views;
-    }
+    },
   },
-  watch: {
-  },
-  methods: {
-  },
+  watch: {},
+  methods: {},
 };
 </script>
 

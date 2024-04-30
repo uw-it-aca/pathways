@@ -20,23 +20,21 @@
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
-    <div
-      class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
-    >
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <!-- search bar -->
+          <!-- custom search bar -->
           <form @submit.prevent="onSelected" role="search" class="w-100">
             <div class="d-flex flex-fill">
               <div class="w-100">
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="bi bi-search"></i
-                  ></span>
+                <div class="position-relative">
+                  <i
+                    class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3"
+                  ></i>
                   <input
                     type="text"
                     role="search"
-                    class="form-control focus-ring"
+                    class="form-control form-control-lg px-5 mb-2"
                     id="search-string"
                     autocomplete="off"
                     autocorrect="off"
@@ -49,21 +47,33 @@
                     aria-describedby="button-addon2"
                   />
                   <button
-                    class="btn btn-primary"
-                    id="button-addon2"
-                    type="submit"
-                    @click="runSearch"
+                    v-if="show_results"
+                    type="button"
+                    @click="clearSearch"
+                    class="btn btn-link position-absolute top-50 end-0 translate-middle-y p-1 me-2"
                   >
-                    Search
+                    <i class="bi bi-x-lg"></i>
                   </button>
                 </div>
+                <!-- MARK: remove search button -->
+                <button
+                  class="btn btn-primary"
+                  id="button-addon2"
+                  type="submit"
+                  @click="runSearch"
+                >
+                  Search
+                </button>
               </div>
             </div>
-
-            <template v-if="show_filters">
-              <div class="border border-danger d-flex mt-3">
-                <div class="btn-group-toggle" data-toggle="buttons">
-                  <h4>Type</h4>
+          </form>
+        </div>
+        <div class="modal-body" style="max-height: 600px">
+          <template v-if="show_search">
+            <template v-if="show_results">
+              <div class="d-flex mb-3">
+                <div class="btn-group-toggle me-3" data-toggle="buttons">
+                  <h6>Type</h6>
                   <label class="btn btn-secondary active">
                     <input
                       id="course"
@@ -86,7 +96,7 @@
                   </label>
                 </div>
                 <div class="btn-group-toggle" data-toggle="buttons">
-                  <h4>Campus</h4>
+                  <h6>Campus</h6>
                   <label class="btn btn-secondary active">
                     <input
                       id="seattle"
@@ -118,15 +128,8 @@
                     Bothell
                   </label>
                 </div>
-                <div class="ms-auto">
-                  <a href="#" @click.prevent="clearSearch">Clear results</a>
-                </div>
               </div>
             </template>
-          </form>
-        </div>
-        <div class="modal-body" style="max-height: 500px">
-          <template v-if="show_search">
             <results v-if="show_results" :search_results="search_results" />
             <template v-else>
               <recent-views />
@@ -177,9 +180,9 @@ export default {
         .concat(this.course_matches)
         .concat(this.text_matches);
     },
-    show_filters() {
+    /*show_filters() {
       return this.form_data.search_string.length > 0 && this.show_search;
-    },
+    },*/
     show_results() {
       return this.search_results.length > 0 || this.has_searched;
     },
@@ -265,5 +268,11 @@ export default {
   -webkit-appearance: none;
   -moz-appearance: none;
   text-indent: 1px;
+}
+
+.blah:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: gray !important;
 }
 </style>
