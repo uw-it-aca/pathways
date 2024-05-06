@@ -1,11 +1,14 @@
 <template>
   <div>
-    <h2>Recent Searches</h2>
-    <ul v-for="search in recent_searches">
-      <li>
-        <a href="#" @click.prevent="setSearch(search)">{{ search }}</a>
-      </li>
-    </ul>
+    <h2 class="h5">Recent Searches</h2>
+    <div v-if="recent_searches">
+      <ul v-for="search in recent_searches" class="list-unstyled">
+        <li>
+          <a href="#" @click.prevent="setSearch(search)">{{ search }}</a>
+        </li>
+      </ul>
+    </div>
+    <div v-else>No recent searches</div>
   </div>
 </template>
 <script>

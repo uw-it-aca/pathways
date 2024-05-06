@@ -1,13 +1,16 @@
 <template>
   <div>
-    <h2>Recent Views</h2>
-    <ul v-for="view in recent_views">
-      <li>
-        <a v-bind:href="view.url" class="recent_view_link"
-          >{{ view.title }} ({{ view.campus }})</a
-        >
-      </li>
-    </ul>
+    <h2 class="h5">Recent Views</h2>
+    <div v-if="recent_views">
+      <ul v-for="view in recent_views" class="list-unstyled">
+        <li>
+          <a v-bind:href="view.url" class="recent_view_link"
+            >{{ view.title }} ({{ view.campus }})</a
+          >
+        </li>
+      </ul>
+    </div>
+    <div v-else>No courses or majors recently viewed</div>
   </div>
 </template>
 <script>

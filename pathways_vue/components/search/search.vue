@@ -10,7 +10,9 @@
       @click="openSearch"
     >
       <i class="bi bi-search me-3 text-secondary"></i>
-      <span class="text-secondary">Search here</span>
+      <span class="text-secondary"
+        >Start typing to search for courses, majors, or subjects</span
+      >
     </button>
   </div>
   <!-- Modal -->
@@ -42,7 +44,7 @@
                     autocapitalize="off"
                     enterkeyhint="go"
                     spellcheck="false"
-                    placeholder="Search here"
+                    placeholder="Start typing to search for courses, majors, or subjects"
                     v-model="form_data.search_string"
                     aria-label="Recipient's username"
                     aria-describedby="button-addon2"
@@ -166,12 +168,20 @@
             </template>
             <results v-if="show_results" :search_results="search_results" />
             <template v-else>
-              <recent-views />
-              <recent-searches @set-search="setSearch" />
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <recent-searches @set-search="setSearch" />
+                  </div>
+                  <div class="col">
+                    <recent-views />
+                  </div>
+                </div>
+              </div>
             </template>
           </template>
         </div>
-        <div class="modal-footer">footer optional?</div>
+        <!-- <div class="modal-footer">footer optional?</div> -->
       </div>
     </div>
   </div>
