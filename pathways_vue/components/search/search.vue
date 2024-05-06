@@ -299,6 +299,14 @@ export default {
       this.runSearch();
     },
   },
+  mounted() {
+    const searchModal = document.getElementById("searchModal");
+    const searchInput = document.getElementById("search-string");
+
+    searchModal.addEventListener("shown.bs.modal", () => {
+      searchInput.focus();
+    });
+  },
 };
 </script>
 
