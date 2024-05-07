@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="h5">Recent Searches</h2>
+    <h2 class="h5 mb-3">Recent Searches</h2>
     <div v-if="recent_searches">
       <ul v-for="search in recent_searches" class="list-unstyled">
         <li>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Results - {{ result_count }}</h2>
+    <h2 class="h6 mb-3 fw-semibold fst-italic">{{ result_count }} results</h2>
     <ul>
       <li v-for="result in displayed_results" :key="result.id">
         <a v-bind:href="result.url"
