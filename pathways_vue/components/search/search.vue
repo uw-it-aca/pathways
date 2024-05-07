@@ -55,12 +55,12 @@
                     @click="clearSearch"
                     class="btn btn-link text-secondary text-purple-hover position-absolute top-50 end-0 translate-middle-y p-1 me-2"
                   >
-                    <i class="bi bi-x-lg"></i>
+                    clear
                   </button>
                 </div>
                 <!-- MARK: remove search button -->
                 <button
-                  class="btn btn-primary"
+                  class="btn btn-primary visually-hidden"
                   id="button-addon2"
                   type="submit"
                   @click="runSearch"
@@ -70,6 +70,12 @@
               </div>
             </div>
           </form>
+          <button
+            type="button"
+            class="btn-close mx-2"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body" style="max-height: 600px">
           <template v-if="show_search">
@@ -168,7 +174,7 @@
             </template>
             <results v-if="show_results" :search_results="search_results" />
             <template v-else>
-              <div class="container">
+              <div class="container-md">
                 <div class="row">
                   <div class="col">
                     <recent-searches @set-search="setSearch" />
