@@ -60,7 +60,7 @@
                 </div>
                 <!-- MARK: remove search button -->
                 <button
-                  class="btn btn-primary"
+                  class="btn btn-primary visually-hidden"
                   id="button-addon2"
                   type="submit"
                   @click="runSearch"

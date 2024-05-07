@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="h5">Recent Views</h2>
+    <h2 class="h5">Recently Viewed</h2>
     <div v-if="recent_views">
       <ul v-for="view in recent_views" class="list-unstyled">
         <li>
