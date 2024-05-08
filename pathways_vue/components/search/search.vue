@@ -17,7 +17,7 @@
   </div>
   <!-- Modal -->
   <div
-    class="modal fade"
+    class="modal"
     id="searchModal"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
