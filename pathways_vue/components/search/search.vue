@@ -94,6 +94,7 @@
                         type="checkbox"
                         autocomplete="off"
                         class="btn-check"
+                        @change="runSearch"
                       />
                       <label
                         class="btn btn-sm btn-outline-dark-beige fs-9 rounded-pill"
@@ -109,6 +110,7 @@
                         type="checkbox"
                         autocomplete="off"
                         class="btn-check"
+                        @change="runSearch"
                       />
                       <label
                         class="btn btn-sm btn-outline-dark-beige fs-9 rounded-pill"
@@ -131,6 +133,7 @@
                         type="checkbox"
                         autocomplete="off"
                         class="btn-check"
+                        @change="runSearch"
                       />
                       <label
                         class="btn btn-sm btn-outline-dark-beige fs-9 rounded-pill"
@@ -146,6 +149,7 @@
                         type="checkbox"
                         autocomplete="off"
                         class="btn-check"
+                        @change="runSearch"
                       />
                       <label
                         class="btn btn-sm btn-outline-dark-beige fs-9 rounded-pill"
@@ -161,6 +165,7 @@
                         type="checkbox"
                         autocomplete="off"
                         class="btn-check"
+                        @change="runSearch"
                       />
                       <label
                         class="btn btn-sm btn-outline-dark-beige fs-9 rounded-pill"

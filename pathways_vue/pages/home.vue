@@ -105,7 +105,6 @@ export default {
   name: "HomeComp",
   components: {
     layout: Layout,
-    // 'search-chooser': SearchChooser,
     search: Search,
   },
   data() {
