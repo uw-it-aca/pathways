@@ -1,20 +1,9 @@
 <template>
   <div>
-    <h2 class="h6 mb-3 fw-semibold fst-italic">{{ result_count }} results</h2>
-    <ul class="list-unstyled">
-      <li
-        class="d-flex justify-content-between align-items-start"
-        v-for="result in displayed_results"
-        :key="result.id"
-      >
-        <div class="ms-2 me-auto">
-          <a v-bind:href="result.url"
-            >{{ result.score }} - {{ result.contents }}</a
-          >
-        </div>
-        <span class="badge text-bg-light rounded-pill text-uppercase">{{
-          result.campus
-        }}</span>
+    <h2>Results - {{ result_count }}</h2>
+    <ul>
+      <li v-for="result in displayed_results" :key="result.id">
+        <a v-bind:href="result.url">{{ result.contents }}</a>({{result.campus}})
       </li>
     </ul>
     <nav aria-label="Page navigation example">

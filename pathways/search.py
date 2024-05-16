@@ -1,12 +1,10 @@
-# Copyright 2022 UW-IT, University of Washington
+# Copyright 2024 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.core.management.base import BaseCommand
 from logging import getLogger
 from whoosh.index import open_dir
 from whoosh import qparser
 from whoosh.query import *
-from whoosh.qparser import MultifieldParser
 from urllib.parse import urlencode
 from pathways.models.course import Course
 from pathways.models.major import Major
