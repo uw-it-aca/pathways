@@ -34,10 +34,13 @@ class Major(models.Model):
         url = urlencode({"id": self.major_abbr})
         return {"id": self.major_abbr,
                 "contents": self.get_search_string(),
+                "title": self.credential_title,
+                "description": self.credential_description,
                 "abbr": self.major_abbr,
                 "score": 100,
                 "campus": self.major_campus,
                 "url": "/major?" + url}
+
     @staticmethod
     def get_major_list():
         majors = Major.objects.only("major_abbr", "major_title")

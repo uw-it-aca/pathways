@@ -30,15 +30,19 @@ class Course(models.Model):
         url = urlencode({"id": self.course_id})
         return {"id": self.course_id,
                 "contents": self.get_search_string(),
+                "title": self.course_title,
+                "description": self.course_description,
                 "score": 100,
                 "campus": self.course_campus,
                 "url": "/course?" + url}
 
     def get_search_string(self):
         string = "{id} {title} {description}"
+        description = self.course_description if (
+            self.course_description) else ""
         return string.format(id=self.course_id,
                              title=self.course_title,
-                             description=self.course_description)
+                             description=description)
 
     @staticmethod
     def get_course_list():

@@ -3,7 +3,12 @@
     <h2>Results - {{ result_count }}</h2>
     <ul>
       <li v-for="result in displayed_results" :key="result.id">
-        <a v-bind:href="result.url">{{ result.contents }}</a>({{result.campus}})
+          <template v-if="result.is_major">
+            <a v-bind:href="result.url">{{ result.abbr }}</a> <strong>{{ result.title }}</strong> {{ result.description }} ({{result.campus}})
+          </template>
+        <template v-if="result.is_course">
+          <a v-bind:href="result.url">{{ result.id }}</a> <strong>{{ result.title }}</strong> {{ result.description }} ({{result.campus}})
+        </template>
       </li>
     </ul>
     <nav aria-label="Page navigation example">

@@ -25,13 +25,15 @@ class Command(BaseCommand):
                         major_id=TEXT(stored=True),
                         major_abbr=TEXT(stored=True),
                         major_title=TEXT(stored=True),
+                        course_title=TEXT(stored=True),
                         type=TEXT(stored=True),
                         contents=TEXT(analyzer=stem_ana,
                                       stored=True),
                         campus=TEXT(stored=True),
                         is_gateway=BOOLEAN(),
                         is_bottleneck=BOOLEAN(),
-                        coi_score=NUMERIC()
+                        coi_score=NUMERIC(),
+                        description=TEXT(stored=True)
                         )
         ix = create_in(INDEXDIR, schema)
         writer = ix.writer()
@@ -44,7 +46,9 @@ class Command(BaseCommand):
                                 campus=course.course_campus,
                                 is_gateway=course.is_gateway,
                                 is_bottleneck=course.is_bottleneck,
-                                coi_score=course.coi_score)
+                                coi_score=course.coi_score,
+                                course_title=course.course_title,
+                                description=course.course_description)
         majors = Major.objects.all()
         for major in majors:
             writer.add_document(major_id=major.credential_code,
@@ -52,6 +56,7 @@ class Command(BaseCommand):
                                 major_title=major.credential_title,
                                 type="major",
                                 contents=major.get_search_string(),
-                                campus=major.major_campus)
+                                campus=major.major_campus,
+                                description=major.credential_description)
 
         writer.commit()

@@ -14,7 +14,7 @@ logger = getLogger(__name__)
 
 
 def search(search_string, campus_values=None, types=None, is_bottleneck=None,
-                   is_gateway=None, min_coi_score=None, max_coi_score=None):
+           is_gateway=None, min_coi_score=None, max_coi_score=None):
     course_results = \
         course_id_direct_match(search_string.upper(),
                                campus_values) if "course" in types or \
@@ -35,19 +35,23 @@ def search(search_string, campus_values=None, types=None, is_bottleneck=None,
 def _get_major_dict(result):
     url = urlencode({"id": result["major_id"]})
     return {"id": result["major_id"],
-            "contents": result["contents"],
             "abbr": result["major_abbr"],
+            "title": result["major_title"],
+            "description": result["description"],
             "score": result.score,
             "campus": result["campus"],
+            "is_major": True,
             "url": "/major?" + url}
 
 
 def _get_course_dict(result):
     url = urlencode({"id": result["course_id"]})
     return {"id": result["course_id"],
-            "contents": result["contents"],
+            "title": result["course_title"],
+            "description": result.get("description"),
             "score": result.score,
             "campus": result["campus"],
+            "is_course": True,
             "url": "/course?" + url}
 
 
@@ -157,8 +161,8 @@ def text_search(search_string, campus_values=None, types=None,
         results.upgrade(phrase_results)
         response = []
         for result in results:
-            try:
-                response.append(_get_course_dict(result))
-            except KeyError:
+            if 'major_id' in result:
                 response.append(_get_major_dict(result))
+            else:
+                response.append(_get_course_dict(result))
         return response
