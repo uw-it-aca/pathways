@@ -48,6 +48,7 @@
                     v-model="form_data.search_string"
                     aria-label="Recipient's username"
                     aria-describedby="button-addon2"
+                    @input="debouncedSearch"
                   />
                   <button
                     v-if="show_results"
@@ -205,6 +206,8 @@
 import RecentSearches from "./recent_searches.vue";
 import RecentViews from "./recent_views.vue";
 import Results from "./results.vue";
+import debounce from "debounce";
+
 
 export default {
   name: "SearchComponent",
@@ -267,6 +270,9 @@ export default {
       this.form_data.min_coi_score = e.minValue;
       this.form_data.max_coi_score = e.maxValue;
     },
+    debouncedSearch: debounce(function () {
+      this.runSearch();
+    }, 500),
     runSearch() {
       const vue = this;
       this.clearResults();
