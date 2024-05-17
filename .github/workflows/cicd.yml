@@ -131,6 +131,18 @@ jobs:
           coverage combine
           coveralls
 
+      - name: Build Search Index
+        if: github.event_name == 'push'
+        id: search
+        shell: bash
+        run: >-
+          docker run -u root -t
+          -v ${PWD}:/coverage
+          -e DJANGO_APP="$DJANGO_APP"
+          -e "ENV=localdev" -e "AUTH=SAML_MOCK"
+          app-container
+          bash -c ". ./docker/build_index.sh"
+
       - name: Push Image to Repository
         if: github.event_name == 'push'
         uses: uw-it-aca/actions/gcr-push@main
