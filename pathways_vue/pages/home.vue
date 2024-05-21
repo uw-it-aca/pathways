@@ -8,19 +8,40 @@
           <h1 class="visually-hidden">{{ pageTitle }}</h1>
 
           <search />
+          <div class="text-start w-75 mx-auto">
+            <p class="lead">
+              DawgPath helps you discover courses and majors, and enables you to
+              be strategic when making decisions about your schedule.
+            </p>
+            <p class="lead">
+              It also provides useful data when you're planning to apply to
+              highly selective majors.
+            </p>
 
-          <p class="lead">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-          </p>
+            <p>A few things to keep in mind before getting started:</p>
+            <ul>
+              <li>
+                Grades are just one of the factors considered for
+                capacity-constrained major. Reach out to your adviser to learn
+                more.
+              </li>
+              <li>
+                The median course grade and GPA data are only included for those
+                who had declared for the major.
+              </li>
 
-          <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente
-            voluptate excepturi dignissimos reprehenderit sed, odit, porro et
-            sint quia iure ad? Ratione provident ea recusandae molestias
-            adipisci vitae assumenda nobis.
-          </p>
+              <li>
+                Discovering and applying for a major can be a challenging
+                experience. Look for the "Find your adviser” links to connect
+                with your adviser.
+              </li>
+              <li>
+                Check out the <a href="/faq">DawgPath FAQ</a> for more info.
+              </li>
+            </ul>
+          </div>
 
-          <!-- Modal -->
+          <!-- Modal
           <div
             class="modal fade"
             role="dialog"
@@ -35,34 +56,7 @@
                 <div class="modal-body">
                   <h2 class="modal-title mb-2" id="welcome_modal">Welcome</h2>
                   <div>
-                    <p>
-                      DawgPath helps you discover courses and majors, and
-                      enables you to be strategic when making decisions about
-                      your schedule. It also provides useful data when you're
-                      planning to apply to highly selective majors. A few things
-                      to keep in mind before getting started:
-                    </p>
-                    <ul>
-                      <li>
-                        Grades are just one of the factors considered for
-                        capacity-constrained major. Reach out to your adviser to
-                        learn more.
-                      </li>
-                      <li>
-                        The median course grade and GPA data are only included
-                        for those who had declared for the major.
-                      </li>
 
-                      <li>
-                        Discovering and applying for a major can be a
-                        challenging experience. Look for the "Find your adviser”
-                        links to connect with your adviser.
-                      </li>
-                      <li>
-                        Check out the <a href="/faq">DawgPath FAQ</a> for more
-                        info.
-                      </li>
-                    </ul>
                   </div>
                   <div class="text-end">
                     <button
@@ -78,9 +72,9 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <!-- Button trigger modal -->
+          <!-- Button trigger modal
           <button
             type="button"
             class="btn btn-link mt-2 btn-sm text-decoration-none"
@@ -88,7 +82,7 @@
             @click="showWelcomeModal"
           >
             About DawgPath <i class="bi bi-info-circle"></i>
-          </button>
+          </button>-->
         </div>
       </div>
     </template>
