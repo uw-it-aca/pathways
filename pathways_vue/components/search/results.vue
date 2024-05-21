@@ -1,18 +1,46 @@
 <template>
   <div>
-    <h2>Results - {{ result_count }}</h2>
-    <ul>
-      <li v-for="result in displayed_results" :key="result.id">
-          <template v-if="result.is_major">
-            <a v-bind:href="result.url">{{ result.abbr }}</a> <strong>{{ result.title }}</strong> {{ result.description }} ({{result.campus}})
-          </template>
+    <h2 class="fs-6 fw-semibold fst-italic">{{ result_count }} results</h2>
+  </div>
+  <div class="container">
+    <ul class="list-unstyled pt-3">
+      <li class="" v-for="result in displayed_results" :key="result.id">
+        <template v-if="result.is_major">
+          <div class="clearfix">
+            <a v-bind:href="result.url" class="float-start">{{
+              result.title
+            }}</a>
+            <div
+              class="badge text-bg-light rounded-pill text-uppercase float-end"
+            >
+              {{ result.campus }}
+            </div>
+          </div>
+          <div class="small">{{ result.description }}</div>
+
+          <!-- {{ result.abbr }} -->
+          <!-- {{ result.description }} -->
+        </template>
         <template v-if="result.is_course">
-          <a v-bind:href="result.url">{{ result.id }}</a> <strong>{{ result.title }}</strong> {{ result.description }} ({{result.campus}})
+          <div class="clearfix">
+            <a v-bind:href="result.url" class="float-start">
+              <span class="text-decoration-none fw-semibold"
+                >{{ result.id }}
+              </span>
+              {{ result.title }}</a
+            >
+            <div
+              class="badge text-bg-light rounded-pill text-uppercase float-end"
+            >
+              {{ result.campus }}
+            </div>
+          </div>
+          <div class="small">{{ result.description }}</div>
         </template>
       </li>
     </ul>
     <nav aria-label="Page navigation example">
-      <ul class="pagination justify-content-center">
+      <ul class="pagination pagination-sm justify-content-center overflow-auto">
         <li class="page-item">
           <a
             class="page-link"
