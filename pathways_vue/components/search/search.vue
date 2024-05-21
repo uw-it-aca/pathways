@@ -71,17 +71,11 @@
               </div>
             </div>
           </form>
-          <button
-            type="button"
-            class="btn-close mx-2"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
         </div>
         <div class="modal-body" style="max-height: 600px">
           <template v-if="show_search">
             <template v-if="show_results">
-              <div class="d-flex mb-3">
+              <div class="d-flex">
                 <div class="me-3">
                   <div>
                     <label class="form-label small fw-bold me-2">Type</label>
