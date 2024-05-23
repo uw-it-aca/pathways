@@ -108,10 +108,10 @@ export default {
     };
   },
   mounted() {
-    if (window.show_welcome) {
-      // show the welcome modal when the component is mounted
-      this.showWelcomeModal();
-    }
+    // if (window.show_welcome) {
+    //   // show the welcome modal when the component is mounted
+    //   this.showWelcomeModal();
+    // }
   },
   methods: {
     showWelcomeModal() {
