@@ -5,7 +5,12 @@
       <ul v-for="view in recent_views" class="list-unstyled">
         <li>
           <a v-bind:href="view.url" class="recent_view_link"
-            >{{ view.title }} ({{ view.campus }})</a
+            >{{ view.title }}
+            <div
+              class="badge text-bg-light rounded-pill text-uppercase float-end"
+            >
+              {{ view.campus }}
+            </div></a
           >
         </li>
       </ul>
