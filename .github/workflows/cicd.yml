@@ -140,7 +140,7 @@ jobs:
           -v ${PWD}:/coverage
           -e DJANGO_APP="$DJANGO_APP"
           -e "ENV=localdev" -e "AUTH=SAML_MOCK"
-          app-container
+          ${{ needs.context.outputs.image_tag }}
           bash -c ". ./docker/build_index.sh"
 
       - name: Push Image to Repository
