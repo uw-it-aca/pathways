@@ -7,6 +7,7 @@ from pathways.models.course_level import CourseLevel
 from pathways.models.curriculum import Curriculum
 from pathways.models.coi_range import COIRange
 from django.core.exceptions import ObjectDoesNotExist
+from urllib.parse import urlencode
 
 
 class Course(models.Model):
@@ -24,6 +25,24 @@ class Course(models.Model):
     coi_score = models.FloatField(null=True)
     is_bottleneck = models.BooleanField(default=False)
     is_gateway = models.BooleanField(default=False)
+
+    def get_search_results_dict(self):
+        url = urlencode({"id": self.course_id})
+        return {"id": self.course_id,
+                "contents": self.get_search_string(),
+                "title": self.course_title,
+                "description": self.course_description,
+                "score": 100,
+                "campus": self.course_campus,
+                "url": "/course?" + url}
+
+    def get_search_string(self):
+        string = "{id} {title} {description}"
+        description = self.course_description if (
+            self.course_description) else ""
+        return string.format(id=self.course_id,
+                             title=self.course_title,
+                             description=description)
 
     @staticmethod
     def get_course_list():

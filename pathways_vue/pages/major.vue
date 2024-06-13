@@ -40,14 +40,9 @@
           </div>
         </div>
 
-        <div class="order-1 row justify-content-center mb-5">
+        <div class="order-1 row justify-content-center">
           <div class="col-md-9">
-            <search-chooser
-              :prefill-id="majorID"
-              :prefill-campus="campus"
-              prefill-type="major"
-              @update:selected="switch_major"
-            />
+            <search />
           </div>
         </div>
       </div>
@@ -60,15 +55,16 @@ import Layout from "@/layout.vue";
 import MajorDetails from "@/components/major/major-details.vue";
 import ExploreMajor from "@/components/major/explore-major.vue";
 import CommonCourses from "@/components/major/common-courses.vue";
-import SearchChooser from "@/components/search/chooser.vue";
+import Search from "@/components/search/search.vue";
 import D3Cgpa from "@/components/major/d3-cgpa.vue";
 import ContactAdviser from "@/components/common/contact-adviser.vue";
+import utils from "@/utils.js";
 
 export default {
   name: "MajorComp",
   components: {
     layout: Layout,
-    "search-chooser": SearchChooser,
+    "search": Search,
     "d3-cgpa": D3Cgpa,
     "contact-adviser": ContactAdviser,
     "major-details": MajorDetails,
@@ -85,6 +81,9 @@ export default {
       showError: false,
       appName: "DawgPath",
     };
+  },
+  created() {
+    this.recentViewManager = utils.recentViewManager;
   },
   computed: {
     pageTitle: function () {
@@ -109,6 +108,7 @@ export default {
             vue.major_data = response.data;
             vue.majorTitle = vue.major_data.credential_title;
             vue.showError = false;
+            vue.recentViewManager(vue.majorTitle, "major?id=" + vue.majorID, vue.major_data.major_campus);
           })
           .catch(function () {
             vue.showError = true;

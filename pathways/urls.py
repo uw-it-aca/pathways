@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 from pathways.views.pages import DefaultPageView
 from pathways.views.api.major import MajorDetails, MajorList
 from pathways.views.api.course import CourseList, CourseDetails
+from pathways.views.api.search import Search
 from pathways.views.api.curric import CurricPrereq
 from pathways.views.api.user import UserPreference
 from pathways.views.api.coi import CourseCOI, CurricCOI
@@ -42,6 +43,9 @@ urlpatterns += [
     re_path(
         r'^api/v1/courses/details/(?P<course_abbr>[^/]*)$',
         CourseDetails.as_view(), name='course-details'),
+    re_path(
+        r'^api/v1/search/$',
+        Search.as_view(), name='search'),
     re_path(
         r'^api/v1/curric_prereq/(?P<curric_abbr>[^/]*)$',
         CurricPrereq.as_view(), name='curric-prereq'),
