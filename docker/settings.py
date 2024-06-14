@@ -40,7 +40,7 @@ LOGGING = {
         },
         "stderr_stream": {
             "()": "django.utils.log.CallbackFilter",
-            "callback": lambda record: record.levelno > logging.ERROR,
+            "callback": lambda record: record.levelno > logging.INFO,
         },
     },
     "formatters": {
@@ -63,19 +63,6 @@ LOGGING = {
             "filters": ["add_user", "stderr_stream"],
             "formatter": "pathways",
         },
-        "pathways": {
-            "filters": ["add_user", "stdout_stream"],
-            "formatter": "pathways",
-            "class": "logging.StreamHandler",
-            "stream": sys.stdout,
-        },
-        "pathways_errors": {
-            "level": "ERROR",
-            "filters": ["add_user", "stderr_stream"],
-            "formatter": "pathways",
-            "class": "logging.StreamHandler",
-            "stream": sys.stderr,
-        },
         "null": {
             "class": "logging.NullHandler",
         },
@@ -87,7 +74,7 @@ LOGGING = {
             "propagate": True,
         },
         "pathways": {
-            "handlers": ["pathways", "pathways_errors"],
+            "handlers": ["stdout", "stderr"],
             "level": "INFO",
             "propagate": True,
         },
