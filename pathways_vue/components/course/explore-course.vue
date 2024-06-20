@@ -2,7 +2,7 @@
 
 <template>
   <div class="mb-5">
-    <a :href="myplanURL">MyPlan Course Page</a>
+    <a :href="myplanURL" style="text-decoration: none;">MyPlan Course Page</a>
   </div>
 </template>
 

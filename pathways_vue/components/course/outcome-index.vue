@@ -15,11 +15,11 @@
         course outcomes.
         <a
           type="button"
-          class="btn-link text-decoration-none"
+          class="btn-link"
           aria-label="Open modal"
           @click="showCOIModal"
         >
-          Walk me through the COI <i class="bi bi-info-circle"></i>
+          Walk me through the COI
         </a>
       </p>
       <div

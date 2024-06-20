@@ -75,7 +75,7 @@
               >
               <a
                 v-bind:href="'/course?id=' + encodeURIComponent(course.course)"
-                class="router-link-active ps-3"
+                class="router-link-active ps-3 text-decoration-none"
                 :title="'Go to course ' + course.course + ' ' + course.title"
                 >{{ course.title }}</a
               >

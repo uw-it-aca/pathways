@@ -12,7 +12,7 @@
       </p>
       <ul>
         <li class="list-unstyled" v-for="info in advisingInfo" :key="info.url">
-          <a :href="info.url"><i class="bi bi-dot me-1"></i>{{ info.label }}</a>
+          <a :href="info.url" style="text-decoration: none;"><i class="bi bi-dot me-1"></i>{{ info.label }}</a>
         </li>
       </ul>
     </div>
