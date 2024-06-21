@@ -5,8 +5,7 @@
     <button
       type="button"
       class="btn btn-lg btn-link border-purple border-2 text-start w-75 bg-transparent-hover text-decoration-none mx-auto"
-      data-bs-toggle="modal"
-      data-bs-target="#searchModal"
+      @keydown="openSearch"
       @click="openSearch"
     >
       <i class="bi bi-search me-3 text-secondary"></i>
@@ -73,7 +72,7 @@
           </form>
         </div>
         <div class="modal-body" style="max-height: 600px">
-          <template v-if="show_search">
+          <template v-if="show_recent">
             <template v-if="show_results">
               <div class="d-flex">
                 <div class="me-3">
@@ -201,7 +200,7 @@ import RecentSearches from "./recent_searches.vue";
 import RecentViews from "./recent_views.vue";
 import Results from "./results.vue";
 import debounce from "debounce";
-
+import { Modal } from "bootstrap";
 
 export default {
   name: "SearchComponent",
@@ -221,7 +220,7 @@ export default {
       major_matches: [],
       course_matches: [],
       text_matches: [],
-      show_search: false,
+      show_recent: false,
       search_error: false,
       has_searched: false,
     };
@@ -233,7 +232,7 @@ export default {
         .concat(this.text_matches);
     },
     /*show_filters() {
-      return this.form_data.search_string.length > 0 && this.show_search;
+      return this.form_data.search_string.length > 0 && this.show_recent;
     },*/
     show_results() {
       return this.search_results.length > 0 || this.has_searched;
@@ -245,10 +244,18 @@ export default {
   watch: {},
   methods: {
     openSearch() {
-      this.show_search = true;
+      // initialize modal
+      this.welcomeModal = new Modal(document.getElementById("searchModal"), {});
+      this.welcomeModal.show();
+
+      // clear original search results
+      this.clearSearch();
+
+      // show recent panel
+      this.show_recent = true;
     },
     closeSearch() {
-      this.show_search = false;
+      this.show_recent = false;
     },
     clearSearch() {
       this.form_data.search_string = "";
