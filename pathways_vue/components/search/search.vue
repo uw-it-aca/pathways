@@ -261,6 +261,10 @@ export default {
       this.form_data.search_string = "";
       this.clearResults();
       this.has_searched = false;
+
+      // set focus back on search input when clearing
+      document.getElementById("search-string").focus();
+
     },
     clearResults() {
       this.major_matches = [];
