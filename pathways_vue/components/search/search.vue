@@ -264,7 +264,6 @@ export default {
 
       // set focus back on search input when clearing
       document.getElementById("search-string").focus();
-
     },
     clearResults() {
       this.major_matches = [];
