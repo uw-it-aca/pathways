@@ -5,7 +5,8 @@
     <button
       type="button"
       class="btn btn-lg btn-link border-purple border-2 text-start w-75 bg-transparent-hover text-decoration-none mx-auto"
-      @keydown="openSearch"
+      @keydown.tab.exact="false"
+      @keydown.exact="handleKeyboard"
       @click="openSearch"
     >
       <i class="bi bi-search me-3 text-secondary"></i>
@@ -243,6 +244,14 @@ export default {
   },
   watch: {},
   methods: {
+    handleKeyboard(e) {
+      // guard against tab presses when focused
+      if (e.key !== "Tab") {
+        // open the search modal
+        this.openSearch();
+        return;
+      }
+    },
     openSearch() {
       // initialize modal
       this.searchModal = new Modal(document.getElementById("searchModal"), {});
@@ -251,7 +260,7 @@ export default {
       // clear original search results
       this.clearSearch();
 
-      // show recent panel
+      // show recent search panel
       this.show_recent = true;
     },
     closeSearch() {
