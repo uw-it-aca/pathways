@@ -245,8 +245,8 @@ export default {
   methods: {
     openSearch() {
       // initialize modal
-      this.welcomeModal = new Modal(document.getElementById("searchModal"), {});
-      this.welcomeModal.show();
+      this.searchModal = new Modal(document.getElementById("searchModal"), {});
+      this.searchModal.show();
 
       // clear original search results
       this.clearSearch();
