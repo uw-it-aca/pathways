@@ -8,6 +8,7 @@ from whoosh.query import *
 from urllib.parse import urlencode
 from pathways.models.course import Course
 from pathways.models.major import Major
+import re
 
 
 logger = getLogger(__name__)
@@ -98,7 +99,8 @@ def course_id_search(course_id, campus=None):
 
 
 def course_id_direct_match(course_id, campus=None):
-    course_match = Course.objects.filter(course_id=course_id)
+    course_match = Course.objects.filter(course_id=format_course_id(course_id))
+    # course_match = Course.objects.filter(course_id=course_id)
     if campus:
         course_match = course_match.filter(course_campus=campus)
 
@@ -106,6 +108,10 @@ def course_id_direct_match(course_id, campus=None):
     for course in course_match:
         response.append(course.get_search_results_dict())
     return response
+
+
+def format_course_id(course_id):
+    return re.sub(r"([a-zA-Z]+)(\d+)", r"\1 \2", course_id)
 
 
 def major_name_direct_match(major_name, campus=None):
