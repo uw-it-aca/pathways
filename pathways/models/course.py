@@ -34,7 +34,8 @@ class Course(models.Model):
                 "description": self.course_description,
                 "score": 100,
                 "campus": self.course_campus,
-                "url": "/course?" + url}
+                "url": "/course?" + url,
+                "is_course": True}
 
     def get_search_string(self):
         string = "{id} {title} {description}"
