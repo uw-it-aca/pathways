@@ -29,14 +29,14 @@ export default {
   computed: {
     advisingInfo: function () {
       let infoArray = [];
-      if (this.campus == "tacoma") {
+      if (this.campus == "Tacoma") {
         infoArray = [
           {
             label: "Find your Tacoma adviser",
             url: "https://www.tacoma.uw.edu/gaa#permalink-37917",
           },
         ];
-      } else if (this.campus == "seattle") {
+      } else if (this.campus == "Seattle") {
         infoArray = [
           {
             label: "Find your premajor adviser",
@@ -54,7 +54,7 @@ export default {
               "majors/advising-offices-by-program",
           },
         ];
-      } else if (this.campus == "bothell") {
+      } else if (this.campus == "Bothell") {
         infoArray = [
           {
             label: "Find your Bothell adviser",

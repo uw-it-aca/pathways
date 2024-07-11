@@ -16,7 +16,7 @@
             <common-courses :major="major_data" />
           </div>
           <div class="col-md-9">
-            <contact-adviser :campus="campus" :type="'major'" />
+            <contact-adviser :campus="major_data.major_campus" :type="'major'" />
           </div>
         </div>
         <div v-else class="row order-2 justify-content-sm-center">
@@ -76,7 +76,6 @@ export default {
       selectedMajor: undefined,
       majorID: undefined,
       majorTitle: undefined,
-      campus: undefined,
       major_data: undefined,
       showError: false,
       appName: "DawgPath",
@@ -120,10 +119,6 @@ export default {
   },
   mounted() {
     this.majorID = this.$route.query.id;
-    this.campus = this.$route.query.campus;
-    if (this.campus == undefined || this.majorID == undefined) {
-      this.showError = true;
-    }
   },
   watch: {
     majorID() {
