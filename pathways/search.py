@@ -100,7 +100,6 @@ def course_id_search(course_id, campus=None):
 
 def course_id_direct_match(course_id, campus=None):
     course_match = Course.objects.filter(course_id=format_course_id(course_id))
-    # course_match = Course.objects.filter(course_id=course_id)
     if campus:
         course_match = course_match.filter(course_campus=campus)
 

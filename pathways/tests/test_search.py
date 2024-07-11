@@ -1,3 +1,5 @@
+# Copyright 2024 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
 from pathways.search import format_course_id
 from django.test import TestCase
 
