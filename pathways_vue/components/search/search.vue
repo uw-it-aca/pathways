@@ -217,6 +217,8 @@ export default {
         search_string: "",
         campus: [],
         type: [],
+        prev_campus: [],
+        prev_type: [],
       },
       major_matches: [],
       course_matches: [],
@@ -286,8 +288,20 @@ export default {
     debouncedSearch: debounce(function () {
       this.runSearch();
     }, 500),
+    handleFilterToggle() {
+      if(this.form_data.prev_campus !== this.form_data.campus){
+        this.form_data.campus = this.form_data.campus.filter((item) => !this.form_data.prev_campus.includes(item));
+      }
+      if(this.form_data.prev_type !== this.form_data.type){
+        this.form_data.type = this.form_data.type.filter((item) => !this.form_data.prev_type.includes(item));
+      }
+      this.form_data.prev_type = this.form_data.type;
+      this.form_data.prev_campus = this.form_data.campus;
+
+    },
     runSearch() {
       const vue = this;
+      this.handleFilterToggle();
       this.clearResults();
       this.addToRecent(this.search_string);
       this.axios
