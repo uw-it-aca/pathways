@@ -50,8 +50,8 @@ export default {
           {
             label: "Find your departmental or major adviser",
             url:
-              "https://www.washington.edu/uaa/advising/degree-overview/" +
-              "majors/advising-offices-by-program",
+              "https://advising.uw.edu/academic-support" +
+              "/advising-offices-by-program/"
           },
         ];
       } else if (this.campus == "Bothell") {
