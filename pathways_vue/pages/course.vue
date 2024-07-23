@@ -53,14 +53,9 @@
           </div>
         </div>
 
-        <div class="order-1 row justify-content-center mb-5">
+        <div class="order-1 row justify-content-center">
           <div class="col-md-9">
-            <search-chooser
-              :prefill-id="courseId"
-              :prefill-campus="courseCampus"
-              prefill-type="course"
-              @update:selected="switch_course"
-            />
+            <search />
           </div>
         </div>
       </div>
@@ -70,7 +65,7 @@
 
 <script>
 import Layout from "@/layout.vue";
-import SearchChooser from "@/components/search/chooser.vue";
+import Search from "@/components/search/search.vue";
 import GradeDistribution from "@/components/course/grade-distribution.vue";
 import CourseDetails from "@/components/course/course-details.vue";
 import ExploreCourse from "@/components/course/explore-course.vue";
@@ -78,12 +73,13 @@ import OutcomeIndex from "@/components/course/outcome-index.vue";
 import PrereqMap from "@/components/course/prereq-map.vue";
 import ConcurrentCourses from "@/components/course/concurrent-courses.vue";
 import ContactAdviser from "@/components/common/contact-adviser.vue";
+import utils from "@/utils.js";
 
 export default {
   name: "CourseComp",
   components: {
     layout: Layout,
-    "search-chooser": SearchChooser,
+    "search": Search,
     "course-details": CourseDetails,
     "explore-course": ExploreCourse,
     "grade-distribution": GradeDistribution,
@@ -101,6 +97,9 @@ export default {
       showError: false,
       appName: "DawgPath",
     };
+  },
+  created() {
+    this.recentViewManager = utils.recentViewManager;
   },
   computed: {
     pageTitle: function () {
@@ -138,6 +137,7 @@ export default {
           vue.courseCampus = response.data.course_campus;
           //vue.courseTitle = this.courseId + ': ' + response.data.course_title + ' - Course ';
           vue.courseTitle = this.courseId + ": " + response.data.course_title;
+          vue.recentViewManager(vue.courseId, "course?id=" + vue.courseId, vue.courseCampus);
         })
         .catch(function () {
           vue.showError = true;

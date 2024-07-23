@@ -121,3 +121,6 @@ manifest.json
 # cypress image snapshots diffs
 screenshots/
 __diff_output__/
+
+# search index
+indexdir/

@@ -95,6 +95,7 @@ jobs:
       - name: Build App Image
         uses: docker/build-push-action@v3
         with:
+          context: .
           target: app-container
           tags: ${{ needs.context.outputs.image_tag }}
           push: false
@@ -129,6 +130,18 @@ jobs:
           python -m pip install --upgrade pip coverage coveralls==3.3.1
           coverage combine
           coveralls
+
+      - name: Build Search Index
+        if: github.event_name == 'push'
+        id: search
+        shell: bash
+        run: >-
+          docker run -u root -t
+          -v ${PWD}:/coverage
+          -e DJANGO_APP="$DJANGO_APP"
+          -e "ENV=localdev" -e "AUTH=SAML_MOCK"
+          ${{ needs.context.outputs.image_tag }}
+          bash -c ". ./docker/build_index.sh"
 
       - name: Push Image to Repository
         if: github.event_name == 'push'

@@ -14,6 +14,7 @@ services:
     volumes:
       - ./pathways:/app/pathways
       - statics-volume:/static
+      - ./indexdir:/app/indexdir
     ports:
       - "${RUNSERVER_PORT:-8000}:8000"
     stdin_open: true
