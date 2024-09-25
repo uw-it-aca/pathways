@@ -15,7 +15,7 @@
             </p>
             <p class="lead">
               It also provides useful data when you're planning to apply to
-              highly selective majors.
+              capacity-constrained majors.
             </p>
 
             <p>A few things to keep in mind before getting started:</p>

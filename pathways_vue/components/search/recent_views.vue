@@ -4,7 +4,7 @@
     <div v-if="recent_views">
       <ul v-for="view in recent_views" class="list-unstyled">
         <li>
-          <a v-bind:href="view.url" class="recent_view_link"
+          <a v-bind:href="view.url" class="recent-view-link"
             >{{ view.title }}
             <div
               class="badge text-bg-light rounded-pill text-uppercase float-end"
@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style lang="scss">
-a.recent_view_link {
+a.recent-view-link {
   text-transform: capitalize;
 }
 </style>

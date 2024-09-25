@@ -303,6 +303,7 @@ export default {
         })
         .catch((error) => {
           this.search_error = true;
+          console.log(error);
         });
     },
     addToRecent(searchString) {
@@ -347,9 +348,8 @@ export default {
 }
 
 .form-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
   text-indent: 1px;
+  appearance: none;
 }
 
 .blah:focus {
