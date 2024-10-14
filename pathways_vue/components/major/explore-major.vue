@@ -111,7 +111,7 @@ export default {
       let url = "";
       if (this.major["career_center_major"] !== null) {
         url =
-          "https://careers.uw.edu/outcomes/#!" +
+          "https://admit.washington.edu/majors/" +
           this.major["career_center_major"];
       }
       return url;
