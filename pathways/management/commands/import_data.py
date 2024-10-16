@@ -21,7 +21,7 @@ COURSE_PATH = "pathways/data/course_data.json"
 CURRIC_PATH = "pathways/data/curric_data.json"
 BOTTLENECK_PATH = "pathways/data/bottleneck_courses.csv"
 GATEWAY_PATH = "pathways/data/gateway_courses.csv"
-CAREER_CENTER_PATH = "pathways/data/career_center_major_mapping.csv"
+CAREER_CENTER_PATH = "pathways/data/admit_major_mapping.csv"
 
 
 class Command(BaseCommand):
