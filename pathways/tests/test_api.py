@@ -4,6 +4,10 @@
 from pathways.tests import ApiTest
 from pathways.views.api.major import MajorDetails, MajorList
 from pathways.views.api.coi import CurricCOI, CourseCOI
+from pathways.views.api.user import UserPreference
+from django.test import RequestFactory
+from django.contrib.auth.models import User
+from unittest.mock import patch
 import json
 
 
@@ -27,6 +31,13 @@ class TestMajorApi(ApiTest):
         self.assertIn("http", major_details['major_home_url'])
         self.assertEqual(major_details['gpa_2yr'][0]['count'], 0)
 
+    def test_errors(self):
+        response = MajorList.as_view()(self.request, major_campus="pluto")
+        self.assertEqual(response.status_code, 400)
+        response = MajorDetails.as_view()(self.request,
+                                          credential_abbr="Fake-Cred")
+        self.assertEqual(response.status_code, 404)
+
 
 class TestCoiApi(ApiTest):
     def setUp(self):
@@ -46,3 +57,25 @@ class TestCoiApi(ApiTest):
         self.assertEqual(len(course_coi), 19)
         self.assertEqual(course_coi[0]['score'], 2.1)
         self.assertEqual(course_coi[0]['course_id'], "TRAIN 1")
+
+
+class TestUserApi(ApiTest):
+    def setUp(self):
+        super(TestUserApi, self).setUp()
+
+    @patch('pathways.views.api.user.get_user', return_value='javerage')
+    def test_user(self, mock_get_user):
+        request = RequestFactory().post('/',
+                                        data={
+                                            'viewed_welcome_display': True,
+                                            'viewed_bottleneck_banner': True,
+                                            'viewed_outcomes_banner': True,
+                                            'viewed_coi_banner': True
+                                        },
+                                        content_type='application/json')
+        request.user = User()
+        response = UserPreference.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+
+        response = UserPreference.as_view()(request)
+        self.assertEqual(response.status_code, 304)
