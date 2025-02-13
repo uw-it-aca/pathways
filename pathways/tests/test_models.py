@@ -52,7 +52,7 @@ class ImportTest(TestCase):
             'department_abbrev': 'CHEM',
             'course_title': 'Chemistry 103',
             'course_credits': '5',
-            'course_campus': 'Seattle',
+            'course_campus': 'Bothell',
             'gpa_distro': {'A': 0.2, 'B': 0.3, 'C': 0.4},
             'concurrent_courses': ['CHEM 101', 'CHEM 102'],
             'prereq_graph': json.dumps({'CHEM 102': ['CHEM 103']}),
@@ -127,3 +127,24 @@ class ImportTest(TestCase):
                           'percent_in_range': 50.0})
         self.assertEqual(json_data['is_bottleneck'], False)
         self.assertEqual(json_data['is_gateway'], False)
+
+
+    def test_course_list(self):
+        course_list = Course.get_course_list()
+        self.assertEqual(course_list, [
+            {'key': 'CHEM 101', 'value': 'CHEM 101: Chemistry 101'},
+            {'key': 'CHEM 102', 'value': 'CHEM 102: Chemistry 102'},
+            {'key': 'CHEM 103', 'value': 'CHEM 103: Chemistry 103'}
+        ])
+
+    def test_get_course_list_by_campus(self):
+        course_list = Course.get_course_list_by_campus('Seattle')
+        self.assertEqual(course_list, [
+            {'key': 'CHEM 101', 'value': 'CHEM 101: Chemistry 101'},
+            {'key': 'CHEM 102', 'value': 'CHEM 102: Chemistry 102'}
+        ])
+
+    def test_get_course_data(self):
+        data = Course.get_course_data('CHEM 101')
+        self.assertEqual(data['course_id'], 'CHEM 101')
+

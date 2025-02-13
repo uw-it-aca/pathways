@@ -70,11 +70,6 @@ class Course(models.Model):
     def get_course_data(course_id):
         return Course.objects.get(course_id=course_id).json_data()
 
-    @staticmethod
-    def get_course_data_by_campus(campus, course_id):
-        return Course.objects.get(course_campus=campus,
-                                  course_id=course_id).json_data()
-
     def json_data(self):
         graph = None
         if self.prereq_graph:
