@@ -35,7 +35,7 @@ class UserPreference(RESTDispatch):
                 user_updated = True
                 user.has_viewed_outcomes_banner = outcomes_display
         if coi_display is not None:
-            if coi_display != user.has_viewed_outcomes_banner:
+            if coi_display != user.has_viewed_coi_banner:
                 user_updated = True
                 user.has_viewed_coi_banner = coi_display
         if user_updated:
