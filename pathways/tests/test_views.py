@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.urls import reverse
 from django.urls.exceptions import NoReverseMatch
-from django.conf import settings
 from pathways.views.pages import DefaultPageView
 from importlib import reload
 import mock
