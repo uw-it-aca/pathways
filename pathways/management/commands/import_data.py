@@ -25,7 +25,6 @@ CAREER_CENTER_PATH = "pathways/data/admit_major_mapping.csv"
 
 
 class Command(BaseCommand):
-    help = 'Run all unit tests'
 
     def handle(self, *args, **options):
         start = time.time()
