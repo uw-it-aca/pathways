@@ -35,4 +35,5 @@ class ViteTestClass(TestCase):
 class HashTestClass(TestCase):
     def test_hash_netid(self):
         self.assertEqual(hash_netid(None), '')
-        self.assertEqual(hash_netid('javerage'), 'c13c917a1822a8acd58c48d2c8c6880a')
+        self.assertEqual(hash_netid('javerage'),
+                         'c13c917a1822a8acd58c48d2c8c6880a')
