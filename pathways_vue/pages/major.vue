@@ -16,6 +16,9 @@
             <common-courses :major="major_data" />
           </div>
           <div class="col-md-9">
+            <similar-major similar-major-data="{}" />
+          </div>
+          <div class="col-md-9">
             <contact-adviser :campus="major_data.major_campus" :type="'major'" />
           </div>
         </div>
@@ -59,6 +62,7 @@ import Search from "@/components/search/search.vue";
 import D3Cgpa from "@/components/major/d3-cgpa.vue";
 import ContactAdviser from "@/components/common/contact-adviser.vue";
 import utils from "@/utils.js";
+import SimilarMajor from "../components/major/similar-major.vue";
 
 export default {
   name: "MajorComp",
@@ -70,6 +74,7 @@ export default {
     "major-details": MajorDetails,
     "explore-major": ExploreMajor,
     "common-courses": CommonCourses,
+    "similar-major": SimilarMajor,
   },
   data() {
     return {
