@@ -136,7 +136,7 @@ export default {
                     "title": "Similar Major 1- General",
                     "college": "College of Arts and Sciences",
                     "campus": "Seattle",
-                    "admission": "minimumRequirements",
+                    "admission": "Athlete-Only",
                     "isStem": true
                   }
                 ]
@@ -154,8 +154,8 @@ export default {
                 "id": 4,
                 "title": "Similar Major 2",
                 "college": "Information School",
-                "campus": "Tacoma",
-                "admission": "VIP Only",
+                "campus": "Bothell",
+                "admission": "minimumRequirements",
                 "isStem": false,
                 childMajors: []
               }
