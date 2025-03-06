@@ -14,7 +14,7 @@
         href="/faq#admission_types"
         class="router-link-active text-capitalize"
         title="Admission to majors"
-        >{{ AdminReqs }}</a
+        ><major-capacity-display :admissionType="this.major.major_admission" /></a
       >
     </p>
     <div class="major-info">
@@ -26,8 +26,13 @@
 </template>
 
 <script>
+import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
+
 export default {
   name: "MajorDetails",
+  components: {
+    MajorCapacityDisplay,
+  },
   props: {
     major: {
       type: Object,
@@ -36,16 +41,6 @@ export default {
   },
   data() {
     return {};
-  },
-  methods: {},
-  computed: {
-    AdminReqs() {
-      if (this.major["major_admission"] === "minimumRequirements") {
-        return "Minimum Requirements";
-      } else {
-        return this.major["major_admission"];
-      }
-    },
   },
 };
 </script>

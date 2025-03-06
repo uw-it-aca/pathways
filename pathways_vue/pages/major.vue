@@ -120,7 +120,7 @@ export default {
                 "title": "Similar Major 1",
                 "college": "College of Arts and Sciences",
                 "campus": "Seattle",
-                "admission": "Open",
+                "admission": "open",
                 "isStem": true,
                 childMajors: [
                   {
@@ -128,7 +128,7 @@ export default {
                     "title": "Similar Major 1- Specialty",
                     "college": "College of Arts and Sciences",
                     "campus": "Seattle",
-                    "admission": "Open",
+                    "admission": "open",
                     "isStem": true
                   },
                   {
@@ -136,7 +136,7 @@ export default {
                     "title": "Similar Major 1- General",
                     "college": "College of Arts and Sciences",
                     "campus": "Seattle",
-                    "admission": "Minimum Req",
+                    "admission": "minimumRequirements",
                     "isStem": true
                   }
                 ]
@@ -146,7 +146,7 @@ export default {
                 "title": "Similar Major 2",
                 "college": "Information School",
                 "campus": "Tacoma",
-                "admission": "Closed",
+                "admission": "capacity-constrained",
                 "isStem": false,
                 childMajors: []
               },
