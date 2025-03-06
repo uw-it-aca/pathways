@@ -16,7 +16,7 @@
             <common-courses :major="major_data" />
           </div>
           <div class="col-md-9">
-            <similar-major similar-major-data="{}" />
+            <similar-major :similar-major-data="major_data.similar_majors" />
           </div>
           <div class="col-md-9">
             <contact-adviser :campus="major_data.major_campus" :type="'major'" />
@@ -113,6 +113,53 @@ export default {
             vue.majorTitle = vue.major_data.credential_title;
             vue.showError = false;
             vue.recentViewManager(vue.majorTitle, "major?id=" + vue.majorID, vue.major_data.major_campus);
+            // mock similar major data
+            vue.major_data.similar_majors = [
+              {
+                "id": 1,
+                "title": "Similar Major 1",
+                "college": "College of Arts and Sciences",
+                "campus": "Seattle",
+                "admission": "Open",
+                "isStem": true,
+                childMajors: [
+                  {
+                    "id": 2,
+                    "title": "Similar Major 1- Specialty",
+                    "college": "College of Arts and Sciences",
+                    "campus": "Seattle",
+                    "admission": "Open",
+                    "isStem": true
+                  },
+                  {
+                    "id": 3,
+                    "title": "Similar Major 1- General",
+                    "college": "College of Arts and Sciences",
+                    "campus": "Seattle",
+                    "admission": "Minimum Req",
+                    "isStem": true
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "title": "Similar Major 2",
+                "college": "Information School",
+                "campus": "Tacoma",
+                "admission": "Closed",
+                "isStem": false,
+                childMajors: []
+              },
+              {
+                "id": 4,
+                "title": "Similar Major 2",
+                "college": "Information School",
+                "campus": "Tacoma",
+                "admission": "VIP Only",
+                "isStem": false,
+                childMajors: []
+              }
+            ];
           })
           .catch(function () {
             vue.showError = true;
