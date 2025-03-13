@@ -1,4 +1,4 @@
-# Copyright 2024 UW-IT, University of Washington
+# Copyright 2025 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from django.core.management.base import BaseCommand
@@ -25,7 +25,6 @@ CAREER_CENTER_PATH = "pathways/data/admit_major_mapping.csv"
 
 
 class Command(BaseCommand):
-    help = 'Run all unit tests'
 
     def handle(self, *args, **options):
         start = time.time()

@@ -1,6 +1,7 @@
 [run]
 source = pathways
 parallel = True
+omit = */migrations/*,*/tests/*
 
 [paths]
 source =
