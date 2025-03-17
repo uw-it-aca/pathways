@@ -1,7 +1,7 @@
 # Copyright 2024 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from pathways.models.major import Major
+from pathways.models.major import Major, SimilarMajor
 from pathways.models.course import Course
 from pathways.models.curriculum import Curriculum
 from pathways.models.course_level import CourseLevel
@@ -203,3 +203,26 @@ def import_career_center_mapping(career_major_data):
         except ObjectDoesNotExist:
             pass
     Major.objects.bulk_update(majors_to_update, ['career_center_major'])
+
+
+def import_similar_majors(similar_major_data):
+    majors_to_update = []
+    similar_majors_to_create = []
+    for row in similar_major_data:
+        try:
+            major = Major.objects.get(credential_code=row[0])
+            similar_major = Major.objects.get(credential_code=row[1])
+            if(row[2] == "1"):
+                similar_major.is_stem = True
+                majors_to_update.append(similar_major)
+            desc = SimilarMajor.get_similarity_from_string(row[4])
+            similar_majors_to_create.append(
+                SimilarMajor(source_major=major,
+                             similar_major=similar_major,
+                             similarity_score=row[3],
+                             similarity_description=desc)
+            )
+        except ObjectDoesNotExist:
+            pass
+    Major.objects.bulk_update(majors_to_update, ['is_stem'])
+    SimilarMajor.objects.bulk_create(similar_majors_to_create, batch_size=1000)

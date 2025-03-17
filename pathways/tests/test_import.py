@@ -2,18 +2,19 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import json
-
+import csv
 from django.test import TestCase
 from pathways.data_import import (
     import_major_data, import_level_coi, import_coi_ranges, _get_course_coi,
     _get_curric_coi)
-from pathways.models.major import Major
+from pathways.models.major import Major, SimilarMajor
 from pathways.models.course_level import CourseLevel
 from pathways.models.coi_range import COIRange
 
 
 class ImportTest(TestCase):
     test_file_data = None
+    similar_major_file = []
     coi_data = [{"course_id": "CHEM 101", "coi_score": 2.1},
                 {"course_id": "BIO 199", "coi_score": -1},
                 {"course_id": "CHEM 201", "coi_score": 3.0},
@@ -29,13 +30,20 @@ class ImportTest(TestCase):
     def setUp(self):
         with open('pathways/tests/sample_major_import.json') as json_file:
             self.test_file_data = json.load(json_file)
+        with open('pathways/tests/sample_similar_majors.csv') as csv_file:
+            self.similar_major_file = []
+            reader = csv.reader(csv_file)
+            # skip headers
+            next(reader)
+            for line in reader:
+                self.similar_major_file.append(line)
 
     def test_major(self):
         majors = Major.objects.all()
         self.assertEqual(len(majors), 0)
         import_major_data(self.test_file_data)
         majors = Major.objects.all()
-        self.assertEqual(len(majors), 1)
+        self.assertEqual(len(majors), 3)
 
         self.assertEqual(majors[0].major_abbr, "TRAIN")
         url = "www.washington.edu/students/gencat/academic/rail_stud.html"
@@ -68,3 +76,7 @@ class ImportTest(TestCase):
         curric_coi = _get_curric_coi(self.coi_data)
         self.assertEqual(curric_coi.get("A A"), [1.1])
         self.assertEqual(curric_coi.get("CHEM"), [2.1, 3.0, 3.5, 2.1])
+
+    def test_similar_major(self):
+        print(self.similar_major_file)
+        pass

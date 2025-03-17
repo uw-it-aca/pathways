@@ -14,14 +14,14 @@ class TestMajorApi(ApiTest):
     def test_list(self):
         response = MajorList.as_view()(self.request, major_campus="seattle")
         major_list = json.loads(response.content)
-        self.assertEqual(len(major_list), 1)
-        self.assertEqual(major_list[0]['key'], "TRAIN-2-1_0")
+        self.assertEqual(len(major_list), 3)
+        self.assertEqual(major_list[0]['key'], "TRAIN-2-1-0")
         self.assertEqual(major_list[0]['value'],
                          "Railroad Studies degree in switching")
 
     def test_details(self):
         response = MajorDetails.as_view()(self.request,
-                                          credential_abbr="TRAIN-2-1_0",
+                                          credential_abbr="TRAIN-2-1-0",
                                           major_campus="seattle")
         major_details = json.loads(response.content)
         self.assertIn("http", major_details['major_home_url'])

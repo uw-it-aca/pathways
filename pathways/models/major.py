@@ -23,6 +23,7 @@ class Major(models.Model):
     credential_code = models.CharField(max_length=25, null=True)
     credential_description = models.TextField(null=True)
     career_center_major = models.TextField(null=True)
+    is_stem = models.BooleanField(default=False)
 
     def get_search_string(self):
         string = "{abbr} {title} {description}"
@@ -80,7 +81,8 @@ class Major(models.Model):
                 "credential_description": self.credential_description,
                 "credential_title": self.credential_title,
                 "credential_code": self.credential_code,
-                "career_center_major": self.career_center_major}
+                "career_center_major": self.career_center_major,
+                "is_stem": self.is_stem,}
 
     @staticmethod
     def fix_gpa_json(json):
@@ -122,3 +124,61 @@ class Major(models.Model):
             # No common courses
             pass
         return common_with_coi
+
+class SimilarMajor(models.Model):
+    VERY_LOW = "VL"
+    LOW = "L"
+    MID = "M"
+    HIGH = "H"
+    SIMILARITY_DESCRIPTIONS = (
+        (VERY_LOW, "Very Low"),
+        (LOW, "Low"),
+        (MID, "Mid"),
+        (HIGH, "High")
+    )
+
+    source_major = models.ForeignKey(Major,
+                                     on_delete=models.CASCADE,
+                                     related_name='source_major')
+    similar_major = models.ForeignKey(Major,
+                                      on_delete=models.CASCADE,
+                                      related_name='similar_major')
+    similarity_score = models.FloatField()
+    similarity_description = models.TextField(choices=SIMILARITY_DESCRIPTIONS)
+
+    @classmethod
+    def get_similar_major_json(cls, major):
+        """
+        Get similar majors for a given major in hierarchical format.
+        """
+        similar_majors = (cls.objects.filter(source_major=major)
+                          .select_related('similar_major'))
+        major_data = {}
+        child_majors = []
+        # TODO: get this codegen working
+        for similar_major in similar_majors:
+            if similar_major.similar_major._is_parent_major():
+                major_data["major"] = similar_major.similar_major.major_abbr
+                major_data["similarity_score"] = similar_major.similarity_score
+                major_data["similarity_description"] = \
+                    similar_major.similarity_description
+            else:
+                child_majors.append(similar_major.similar_major)
+
+    @classmethod
+    def get_similarity_from_string(cls, similarity_string):
+        similarity_map = {
+            "Very Low": cls.VERY_LOW,
+            "Low": cls.LOW,
+            "Mid": cls.MID,
+            "High": cls.HIGH
+        }
+        return similarity_map.get(similarity_string)
+
+
+
+    def _is_parent_major(self):
+        """
+        Check if the major is a parent major (deg_major_pathway == 0).
+        """
+        return self.similar_major.credential_code.split("-")[1] == "0"
