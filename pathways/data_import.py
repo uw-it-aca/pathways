@@ -9,6 +9,10 @@ from pathways.models.coi_range import COIRange
 from django.core.exceptions import ObjectDoesNotExist
 import statistics
 import json
+from logging import getLogger
+
+
+logger = getLogger(__name__)
 
 
 def import_major_data(data):
@@ -205,24 +209,32 @@ def import_career_center_mapping(career_major_data):
     Major.objects.bulk_update(majors_to_update, ['career_center_major'])
 
 
+def import_stem_from_similar_majors(similar_major_data):
+    stem_majors = {}
+    for row in similar_major_data:
+        if row[1] == "1":
+            stem_majors[row[0]] = True
+        if row[3] == "1":
+            stem_majors[row[2]] = True
+    stem_credential_codes = stem_majors.keys()
+    (Major.objects.filter(credential_code__in=stem_credential_codes)
+     .update(is_stem=True))
+
+
 def import_similar_majors(similar_major_data):
-    majors_to_update = []
     similar_majors_to_create = []
     for row in similar_major_data:
         try:
             major = Major.objects.get(credential_code=row[0])
-            similar_major = Major.objects.get(credential_code=row[1])
-            if(row[2] == "1"):
-                similar_major.is_stem = True
-                majors_to_update.append(similar_major)
-            desc = SimilarMajor.get_similarity_from_string(row[4])
+            similar_major = Major.objects.get(credential_code=row[2])
+            desc = SimilarMajor.get_similarity_from_string(row[5])
             similar_majors_to_create.append(
                 SimilarMajor(source_major=major,
                              similar_major=similar_major,
-                             similarity_score=row[3],
+                             similarity_score=row[4],
                              similarity_description=desc)
             )
-        except ObjectDoesNotExist:
+        except ObjectDoesNotExist as ex:
+            logger.info(f"Could not find major one of {row[0]} or {row[2]}")
             pass
-    Major.objects.bulk_update(majors_to_update, ['is_stem'])
     SimilarMajor.objects.bulk_create(similar_majors_to_create, batch_size=1000)

@@ -82,7 +82,7 @@ class Major(models.Model):
                 "credential_title": self.credential_title,
                 "credential_code": self.credential_code,
                 "career_center_major": self.career_center_major,
-                "is_stem": self.is_stem,}
+                "is_stem": self.is_stem}
 
     @staticmethod
     def fix_gpa_json(json):
@@ -125,18 +125,13 @@ class Major(models.Model):
             pass
         return common_with_coi
 
-class SimilarMajor(models.Model):
-    VERY_LOW = "VL"
-    LOW = "L"
-    MID = "M"
-    HIGH = "H"
-    SIMILARITY_DESCRIPTIONS = (
-        (VERY_LOW, "Very Low"),
-        (LOW, "Low"),
-        (MID, "Mid"),
-        (HIGH, "High")
-    )
 
+class SimilarMajor(models.Model):
+    class Description(models.TextChoices):
+        VERY_LOW = "VL", "Very Low"
+        LOW = "L", "Low"
+        MID = "M", "Mid"
+        HIGH = "H", "High"
     source_major = models.ForeignKey(Major,
                                      on_delete=models.CASCADE,
                                      related_name='source_major')
@@ -144,7 +139,7 @@ class SimilarMajor(models.Model):
                                       on_delete=models.CASCADE,
                                       related_name='similar_major')
     similarity_score = models.FloatField()
-    similarity_description = models.TextField(choices=SIMILARITY_DESCRIPTIONS)
+    similarity_description = models.TextField(choices=Description.choices)
 
     @classmethod
     def get_similar_major_json(cls, major):
@@ -168,14 +163,12 @@ class SimilarMajor(models.Model):
     @classmethod
     def get_similarity_from_string(cls, similarity_string):
         similarity_map = {
-            "Very Low": cls.VERY_LOW,
-            "Low": cls.LOW,
-            "Mid": cls.MID,
-            "High": cls.HIGH
+            "Very Low": cls.Description.VERY_LOW,
+            "Low": cls.Description.LOW,
+            "Mid": cls.Description.MID,
+            "High": cls.Description.HIGH
         }
         return similarity_map.get(similarity_string)
-
-
 
     def _is_parent_major(self):
         """
