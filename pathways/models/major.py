@@ -25,6 +25,12 @@ class Major(models.Model):
     career_center_major = models.TextField(null=True)
     is_stem = models.BooleanField(default=False)
 
+    def is_parent_major(self):
+        """
+        Check if the major is a parent major (deg_major_pathway == 0).
+        """
+        return self.credential_code.split("-")[1] == "0"
+
     def get_search_string(self):
         string = "{abbr} {title} {description}"
         return string.format(abbr=self.major_abbr,
@@ -84,6 +90,14 @@ class Major(models.Model):
                 "career_center_major": self.career_center_major,
                 "is_stem": self.is_stem}
 
+    def similar_major_json(self):
+        return {"credential_code": self.credential_code,
+                "credential_title": self.credential_title,
+                "major_school": self.major_school,
+                "campus": self.major_campus,
+                "is_stem": self.is_stem,
+                "major_admission": self.major_admission}
+
     @staticmethod
     def fix_gpa_json(json):
         fixed = []
@@ -142,23 +156,34 @@ class SimilarMajor(models.Model):
     similarity_description = models.TextField(choices=Description.choices)
 
     @classmethod
-    def get_similar_major_json(cls, major):
+    def json_data_by_major(cls, major):
         """
         Get similar majors for a given major in hierarchical format.
         """
         similar_majors = (cls.objects.filter(source_major=major)
                           .select_related('similar_major'))
-        major_data = {}
-        child_majors = []
-        # TODO: get this codegen working
-        for similar_major in similar_majors:
-            if similar_major.similar_major._is_parent_major():
-                major_data["major"] = similar_major.similar_major.major_abbr
-                major_data["similarity_score"] = similar_major.similarity_score
-                major_data["similarity_description"] = \
-                    similar_major.similarity_description
+        majors_by_program = {}
+        for sm in similar_majors:
+            program_code = sm.similar_major.program_code
+            (majors_by_program.setdefault(program_code, [])
+             .append(sm.similar_major))
+
+        major_data = []
+        for pc, majors in majors_by_program.items():
+            if len(majors) > 1:
+                parent_major = next(
+                    (m for m in majors if m.is_parent_major()), None)
+                child_json = [m.similar_major_json() for m in majors
+                              if not m.is_parent_major()]
+                if parent_major:
+                    parent_json = parent_major.similar_major_json()
+                    parent_json['submajors'] = child_json
+                    major_data.append(parent_json)
+                else:
+                    major_data.extend(child_json)
             else:
-                child_majors.append(similar_major.similar_major)
+                major_data.append(majors[0].similar_major_json())
+        return major_data
 
     @classmethod
     def get_similarity_from_string(cls, similarity_string):

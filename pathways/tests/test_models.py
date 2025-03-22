@@ -5,7 +5,7 @@ import json
 
 from django.test import TestCase
 from pathways.models.course import Course
-from pathways.models.major import Major
+from pathways.models.major import Major, SimilarMajor
 from pathways.models.curriculum import Curriculum
 from pathways.models.course_level import CourseLevel
 from pathways.models.coi_range import COIRange
@@ -13,7 +13,7 @@ from pathways.models.user import User
 from pathways.models.data_import import DataImport
 
 
-class ImportTest(TestCase):
+class ModelTest(TestCase):
 
     def setUp(self):
         course_1 = {
@@ -94,14 +94,54 @@ class ImportTest(TestCase):
                              major_admission='Open',
                              program_code='CHEM',
                              credential_title='Chemistry',
+                             credential_code='CHEM-0-1-2',
                              credential_description='This is chemistry.',
                              )
         Major.objects.create(major_abbr='TEST',
                              major_title='Test',
                              major_school='Test School',
                              major_campus='Test Campus',
-                             program_code='TEST'
+                             credential_title='Test',
+                             program_code='TEST',
+                             credential_code='TEST-0-3-4',
+                             major_admission='capacity-constrained'
                              )
+        Major.objects.create(major_abbr='TEST:C',
+                             major_title='Test Child Major',
+                             major_school='Test School',
+                             major_campus='Test Campus',
+                             credential_title='Test Child',
+                             program_code='TEST',
+                             credential_code='TEST-10-3-4',
+                             major_admission='open'
+                             )
+        Major.objects.create(major_abbr='OTHER',
+                             major_title='Other',
+                             major_school='Other School',
+                             major_campus='Other Campus',
+                             credential_title='Other',
+                             program_code='OTHER',
+                             credential_code='OTHER-10-3-4',
+                             major_admission='capacity-constrained'
+                             )
+        chem_major = Major.objects.get(credential_code='CHEM-0-1-2')
+        test_major = Major.objects.get(credential_code='TEST-0-3-4')
+        test_submajor = Major.objects.get(credential_code='TEST-10-3-4')
+        other_major = Major.objects.get(credential_code='OTHER-10-3-4')
+        vl = SimilarMajor.Description.VERY_LOW
+        h = SimilarMajor.Description.HIGH
+        SimilarMajor.objects.create(source_major=chem_major,
+                                    similar_major=test_major,
+                                    similarity_score=0.5123,
+                                    similarity_description=vl)
+        SimilarMajor.objects.create(source_major=chem_major,
+                                    similar_major=test_submajor,
+                                    similarity_score=0.954,
+                                    similarity_description=h)
+        SimilarMajor.objects.create(source_major=chem_major,
+                                    similar_major=other_major,
+                                    similarity_score=0.123,
+                                    similarity_description=vl)
 
     def test_search_string(self):
         course = Course.objects.get(course_id='CHEM 101')
@@ -263,7 +303,9 @@ class ImportTest(TestCase):
         major_list = Major.get_major_list()
         self.assertEqual(major_list, [
             {'key': 'CHEM', 'value': 'Chemistry'},
-            {'key': 'TEST', 'value': 'Test'}
+            {'key': 'TEST', 'value': 'Test'},
+            {'key': 'TEST:C', 'value': 'Test Child Major'},
+            {'key': 'OTHER', 'value': 'Other'}
         ])
 
     def test_major_fix_gpa(self):
@@ -284,3 +326,22 @@ class ImportTest(TestCase):
         major = Major.objects.get(major_abbr='CHEM')
         response = major.get_common_with_coi_and_flags()
         self.assertEqual(response, {})
+
+    def test_is_parent_major(self):
+        self.assertTrue(SimilarMajor.objects.get(
+            similar_major__credential_code='TEST-0-3-4')._is_parent_major())
+        self.assertFalse(SimilarMajor.objects.get(
+            similar_major__credential_code='TEST-10-3-4')._is_parent_major())
+
+    def test_similar_major_json(self):
+        major = Major.objects.get(major_abbr='CHEM')
+        sm = SimilarMajor.json_data_by_major(major)
+        self.assertEqual(len(sm), 2)
+        self.assertEqual(len(sm[0]['submajors']), 1)
+        self.assertDictEqual(sm[1], {'credential_code': 'OTHER-10-3-4',
+                                     'credential_title': 'Other',
+                                     'campus': 'Other Campus',
+                                     'major_admission': 'capacity-constrained',
+                                     'major_school': 'Other School',
+                                     'is_stem': False,
+                                     })
