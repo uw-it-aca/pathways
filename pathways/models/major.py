@@ -162,6 +162,7 @@ class SimilarMajor(models.Model):
         """
         similar_majors = (cls.objects.filter(source_major=major)
                           .select_related('similar_major'))
+        # Group similar majors by program code
         majors_by_program = {}
         for sm in similar_majors:
             program_code = sm.similar_major.program_code
@@ -170,6 +171,7 @@ class SimilarMajor(models.Model):
 
         major_data = []
         for pc, majors in majors_by_program.items():
+            # If multiple majors in program group by parent
             if len(majors) > 1:
                 parent_major = next(
                     (m for m in majors if m.is_parent_major()), None)

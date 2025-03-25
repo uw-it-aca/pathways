@@ -124,10 +124,30 @@ class ModelTest(TestCase):
                              credential_code='OTHER-10-3-4',
                              major_admission='capacity-constrained'
                              )
+        Major.objects.create(major_abbr='OTHER',
+                             major_title='Other2',
+                             major_school='Other School',
+                             major_campus='Other Campus',
+                             credential_title='Other',
+                             program_code='OTHER',
+                             credential_code='OTHER-10-4-4',
+                             major_admission='capacity-constrained'
+                             )
+        Major.objects.create(major_abbr='SOLO',
+                             major_title='Solo',
+                             major_school='Solo School',
+                             major_campus='Solo Campus',
+                             credential_title='Solo',
+                             program_code='SOLO',
+                             credential_code='SOLO-10-4-4',
+                             major_admission='capacity-constrained'
+                             )
         chem_major = Major.objects.get(credential_code='CHEM-0-1-2')
         test_major = Major.objects.get(credential_code='TEST-0-3-4')
         test_submajor = Major.objects.get(credential_code='TEST-10-3-4')
         other_major = Major.objects.get(credential_code='OTHER-10-3-4')
+        other2_major = Major.objects.get(credential_code='OTHER-10-4-4')
+        solo_major = Major.objects.get(credential_code='SOLO-10-4-4')
         vl = SimilarMajor.Description.VERY_LOW
         h = SimilarMajor.Description.HIGH
         SimilarMajor.objects.create(source_major=chem_major,
@@ -140,6 +160,14 @@ class ModelTest(TestCase):
                                     similarity_description=h)
         SimilarMajor.objects.create(source_major=chem_major,
                                     similar_major=other_major,
+                                    similarity_score=0.123,
+                                    similarity_description=vl)
+        SimilarMajor.objects.create(source_major=chem_major,
+                                    similar_major=other2_major,
+                                    similarity_score=0.123,
+                                    similarity_description=vl)
+        SimilarMajor.objects.create(source_major=chem_major,
+                                    similar_major=solo_major,
                                     similarity_score=0.123,
                                     similarity_description=vl)
 
@@ -305,7 +333,9 @@ class ModelTest(TestCase):
             {'key': 'CHEM', 'value': 'Chemistry'},
             {'key': 'TEST', 'value': 'Test'},
             {'key': 'TEST:C', 'value': 'Test Child Major'},
-            {'key': 'OTHER', 'value': 'Other'}
+            {'key': 'OTHER', 'value': 'Other'},
+            {'key': 'OTHER', 'value': 'Other2'},
+            {'key': 'SOLO', 'value': 'Solo'}
         ])
 
     def test_major_fix_gpa(self):
@@ -336,7 +366,7 @@ class ModelTest(TestCase):
     def test_similar_major_json(self):
         major = Major.objects.get(major_abbr='CHEM')
         sm = SimilarMajor.json_data_by_major(major)
-        self.assertEqual(len(sm), 2)
+        self.assertEqual(len(sm), 4)
         self.assertEqual(len(sm[0]['submajors']), 1)
         self.assertDictEqual(sm[1], {'credential_code': 'OTHER-10-3-4',
                                      'credential_title': 'Other',
@@ -345,3 +375,4 @@ class ModelTest(TestCase):
                                      'major_school': 'Other School',
                                      'is_stem': False,
                                      })
+        self.assertEqual(sm[2]['credential_code'], "OTHER-10-4-4")
