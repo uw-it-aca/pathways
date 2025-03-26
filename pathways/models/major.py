@@ -88,7 +88,8 @@ class Major(models.Model):
                 "credential_title": self.credential_title,
                 "credential_code": self.credential_code,
                 "career_center_major": self.career_center_major,
-                "is_stem": self.is_stem}
+                "is_stem": self.is_stem,
+                "similar_majors": SimilarMajor.json_data_by_major(self)}
 
     def similar_major_json(self):
         return {"credential_code": self.credential_code,
