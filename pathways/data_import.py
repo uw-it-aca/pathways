@@ -222,10 +222,14 @@ def import_stem_from_similar_majors(similar_major_data):
 
 
 def import_similar_majors(similar_major_data):
+    SimilarMajor.objects.all().delete()
     similar_majors_to_create = []
+    missing_majors = []
     for row in similar_major_data:
+        found_major = False
         try:
             major = Major.objects.get(credential_code=row[0])
+            found_major = True
             similar_major = Major.objects.get(credential_code=row[2])
             desc = SimilarMajor.get_similarity_from_string(row[5])
             similar_majors_to_create.append(
@@ -235,6 +239,12 @@ def import_similar_majors(similar_major_data):
                              similarity_description=desc)
             )
         except ObjectDoesNotExist as ex:
-            logger.info(f"Could not find major one of {row[0]} or {row[2]}")
+            if found_major:
+                missing_majors.append(row[2])
+            else:
+                missing_majors.append(row[0])
             pass
     SimilarMajor.objects.bulk_create(similar_majors_to_create, batch_size=1000)
+
+    logger.info("Similar majors not in Pathways: %s",
+                set(missing_majors))
