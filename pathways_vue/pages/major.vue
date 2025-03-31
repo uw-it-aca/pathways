@@ -113,53 +113,6 @@ export default {
             vue.majorTitle = vue.major_data.credential_title;
             vue.showError = false;
             vue.recentViewManager(vue.majorTitle, "major?id=" + vue.majorID, vue.major_data.major_campus);
-            // mock similar major data
-            vue.major_data.similar_majors = [
-              {
-                "id": 1,
-                "title": "Similar Major 1",
-                "college": "College of Arts and Sciences",
-                "campus": "Seattle",
-                "admission": "open",
-                "isStem": true,
-                childMajors: [
-                  {
-                    "id": 2,
-                    "title": "Similar Major 1- Specialty",
-                    "college": "College of Arts and Sciences",
-                    "campus": "Seattle",
-                    "admission": "open",
-                    "isStem": true
-                  },
-                  {
-                    "id": 3,
-                    "title": "Similar Major 1- General",
-                    "college": "College of Arts and Sciences",
-                    "campus": "Seattle",
-                    "admission": "Athlete-Only",
-                    "isStem": true
-                  }
-                ]
-              },
-              {
-                "id": 4,
-                "title": "Similar Major 2",
-                "college": "Information School",
-                "campus": "Tacoma",
-                "admission": "capacity-constrained",
-                "isStem": false,
-                childMajors: []
-              },
-              {
-                "id": 4,
-                "title": "Similar Major 2",
-                "college": "Information School",
-                "campus": "Bothell",
-                "admission": "minimumRequirements",
-                "isStem": false,
-                childMajors: []
-              }
-            ];
           })
           .catch(function () {
             vue.showError = true;

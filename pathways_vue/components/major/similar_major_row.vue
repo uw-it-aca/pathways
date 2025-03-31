@@ -1,11 +1,11 @@
 <template>
-  <h3><a :href="major_url">{{majorData.title}}</a></h3>
-  <p>{{majorData.college}} - {{majorData.campus}}</p>
-  <major-capacity-display :admissionType="majorData.admission" />
+  <h3><a :href="major_url">{{majorData.credential_title}}</a></h3>
+  <p>{{majorData.major_school}} - {{majorData.campus}}</p>
+  <major-capacity-display :admissionType="majorData.major_admission" />
   <a v-if="has_children" href="#" v-on:click.prevent="expandChildren"><i :class="expand_icon"></i></a>
   <div v-if="expanded" style="margin-left: 40px;">
     <similar-major-row
-      v-for="(major, index) in majorData.childMajors"
+      v-for="(major, index) in majorData.submajors"
       :key="index"
       :majorData="major"
     />
@@ -42,7 +42,7 @@ export default {
       return "/major?id=" + encodeURIComponent(this.majorData.id)
     },
     has_children() {
-      return this.majorData.childMajors !== undefined && this.majorData.childMajors.length > 0
+      return this.majorData.submajors !== undefined && this.majorData.submajors.length > 0
     },
     expand_icon() {
       return this.expanded ? "bi-chevron-compact-up" : "bi-chevron-compact-down"
