@@ -14,10 +14,10 @@
     <div class="p-3">
       <div class="form-check form-switch">
         <input
+          id="ToggleCourseList"
+          v-model="viewCourseList"
           class="form-check-input"
           type="checkbox"
-          v-model="viewCourseList"
-          id="ToggleCourseList"
         />
         <label class="form-check-label" for="ToggleCourseList"
           >View {{ active_course }} prereqs as a list</label
@@ -29,7 +29,7 @@
       :graph_data="graph_data"
       :active_course="active_course"
     />
-    <div class="card shadow-sm" id="ViewCourseMap" v-else>
+    <div v-else id="ViewCourseMap" class="card shadow-sm">
       <prereq-graph
         :graph_data="graph_data"
         graph_type="course"
@@ -55,20 +55,20 @@ export default {
     PrereqGraph,
     "prereq-course-list": PrereqCourseList,
   },
+  props: {
+    graphData: {
+      type: Object,
+      required: true,
+    },
+    activeCourse: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       viewCourseList: false,
     };
-  },
-  props: {
-    graph_data: {
-      type: Object,
-      required: true,
-    },
-    active_course: {
-      type: String,
-      required: true,
-    },
   },
   computed: {
     show_graph: function () {

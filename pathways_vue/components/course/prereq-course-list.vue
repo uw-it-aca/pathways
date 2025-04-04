@@ -55,26 +55,26 @@
 <script>
 export default {
   name: "PrereqCourseList",
+  props: {
+    graphData: {
+      type: Object,
+      required: true,
+    },
+    activeCourse: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       prereqs: [],
       postreqs: [],
     };
   },
-  props: {
-    graph_data: {
-      type: Object,
-      required: true,
-    },
-    active_course: {
-      type: String,
-      required: true,
-    },
-  },
+  computed: {},
   mounted() {
     this.build();
   },
-  computed: {},
   methods: {
     build: function () {
       this.prereqs = this.get_courses_from_list(

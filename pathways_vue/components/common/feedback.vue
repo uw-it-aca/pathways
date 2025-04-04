@@ -13,9 +13,9 @@
   </button>
 
   <div
+    id="send_feedback"
     class="offcanvas offcanvas-end"
     tabindex="-1"
-    id="send_feedback"
     aria-labelledby="dawgpath_feedback"
   >
     <div class="offcanvas-header">
@@ -41,23 +41,20 @@ export default {
   data() {
     return {};
   },
-  methods: {},
   computed: {
     form_url: function () {
       var url = document.body.getAttribute("data-google-feedback-form");
       return url;
     },
   },
+  methods: {},
 };
 </script>
 
 <style lang="scss">
 iframe {
   position: absolute;
-  top: 50px;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset: 50px 0 0;
   height: 100%;
   width: 100%;
 }

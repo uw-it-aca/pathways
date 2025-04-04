@@ -11,7 +11,7 @@
         and academic planning.
       </p>
       <ul>
-        <li class="list-unstyled" v-for="info in advisingInfo" :key="info.url">
+        <li v-for="info in advisingInfo" :key="info.url" class="list-unstyled">
           <a :href="info.url"><i class="bi bi-dot me-1"></i>{{ info.label }}</a>
         </li>
       </ul>
@@ -22,6 +22,7 @@
 <script>
 export default {
   name: "ContactAdviserCourse",
+  // eslint-disable-next-line vue/require-prop-types
   props: ["campus", "type"],
   data() {
     return {};
@@ -51,7 +52,7 @@ export default {
             label: "Find your departmental or major adviser",
             url:
               "https://advising.uw.edu/academic-support" +
-              "/advising-offices-by-program/"
+              "/advising-offices-by-program/",
           },
         ];
       } else if (this.campus.toLowerCase() == "bothell") {

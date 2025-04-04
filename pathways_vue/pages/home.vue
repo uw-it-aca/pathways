@@ -1,13 +1,13 @@
 // home.vue
 <template>
-  <layout :page-title="pageTitle">
+  <Layout :page-title="pageTitle">
     <!-- page content -->
     <template #content>
       <div class="row justify-content-center">
         <div class="col-md-9">
           <h1 class="visually-hidden">{{ pageTitle }}</h1>
 
-          <search />
+          <SearchComponent />
           <div class="text-start w-75 mx-auto">
             <p class="lead">
               DawgPath helps you discover courses and majors, and enables you to
@@ -86,20 +86,20 @@
         </div>
       </div>
     </template>
-  </layout>
+  </Layout>
 </template>
 
 <script>
 import Layout from "@/layout.vue";
-import Search from "@/components/search/search.vue";
+import SearchComponent from "@/components/search/search.vue";
 
 import { Modal } from "bootstrap";
 
 export default {
   name: "HomeComp",
   components: {
-    layout: Layout,
-    search: Search,
+    Layout,
+    SearchComponent,
   },
   data() {
     return {
@@ -121,6 +121,7 @@ export default {
       );
       this.welcomeModal.show();
     },
+    /*
     saveModalPref() {
       this.axios({
         method: "post",
@@ -130,6 +131,22 @@ export default {
           viewed_welcome_display: true,
         },
       });
+    },
+    */
+    async saveModalPref() {
+      try {
+        await useCustomFetch("/api/v1/user_pref/", {
+          method: "POST",
+          body: JSON.stringify({
+            viewed_welcome_display: true,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      } catch (error) {
+        console.error("Failed to save welcome display preference:", error);
+      }
     },
   },
 };

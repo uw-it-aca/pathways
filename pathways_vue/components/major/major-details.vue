@@ -19,7 +19,7 @@
     </p>
     <div class="major-info">
       <div class="major-description">
-        <p v-html="major['credential_description']" />
+        <p>{{ major["credential_description"] }}</p>
       </div>
     </div>
   </div>
@@ -37,7 +37,6 @@ export default {
   data() {
     return {};
   },
-  methods: {},
   computed: {
     AdminReqs() {
       if (this.major["major_admission"] === "minimumRequirements") {
@@ -47,5 +46,6 @@ export default {
       }
     },
   },
+  methods: {},
 };
 </script>

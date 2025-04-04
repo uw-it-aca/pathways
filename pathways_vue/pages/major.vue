@@ -1,6 +1,6 @@
 // major.vue
 <template>
-  <layout :page-title="pageTitle">
+  <Layout :page-title="pageTitle">
     <!-- page content -->
     <template #content>
       <div class="d-flex flex-column">
@@ -16,7 +16,10 @@
             <common-courses :major="major_data" />
           </div>
           <div class="col-md-9">
-            <contact-adviser :campus="major_data.major_campus" :type="'major'" />
+            <contact-adviser
+              :campus="major_data.major_campus"
+              :type="'major'"
+            />
           </div>
         </div>
         <div v-else class="row order-2 justify-content-sm-center">
@@ -42,12 +45,12 @@
 
         <div class="order-1 row justify-content-center">
           <div class="col-md-9">
-            <search />
+            <SearchComponent />
           </div>
         </div>
       </div>
     </template>
-  </layout>
+  </Layout>
 </template>
 
 <script>
@@ -63,8 +66,8 @@ import utils from "@/utils.js";
 export default {
   name: "MajorComp",
   components: {
-    layout: Layout,
-    "search": Search,
+    Layout,
+    SearchComponent,
     "d3-cgpa": D3Cgpa,
     "contact-adviser": ContactAdviser,
     "major-details": MajorDetails,
@@ -81,9 +84,6 @@ export default {
       appName: "DawgPath",
     };
   },
-  created() {
-    this.recentViewManager = utils.recentViewManager;
-  },
   computed: {
     pageTitle: function () {
       let no_title = this.showError ? "Error" : "Major";
@@ -92,11 +92,24 @@ export default {
         : no_title;
     },
   },
+  watch: {
+    majorID() {
+      this.get_major_data();
+    },
+  },
+  created() {
+    this.recentViewManager = utils.recentViewManager;
+  },
+  mounted() {
+    this.majorID = this.$route.query.id;
+  },
   methods: {
     switch_major(data) {
       this.majorID = data.id;
       this.campus = data.campus;
     },
+
+    /*
     get_major_data() {
       const vue = this;
       this.major_data = undefined;
@@ -107,7 +120,11 @@ export default {
             vue.major_data = response.data;
             vue.majorTitle = vue.major_data.credential_title;
             vue.showError = false;
-            vue.recentViewManager(vue.majorTitle, "major?id=" + vue.majorID, vue.major_data.major_campus);
+            vue.recentViewManager(
+              vue.majorTitle,
+              "major?id=" + vue.majorID,
+              vue.major_data.major_campus
+            );
           })
           .catch(function () {
             vue.showError = true;
@@ -116,13 +133,30 @@ export default {
         this.showError = true;
       }
     },
-  },
-  mounted() {
-    this.majorID = this.$route.query.id;
-  },
-  watch: {
-    majorID() {
-      this.get_major_data();
+    */
+
+    async get_major_data() {
+      this.major_data = undefined;
+
+      if (this.majorID !== undefined) {
+        try {
+          const data = await useCustomFetch(
+            `/api/v1/majors/details/${this.majorID}`
+          );
+          this.major_data = data;
+          this.majorTitle = data.credential_title;
+          this.showError = false;
+          this.recentViewManager(
+            this.majorTitle,
+            `major?id=${this.majorID}`,
+            data.major_campus
+          );
+        } catch (error) {
+          this.showError = true;
+        }
+      } else {
+        this.showError = true;
+      }
     },
   },
 };

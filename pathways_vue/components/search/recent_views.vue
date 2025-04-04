@@ -2,9 +2,13 @@
   <div>
     <h2 class="h5 mb-3">Recently Viewed</h2>
     <div v-if="recent_views">
-      <ul v-for="view in recent_views" class="list-unstyled">
+      <ul
+        v-for="(view, index) in recent_views"
+        :key="index"
+        class="list-unstyled"
+      >
         <li>
-          <a v-bind:href="view.url" class="recent_view_link"
+          <a :href="view.url" class="recent-view-link"
             >{{ view.title }}
             <div
               class="badge text-bg-light rounded-pill text-uppercase float-end"
@@ -38,7 +42,7 @@ export default {
 </script>
 
 <style lang="scss">
-a.recent_view_link {
+a.recent-view-link {
   text-transform: capitalize;
 }
 </style>

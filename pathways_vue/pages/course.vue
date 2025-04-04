@@ -26,7 +26,7 @@
           </div>
 
           <div class="col-md-9">
-            <concurrent-courses :courseData="courseData" />
+            <concurrent-courses :course-data="courseData" />
           </div>
           <div class="col-md-9">
             <contact-adviser :campus="courseCampus" :type="'course'" />
@@ -74,12 +74,12 @@ import PrereqMap from "@/components/course/prereq-map.vue";
 import ConcurrentCourses from "@/components/course/concurrent-courses.vue";
 import ContactAdviser from "@/components/common/contact-adviser.vue";
 import utils from "@/utils.js";
+import { useCustomFetch } from "@/composables/customFetch";
 
 export default {
   name: "CourseComp",
   components: {
     layout: Layout,
-    "search": Search,
     "course-details": CourseDetails,
     "explore-course": ExploreCourse,
     "grade-distribution": GradeDistribution,
@@ -98,9 +98,7 @@ export default {
       appName: "DawgPath",
     };
   },
-  created() {
-    this.recentViewManager = utils.recentViewManager;
-  },
+
   computed: {
     pageTitle: function () {
       let no_title = this.showError ? "Error" : "Course";
@@ -108,6 +106,14 @@ export default {
         ? (document.title = this.courseTitle + " - " + this.appName)
         : no_title;
     },
+  },
+  watch: {
+    courseId(newValue) {
+      this.get_course_data(newValue);
+    },
+  },
+  created() {
+    this.recentViewManager = utils.recentViewManager;
   },
   mounted() {
     this.courseId = this.$route.query.id;
@@ -126,6 +132,7 @@ export default {
       this.courseId = data.id;
       this.courseCampus = data.campus;
     },
+    /*
     get_course_data(course_id) {
       const vue = this;
       this.courseData = undefined;
@@ -143,10 +150,28 @@ export default {
           vue.showError = true;
         });
     },
-  },
-  watch: {
-    courseId(newValue) {
-      this.get_course_data(newValue);
+    */
+
+    async get_course_data(course_id) {
+      const vue = this;
+      this.courseData = undefined;
+
+      try {
+        const data = await useCustomFetch(
+          "/api/v1/courses/details/" + course_id
+        );
+        vue.showError = false;
+        vue.courseData = data;
+        vue.courseCampus = data.course_campus;
+        vue.courseTitle = vue.courseId + ": " + data.course_title;
+        vue.recentViewManager(
+          vue.courseId,
+          "course?id=" + vue.courseId,
+          vue.courseCampus
+        );
+      } catch (error) {
+        vue.showError = true;
+      }
     },
   },
 };

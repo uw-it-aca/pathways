@@ -14,13 +14,13 @@
       <strong>Credits:</strong>
       {{ course.course_credits }}
     </div>
-    <div class="mb-2" v-if="offered_terms">
+    <div v-if="offered_terms" class="mb-2">
       <strong>Typically offered:</strong>
       <ul class="ms-2 d-inline list-inline">
         <li
-          class="list-inline-item"
           v-for="(term, i) in offered_terms"
           :key="i"
+          class="list-inline-item"
         >
           <span class="badge text-dark" :class="term.class">{{
             term.quarter
@@ -51,7 +51,6 @@ export default {
   data() {
     return {};
   },
-  mounted() {},
   computed: {
     offered_terms: function () {
       let matching_quarters = [];
@@ -83,6 +82,7 @@ export default {
       return matching_quarters;
     },
   },
+  mounted() {},
   methods: {
     get_quarters_from_offered(offered) {
       offered = offered.replace(".", "");

@@ -64,9 +64,9 @@
         </thead>
         <tbody>
           <tr
-            class="align-middle"
             v-for="(course, index) in concurrent_courses"
             :key="index"
+            class="align-middle"
           >
             <th scope="row">
               <div class="icon-col">
@@ -136,15 +136,6 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    if (this.concurrent_courses.length > 0) {
-      var popover = new Popover(
-        document.querySelector(".info-course-concurrent")
-      );
-      //var popover = new Popover(document.querySelector('.info-common-coi'));
-    }
-  },
-  methods: {},
   computed: {
     concurrent_courses: function () {
       if (!this.courseData.concurrent_courses) {
@@ -172,6 +163,15 @@ export default {
         .slice(0, 10);
     },
   },
+  mounted() {
+    if (this.concurrent_courses.length > 0) {
+      var popover = new Popover(
+        document.querySelector(".info-course-concurrent")
+      );
+      //var popover = new Popover(document.querySelector('.info-common-coi'));
+    }
+  },
+  methods: {},
 };
 </script>
 

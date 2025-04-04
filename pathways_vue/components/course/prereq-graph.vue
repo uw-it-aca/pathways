@@ -9,24 +9,26 @@
 <script>
 export default {
   name: "PrereqGraph",
+
+  props: {
+    graphData: {
+      type: Object,
+      required: true,
+    },
+    graphType: {
+      type: String,
+      required: true,
+    },
+    activeCourse: {
+      type: String,
+      required: false,
+      default: "",
+    },
+  },
   data() {
     return {
       id: undefined,
     };
-  },
-  props: {
-    graph_data: {
-      type: Object,
-      required: true,
-    },
-    graph_type: {
-      type: String,
-      required: true,
-    },
-    active_course: {
-      type: String,
-      required: false,
-    },
   },
   watch: {
     graph_data() {

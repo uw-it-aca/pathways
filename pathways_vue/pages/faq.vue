@@ -129,7 +129,7 @@
             >
           </p>
 
-          <h2 class="fs-3 visually-hidden" id="questions">Questions</h2>
+          <h2 id="questions" class="fs-3 visually-hidden">Questions</h2>
           <div class="card mb-5">
             <div class="card-body">
               <h2 id="dawgpath" class="fw-bold fs-5">What is DawgPath?</h2>
@@ -304,7 +304,7 @@
             </div>
           </div>
 
-          <h2 class="fs-3 mt-4" id="terms">Term Definitions</h2>
+          <h2 id="terms" class="fs-3 mt-4">Term Definitions</h2>
           <div class="card mb-5">
             <div class="card-body">
               <h3 id="declared_major" class="fw-bold fs-5">Declared major</h3>
@@ -364,13 +364,6 @@
   </layout>
 </template>
 
-<style lang="scss">
-.fs-5.about {
-  color: #452a78;
-  font-weight: bold;
-}
-</style>
-
 <script>
 import Layout from "@/layout.vue";
 
@@ -387,3 +380,10 @@ export default {
   methods: {},
 };
 </script>
+
+<style lang="scss">
+.fs-5.about {
+  color: #452a78;
+  font-weight: bold;
+}
+</style>
