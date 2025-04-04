@@ -52,22 +52,6 @@ export default {
     this.get_curric_prereqs(this.curric_id);
   },
   methods: {
-    /*
-    get_curric_prereqs(curric_id) {
-      const vue = this;
-      this.axios
-        .get("/api/v1/curric_prereq/" + curric_id)
-        .then((response) => {
-          // don't show graph if there are no nodes/edges to display
-          if (Object.keys(response.data.prereq_graph.x.edges.from).length > 0) {
-            vue.curricData = response.data;
-          }
-        })
-        .catch(function () {
-          vue.curricData = {};
-        });
-    },
-    */
     async get_curric_prereqs(curric_id) {
       const vue = this;
 

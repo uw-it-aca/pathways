@@ -310,28 +310,6 @@ export default {
       this.form_data.prev_type = this.form_data.type;
       this.form_data.prev_campus = this.form_data.campus;
     },
-    /*
-    runSearch() {
-      const vue = this;
-      this.handleFilterToggle();
-      this.clearResults();
-      this.addToRecent(this.search_string);
-      this.axios
-        .get("api/v1/search/", {
-          params: vue.form_data,
-        })
-        .then((response) => {
-          this.course_matches = response.data.course_matches;
-          this.major_matches = response.data.major_matches;
-          this.text_matches = response.data.text_matches;
-          this.search_error = false;
-          this.has_searched = true;
-        })
-        .catch((error) => {
-          this.search_error = true;
-        });
-    },
-    */
     async runSearch() {
       this.handleFilterToggle();
       this.clearResults();

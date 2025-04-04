@@ -804,22 +804,6 @@ export default {
           .html("fewer students earned credit than predicted");
       }
     },
-    /*
-    getCourseCOI() {
-      let url = "/api/v1/coi/course/" + this.course.department_abbrev,
-        vue = this;
-      this.axios
-        .get(url)
-        .then((response) => {
-          vue.course_coi_data = response.data;
-          this.getData();
-        })
-        .catch(function (error) {
-          vue.course_coi_data = {};
-          console.log(error);
-        });
-    },
-    */
     async getCourseCOI() {
       const vue = this;
       const url = "/api/v1/coi/course/" + this.course.department_abbrev;
@@ -833,21 +817,6 @@ export default {
         console.log(error);
       }
     },
-    /*
-    getCurricCOI() {
-      let vue = this;
-      this.axios
-        .get("/api/v1/coi/curric/")
-        .then((response) => {
-          vue.curric_coi_data = response.data;
-          this.generateRect();
-        })
-        .catch(function (error) {
-          vue.curric_coi_data = {};
-          console.log(error);
-        });
-    },
-    */
     async getCurricCOI() {
       const vue = this;
 

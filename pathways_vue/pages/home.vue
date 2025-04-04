@@ -121,18 +121,6 @@ export default {
       );
       this.welcomeModal.show();
     },
-    /*
-    saveModalPref() {
-      this.axios({
-        method: "post",
-        url: "/api/v1/user_pref/",
-        headers: { "X-CSRFToken": window.csrf_token },
-        data: {
-          viewed_welcome_display: true,
-        },
-      });
-    },
-    */
     async saveModalPref() {
       try {
         await useCustomFetch("/api/v1/user_pref/", {

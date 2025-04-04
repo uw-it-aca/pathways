@@ -132,26 +132,6 @@ export default {
       this.courseId = data.id;
       this.courseCampus = data.campus;
     },
-    /*
-    get_course_data(course_id) {
-      const vue = this;
-      this.courseData = undefined;
-      this.axios
-        .get("/api/v1/courses/details/" + course_id)
-        .then((response) => {
-          vue.showError = false;
-          vue.courseData = response.data;
-          vue.courseCampus = response.data.course_campus;
-          //vue.courseTitle = this.courseId + ': ' + response.data.course_title + ' - Course ';
-          vue.courseTitle = this.courseId + ": " + response.data.course_title;
-          vue.recentViewManager(vue.courseId, "course?id=" + vue.courseId, vue.courseCampus);
-        })
-        .catch(function () {
-          vue.showError = true;
-        });
-    },
-    */
-
     async get_course_data(course_id) {
       const vue = this;
       this.courseData = undefined;

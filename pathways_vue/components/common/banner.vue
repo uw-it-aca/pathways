@@ -43,18 +43,6 @@ export default {
       this.saveModalPref();
       this.show_coi = false;
     },
-    /*
-    saveModalPref() {
-      this.axios({
-        method: "post",
-        url: "/api/v1/user_pref/",
-        headers: { "X-CSRFToken": window.csrf_token },
-        data: {
-          viewed_coi_banner: true,
-        },
-      });
-    },
-    */
     async saveModalPref() {
       try {
         await useCustomFetch("/api/v1/user_pref/", {

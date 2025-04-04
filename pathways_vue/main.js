@@ -2,8 +2,6 @@ import { createApp } from "vue";
 
 import VueGtag from "vue-gtag-next";
 import { Vue3Mq, MqResponsive } from "vue3-mq";
-//import axios from "axios";
-//import VueAxios from "vue-axios";
 import mitt from "mitt";
 
 // bootstrap js + bootstrap-icons
@@ -49,9 +47,6 @@ app.use(Vue3Mq, {
   preset: "bootstrap5",
 });
 app.component(MqResponsive);
-
-// vue-axios
-//app.use(VueAxios, axios);
 
 // solstice-vue
 app.use(SolsticeVue);
