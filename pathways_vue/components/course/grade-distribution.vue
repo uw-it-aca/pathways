@@ -301,7 +301,7 @@ div.tooltip {
   border-radius: 4px;
   width: 7.5rem;
   height: 2.5rem;
-  font-size: 12px sans-serif;
+  font-size: 12px;
   pointer-events: none;
 }
 </style>
