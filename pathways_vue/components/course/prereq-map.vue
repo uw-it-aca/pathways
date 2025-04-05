@@ -47,8 +47,8 @@
             </p>
           </div>
           <prereq-course
-            :graph_data="graph_data"
-            :active_course="active_course"
+            :graph-data="graphData"
+            :active-course="activeCourse"
           />
         </div>
         <div

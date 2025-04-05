@@ -1,7 +1,7 @@
 // prereq-course.vue
 
 <template>
-  <div v-if="graph_data == null" class="p-3">
+  <div v-if="graphData == null" class="p-3">
     <div class="alert alert-purple" role="alert">
       <p>
         The course
@@ -26,14 +26,14 @@
     </div>
     <prereq-course-list
       v-if="viewCourseList"
-      :graph_data="graph_data"
-      :active_course="active_course"
+      :graph-data="graphData"
+      :active-course="activeCourse"
     />
     <div v-else id="ViewCourseMap" class="card shadow-sm">
       <prereq-graph
-        :graph_data="graph_data"
+        :graph-data="graphData"
         graph_type="course"
-        :active_course="active_course"
+        :active-course="activeCourse"
       />
       <div class="text-dark p-3 bg-light rounded-top rounded-sm">
         <small
