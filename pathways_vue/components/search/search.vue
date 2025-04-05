@@ -202,6 +202,7 @@ import RecentViews from "./recent_views.vue";
 import Results from "./results.vue";
 import debounce from "debounce";
 import { Modal } from "bootstrap";
+import { useCustomFetch } from "@/composables/customFetch";
 
 export default {
   name: "SearchComponent",

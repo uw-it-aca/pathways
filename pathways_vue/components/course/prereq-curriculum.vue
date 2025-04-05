@@ -15,6 +15,7 @@
 
 <script>
 import PrereqCurrList from "@/components/course/prereq-curr-list.vue";
+import { useCustomFetch } from "@/composables/customFetch";
 
 export default {
   name: "PrereqCurriculum",

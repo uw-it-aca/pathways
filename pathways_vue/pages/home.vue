@@ -92,6 +92,7 @@
 <script>
 import Layout from "@/layout.vue";
 import SearchComponent from "@/components/search/search.vue";
+import { useCustomFetch } from "@/composables/customFetch";
 
 import { Modal } from "bootstrap";
 

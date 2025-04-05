@@ -200,6 +200,7 @@
 <script>
 import * as d3 from "d3";
 import { Modal } from "bootstrap";
+import { useCustomFetch } from "@/composables/customFetch";
 
 export default {
   name: "OutcomeScore",

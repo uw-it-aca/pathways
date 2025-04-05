@@ -58,10 +58,10 @@ import Layout from "@/layout.vue";
 import MajorDetails from "@/components/major/major-details.vue";
 import ExploreMajor from "@/components/major/explore-major.vue";
 import CommonCourses from "@/components/major/common-courses.vue";
-import Search from "@/components/search/search.vue";
 import D3Cgpa from "@/components/major/d3-cgpa.vue";
 import ContactAdviser from "@/components/common/contact-adviser.vue";
 import utils from "@/utils.js";
+import { useCustomFetch } from "@/composables/customFetch";
 
 export default {
   name: "MajorComp",
