@@ -72,8 +72,8 @@ export default {
   },
   computed: {
     show_graph: function () {
-      if (this.graph_data && this.graph_data.x) {
-        return Object.keys(this.graph_data.x.edges.from).length > 0;
+      if (this.graphData && this.graphData.x) {
+        return Object.keys(this.graphData.x.edges.from).length > 0;
       }
       return false;
     },
