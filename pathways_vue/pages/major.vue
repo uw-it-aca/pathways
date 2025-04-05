@@ -114,14 +114,14 @@ export default {
       if (this.majorID !== undefined) {
         try {
           const data = await useCustomFetch(
-            `/api/v1/majors/details/${this.majorID}`
+            "/api/v1/majors/details/" + this.majorID
           );
           this.major_data = data;
           this.majorTitle = data.credential_title;
           this.showError = false;
           this.recentViewManager(
             this.majorTitle,
-            `major?id=${this.majorID}`,
+            "major?id=" + this.majorID,
             data.major_campus
           );
         } catch (error) {

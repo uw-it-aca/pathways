@@ -316,7 +316,7 @@ export default {
       this.addToRecent(this.search_string);
 
       const queryParams = new URLSearchParams(this.form_data).toString();
-      const url = `api/v1/search/?${queryParams}`;
+      const url = "api/v1/search/?" + queryParams;
 
       try {
         const data = await useCustomFetch(url);
