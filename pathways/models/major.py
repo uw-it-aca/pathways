@@ -16,6 +16,7 @@ class Major(models.Model):
     major_admission = models.TextField(null=True)
     major_home_url = models.URLField(null=True)
     program_code = models.CharField(max_length=25)
+    program_verind_id = models.CharField(max_length=50)
     common_course_decl = models.JSONField(null=True)
     gpa_2yr = models.JSONField(null=True)
     gpa_5yr = models.JSONField(null=True)
@@ -80,6 +81,7 @@ class Major(models.Model):
                 "major_description": self.major_description,
                 "major_admission": self.major_admission,
                 "program_code": self.program_code,
+                "program_verind_id": self.program_verind_id,
                 "major_home_url": Major.get_major_url(self.major_home_url),
                 "common_course_decl": self.get_common_with_coi_and_flags(),
                 "gpa_2yr": Major.fix_gpa_json(self.gpa_2yr),
@@ -166,24 +168,25 @@ class SimilarMajor(models.Model):
         # Group similar majors by program code
         majors_by_program = {}
         for sm in similar_majors:
-            program_code = sm.similar_major.program_code
-            (majors_by_program.setdefault(program_code, [])
+            program_id = sm.similar_major.program_verind_id
+            (majors_by_program.setdefault(program_id, [])
              .append(sm.similar_major))
 
         major_data = []
         for pc, majors in majors_by_program.items():
             # If multiple majors in program group by parent
             if len(majors) > 1:
-                parent_major = next(
-                    (m for m in majors if m.is_parent_major()), None)
-                child_json = [m.similar_major_json() for m in majors
-                              if not m.is_parent_major()]
-                if parent_major:
-                    parent_json = parent_major.similar_major_json()
-                    parent_json['submajors'] = child_json
-                    major_data.append(parent_json)
-                else:
-                    major_data.extend(child_json)
+                program_majors = \
+                    [major.similar_major_json() for major in majors]
+                program_json = {
+                    'program_code': majors[0].program_code,
+                    'program_verind_id': majors[0].program_verind_id,
+                    'program_title': majors[0].major_title,
+                    'program_school': majors[0].major_school,
+                    'program_campus': majors[0].major_campus,
+                    'program_majors': program_majors
+                }
+                major_data.append(program_json)
             else:
                 major_data.append(majors[0].similar_major_json())
         return major_data
@@ -197,9 +200,3 @@ class SimilarMajor(models.Model):
             "High": cls.Description.HIGH
         }
         return similarity_map.get(similarity_string)
-
-    def _is_parent_major(self):
-        """
-        Check if the major is a parent major (deg_major_pathway == 0).
-        """
-        return self.similar_major.credential_code.split("-")[1] == "0"

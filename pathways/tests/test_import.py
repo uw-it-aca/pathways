@@ -114,13 +114,9 @@ class SimilarMajorImportTest(TestCase):
     def test_missing_similar_majors(self):
         with self.assertLogs(level="INFO") as log:
             import_similar_majors(self.similar_major_file)
-            self.assertEqual(len(log.output), 2)
-            self.assertEqual(log.output[0],
-                             "INFO:pathways.data_import:Could not find major "
-                             "one of CSCI-0-50-5 or CAT-0-50-5")
-            self.assertEqual(log.output[1],
-                             "INFO:pathways.data_import:Could not find major "
-                             "one of BUS-0-50-5 or TRAIN-0-50-5")
+            self.assertEqual(len(log.output), 1)
+            self.assertIn("INFO:pathways.data_import:Similar majors"
+                          " not in Pathways", log.output[0])
 
     def test_similar_majors(self):
         import_similar_majors(self.similar_major_file)

@@ -1,425 +1,428 @@
 {
-	"TRAIN-2-1-0": {
-		"major_code": "TRAIN",
+  "TRAIN-2-1-0": {
+    "major_code": "TRAIN",
     "credential_code": "TRAIN-2-1-0",
     "credential_title": "Railroad Studies degree in switching",
     "credential_description": "Railroad Studies focuses on the interactions between humans and the environment. BuildingRailroad Studies focuses on the interactions between humans and the environment. BuildingRailroad Studies focuses on the interactions between humans and the environment. BuildingRailroad Studies focuses on the interactions between humans and the environment. Building",
-		"program_code": "UG-TRAIN-MAJOR",
-		"major_title": "Railroad Studies",
-		"major_school": "College of the Railroad",
-		"major_campus": "Seattle",
-		"major_description": "Railroad Studies focuses on the interactions between humans and the environment. Building on a foundation of natural science, social science and humanities, the major offers students a flexible curriculum that includes an internship or research experience as an integral part of the capstone sequence. Concentrations for the major include Climate and Society; Conservation of Living Systems; Education and Communication; Policy and Planning; Food Studies; and Sustainability.",
-		"major_admission": "open",
-		"major_home_url": "www.washington.edu/students/gencat/academic/rail_stud.html",
-		"common_course_decl": {
-			"TRAIN 250": {
-				"percent": 5,
-				"title": "Research Methods in Railroad Studies"
-			},
-			"TRAIN 239": {
-				"percent": 3,
-				"title": "Sustainability: Personal Choices, Broad Impacts"
-			},
-			"TRAIN 200": {
-				"percent": 3,
-				"title": "Communication for Railroad Studies"
-			},
-			"TRAIN 495": {
-				"percent": 3,
-				"title": "Advanced Topics in Railroad Studies"
-			},
-			"TRAIN 201": {
-				"percent": 2,
-				"title": "Climate Governance: How Individuals, Communities, NGOs, Firms, and Governments Can Solve the Climate Crisis"
-			},
-			"BIOL 180": {
-				"percent": 2,
-				"title": "Introductory Biology"
-			},
-			"TRAIN 300": {
-				"percent": 2,
-				"title": "Analysis of Railroad Cases"
-			},
-			"TRAIN 100": {
-				"percent": 2,
-				"title": "Introduction to Railroad Studies"
-			},
-			"TRAIN 491": {
-				"percent": 2,
-				"title": "Railroad Studies Capstone: Internship and Research"
-			},
-			"ATM S 211": {
-				"percent": 2,
-				"title": "Climate and Climate Change"
-			}
-		},
-		"2_yr": {
-			"0": 0,
-			"1": 0,
-			"2": 0,
-			"3": 0,
-			"4": 0,
-			"5": 0,
-			"6": 0,
-			"7": 0,
-			"8": 0,
-			"9": 0,
-			"10": 0,
-			"11": 0,
-			"12": 1,
-			"13": 0,
-			"14": 0,
-			"15": 4,
-			"16": 2,
-			"17": 0,
-			"18": 4,
-			"19": 2,
-			"20": 1,
-			"21": 4,
-			"22": 1,
-			"23": 17,
-			"24": 13,
-			"25": 9,
-			"26": 7,
-			"27": 15,
-			"28": 14,
-			"29": 29,
-			"30": 31,
-			"31": 39,
-			"32": 55,
-			"33": 50,
-			"34": 65,
-			"35": 89,
-			"36": 105,
-			"37": 131,
-			"38": 127,
-			"39": 125,
-			"40": 62
-		},
-		"5_yr": {
-			"0": 4,
-			"1": 0,
-			"2": 0,
-			"3": 0,
-			"4": 0,
-			"5": 1,
-			"6": 0,
-			"7": 0,
-			"8": 0,
-			"9": 1,
-			"10": 0,
-			"11": 0,
-			"12": 3,
-			"13": 3,
-			"14": 2,
-			"15": 5,
-			"16": 5,
-			"17": 6,
-			"18": 12,
-			"19": 9,
-			"20": 14,
-			"21": 14,
-			"22": 12,
-			"23": 48,
-			"24": 37,
-			"25": 49,
-			"26": 55,
-			"27": 67,
-			"28": 79,
-			"29": 139,
-			"30": 134,
-			"31": 152,
-			"32": 189,
-			"33": 180,
-			"34": 271,
-			"35": 295,
-			"36": 384,
-			"37": 364,
-			"38": 331,
-			"39": 324,
-			"40": 124
-		}
-	},
+    "program_code": "UG-TRAIN-MAJOR",
+    "program_verind_id": "123xyz",
+    "major_title": "Railroad Studies",
+    "major_school": "College of the Railroad",
+    "major_campus": "Seattle",
+    "major_description": "Railroad Studies focuses on the interactions between humans and the environment. Building on a foundation of natural science, social science and humanities, the major offers students a flexible curriculum that includes an internship or research experience as an integral part of the capstone sequence. Concentrations for the major include Climate and Society; Conservation of Living Systems; Education and Communication; Policy and Planning; Food Studies; and Sustainability.",
+    "major_admission": "open",
+    "major_home_url": "www.washington.edu/students/gencat/academic/rail_stud.html",
+    "common_course_decl": {
+      "TRAIN 250": {
+        "percent": 5,
+        "title": "Research Methods in Railroad Studies"
+      },
+      "TRAIN 239": {
+        "percent": 3,
+        "title": "Sustainability: Personal Choices, Broad Impacts"
+      },
+      "TRAIN 200": {
+        "percent": 3,
+        "title": "Communication for Railroad Studies"
+      },
+      "TRAIN 495": {
+        "percent": 3,
+        "title": "Advanced Topics in Railroad Studies"
+      },
+      "TRAIN 201": {
+        "percent": 2,
+        "title": "Climate Governance: How Individuals, Communities, NGOs, Firms, and Governments Can Solve the Climate Crisis"
+      },
+      "BIOL 180": {
+        "percent": 2,
+        "title": "Introductory Biology"
+      },
+      "TRAIN 300": {
+        "percent": 2,
+        "title": "Analysis of Railroad Cases"
+      },
+      "TRAIN 100": {
+        "percent": 2,
+        "title": "Introduction to Railroad Studies"
+      },
+      "TRAIN 491": {
+        "percent": 2,
+        "title": "Railroad Studies Capstone: Internship and Research"
+      },
+      "ATM S 211": {
+        "percent": 2,
+        "title": "Climate and Climate Change"
+      }
+    },
+    "2_yr": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 1,
+      "13": 0,
+      "14": 0,
+      "15": 4,
+      "16": 2,
+      "17": 0,
+      "18": 4,
+      "19": 2,
+      "20": 1,
+      "21": 4,
+      "22": 1,
+      "23": 17,
+      "24": 13,
+      "25": 9,
+      "26": 7,
+      "27": 15,
+      "28": 14,
+      "29": 29,
+      "30": 31,
+      "31": 39,
+      "32": 55,
+      "33": 50,
+      "34": 65,
+      "35": 89,
+      "36": 105,
+      "37": 131,
+      "38": 127,
+      "39": 125,
+      "40": 62
+    },
+    "5_yr": {
+      "0": 4,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 1,
+      "10": 0,
+      "11": 0,
+      "12": 3,
+      "13": 3,
+      "14": 2,
+      "15": 5,
+      "16": 5,
+      "17": 6,
+      "18": 12,
+      "19": 9,
+      "20": 14,
+      "21": 14,
+      "22": 12,
+      "23": 48,
+      "24": 37,
+      "25": 49,
+      "26": 55,
+      "27": 67,
+      "28": 79,
+      "29": 139,
+      "30": 134,
+      "31": 152,
+      "32": 189,
+      "33": 180,
+      "34": 271,
+      "35": 295,
+      "36": 384,
+      "37": 364,
+      "38": 331,
+      "39": 324,
+      "40": 124
+    }
+  },
   "TRAIN-0-50-5": {
-		"major_code": "TRAIN",
+    "major_code": "TRAIN",
     "credential_code": "TRAIN-0-50-5",
     "credential_title": "Railroad Studies degree in switching",
     "credential_description": "Railroad Studies focuses on the interactions between humans and the environment. BuildingRailroad Studies focuses on the interactions between humans and the environment. BuildingRailroad Studies focuses on the interactions between humans and the environment. BuildingRailroad Studies focuses on the interactions between humans and the environment. Building",
-		"program_code": "UG-TRAIN-MAJOR",
-		"major_title": "Railroad Studies",
-		"major_school": "College of the Railroad",
-		"major_campus": "Seattle",
-		"major_description": "Railroad Studies focuses on the interactions between humans and the environment. Building on a foundation of natural science, social science and humanities, the major offers students a flexible curriculum that includes an internship or research experience as an integral part of the capstone sequence. Concentrations for the major include Climate and Society; Conservation of Living Systems; Education and Communication; Policy and Planning; Food Studies; and Sustainability.",
-		"major_admission": "open",
-		"major_home_url": "www.washington.edu/students/gencat/academic/rail_stud.html",
-		"common_course_decl": {
-			"TRAIN 250": {
-				"percent": 5,
-				"title": "Research Methods in Railroad Studies"
-			},
-			"TRAIN 239": {
-				"percent": 3,
-				"title": "Sustainability: Personal Choices, Broad Impacts"
-			},
-			"TRAIN 200": {
-				"percent": 3,
-				"title": "Communication for Railroad Studies"
-			},
-			"TRAIN 495": {
-				"percent": 3,
-				"title": "Advanced Topics in Railroad Studies"
-			},
-			"TRAIN 201": {
-				"percent": 2,
-				"title": "Climate Governance: How Individuals, Communities, NGOs, Firms, and Governments Can Solve the Climate Crisis"
-			},
-			"BIOL 180": {
-				"percent": 2,
-				"title": "Introductory Biology"
-			},
-			"TRAIN 300": {
-				"percent": 2,
-				"title": "Analysis of Railroad Cases"
-			},
-			"TRAIN 100": {
-				"percent": 2,
-				"title": "Introduction to Railroad Studies"
-			},
-			"TRAIN 491": {
-				"percent": 2,
-				"title": "Railroad Studies Capstone: Internship and Research"
-			},
-			"ATM S 211": {
-				"percent": 2,
-				"title": "Climate and Climate Change"
-			}
-		},
-		"2_yr": {
-			"0": 0,
-			"1": 0,
-			"2": 0,
-			"3": 0,
-			"4": 0,
-			"5": 0,
-			"6": 0,
-			"7": 0,
-			"8": 0,
-			"9": 0,
-			"10": 0,
-			"11": 0,
-			"12": 1,
-			"13": 0,
-			"14": 0,
-			"15": 4,
-			"16": 2,
-			"17": 0,
-			"18": 4,
-			"19": 2,
-			"20": 1,
-			"21": 4,
-			"22": 1,
-			"23": 17,
-			"24": 13,
-			"25": 9,
-			"26": 7,
-			"27": 15,
-			"28": 14,
-			"29": 29,
-			"30": 31,
-			"31": 39,
-			"32": 55,
-			"33": 50,
-			"34": 65,
-			"35": 89,
-			"36": 105,
-			"37": 131,
-			"38": 127,
-			"39": 125,
-			"40": 62
-		},
-		"5_yr": {
-			"0": 4,
-			"1": 0,
-			"2": 0,
-			"3": 0,
-			"4": 0,
-			"5": 1,
-			"6": 0,
-			"7": 0,
-			"8": 0,
-			"9": 1,
-			"10": 0,
-			"11": 0,
-			"12": 3,
-			"13": 3,
-			"14": 2,
-			"15": 5,
-			"16": 5,
-			"17": 6,
-			"18": 12,
-			"19": 9,
-			"20": 14,
-			"21": 14,
-			"22": 12,
-			"23": 48,
-			"24": 37,
-			"25": 49,
-			"26": 55,
-			"27": 67,
-			"28": 79,
-			"29": 139,
-			"30": 134,
-			"31": 152,
-			"32": 189,
-			"33": 180,
-			"34": 271,
-			"35": 295,
-			"36": 384,
-			"37": 364,
-			"38": 331,
-			"39": 324,
-			"40": 124
-		}
-	},
+    "program_code": "UG-TRAIN-MAJOR",
+    "program_verind_id": "123xyz",
+    "major_title": "Railroad Studies",
+    "major_school": "College of the Railroad",
+    "major_campus": "Seattle",
+    "major_description": "Railroad Studies focuses on the interactions between humans and the environment. Building on a foundation of natural science, social science and humanities, the major offers students a flexible curriculum that includes an internship or research experience as an integral part of the capstone sequence. Concentrations for the major include Climate and Society; Conservation of Living Systems; Education and Communication; Policy and Planning; Food Studies; and Sustainability.",
+    "major_admission": "open",
+    "major_home_url": "www.washington.edu/students/gencat/academic/rail_stud.html",
+    "common_course_decl": {
+      "TRAIN 250": {
+        "percent": 5,
+        "title": "Research Methods in Railroad Studies"
+      },
+      "TRAIN 239": {
+        "percent": 3,
+        "title": "Sustainability: Personal Choices, Broad Impacts"
+      },
+      "TRAIN 200": {
+        "percent": 3,
+        "title": "Communication for Railroad Studies"
+      },
+      "TRAIN 495": {
+        "percent": 3,
+        "title": "Advanced Topics in Railroad Studies"
+      },
+      "TRAIN 201": {
+        "percent": 2,
+        "title": "Climate Governance: How Individuals, Communities, NGOs, Firms, and Governments Can Solve the Climate Crisis"
+      },
+      "BIOL 180": {
+        "percent": 2,
+        "title": "Introductory Biology"
+      },
+      "TRAIN 300": {
+        "percent": 2,
+        "title": "Analysis of Railroad Cases"
+      },
+      "TRAIN 100": {
+        "percent": 2,
+        "title": "Introduction to Railroad Studies"
+      },
+      "TRAIN 491": {
+        "percent": 2,
+        "title": "Railroad Studies Capstone: Internship and Research"
+      },
+      "ATM S 211": {
+        "percent": 2,
+        "title": "Climate and Climate Change"
+      }
+    },
+    "2_yr": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 1,
+      "13": 0,
+      "14": 0,
+      "15": 4,
+      "16": 2,
+      "17": 0,
+      "18": 4,
+      "19": 2,
+      "20": 1,
+      "21": 4,
+      "22": 1,
+      "23": 17,
+      "24": 13,
+      "25": 9,
+      "26": 7,
+      "27": 15,
+      "28": 14,
+      "29": 29,
+      "30": 31,
+      "31": 39,
+      "32": 55,
+      "33": 50,
+      "34": 65,
+      "35": 89,
+      "36": 105,
+      "37": 131,
+      "38": 127,
+      "39": 125,
+      "40": 62
+    },
+    "5_yr": {
+      "0": 4,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 1,
+      "10": 0,
+      "11": 0,
+      "12": 3,
+      "13": 3,
+      "14": 2,
+      "15": 5,
+      "16": 5,
+      "17": 6,
+      "18": 12,
+      "19": 9,
+      "20": 14,
+      "21": 14,
+      "22": 12,
+      "23": 48,
+      "24": 37,
+      "25": 49,
+      "26": 55,
+      "27": 67,
+      "28": 79,
+      "29": 139,
+      "30": 134,
+      "31": 152,
+      "32": 189,
+      "33": 180,
+      "34": 271,
+      "35": 295,
+      "36": 384,
+      "37": 364,
+      "38": 331,
+      "39": 324,
+      "40": 124
+    }
+  },
   "CSCI-0-50-5": {
-		"major_code": "CSCI",
+    "major_code": "CSCI",
     "credential_code": "CSCI-0-50-5",
     "credential_title": "Comp Sci Studies degree in switching",
     "credential_description": "Comp Sci Studies focuses on the interactions between humans and the environment. BuildingComp Sci Studies focuses on the interactions between humans and the environment. BuildingComp Sci Studies focuses on the interactions between humans and the environment. BuildingComp Sci Studies focuses on the interactions between humans and the environment. Building",
-		"program_code": "UG-CSCI-MAJOR",
-		"major_title": "Comp Sci Studies",
-		"major_school": "College of the Comp Sci",
-		"major_campus": "Seattle",
-		"major_description": "Comp Sci Studies focuses on the interactions between humans and the environment. Building on a foundation of natural science, social science and humanities, the major offers students a flexible curriculum that includes an internship or research experience as an integral part of the capstone sequence. Concentrations for the major include Climate and Society; Conservation of Living Systems; Education and Communication; Policy and Planning; Food Studies; and Sustainability.",
-		"major_admission": "open",
-		"major_home_url": "www.washington.edu/students/gencat/academic/rail_stud.html",
-		"common_course_decl": {
-			"CSCI 250": {
-				"percent": 5,
-				"title": "Research Methods in Comp Sci Studies"
-			},
-			"CSCI 239": {
-				"percent": 3,
-				"title": "Sustainability: Personal Choices, Broad Impacts"
-			},
-			"CSCI 200": {
-				"percent": 3,
-				"title": "Communication for Comp Sci Studies"
-			},
-			"CSCI 495": {
-				"percent": 3,
-				"title": "Advanced Topics in Comp Sci Studies"
-			},
-			"CSCI 201": {
-				"percent": 2,
-				"title": "Climate Governance: How Individuals, Communities, NGOs, Firms, and Governments Can Solve the Climate Crisis"
-			},
-			"BIOL 180": {
-				"percent": 2,
-				"title": "Introductory Biology"
-			},
-			"CSCI 300": {
-				"percent": 2,
-				"title": "Analysis of Comp Sci Cases"
-			},
-			"CSCI 100": {
-				"percent": 2,
-				"title": "Introduction to Comp Sci Studies"
-			},
-			"CSCI 491": {
-				"percent": 2,
-				"title": "Comp Sci Studies Capstone: Internship and Research"
-			},
-			"ATM S 211": {
-				"percent": 2,
-				"title": "Climate and Climate Change"
-			}
-		},
-		"2_yr": {
-			"0": 0,
-			"1": 0,
-			"2": 0,
-			"3": 0,
-			"4": 0,
-			"5": 0,
-			"6": 0,
-			"7": 0,
-			"8": 0,
-			"9": 0,
-			"10": 0,
-			"11": 0,
-			"12": 1,
-			"13": 0,
-			"14": 0,
-			"15": 4,
-			"16": 2,
-			"17": 0,
-			"18": 4,
-			"19": 2,
-			"20": 1,
-			"21": 4,
-			"22": 1,
-			"23": 17,
-			"24": 13,
-			"25": 9,
-			"26": 7,
-			"27": 15,
-			"28": 14,
-			"29": 29,
-			"30": 31,
-			"31": 39,
-			"32": 55,
-			"33": 50,
-			"34": 65,
-			"35": 89,
-			"36": 105,
-			"37": 131,
-			"38": 127,
-			"39": 125,
-			"40": 62
-		},
-		"5_yr": {
-			"0": 4,
-			"1": 0,
-			"2": 0,
-			"3": 0,
-			"4": 0,
-			"5": 1,
-			"6": 0,
-			"7": 0,
-			"8": 0,
-			"9": 1,
-			"10": 0,
-			"11": 0,
-			"12": 3,
-			"13": 3,
-			"14": 2,
-			"15": 5,
-			"16": 5,
-			"17": 6,
-			"18": 12,
-			"19": 9,
-			"20": 14,
-			"21": 14,
-			"22": 12,
-			"23": 48,
-			"24": 37,
-			"25": 49,
-			"26": 55,
-			"27": 67,
-			"28": 79,
-			"29": 139,
-			"30": 134,
-			"31": 152,
-			"32": 189,
-			"33": 180,
-			"34": 271,
-			"35": 295,
-			"36": 384,
-			"37": 364,
-			"38": 331,
-			"39": 324,
-			"40": 124
-		}
-	}
+    "program_code": "UG-CSCI-MAJOR",
+    "program_verind_id": "456abc",
+    "major_title": "Comp Sci Studies",
+    "major_school": "College of the Comp Sci",
+    "major_campus": "Seattle",
+    "major_description": "Comp Sci Studies focuses on the interactions between humans and the environment. Building on a foundation of natural science, social science and humanities, the major offers students a flexible curriculum that includes an internship or research experience as an integral part of the capstone sequence. Concentrations for the major include Climate and Society; Conservation of Living Systems; Education and Communication; Policy and Planning; Food Studies; and Sustainability.",
+    "major_admission": "open",
+    "major_home_url": "www.washington.edu/students/gencat/academic/rail_stud.html",
+    "common_course_decl": {
+      "CSCI 250": {
+        "percent": 5,
+        "title": "Research Methods in Comp Sci Studies"
+      },
+      "CSCI 239": {
+        "percent": 3,
+        "title": "Sustainability: Personal Choices, Broad Impacts"
+      },
+      "CSCI 200": {
+        "percent": 3,
+        "title": "Communication for Comp Sci Studies"
+      },
+      "CSCI 495": {
+        "percent": 3,
+        "title": "Advanced Topics in Comp Sci Studies"
+      },
+      "CSCI 201": {
+        "percent": 2,
+        "title": "Climate Governance: How Individuals, Communities, NGOs, Firms, and Governments Can Solve the Climate Crisis"
+      },
+      "BIOL 180": {
+        "percent": 2,
+        "title": "Introductory Biology"
+      },
+      "CSCI 300": {
+        "percent": 2,
+        "title": "Analysis of Comp Sci Cases"
+      },
+      "CSCI 100": {
+        "percent": 2,
+        "title": "Introduction to Comp Sci Studies"
+      },
+      "CSCI 491": {
+        "percent": 2,
+        "title": "Comp Sci Studies Capstone: Internship and Research"
+      },
+      "ATM S 211": {
+        "percent": 2,
+        "title": "Climate and Climate Change"
+      }
+    },
+    "2_yr": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 1,
+      "13": 0,
+      "14": 0,
+      "15": 4,
+      "16": 2,
+      "17": 0,
+      "18": 4,
+      "19": 2,
+      "20": 1,
+      "21": 4,
+      "22": 1,
+      "23": 17,
+      "24": 13,
+      "25": 9,
+      "26": 7,
+      "27": 15,
+      "28": 14,
+      "29": 29,
+      "30": 31,
+      "31": 39,
+      "32": 55,
+      "33": 50,
+      "34": 65,
+      "35": 89,
+      "36": 105,
+      "37": 131,
+      "38": 127,
+      "39": 125,
+      "40": 62
+    },
+    "5_yr": {
+      "0": 4,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 1,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 1,
+      "10": 0,
+      "11": 0,
+      "12": 3,
+      "13": 3,
+      "14": 2,
+      "15": 5,
+      "16": 5,
+      "17": 6,
+      "18": 12,
+      "19": 9,
+      "20": 14,
+      "21": 14,
+      "22": 12,
+      "23": 48,
+      "24": 37,
+      "25": 49,
+      "26": 55,
+      "27": 67,
+      "28": 79,
+      "29": 139,
+      "30": 134,
+      "31": 152,
+      "32": 189,
+      "33": 180,
+      "34": 271,
+      "35": 295,
+      "36": 384,
+      "37": 364,
+      "38": 331,
+      "39": 324,
+      "40": 124
+    }
+  }
 }

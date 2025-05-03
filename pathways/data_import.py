@@ -29,6 +29,7 @@ def import_major_data(data):
             major_description=data[major]['major_description'],
             major_admission=data[major]['major_admission'],
             program_code=data[major]['program_code'],
+            program_verind_id=data[major]['program_verind_id'],
             major_home_url=data[major]['major_home_url'],
             common_course_decl=data[major]['common_course_decl'],
             credential_code=data[major]['credential_code'],

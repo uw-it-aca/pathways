@@ -93,6 +93,7 @@ class ModelTest(TestCase):
                              major_description='This is a major in chemistry.',
                              major_admission='Open',
                              program_code='CHEM',
+                             program_verind_id='CHEM123',
                              credential_title='Chemistry',
                              credential_code='CHEM-0-1-2',
                              credential_description='This is chemistry.',
@@ -103,6 +104,7 @@ class ModelTest(TestCase):
                              major_campus='Test Campus',
                              credential_title='Test',
                              program_code='TEST',
+                             program_verind_id='TEST123',
                              credential_code='TEST-0-3-4',
                              major_admission='capacity-constrained'
                              )
@@ -112,6 +114,7 @@ class ModelTest(TestCase):
                              major_campus='Test Campus',
                              credential_title='Test Child',
                              program_code='TEST',
+                             program_verind_id='TEST123',
                              credential_code='TEST-10-3-4',
                              major_admission='open'
                              )
@@ -121,6 +124,7 @@ class ModelTest(TestCase):
                              major_campus='Other Campus',
                              credential_title='Other',
                              program_code='OTHER',
+                             program_verind_id='OTHER123',
                              credential_code='OTHER-10-3-4',
                              major_admission='capacity-constrained'
                              )
@@ -130,6 +134,7 @@ class ModelTest(TestCase):
                              major_campus='Other Campus',
                              credential_title='Other',
                              program_code='OTHER',
+                             program_verind_id='OTHER123',
                              credential_code='OTHER-10-4-4',
                              major_admission='capacity-constrained'
                              )
@@ -139,6 +144,7 @@ class ModelTest(TestCase):
                              major_campus='Solo Campus',
                              credential_title='Solo',
                              program_code='SOLO',
+                             program_verind_id='SOLO123',
                              credential_code='SOLO-10-4-4',
                              major_admission='capacity-constrained'
                              )
@@ -357,22 +363,12 @@ class ModelTest(TestCase):
         response = major.get_common_with_coi_and_flags()
         self.assertEqual(response, {})
 
-    def test_is_parent_major(self):
-        self.assertTrue(SimilarMajor.objects.get(
-            similar_major__credential_code='TEST-0-3-4')._is_parent_major())
-        self.assertFalse(SimilarMajor.objects.get(
-            similar_major__credential_code='TEST-10-3-4')._is_parent_major())
-
     def test_similar_major_json(self):
         major = Major.objects.get(major_abbr='CHEM')
         sm = SimilarMajor.json_data_by_major(major)
-        self.assertEqual(len(sm), 4)
-        self.assertEqual(len(sm[0]['submajors']), 1)
-        self.assertDictEqual(sm[1], {'credential_code': 'OTHER-10-3-4',
-                                     'credential_title': 'Other',
-                                     'campus': 'Other Campus',
-                                     'major_admission': 'capacity-constrained',
-                                     'major_school': 'Other School',
-                                     'is_stem': False,
-                                     })
-        self.assertEqual(sm[2]['credential_code'], "OTHER-10-4-4")
+        self.assertEqual(len(sm), 3)
+        self.assertEqual(len(sm[0]['program_majors']), 2)
+        self.assertEqual(sm[0]['program_majors'][0]['credential_code'],
+                         'TEST-0-3-4')
+        self.assertEqual(sm[0]['program_majors'][1]['credential_code'],
+                         'TEST-10-3-4')

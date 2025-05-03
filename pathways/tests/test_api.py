@@ -112,7 +112,7 @@ class TestSearchApi(ApiTest):
             'search_string': "transgenic bacterial",
         }
         search = self._get_response(request_data)
-        self.assertEqual(len(search['text_matches']), 10)
+        self.assertEqual(len(search['text_matches']), 8)
 
     def test_no_results(self):
         request_data = {
