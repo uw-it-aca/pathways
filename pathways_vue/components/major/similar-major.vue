@@ -17,7 +17,7 @@
         :key="index"
         :majorData="major"
         />
-    </div>
+      </div>
   </div>
 
   <!-- Filter Box -->
