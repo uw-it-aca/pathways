@@ -1,19 +1,22 @@
 <template>
-  <div class="card mb-5">
+  <div class="card mb-5 shadow-sm rounded">
     <div class="card-body">
-      <h2 class="h4 axdd-font-encode-sans fw-bold">Similar Majors</h2>
-      <div>
-        Topically similar majors are determined through several sources, including major and course descriptions. Explore majors and concentrations that align with your interests and strengths.
-        <a href="#" v-on:click.prevent="showHelpModal">About Topically Similar Majors</a>
+      <div class="row pb-2 ">
+        <div class="col-sm-9">
+          <h2 class="h4 axdd-font-encode-sans fw-bold">Topically Similar Majors</h2>
+          Topically similar majors are determined through several sources, including major and course descriptions. Explore majors and concentrations that align with your interests and strengths.
+          <a href="#" v-on:click.prevent="showHelpModal">About Topically Similar Majors</a>
+        </div>
+
+        <div class="col-sm-3 text-end">
+          <button v-on:click="showFilters" class="btn btn-outline-secondary btn-sm"><i class="bi-filter"></i>Filter</button>
+        </div>
       </div>
-      <button v-on:click="showFilters"><i class="bi-filter"></i>Filter</button>
-      <div>
         <similar-major-row
-          v-for="(major, index) in similarMajors"
-          :key="index"
-          :majorData="major"
-          />
-      </div>
+        v-for="(major, index) in similarMajors"
+        :key="index"
+        :majorData="major"
+        />
     </div>
   </div>
 
