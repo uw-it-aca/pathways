@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-11">
         <h3 class="fw-bold" style="font-size: 16px;">{{majorData.program_title}}</h3>
-        <p>{{majorData.program_school}} - {{majorData.program_campus}}</p>
+        <p class="mb-1">{{majorData.program_school}} - {{majorData.program_campus}}</p>
       </div>
       <div class="col-1 text-center h3">
         <a href="#" v-on:click.prevent="expandChildren">
