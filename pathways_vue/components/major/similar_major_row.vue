@@ -1,7 +1,8 @@
 <template>
-  <div v-if="is_program">
-    <a href="#" v-on:click.prevent="expandChildren">
-      <h3><i :class="expand_icon"></i>{{majorData.program_title}}</h3>
+  <div v-if="is_program" class="my-2 py-2">
+      <h3 class="fw-bold" style="font-size: 16px;">{{majorData.program_title}}</h3>
+      <a href="#" v-on:click.prevent="expandChildren">
+      <i :class="expand_icon"></i>
     </a>
     <p>{{majorData.program_school}} - {{majorData.program_campus}}</p>
     <div v-if="expanded" style="margin-left: 40px;">

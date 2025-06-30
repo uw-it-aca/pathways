@@ -1,5 +1,5 @@
 <template>
-  <div class="my-2 py-2" style="font-family: 'Open Sans'; border-bottom: 1px solid rgba(0, 0, 0, 0.1);">
+  <div class="my-2 py-2" style="font-family: 'Open Sans';">
     <h3 class="fw-bold" style="font-size: 16px;">
     <a :href="major_url" class="text-decoration-none">{{majorData.credential_title}}</a>
     </h3>
