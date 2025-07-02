@@ -21,39 +21,58 @@
   </div>
 
   <!-- Filter Box -->
-  <div v-if="filtersShown">
-    <form>
+  <div v-if="filtersShown"  class="bg-white border rounded" style="width: 270px;">
+    <form class="m-3">
       <fieldset>
-        <legend>Campus</legend>
+        <legend class="fw-bold" style="font-size: 16px;">Campus</legend>
+        <div class="row">
+          <div>
+            <input type="checkbox" id="seattle" value="seattle" v-model="filters.campus" class="me-2">
+            <label for="seattle">Seattle</label>
+          </div>
 
-        <input type="checkbox" id="seattle" value="seattle" v-model="filters.campus">
-        <label for="seattle">Seattle</label>
+          <div>
+            <input type="checkbox" id="bothell" value="bothell" v-model="filters.campus" class="me-2">
+            <label for="bothell">Bothell</label>
+          </div>
 
-        <input type="checkbox" id="bothell" value="bothell" v-model="filters.campus">
-        <label for="bothell">Bothell</label>
-
-        <input type="checkbox" id="tacoma" value="tacoma" v-model="filters.campus">
-        <label for="tacoma">Tacoma</label>
+          <div>
+            <input type="checkbox" id="tacoma" value="tacoma" v-model="filters.campus" class="me-2">
+            <label for="tacoma">Tacoma</label>
+          </div>
+        </div>
       </fieldset>
       <fieldset>
-        <legend>Admission Type</legend>
+        <div class="row mt-2">
+          <legend class="fw-bold" style="font-size: 16px;">Admission Type</legend>
+          <div>
+            <input type="checkbox" id="open" value="open" v-model="filters.admissionType" class="me-2">
+            <label for="open">Open Admission</label>
+          </div>
 
-        <input type="checkbox" id="open" value="open" v-model="filters.admissionType">
-        <label for="open">Open Admission</label>
+          <div>
+            <input type="checkbox" id="minimumRequirements" value="minimumRequirements" v-model="filters.admissionType" class="me-2">
+            <label for="minimumRequirements">Minimum Requirements</label>
+          </div>
 
-        <input type="checkbox" id="minimumRequirements" value="minimumRequirements" v-model="filters.admissionType">
-        <label for="minimumRequirements">Minimum Requirements</label>
-
-        <input type="checkbox" id="capacity-constrained" value="capacity-constrained" v-model="filters.admissionType">
-        <label for="capacity-constrained">Capacity Constrained</label>
+          <div>
+            <input type="checkbox" id="capacity-constrained" value="capacity-constrained" v-model="filters.admissionType" class="me-2">
+            <label for="capacity-constrained">Capacity Constrained</label>
+          </div>
+        </div>
       </fieldset>
       <fieldset>
-        <legend>STEM</legend>
-        <input type="checkbox" id="stem" value="stem" v-model="filters.stem">
-        <label for="stem">STEM Majors</label>
-
-        <input type="checkbox" id="non-stem" value="non-stem" v-model="filters.stem">
-        <label for="non-stem">Non-STEM Majors</label>
+        <div class="row mt-2">
+          <legend class="fw-bold" style="font-size: 16px;">STEM</legend>
+          <div>
+            <input type="checkbox" id="stem" value="stem" v-model="filters.stem" class="me-2">
+            <label for="stem">STEM Majors</label>
+          </div>
+          <div>
+            <input type="checkbox" id="non-stem" value="non-stem" v-model="filters.stem" class="me-2">
+            <label for="non-stem">Non-STEM Majors</label>
+          </div>
+        </div>
       </fieldset>
     </form>
   </div>
