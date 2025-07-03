@@ -5,7 +5,7 @@
         <div class="col-sm-9">
           <h2 class="h4 axdd-font-encode-sans fw-bold">Topically Similar Majors</h2>
           Topically similar majors are determined through several sources, including major and course descriptions. Explore majors and concentrations that align with your interests and strengths.
-          <a href="#" v-on:click.prevent="showHelpModal">About Topically Similar Majors</a>
+          <a href="#" v-on:click.prevent="showHelpModal" style="color: #2f68cb;">About Topically Similar Majors</a>
         </div>
 
         <div class="col-sm-3 text-end">
@@ -14,7 +14,7 @@
       </div>
       <div  v-for="(major, index) in similarMajors" :key="index">
         <similar-major-row :majorData="major"/>
-        <div v-if="index !== similarMajors.length - 1" class="border-bottom border-light-subtle"></div>
+        <div v-if="index !== similarMajors.length - 1" class="border-bottom border-light mx-n3"></div>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <div style="font-size: 16px;">
+  <div>
   <i :class="capacityIcon" style = "color:#4E2F7F; margin-right: 8px; font-size: 14px;">
   </i>{{capacityText}}</div>
   </template>

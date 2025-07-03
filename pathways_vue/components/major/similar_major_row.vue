@@ -1,24 +1,24 @@
 <template>
-  <div v-if="is_program" class="my-2 py-2">
+  <div v-if="is_program">
 
-    <div class="row">
+    <div class="row my-1 py-2">
       <div class="col-11">
         <h3 class="fw-bold" style="font-size: 16px;">{{majorData.program_title}}</h3>
-        <p class="mb-1">{{majorData.program_school}} - {{majorData.program_campus}}</p>
+        <p  class="text-uppercase text-secondary mb-1" style="font-size: 14px;">{{majorData.program_school}} - {{majorData.program_campus}}</p>
       </div>
-      <div class="col-1 text-center h3">
-        <a href="#" v-on:click.prevent="expandChildren">
+      <div class="col-1 text-center" style="font-size: 20px;">
+        <a href="#" v-on:click.prevent="expandChildren" style="color: #2f68cb;">
           <i :class="expand_icon"></i>
         </a>
       </div>
     </div>
 
-    <div v-if="expanded" style="margin-left: 40px;">
-      <similar-major-display
-        v-for="(major, index) in majorData.program_majors"
-        :key="index"
-        :majorData="major"
-      />
+    <div v-if="expanded">
+      <div class="border-bottom border-light mx-n3"></div>
+      <div v-for="(major, index) in majorData.program_majors" :key="index">
+        <similar-major-display :majorData="major" style="margin-left: 40px;"/>
+        <div v-if="index !== majorData.program_majors.length - 1" class="border-bottom border-light mx-n3"></div>
+      </div>
     </div>
   </div>
   <div v-else>
