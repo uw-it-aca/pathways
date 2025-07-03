@@ -12,12 +12,11 @@
           <button v-on:click="showFilters" class="btn btn-outline-secondary btn-sm"><i class="bi-filter"></i>Filter</button>
         </div>
       </div>
-        <similar-major-row
-        v-for="(major, index) in similarMajors"
-        :key="index"
-        :majorData="major"
-        />
+      <div  v-for="(major, index) in similarMajors" :key="index">
+        <similar-major-row :majorData="major"/>
+        <div v-if="index !== similarMajors.length - 1" class="border-bottom border-light-subtle"></div>
       </div>
+    </div>
   </div>
 
   <!-- Filter Box -->
