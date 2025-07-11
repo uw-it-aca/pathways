@@ -38,6 +38,9 @@ ingress:
         return 301 $scheme://dawgpath.uw.edu;
       }
 
+namespace:
+  enabled: true
+
 lifecycle:
   enabled: true
   preStop:
