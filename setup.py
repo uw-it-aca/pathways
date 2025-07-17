@@ -24,7 +24,7 @@ setup(
     author_email="aca-it@uw.edu",
     include_package_data=True,
     install_requires=[
-        "django~=5.2",
+        "django~=4.2",
         "UW-Django-SAML2~=1.8",
         'lxml==4.9.4',
         "whoosh~=2.7",
