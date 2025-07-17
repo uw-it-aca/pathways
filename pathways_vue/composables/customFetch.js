@@ -21,9 +21,7 @@ export async function useCustomFetch(url, options = {}) {
 
     // Handle expired session (403 status)
     if (response.status === 403) {
-      alert(
-        "Your session has expired. Refresh the page to start a new session."
-      );
+      throw new Error("SessionExpired");
       return;
     }
 
