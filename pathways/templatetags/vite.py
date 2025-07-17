@@ -17,7 +17,7 @@ def vite_manifest(entries_names):
     manifest_filepath = getattr(
         settings,
         "VITE_MANIFEST_PATH",
-        os.path.join(os.sep, "static", "manifest.json"),
+        os.path.join(os.sep, 'static', '.vite', 'manifest.json'),
     )
 
     with open(manifest_filepath) as fp:
