@@ -3,7 +3,7 @@ import os
 
 INSTALLED_APPS += [
     "pathways.apps.PathwaysConfig",
-    'pathways.apps.ViteStaticFilesConfig',
+    "pathways.apps.ViteStaticFilesConfig",
 ]
 
 if os.getenv("ENV") == "localdev":
@@ -11,11 +11,13 @@ if os.getenv("ENV") == "localdev":
 
 if os.getenv("ENV") == "localdev":
     VITE_MANIFEST_PATH = os.path.join(
-        BASE_DIR, 'app_name', 'static', '.vite', 'manifest.json'
+        BASE_DIR, "app_name", "static", ".vite", "manifest.json"
     )
 else:
-    CSRF_TRUSTED_ORIGINS = ['https://' + os.getenv('CLUSTER_CNAME')]
-    VITE_MANIFEST_PATH = os.path.join(os.sep, 'static', '.vite', 'manifest.json')
+    CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv("CLUSTER_CNAME")]
+    VITE_MANIFEST_PATH = os.path.join(
+        os.sep, "static", ".vite", "manifest.json"
+    )
 
 # If you have file data, define the path here
 # DATA_ROOT = os.path.join(BASE_DIR, "app_name/data")
@@ -46,8 +48,7 @@ LOGGING = {
     },
     "formatters": {
         "pathways": {
-            "format":
-                "%(levelname)-4s %(asctime)s %(user)s %(message)s [%(name)s]",
+            "format": "%(levelname)-4s %(asctime)s %(user)s %(message)s [%(name)s]",
             "datefmt": "[%Y-%m-%d %H:%M:%S]",
         },
     },
@@ -81,9 +82,9 @@ LOGGING = {
         },
         "": {
             "handlers": ["stdout", "stderr"],
-            "level": "INFO"
-            if os.getenv("ENV", "localdev") == "prod"
-            else "DEBUG",
+            "level": (
+                "INFO" if os.getenv("ENV", "localdev") == "prod" else "DEBUG"
+            ),
         },
     },
 }
