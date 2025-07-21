@@ -19,7 +19,10 @@
             <similar-major :similar-major-data="major_data.similar_majors" />
           </div>
           <div class="col-md-9">
-            <contact-adviser :campus="major_data.major_campus" :type="'major'" />
+            <contact-adviser
+              :campus="major_data.major_campus"
+              :type="'major'"
+            />
           </div>
         </div>
         <div v-else class="row order-2 justify-content-sm-center">
@@ -68,7 +71,7 @@ export default {
   name: "MajorComp",
   components: {
     layout: Layout,
-    "search": Search,
+    search: Search,
     "d3-cgpa": D3Cgpa,
     "contact-adviser": ContactAdviser,
     "major-details": MajorDetails,
@@ -112,7 +115,11 @@ export default {
             vue.major_data = response.data;
             vue.majorTitle = vue.major_data.credential_title;
             vue.showError = false;
-            vue.recentViewManager(vue.majorTitle, "major?id=" + vue.majorID, vue.major_data.major_campus);
+            vue.recentViewManager(
+              vue.majorTitle,
+              "major?id=" + vue.majorID,
+              vue.major_data.major_campus
+            );
           })
           .catch(function () {
             vue.showError = true;
