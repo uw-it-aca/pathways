@@ -9,8 +9,8 @@
           Topically similar majors are determined through several sources,
           including major and course descriptions. Explore majors and
           concentrations that align with your interests and strengths.
-          <a href="#" v-on:click.prevent="showHelpModal" style="color: #2f68cb"
-            >About Topically Similar Majors</a
+          <a href="#" v-on:click.prevent="showHelpModal" style="color: #2f68cb">
+            About Topically Similar Majors</a
           >
         </div>
 
@@ -18,7 +18,7 @@
           <!-- MARK: default bootstrap. bs-vue-next does not support custom content -->
           <div class="dropdown">
             <button
-              class="btn btn-secondary btn-sm"
+              class="btn btn-outline-primary"
               type="button"
               data-bs-toggle="dropdown"
               data-bs-auto-close="outside"
@@ -26,7 +26,10 @@
             >
               <i class="bi-filter me-2"></i>Filter
             </button>
-            <div class="dropdown-menu" style="width: 250px">
+            <div
+              class="dropdown-menu dropdown-menu-lg-end"
+              style="width: 250px"
+            >
               <form class="m-3">
                 <fieldset>
                   <legend class="fw-bold" style="font-size: 16px">
@@ -146,7 +149,8 @@
         <similar-major-row :majorData="major" />
         <div
           v-if="index !== similarMajors.length - 1"
-          class="border-bottom border-light mx-n3"
+          class="border-bottom border-secondary-subtle"
+          style="margin-left: -1rem; margin-right: -1rem"
         ></div>
       </div>
     </div>

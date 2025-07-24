@@ -1,5 +1,3 @@
-// explore-major.vue
-
 <template>
   <h2 class="h4 axdd-font-encode-sans fw-bold mb-3">Explore this Major</h2>
   <div class="row mb-5">

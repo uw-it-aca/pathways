@@ -1,18 +1,14 @@
-// course.vue
-
 <template>
   <div class="my-5 row justify-content-center">
     <button
       type="button"
-      class="btn btn-lg btn-link border-purple border-2 text-start w-75 bg-transparent-hover text-decoration-none mx-auto"
+      class="btn btn-lg btn-outline-primary text-start w-75 mx-auto"
       @keydown.tab.exact="false"
       @keydown.exact="handleKeyboard"
       @click="openSearch"
     >
-      <i class="bi bi-search me-3 text-secondary"></i>
-      <span class="text-secondary"
-        >Start typing to search for courses, majors, or subjects</span
-      >
+      <i class="bi bi-search me-3"></i>
+      <span>Search DawgPath</span>
     </button>
   </div>
   <!-- Modal -->
@@ -32,7 +28,7 @@
               <div class="w-100">
                 <div class="position-relative">
                   <i
-                    class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary"
+                    class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3"
                   ></i>
                   <input
                     type="text"
@@ -44,7 +40,6 @@
                     autocapitalize="off"
                     enterkeyhint="go"
                     spellcheck="false"
-                    placeholder="Start typing to search for courses, majors, or subjects"
                     v-model="form_data.search_string"
                     aria-label="Recipient's username"
                     aria-describedby="button-addon2"
@@ -54,7 +49,7 @@
                     v-if="show_results"
                     type="button"
                     @click="clearSearch"
-                    class="btn btn-link text-secondary text-purple-hover position-absolute top-50 end-0 translate-middle-y p-1 me-2"
+                    class="btn btn-link position-absolute top-50 end-0 translate-middle-y p-1 me-2"
                   >
                     clear
                   </button>
@@ -68,6 +63,9 @@
                 >
                   Search
                 </button>
+                <p class="text-black-50 ps-3">
+                  Start typing to search for courses, majors, or subjects
+                </p>
               </div>
             </div>
           </form>
@@ -289,15 +287,18 @@ export default {
       this.runSearch();
     }, 500),
     handleFilterToggle() {
-      if(this.form_data.prev_campus !== this.form_data.campus){
-        this.form_data.campus = this.form_data.campus.filter((item) => !this.form_data.prev_campus.includes(item));
+      if (this.form_data.prev_campus !== this.form_data.campus) {
+        this.form_data.campus = this.form_data.campus.filter(
+          (item) => !this.form_data.prev_campus.includes(item)
+        );
       }
-      if(this.form_data.prev_type !== this.form_data.type){
-        this.form_data.type = this.form_data.type.filter((item) => !this.form_data.prev_type.includes(item));
+      if (this.form_data.prev_type !== this.form_data.type) {
+        this.form_data.type = this.form_data.type.filter(
+          (item) => !this.form_data.prev_type.includes(item)
+        );
       }
       this.form_data.prev_type = this.form_data.type;
       this.form_data.prev_campus = this.form_data.campus;
-
     },
     runSearch() {
       const vue = this;
