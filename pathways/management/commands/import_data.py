@@ -7,7 +7,8 @@ import csv
 from pathways.data_import import import_major_data, import_course_data, \
     import_curric_data, import_level_coi, import_coi_ranges, \
     import_gateway_courses, import_bottleneck_courses, \
-    import_career_center_mapping
+    import_career_center_mapping, import_similar_majors, \
+    import_stem_from_similar_majors
 from logging import getLogger
 import time
 import hashlib
@@ -22,6 +23,7 @@ CURRIC_PATH = "pathways/data/curric_data.json"
 BOTTLENECK_PATH = "pathways/data/bottleneck_courses.csv"
 GATEWAY_PATH = "pathways/data/gateway_courses.csv"
 CAREER_CENTER_PATH = "pathways/data/admit_major_mapping.csv"
+SIMILAR_MAJOR_PATH = "pathways/data/similar_majors.csv"
 
 
 class Command(BaseCommand):
@@ -58,6 +60,15 @@ class Command(BaseCommand):
             with open(CAREER_CENTER_PATH) as career_major_file:
                 data = csv.reader(career_major_file)
                 import_career_center_mapping(data)
+            with open(SIMILAR_MAJOR_PATH) as similar_major_file:
+                csv_data = csv.reader(similar_major_file)
+                # skip headers
+                next(csv_data)
+                similar_major_data = []
+                for line in csv_data:
+                    similar_major_data.append(line)
+                import_similar_majors(similar_major_data)
+                import_stem_from_similar_majors(similar_major_data)
 
         total_time = time.time() - start
         logger.info("Imported data in: %s" % total_time)
