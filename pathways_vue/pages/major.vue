@@ -65,7 +65,8 @@ import D3Cgpa from "@/components/major/d3-cgpa.vue";
 import ContactAdviser from "@/components/common/contact-adviser.vue";
 import utils from "@/utils.js";
 import { useCustomFetch } from "@/composables/customFetch";
-import SimilarMajor from "../components/major/similar-major.vue";
+import SimilarMajor from "@/components/major/similar-major.vue";
+import SearchComponent from "@/components/search/search.vue";
 
 export default {
   name: "MajorComp",

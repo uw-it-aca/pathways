@@ -40,7 +40,6 @@ export default {
   data() {
     return {};
   },
-<<<<<<< HEAD
   computed: {
     AdminReqs() {
       if (this.major["major_admission"] === "minimumRequirements") {
@@ -51,7 +50,5 @@ export default {
     },
   },
   methods: {},
-=======
->>>>>>> develop
 };
 </script>

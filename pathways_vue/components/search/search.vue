@@ -41,11 +41,6 @@
                     autocapitalize="off"
                     enterkeyhint="go"
                     spellcheck="false"
-<<<<<<< HEAD
-                    placeholder="Start typing to search for courses, majors, or subjects"
-=======
-                    v-model="form_data.search_string"
->>>>>>> develop
                     aria-label="Recipient's username"
                     aria-describedby="button-addon2"
                     @input="debouncedSearch"
@@ -53,13 +48,8 @@
                   <button
                     v-if="show_results"
                     type="button"
-<<<<<<< HEAD
-                    class="btn btn-link text-secondary text-purple-hover position-absolute top-50 end-0 translate-middle-y p-1 me-2"
-                    @click="clearSearch"
-=======
                     @click="clearSearch"
                     class="btn btn-link position-absolute top-50 end-0 translate-middle-y p-1 me-2"
->>>>>>> develop
                   >
                     clear
                   </button>

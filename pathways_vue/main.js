@@ -1,11 +1,9 @@
 import { createApp } from "vue";
+import { createPinia } from "pinia";
 import { createBootstrap } from "bootstrap-vue-next";
 import VueGtag from "vue-gtag-next";
 import { Vue3Mq, MqResponsive } from "vue3-mq";
 import mitt from "mitt";
-
-// import solstice-vue
-//import SolsticeVue from "solstice-vue";
 
 import App from "@/app.vue";
 import router from "@/router";
@@ -35,6 +33,10 @@ app.config.productionTip = false;
 // mitt
 const emitter = mitt();
 app.config.globalProperties.emitter = emitter;
+
+// pinia (vuex) state management
+const pinia = createPinia();
+app.use(pinia);
 
 // vue-gtag-next
 app.use(VueGtag, {
