@@ -1,18 +1,14 @@
-// course.vue
-
 <template>
   <div class="my-5 row justify-content-center">
     <button
       type="button"
-      class="btn btn-lg btn-link border-purple border-2 text-start w-75 bg-transparent-hover text-decoration-none mx-auto"
+      class="btn btn-lg btn-outline-primary text-start w-75 mx-auto"
       @keydown.tab.exact="false"
       @keydown.exact="handleKeyboard"
       @click="openSearch"
     >
-      <i class="bi bi-search me-3 text-secondary"></i>
-      <span class="text-secondary"
-        >Start typing to search for courses, majors, or subjects</span
-      >
+      <i class="bi bi-search me-3"></i>
+      <span>Search DawgPath</span>
     </button>
   </div>
   <!-- Modal -->
@@ -32,7 +28,7 @@
               <div class="w-100">
                 <div class="position-relative">
                   <i
-                    class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary"
+                    class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3"
                   ></i>
                   <input
                     id="search-string"
@@ -45,7 +41,11 @@
                     autocapitalize="off"
                     enterkeyhint="go"
                     spellcheck="false"
+<<<<<<< HEAD
                     placeholder="Start typing to search for courses, majors, or subjects"
+=======
+                    v-model="form_data.search_string"
+>>>>>>> develop
                     aria-label="Recipient's username"
                     aria-describedby="button-addon2"
                     @input="debouncedSearch"
@@ -53,8 +53,13 @@
                   <button
                     v-if="show_results"
                     type="button"
+<<<<<<< HEAD
                     class="btn btn-link text-secondary text-purple-hover position-absolute top-50 end-0 translate-middle-y p-1 me-2"
                     @click="clearSearch"
+=======
+                    @click="clearSearch"
+                    class="btn btn-link position-absolute top-50 end-0 translate-middle-y p-1 me-2"
+>>>>>>> develop
                   >
                     clear
                   </button>
@@ -68,6 +73,9 @@
                 >
                   Search
                 </button>
+                <p class="text-black-50 ps-3">
+                  Start typing to search for courses, majors, or subjects
+                </p>
               </div>
             </div>
           </form>

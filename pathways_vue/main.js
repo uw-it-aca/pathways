@@ -1,8 +1,14 @@
 import { createApp } from "vue";
-
+import { createBootstrap } from "bootstrap-vue-next";
 import VueGtag from "vue-gtag-next";
 import { Vue3Mq, MqResponsive } from "vue3-mq";
 import mitt from "mitt";
+
+// import solstice-vue
+//import SolsticeVue from "solstice-vue";
+
+import App from "@/app.vue";
+import router from "@/router";
 
 // bootstrap js + bootstrap-icons
 import "bootstrap";
@@ -48,8 +54,8 @@ app.use(Vue3Mq, {
 });
 app.component(MqResponsive);
 
-// solstice-vue
-app.use(SolsticeVue);
+// bootstrap-vue-next
+app.use(createBootstrap());
 
 // vue-router
 app.use(router);

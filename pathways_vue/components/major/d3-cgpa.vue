@@ -1,5 +1,3 @@
-// d3-cgpa.vue
-
 <template>
   <div class="card mb-5">
     <div v-if="!showCard" class="card-body">
