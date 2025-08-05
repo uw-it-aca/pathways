@@ -1,16 +1,16 @@
 <template>
   <!-- layout.vue: this is where you override the layout -->
-  <STopbar
+  <STopbarNeo
     :app-name="appName"
     :app-root-url="appRootUrl"
     :page-title="pageTitle"
     :user-name="userName"
     :sign-out-url="signOutUrl"
   >
-    <template #profile>
+    <template #settings>
       <!-- profile section override -->
       <div class="d-flex">
-        <div class="flex-fill">
+        <div class="flex-fill text-white">
           <i class="bi bi-person-circle me-2"></i>{{ userName }}
         </div>
         <div class="flex-fill text-end">
@@ -25,15 +25,18 @@
         </div>
       </div>
     </template>
-    <template #bar>
+
+    <template #system>
       <Banner />
     </template>
+
     <template #main>
       <div class="" style="min-height: 400px">
         <!-- main section override -->
         <slot name="content"></slot>
       </div>
     </template>
+
     <template #footer>
       <!-- footer section override -->
       <div class="bg-dark">
@@ -85,20 +88,20 @@
         </div>
       </div>
     </template>
-  </STopbar>
+  </STopbarNeo>
 </template>
 
 <script>
 import Feedback from "@/components/common/feedback.vue";
 import Banner from "@/components/common/banner.vue";
-import { STopbar } from "solstice-vue";
+import { STopbarNeo } from "solstice-vue";
 
 export default {
   name: "DawgPath",
   components: {
     Feedback,
     Banner,
-    STopbar,
+    STopbarNeo,
   },
   props: {
     pageTitle: {
