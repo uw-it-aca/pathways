@@ -39,10 +39,9 @@
 
     <template #footer>
       <!-- footer section override -->
-      <div class="bg-dark">
+      <!--<div class="bg-dark">
         <div class="container-xl">
           <div class="text-white font-weight-light py-3 small">
-            <!-- foot link slot -->
             <div class="d-flex justify-content-between">
               <ul class="list-inline mb-2">
                 <li class="list-inline-item item-dot">
@@ -86,7 +85,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
     </template>
   </STopbarNeo>
 </template>
