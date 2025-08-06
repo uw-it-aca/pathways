@@ -127,3 +127,6 @@ indexdir/
 
 # coverage
 coverage/
+
+# lighthouse
+.lighthouseci
