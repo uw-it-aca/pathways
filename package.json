@@ -8,7 +8,7 @@
     "test": "vitest --environment jsdom",
     "coverage": "vitest run --coverage",
     "eslint": "eslint 'pathways_vue/**/*.{js,vue}'",
-    "stylelint": "stylelint 'pathways_vue/**/*.{vue,scss}'",
+    "stylelint": "stylelint 'pathways_vue/**/*.{vue,scss}'"
   },
   "repository": {
     "type": "git",
