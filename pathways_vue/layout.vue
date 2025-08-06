@@ -31,10 +31,12 @@
     </template>
 
     <template #main>
-      <div class="" style="min-height: 400px">
-        <!-- main section override -->
-        <slot name="content"></slot>
+      <div class="d-flex flex-column align-items-start w-100 h-100 gap-3">
+
+          <slot name="content"></slot>
+
       </div>
+      <Feedback />
     </template>
 
     <template #footer>

@@ -1,17 +1,17 @@
 // feedback.vue
 
 <template>
-  <button
-    class="btn btn-sm btn-primary position-absolute end-0"
-    style="margin-top: -60px; margin-right: 10px; z-index: 1"
-    type="button"
-    data-bs-toggle="offcanvas"
-    data-bs-target="#send_feedback"
-    aria-controls="send_feedback"
-  >
-    <i class="bi bi-chat-right-text-fill me-0"></i> Send us feedback
-  </button>
-
+  <div class="fixed-bottom end-0">
+    <button
+      class="btn btn-sm btn-primary"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#send_feedback"
+      aria-controls="send_feedback"
+    >
+      <i class="bi bi-chat-right-text-fill me-0"></i> Send us feedback
+    </button>
+  </div>
   <div
     class="offcanvas offcanvas-end"
     tabindex="-1"

@@ -3,7 +3,7 @@
   <layout :page-title="pageTitle">
     <!-- page content -->
     <template #content>
-      <div class="row justify-content-center">
+      <div class="flex-fill row justify-content-center">
         <div class="col-md-9">
           <h1 class="visually-hidden">{{ pageTitle }}</h1>
 
