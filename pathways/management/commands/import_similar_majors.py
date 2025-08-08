@@ -3,13 +3,11 @@
 
 from django.core.management.base import BaseCommand
 import csv
-from pathways.data_import import  import_similar_majors, \
+from pathways.data_import import import_similar_majors, \
     import_stem_from_similar_majors
 from pathways.dao.azure_storage import AzureStorageDAO
 from logging import getLogger
 from io import StringIO
-
-
 
 logger = getLogger(__name__)
 
