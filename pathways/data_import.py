@@ -247,6 +247,6 @@ def import_similar_majors(similar_major_data):
             pass
     SimilarMajor.objects.bulk_create(similar_majors_to_create, batch_size=1000)
     logger.info("Imported %d similar majors", len(similar_majors_to_create))
-    if(len(missing_majors) > 0):
+    if len(missing_majors) > 0:
         logger.info("Similar majors not in Pathways: %s",
                     set(missing_majors))
