@@ -7,7 +7,7 @@ class AzureStorageDAO:
     This class provides methods to interact with Azure Storage services.
     """
 
-    sas_url = getattr(settings, 'AZURE_STORAGE_SAS_URL', None)
+    sas_url = getattr(settings, 'AZURE_BLOB_STORAGE_URL', None)
     client = None
 
     def __init__(self):

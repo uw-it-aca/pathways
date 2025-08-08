@@ -67,6 +67,54 @@ instance: prod
 memcached:
   enabled: false
 
+  cronjob:
+    enabled: true
+    jobs:
+      - name: Import  Similar Majors # At 20:05 on Sunday
+        schedule: "5 20 * * 0"
+        command: ["/scripts/management_command.sh"]
+        args: ["import_similar_majors"]
+        resources:
+          limits:
+            cpu: 500
+            memory: 1024Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        sidecarContainers:
+          forwarder:
+            image: "us-docker.pkg.dev/uwit-mci-axdd/containers/uw-ssh-client:89695b2"
+            environmentVariables:
+              - name: PROXY_ID_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: shared-proxy-secrets
+                    key: proxy-id-key
+              - name: PROXY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: shared-proxy-secrets
+                    key: proxy-id
+              - name: PROXY_HOSTNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: shared-proxy-secrets
+                    key: proxy-hostname
+              - name: AZURE_BLOB_STORAGE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: dawgpath.uw.edu-azure-storage-secrets
+                    key: blob-url
+              - name: TARGET_PORT
+                value: "443"
+              - name: LOCAL_PORT
+                value: "443"
+            command:
+              - "sh"
+              - "-c"
+              - 'mkdir -m 0700 ~/.ssh && echo "${PROXY_ID_KEY}" > ~/.ssh/id_ecdsa && chmod 400 ~/.ssh/id_ecdsa && ssh ${PROXY_ID}@${PROXY_HOSTNAME} -o StrictHostKeyChecking=no -N -L 127.0.0.1:${LOCAL_PORT}:${TARGET_HOSTNAME}:${TARGET_PORT}'
+
+
 environmentVariables:
   - name: ENV
     value: prod
@@ -111,6 +159,19 @@ externalSecrets:
       data:
         - name: form-url
           property: form-url
+    - name: dawgpath.uw.edu-azure-storage-secrets
+      externalKey: dawgpath/shared/azure-storage
+                     - name: blob-url
+                     property: blob-url
+    - name: shared-proxy-secrets
+      externalKey: shared/proxies/uw_ssh_tunnel
+      data:
+        - name: proxy-id-key
+          property: key
+        - name: proxy-id
+          property: username
+        - name: proxy-hostname
+          property: hostname
 
 environmentVariablesSecrets:
   djangoSecret:
