@@ -1,9 +1,13 @@
 <template>
-<div><i :class="capacityIcon"></i>{{capacityText}}</div>
+  <i
+    :class="capacityIcon"
+    style="color: #4e2f7f; margin-right: 8px; font-size: 14px"
+  >
+  </i
+  >{{ capacityText }}
 </template>
 
 <script>
-
 export default {
   name: "MajorCapacityDisplay",
   props: {
@@ -13,29 +17,27 @@ export default {
     },
   },
   data() {
-    return {
-    };
+    return {};
   },
-  methods: {
-  },
+  methods: {},
   computed: {
-    capacityText(){
-      if(this.admissionType === "open"){
+    capacityText() {
+      if (this.admissionType === "open") {
         return "Open";
-      } else if(this.admissionType === "minimumRequirements"){
+      } else if (this.admissionType === "minimumRequirements") {
         return "Minimum Requirements";
-      } else if(this.admissionType === "capacity-constrained"){
+      } else if (this.admissionType === "capacity-constrained") {
         return "Capacity Constrained";
       } else {
         return "Unknown Requirements";
       }
     },
-    capacityIcon(){
-      if(this.admissionType === "open"){
+    capacityIcon() {
+      if (this.admissionType === "open") {
         return "bi-circle";
-      } else if(this.admissionType === "minimumRequirements"){
+      } else if (this.admissionType === "minimumRequirements") {
         return "bi-record-circle";
-      } else if(this.admissionType === "capacity-constrained"){
+      } else if (this.admissionType === "capacity-constrained") {
         return "bi-circle-fill";
       } else {
         return "bi-question-circle";
