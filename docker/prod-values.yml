@@ -164,8 +164,9 @@ externalSecrets:
           property: form-url
     - name: dawgpath.uw.edu-azure-storage-secrets
       externalKey: dawgpath/shared/azure-storage
-                     - name: blob-url
-                     property: blob-url
+      data:
+        - name: blob-url
+          property: blob-url
     - name: shared-proxy-secrets
       externalKey: shared/proxies/uw_ssh_tunnel
       data:

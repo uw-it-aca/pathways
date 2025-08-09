@@ -159,6 +159,7 @@ externalSecrets:
           property: form-url
     - name: test.dawgpath.uw.edu-azure-storage-secrets
       externalKey: dawgpath/shared/azure-storage
+      data:
         - name: blob-url
           property: blob-url
     - name: shared-proxy-secrets
