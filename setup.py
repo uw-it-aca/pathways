@@ -28,7 +28,8 @@ setup(
         "UW-Django-SAML2~=1.8",
         'lxml==4.9.4',
         "whoosh~=2.7",
-        'xmlsec==1.3.13'
+        'xmlsec==1.3.13',
+        'azure-storage-blob~=12.25',
     ],
     license="Apache License, Version 2.0",
     description="A tool for visually displaying UW course prerequisites",
