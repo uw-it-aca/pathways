@@ -66,13 +66,13 @@ instance: test
 memcached:
   enabled: false
 
-cronjob:
+daemon:
   enabled: true
-  jobs:
-    - name: Import  Similar Majors # At 20:05 on Sunday
-      schedule: "5 20 * * 0"
-      command: ["/scripts/management_command.sh"]
-      args: ["import_similar_majors"]
+  daemons:
+    - name: import-similar-majors # At 20:05 on Sunday
+      replicaCount: 1
+      command: ["/scripts/management_daemon.sh"]
+      args: ["--cron", "5 20 * * 0", "import_similar_majors"]
       resources:
         limits:
           cpu: 500
