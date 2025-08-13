@@ -9,24 +9,26 @@
 <script>
 export default {
   name: "PrereqGraph",
+
+  props: {
+    graphData: {
+      type: Object,
+      required: true,
+    },
+    graphType: {
+      type: String,
+      required: true,
+    },
+    activeCourse: {
+      type: String,
+      required: false,
+      default: "",
+    },
+  },
   data() {
     return {
       id: undefined,
     };
-  },
-  props: {
-    graph_data: {
-      type: Object,
-      required: true,
-    },
-    graph_type: {
-      type: String,
-      required: true,
-    },
-    active_course: {
-      type: String,
-      required: false,
-    },
   },
   watch: {
     graph_data() {
@@ -51,10 +53,10 @@ export default {
       );
     },
     show_graph() {
-      if (this.graph_data && Object.keys(this.graph_data).length > 0) {
+      if (this.graphData && Object.keys(this.graphData).length > 0) {
         // draw the graph
         let graph_div = document.getElementById("graph_container_" + this.id);
-        this.new_graph(graph_div, this.graph_data.x, this.active_course);
+        this.new_graph(graph_div, this.graphData.x, this.activeCourse);
       }
     },
     new_graph(graph_div, data, course_param) {

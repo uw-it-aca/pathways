@@ -66,13 +66,13 @@
             <td class="rank" scope="row"></td>
             <td>
               <a
-                v-bind:href="'/course?id=' + encodeURIComponent(course.course)"
+                :href="'/course?id=' + encodeURIComponent(course.course)"
                 :title="'Go to course ' + course.course"
                 class="btn-primary btn-course router-link-active text-decoration-none"
                 >{{ course.course }}</a
               >
               <a
-                v-bind:href="'/course?id=' + encodeURIComponent(course.course)"
+                :href="'/course?id=' + encodeURIComponent(course.course)"
                 class="router-link-active ps-3"
                 :title="'Go to course ' + course.course + ' ' + course.title"
                 >{{ course.title }}</a
@@ -109,6 +109,16 @@ export default {
       commonCourses: [],
     };
   },
+  watch: {
+    commonCourses: function () {
+      if (this.commonCourses.length > 0) {
+        // Hack to get popovers to only init once element has rendered
+        setTimeout(function () {
+          var popover = new Popover(document.querySelector(".info-common-coi"));
+        }, 1);
+      }
+    },
+  },
   mounted() {
     this.commonCourses = this.get_common_courses();
     if (this.commonCourses.length > 0) {
@@ -136,16 +146,6 @@ export default {
       }
 
       return processed_courses.sort((a, b) => (a.percent < b.percent ? 1 : -1));
-    },
-  },
-  watch: {
-    commonCourses: function () {
-      if (this.commonCourses.length > 0) {
-        // Hack to get popovers to only init once element has rendered
-        setTimeout(function () {
-          var popover = new Popover(document.querySelector(".info-common-coi"));
-        }, 1);
-      }
     },
   },
 };

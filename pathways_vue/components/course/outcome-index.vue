@@ -23,9 +23,9 @@
         </a>
       </p>
       <div
+        id="coi_modal"
         class="modal fade"
         role="dialog"
-        id="coi_modal"
         tabindex="-1"
         aria-modal="true"
         aria-labelledby="coi_onboard"
@@ -166,7 +166,7 @@
           </div>
         </div>
       </div>
-      <div class="bg-light" v-if="course_coi == null">
+      <div v-if="course_coi == null" class="bg-light">
         <div class="alert alert-purple" role="alert">
           <p>
             The COI is not available for
@@ -175,7 +175,7 @@
           </p>
         </div>
       </div>
-      <div class="bg-light" :class="mq.smPlus ? 'p-3' : 'p-2'" v-else>
+      <div v-else class="bg-light" :class="mq.smPlus ? 'p-3' : 'p-2'">
         <div id="sr-text" class="screen-reader-only"></div>
         <div
           id="upper"
@@ -191,7 +191,7 @@
             <div id="layer-select" class="card-body small"></div>
           </div>
         </div>
-        <div aria-hidden="true" id="coiGraph" />
+        <div id="coiGraph" aria-hidden="true" />
       </div>
     </div>
   </div>
@@ -200,10 +200,17 @@
 <script>
 import * as d3 from "d3";
 import { Modal } from "bootstrap";
+import { useCustomFetch } from "@/composables/customFetch";
 
 export default {
-  inject: ["mq"],
   name: "OutcomeScore",
+  inject: ["mq"],
+  props: {
+    course: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       percent_in_range: null,
@@ -218,12 +225,7 @@ export default {
       curric_coi_data: null,
     };
   },
-  props: {
-    course: {
-      type: Object,
-      required: true,
-    },
-  },
+  computed: {},
   watch: {
     course: function () {
       this.init();
@@ -233,7 +235,6 @@ export default {
     //var popover = new Popover(document.querySelector(".info-popper"));
     this.init();
   },
-  computed: {},
   methods: {
     showCOIModal() {
       this.coiModal = new Modal(document.getElementById("coi_modal"), {});
@@ -804,32 +805,30 @@ export default {
           .html("fewer students earned credit than predicted");
       }
     },
-    getCourseCOI() {
-      let url = "/api/v1/coi/course/" + this.course.department_abbrev,
-        vue = this;
-      this.axios
-        .get(url)
-        .then((response) => {
-          vue.course_coi_data = response.data;
-          this.getData();
-        })
-        .catch(function (error) {
-          vue.course_coi_data = {};
-          console.log(error);
-        });
+    async getCourseCOI() {
+      const vue = this;
+      const url = "/api/v1/coi/course/" + this.course.department_abbrev;
+
+      try {
+        const data = await useCustomFetch(url);
+        vue.course_coi_data = data;
+        vue.getData();
+      } catch (error) {
+        vue.course_coi_data = {};
+        console.log(error);
+      }
     },
-    getCurricCOI() {
-      let vue = this;
-      this.axios
-        .get("/api/v1/coi/curric/")
-        .then((response) => {
-          vue.curric_coi_data = response.data;
-          this.generateRect();
-        })
-        .catch(function (error) {
-          vue.curric_coi_data = {};
-          console.log(error);
-        });
+    async getCurricCOI() {
+      const vue = this;
+
+      try {
+        const data = await useCustomFetch("/api/v1/coi/curric/");
+        vue.curric_coi_data = data;
+        vue.generateRect();
+      } catch (error) {
+        vue.curric_coi_data = {};
+        console.log(error);
+      }
     },
   },
 };

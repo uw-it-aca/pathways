@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from "url";
-
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
@@ -30,6 +29,14 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./pathways_vue", import.meta.url)),
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        quietDeps: true,
+        silenceDeprecations: ["global-builtin", "import"], // silence bootstrap5 related deprecations
+      },
     },
   },
 });

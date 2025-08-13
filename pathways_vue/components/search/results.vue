@@ -4,12 +4,10 @@
   </div>
   <div class="container">
     <ul class="list-unstyled pt-3">
-      <li class="" v-for="result in displayed_results" :key="result.id">
+      <li v-for="result in displayed_results" :key="result.id">
         <template v-if="result.is_major">
           <div class="clearfix">
-            <a v-bind:href="result.url" class="float-start">{{
-              result.title
-            }}</a>
+            <a :href="result.url" class="float-start">{{ result.title }}</a>
             <div
               class="badge text-bg-light rounded-pill text-uppercase float-end"
             >
@@ -23,7 +21,7 @@
         </template>
         <template v-if="result.is_course">
           <div class="clearfix">
-            <a v-bind:href="result.url" class="float-start">
+            <a :href="result.url" class="float-start">
               <span class="text-decoration-none fw-semibold"
                 >{{ result.id }}
               </span>
@@ -51,7 +49,11 @@
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        <li v-for="pagenum in page_numbers" class="page-item">
+        <li
+          v-for="(pagenum, index) in page_numbers"
+          :key="index"
+          class="page-item"
+        >
           <a
             class="page-link"
             :class="pagenum == page ? 'active' : ''"
@@ -76,10 +78,10 @@
 </template>
 <script>
 export default {
-  name: "Results",
+  name: "SearchResults",
   components: {},
   props: {
-    search_results: {
+    searchResults: {
       type: Array,
       required: true,
     },

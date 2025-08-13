@@ -1,13 +1,13 @@
 <template>
   <div class="card mb-5">
-    <div class="card-body" v-if="!showCard">
+    <div v-if="!showCard" class="card-body">
       <h2 class="h4 axdd-font-encode-sans fw-bold">
         Declared major cumulative GPA distribution
       </h2>
       <div class="alert alert-purple" role="alert">
         <p>
-          No major GPA information for {{ this.majorData.major_title }} was
-          found. Here are some possible reasons:
+          No major GPA information for {{ majorData.major_title }} was found.
+          Here are some possible reasons:
         </p>
         <ul>
           <li>
@@ -18,7 +18,7 @@
         </ul>
       </div>
     </div>
-    <div v-else class="card-body" id="blah">
+    <div v-else class="card-body">
       <h2 class="h4 axdd-font-encode-sans fw-bold">
         Declared major cumulative GPA distribution
       </h2>
@@ -70,10 +70,10 @@
       <div class="p-3">
         <div class="form-check form-switch">
           <input
+            id="ToggleDataTable"
+            v-model="viewDataTable"
             class="form-check-input"
             type="checkbox"
-            v-model="viewDataTable"
-            id="ToggleDataTable"
           />
           <label class="form-check-label" for="ToggleDataTable"
             >Display data as a table</label
@@ -100,12 +100,12 @@
       </div>
       <div v-show="showGraph">
         <div
-          aria-hidden="true"
           id="histogram"
+          aria-hidden="true"
           :class="[viewDataTable ? 'visually-hidden' : '']"
         ></div>
         <div v-if="yearCount === 2" id="dataTable2yr">
-          <table class="table" v-if="viewDataTable">
+          <table v-if="viewDataTable" class="table">
             <caption class="caption-top">
               Number of students in this sample:
               {{
@@ -120,7 +120,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="value in zeroCount2yr" v-bind:key="value.count">
+              <tr v-for="value in zeroCount2yr" :key="value.count">
                 <td>{{ value.gpa / 10 }}</td>
                 <td>{{ value.count }}</td>
                 <td>{{ distributionPercentage(value.count) }}%</td>
@@ -129,7 +129,7 @@
           </table>
         </div>
         <div v-else-if="yearCount === 5" id="dataTable5yr">
-          <table class="table" v-if="viewDataTable">
+          <table v-if="viewDataTable" class="table">
             <caption class="caption-top">
               Number of students in this sample:
               {{
@@ -144,7 +144,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="value in zeroCount5yr" v-bind:key="value.count">
+              <tr v-for="value in zeroCount5yr" :key="value.count">
                 <td>{{ value.gpa / 10 }}</td>
                 <td>{{ value.count }}</td>
                 <td>{{ distributionPercentage(value.count) }}%</td>
@@ -171,30 +171,18 @@ import { Popover } from "bootstrap";
 
 export default {
   name: "D3Cgpa",
-  data() {
-    return {
-      gpa_2yr_active: true,
-      total_count: 0,
-      viewDataTable: false,
-    };
-  },
   props: {
     majorData: {
       type: Object,
       required: true,
     },
   },
-  mounted() {
-    if (this.showCard) {
-      var popover = new Popover(document.querySelector(".info-gpa"));
-    }
-
-    this.generateChart(this.majorData.gpa_2yr);
-  },
-  watch: {
-    majorData: function () {
-      this.generateChart(this.majorData.gpa_2yr);
-    },
+  data() {
+    return {
+      gpa_2yr_active: true,
+      total_count: 0,
+      viewDataTable: false,
+    };
   },
   computed: {
     showCard() {
@@ -251,6 +239,18 @@ export default {
       }
       return showYears;
     },
+  },
+  watch: {
+    majorData: function () {
+      this.generateChart(this.majorData.gpa_2yr);
+    },
+  },
+  mounted() {
+    if (this.showCard) {
+      var popover = new Popover(document.querySelector(".info-gpa"));
+    }
+
+    this.generateChart(this.majorData.gpa_2yr);
   },
   methods: {
     selectChart(year) {
@@ -431,7 +431,7 @@ div.tooltip {
   border-radius: 4px;
   width: 7.5rem;
   height: 2.5rem;
-  font-size: 12px sans-serif;
+  font-size: 12px;
   pointer-events: none;
 }
 </style>

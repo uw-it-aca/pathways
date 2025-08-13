@@ -55,35 +55,35 @@
 <script>
 export default {
   name: "PrereqCourseList",
+  props: {
+    graphData: {
+      type: Object,
+      required: true,
+    },
+    activeCourse: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       prereqs: [],
       postreqs: [],
     };
   },
-  props: {
-    graph_data: {
-      type: Object,
-      required: true,
-    },
-    active_course: {
-      type: String,
-      required: true,
-    },
-  },
+  computed: {},
   mounted() {
     this.build();
   },
-  computed: {},
   methods: {
     build: function () {
       this.prereqs = this.get_courses_from_list(
         this.active_course,
-        this.graph_data.x.edges.from
+        this.graphData.x.edges.from
       );
       this.postreqs = this.get_courses_from_list(
         this.active_course,
-        this.graph_data.x.edges.to
+        this.graphData.x.edges.to
       );
     },
     get_courses_from_list(current_course, list) {
@@ -107,15 +107,15 @@ export default {
       var course_num = parseInt(
         course_id.substring(split_pos + 1, course_id.length)
       );
-      var abbr_keys = Object.keys(this.graph_data.x.nodes.department_abbrev);
-      var num_keys = Object.keys(this.graph_data.x.nodes.course_number);
+      var abbr_keys = Object.keys(this.graphData.x.nodes.department_abbrev);
+      var num_keys = Object.keys(this.graphData.x.nodes.course_number);
       var title = "";
 
       abbr_keys.forEach(function (key) {
-        if (vue.graph_data.x.nodes.department_abbrev[key] === dept_abr) {
+        if (vue.graphData.x.nodes.department_abbrev[key] === dept_abr) {
           num_keys.forEach(function (num_key) {
-            if (vue.graph_data.x.nodes.course_number[num_key] === course_num) {
-              title = vue.graph_data.x.nodes.course_title[num_key];
+            if (vue.graphData.x.nodes.course_number[num_key] === course_num) {
+              title = vue.graphData.x.nodes.course_title[num_key];
             }
           });
         }

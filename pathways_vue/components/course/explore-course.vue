@@ -9,14 +9,14 @@
 <script>
 export default {
   name: "ExploreCourse",
-  data() {
-    return {};
-  },
   props: {
     course: {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {};
   },
   computed: {
     myplanURL() {

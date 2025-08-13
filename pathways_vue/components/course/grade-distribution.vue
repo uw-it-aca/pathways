@@ -34,10 +34,10 @@
       <div v-else class="p-3">
         <div class="form-check form-switch">
           <input
+            id="ToggleDataTable"
+            v-model="viewDataTable"
             class="form-check-input"
             type="checkbox"
-            v-model="viewDataTable"
-            id="ToggleDataTable"
           />
           <label class="form-check-label" for="ToggleDataTable"
             >Display data as a table</label
@@ -45,13 +45,13 @@
         </div>
       </div>
       <div
-        aria-hidden="true"
         id="gcd-graph"
+        aria-hidden="true"
         :class="[viewDataTable ? 'visually-hidden' : '']"
       />
 
       <div v-if="total_count > 8" id="dataTable">
-        <table class="table" v-if="viewDataTable">
+        <table v-if="viewDataTable" class="table">
           <caption class="caption-top">
             Number of grades in this sample:
             {{
@@ -67,7 +67,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="value in zeroCount" v-bind:key="value.count">
+            <tr v-for="value in zeroCount" :key="value.count">
               <td>{{ value.gpa / 10 }}</td>
               <td>{{ value.count }}</td>
               <td>{{ distributionPercentage(value.count) }}%</td>
@@ -93,26 +93,17 @@ import { Popover } from "bootstrap";
 
 export default {
   name: "GradeDistribution",
-  data() {
-    return {
-      total_count: 0,
-      viewDataTable: false,
-    };
-  },
   props: {
     course: {
       type: Object,
       required: true,
     },
   },
-  mounted() {
-    var popover = new Popover(document.querySelector(".info-gcd"));
-    this.generateChart(this.course.gpa_distro);
-  },
-  watch: {
-    course: function (course) {
-      this.generateChart(course.gpa_distro);
-    },
+  data() {
+    return {
+      total_count: 0,
+      viewDataTable: false,
+    };
   },
   computed: {
     formatGPA() {
@@ -129,6 +120,15 @@ export default {
         return value.count > 0;
       });
     },
+  },
+  watch: {
+    course: function (course) {
+      this.generateChart(course.gpa_distro);
+    },
+  },
+  mounted() {
+    var popover = new Popover(document.querySelector(".info-gcd"));
+    this.generateChart(this.course.gpa_distro);
   },
   methods: {
     distributionPercentage(count) {
@@ -301,7 +301,7 @@ div.tooltip {
   border-radius: 4px;
   width: 7.5rem;
   height: 2.5rem;
-  font-size: 12px sans-serif;
+  font-size: 12px;
   pointer-events: none;
 }
 </style>

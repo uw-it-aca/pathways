@@ -13,8 +13,8 @@
   </div>
   <!-- Modal -->
   <div
-    class="modal"
     id="searchModal"
+    class="modal"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
@@ -23,7 +23,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <!-- custom search bar -->
-          <form @submit.prevent="onSelected" role="search" class="w-100">
+          <form role="search" class="w-100" @submit.prevent="onSelected">
             <div class="d-flex flex-fill">
               <div class="w-100">
                 <div class="position-relative">
@@ -31,16 +31,16 @@
                     class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3"
                   ></i>
                   <input
+                    id="search-string"
+                    v-model="form_data.search_string"
                     type="text"
                     role="search"
                     class="form-control form-control-lg px-5 mb-2 border-purple border-2"
-                    id="search-string"
                     autocomplete="off"
                     autocorrect="off"
                     autocapitalize="off"
                     enterkeyhint="go"
                     spellcheck="false"
-                    v-model="form_data.search_string"
                     aria-label="Recipient's username"
                     aria-describedby="button-addon2"
                     @input="debouncedSearch"
@@ -56,8 +56,8 @@
                 </div>
                 <!-- MARK: remove search button -->
                 <button
-                  class="btn btn-primary visually-hidden"
                   id="button-addon2"
+                  class="btn btn-primary visually-hidden"
                   type="submit"
                   @click="runSearch"
                 >
@@ -82,8 +82,8 @@
                     <li class="list-inline-item mb-1 me-1">
                       <input
                         id="course"
-                        value="course"
                         v-model="form_data.type"
+                        value="course"
                         type="checkbox"
                         autocomplete="off"
                         class="btn-check"
@@ -98,8 +98,8 @@
                     <li class="list-inline-item mb-1 me-1">
                       <input
                         id="major"
-                        value="major"
                         v-model="form_data.type"
+                        value="major"
                         type="checkbox"
                         autocomplete="off"
                         class="btn-check"
@@ -121,8 +121,8 @@
                     <li class="list-inline-item mb-1 me-1">
                       <input
                         id="seattle"
-                        value="seattle"
                         v-model="form_data.campus"
+                        value="seattle"
                         type="checkbox"
                         autocomplete="off"
                         class="btn-check"
@@ -137,8 +137,8 @@
                     <li class="list-inline-item mb-1 me-1">
                       <input
                         id="tacoma"
-                        value="tacoma"
                         v-model="form_data.campus"
+                        value="tacoma"
                         type="checkbox"
                         autocomplete="off"
                         class="btn-check"
@@ -153,8 +153,8 @@
                     <li class="list-inline-item mb-1 me-1">
                       <input
                         id="bothell"
-                        value="bothell"
                         v-model="form_data.campus"
+                        value="bothell"
                         type="checkbox"
                         autocomplete="off"
                         class="btn-check"
@@ -192,7 +192,7 @@
   <!-- end Modal -->
 
   <!-- MAR: not needed at the moment -->
-  <i @click="closeSearch" class="d-none bi bi-x-circle-fill">close results</i>
+  <i class="d-none bi bi-x-circle-fill" @click="closeSearch">close results</i>
 </template>
 <script>
 import RecentSearches from "./recent_searches.vue";
@@ -200,6 +200,7 @@ import RecentViews from "./recent_views.vue";
 import Results from "./results.vue";
 import debounce from "debounce";
 import { Modal } from "bootstrap";
+import { useCustomFetch } from "@/composables/customFetch";
 
 export default {
   name: "SearchComponent",
@@ -243,6 +244,14 @@ export default {
     },
   },
   watch: {},
+  mounted() {
+    const searchModal = document.getElementById("searchModal");
+    const searchInput = document.getElementById("search-string");
+
+    searchModal.addEventListener("shown.bs.modal", () => {
+      searchInput.focus();
+    });
+  },
   methods: {
     handleKeyboard(e) {
       // guard against tab presses when focused
@@ -300,25 +309,24 @@ export default {
       this.form_data.prev_type = this.form_data.type;
       this.form_data.prev_campus = this.form_data.campus;
     },
-    runSearch() {
-      const vue = this;
+    async runSearch() {
       this.handleFilterToggle();
       this.clearResults();
       this.addToRecent(this.search_string);
-      this.axios
-        .get("api/v1/search/", {
-          params: vue.form_data,
-        })
-        .then((response) => {
-          this.course_matches = response.data.course_matches;
-          this.major_matches = response.data.major_matches;
-          this.text_matches = response.data.text_matches;
-          this.search_error = false;
-          this.has_searched = true;
-        })
-        .catch((error) => {
-          this.search_error = true;
-        });
+
+      const queryParams = new URLSearchParams(this.form_data).toString();
+      const url = "api/v1/search/?" + queryParams;
+
+      try {
+        const data = await useCustomFetch(url);
+        this.course_matches = data.course_matches;
+        this.major_matches = data.major_matches;
+        this.text_matches = data.text_matches;
+        this.search_error = false;
+        this.has_searched = true;
+      } catch (error) {
+        this.search_error = true;
+      }
     },
     addToRecent(searchString) {
       if (searchString.length === 0) {
@@ -344,14 +352,6 @@ export default {
       this.runSearch();
     },
   },
-  mounted() {
-    const searchModal = document.getElementById("searchModal");
-    const searchInput = document.getElementById("search-string");
-
-    searchModal.addEventListener("shown.bs.modal", () => {
-      searchInput.focus();
-    });
-  },
 };
 </script>
 
@@ -362,9 +362,8 @@ export default {
 }
 
 .form-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
   text-indent: 1px;
+  appearance: none;
 }
 
 .blah:focus {

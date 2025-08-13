@@ -8,13 +8,14 @@
       </p>
     </div>
   </div>
-  <div class="mt-3" v-else>
+  <div v-else class="mt-3">
     <prereq-curr-list :course-data="curricData.course_data" />
   </div>
 </template>
 
 <script>
 import PrereqCurrList from "@/components/course/prereq-curr-list.vue";
+import { useCustomFetch } from "@/composables/customFetch";
 
 export default {
   name: "PrereqCurriculum",
@@ -22,13 +23,14 @@ export default {
     "prereq-curr-list": PrereqCurrList,
   },
   props: {
-    curric_id: {
+    curricId: {
       type: String,
       required: true,
     },
-    course_id: {
+    courseId: {
       type: String,
       required: false,
+      default: "",
     },
   },
   data() {
@@ -37,33 +39,33 @@ export default {
       curricData: undefined,
     };
   },
-  watch: {
-    curric_id(newValue) {
-      this.get_curric_prereqs(newValue);
-    },
-  },
   computed: {
     has_data: function () {
       return Object.keys(this.curricData).length > 0;
+    },
+  },
+  watch: {
+    curric_id(newValue) {
+      this.get_curric_prereqs(newValue);
     },
   },
   mounted() {
     this.get_curric_prereqs(this.curric_id);
   },
   methods: {
-    get_curric_prereqs(curric_id) {
+    async get_curric_prereqs(curric_id) {
       const vue = this;
-      this.axios
-        .get("/api/v1/curric_prereq/" + curric_id)
-        .then((response) => {
-          // don't show graph if there are no nodes/edges to display
-          if (Object.keys(response.data.prereq_graph.x.edges.from).length > 0) {
-            vue.curricData = response.data;
-          }
-        })
-        .catch(function () {
-          vue.curricData = {};
-        });
+
+      try {
+        const data = await useCustomFetch("/api/v1/curric_prereq/" + curric_id);
+
+        // don't show graph if there are no nodes/edges to display
+        if (Object.keys(data.prereq_graph.x.edges.from).length > 0) {
+          vue.curricData = data;
+        }
+      } catch (error) {
+        vue.curricData = {};
+      }
     },
   },
 };

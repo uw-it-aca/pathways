@@ -4,12 +4,12 @@
   <div class="card mb-5">
     <div class="card-body">
       <h2 class="h4 axdd-font-encode-sans fw-bold">Prerequisite Map</h2>
-      <ul class="nav nav-tabs" id="PrereqMapTab" role="tablist">
+      <ul id="PrereqMapTab" class="nav nav-tabs" role="tablist">
         <li class="nav-item" role="presentation">
           <button
+            id="course-tab"
             class="nav-link active"
             data-bs-target="#pm-course"
-            id="course-tab"
             data-bs-toggle="tab"
             type="button"
             role="tab"
@@ -21,9 +21,9 @@
         </li>
         <li class="nav-item" role="presentation">
           <button
+            id="curriculum-tab"
             class="nav-link"
             data-bs-target="#pm-curriculum"
-            id="curriculum-tab"
             data-bs-toggle="tab"
             type="button"
             role="tab"
@@ -36,8 +36,8 @@
       </ul>
       <div class="tab-content">
         <div
-          class="tab-pane active"
           id="pm-course"
+          class="tab-pane active"
           role="tabpanel"
           aria-labelledby="course-tab"
         >
@@ -47,13 +47,13 @@
             </p>
           </div>
           <prereq-course
-            :graph_data="graph_data"
-            :active_course="active_course"
+            :graph-data="graphData"
+            :active-course="activeCourse"
           />
         </div>
         <div
-          class="tab-pane"
           id="pm-curriculum"
+          class="tab-pane"
           role="tabpanel"
           aria-labelledby="curriculum-tab"
         >
@@ -77,22 +77,24 @@ export default {
     "prereq-course": PrereqCourse,
     "prereq-curriculum": PrereqCurriculum,
   },
-  data() {
-    return {};
-  },
   props: {
-    graph_data: {
+    graphData: {
       type: Object,
       required: true,
     },
-    prereq_string: {
+    prereqString: {
       type: String,
       required: false,
+      default: "",
     },
-    active_course: {
+    activeCourse: {
       type: String,
       required: true,
     },
+  },
+
+  data() {
+    return {};
   },
   computed: {
     active_dept: function () {

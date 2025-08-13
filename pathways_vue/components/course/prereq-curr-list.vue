@@ -7,7 +7,7 @@
     courses may require multiple prerequisites before completion.
   </p>
   <ul class="list-unstyled">
-    <li class="mb-3" v-for="(course, index) in courseData" :key="index">
+    <li v-for="(course, index) in courseData" :key="index" class="mb-3">
       <div class="card shadow-sm">
         <div class="card-body p-3">
           <h3 class="fs-6 d-flex justify-content-between">
@@ -31,7 +31,7 @@
               Show/hide list
             </button>
           </h3>
-          <div class="collapse" :id="'collapsePrereqs_' + index">
+          <div :id="'collapsePrereqs_' + index" class="collapse">
             <div class="container">
               <div class="row">
                 <div class="p-0 mb-3 col-sm-6">
@@ -44,8 +44,11 @@
                       ><span class="visually-hidden">courses</span></small
                     >
                   </div>
-                  <ul class="prereq-list" v-if="course.prereqs.length > 0">
-                    <li v-for="(prereq, index) in course.prereqs" :key="index">
+                  <ul v-if="course.prereqs.length > 0" class="prereq-list">
+                    <li
+                      v-for="(prereq, index2) in course.prereqs"
+                      :key="index2"
+                    >
                       <a
                         :href="'/course?id=' + prereq.course_id"
                         class="btn-primary btn-course router-link-active text-decoration-none"
@@ -69,10 +72,10 @@
                       ><span class="visually-hidden">courses</span></small
                     >
                   </div>
-                  <ul class="prereq-list" v-if="course.postreqs.length > 0">
+                  <ul v-if="course.postreqs.length > 0" class="prereq-list">
                     <li
-                      v-for="(postreq, index) in course.postreqs"
-                      :key="index"
+                      v-for="(postreq, index3) in course.postreqs"
+                      :key="index3"
                     >
                       <a
                         :href="'/course?id=' + postreq.course_id"
@@ -101,14 +104,14 @@
 <script>
 export default {
   name: "PrereqCurrList",
-  data() {
-    return {};
-  },
   props: {
     courseData: {
       type: Array,
       required: true,
     },
+  },
+  data() {
+    return {};
   },
   methods: {},
 };

@@ -19,14 +19,14 @@
           <!-- prereq map -->
           <div class="col-md-9">
             <prereq-map
-              :graph_data="courseData.prereq_graph"
-              :active_course="courseId"
-              :prereq_string="courseData.prereq_string"
+              :graph-data="courseData.prereq_graph"
+              :active-course="courseId"
+              :prereq-string="courseData.prereq_string"
             />
           </div>
 
           <div class="col-md-9">
-            <concurrent-courses :courseData="courseData" />
+            <concurrent-courses :course-data="courseData" />
           </div>
           <div class="col-md-9">
             <contact-adviser :campus="courseCampus" :type="'course'" />
@@ -74,12 +74,12 @@ import PrereqMap from "@/components/course/prereq-map.vue";
 import ConcurrentCourses from "@/components/course/concurrent-courses.vue";
 import ContactAdviser from "@/components/common/contact-adviser.vue";
 import utils from "@/utils.js";
+import { useCustomFetch } from "@/composables/customFetch";
 
 export default {
   name: "CourseComp",
   components: {
     layout: Layout,
-    "search": Search,
     "course-details": CourseDetails,
     "explore-course": ExploreCourse,
     "grade-distribution": GradeDistribution,
@@ -98,9 +98,7 @@ export default {
       appName: "DawgPath",
     };
   },
-  created() {
-    this.recentViewManager = utils.recentViewManager;
-  },
+
   computed: {
     pageTitle: function () {
       let no_title = this.showError ? "Error" : "Course";
@@ -108,6 +106,14 @@ export default {
         ? (document.title = this.courseTitle + " - " + this.appName)
         : no_title;
     },
+  },
+  watch: {
+    courseId(newValue) {
+      this.get_course_data(newValue);
+    },
+  },
+  created() {
+    this.recentViewManager = utils.recentViewManager;
   },
   mounted() {
     this.courseId = this.$route.query.id;
@@ -126,27 +132,26 @@ export default {
       this.courseId = data.id;
       this.courseCampus = data.campus;
     },
-    get_course_data(course_id) {
+    async get_course_data(course_id) {
       const vue = this;
       this.courseData = undefined;
-      this.axios
-        .get("/api/v1/courses/details/" + course_id)
-        .then((response) => {
-          vue.showError = false;
-          vue.courseData = response.data;
-          vue.courseCampus = response.data.course_campus;
-          //vue.courseTitle = this.courseId + ': ' + response.data.course_title + ' - Course ';
-          vue.courseTitle = this.courseId + ": " + response.data.course_title;
-          vue.recentViewManager(vue.courseId, "course?id=" + vue.courseId, vue.courseCampus);
-        })
-        .catch(function () {
-          vue.showError = true;
-        });
-    },
-  },
-  watch: {
-    courseId(newValue) {
-      this.get_course_data(newValue);
+
+      try {
+        const data = await useCustomFetch(
+          "/api/v1/courses/details/" + course_id
+        );
+        vue.showError = false;
+        vue.courseData = data;
+        vue.courseCampus = data.course_campus;
+        vue.courseTitle = vue.courseId + ": " + data.course_title;
+        vue.recentViewManager(
+          vue.courseId,
+          "course?id=" + vue.courseId,
+          vue.courseCampus
+        );
+      } catch (error) {
+        vue.showError = true;
+      }
     },
   },
 };

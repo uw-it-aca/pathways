@@ -1,13 +1,9 @@
 import { createApp } from "vue";
+import { createPinia } from "pinia";
 import { createBootstrap } from "bootstrap-vue-next";
 import VueGtag from "vue-gtag-next";
 import { Vue3Mq, MqResponsive } from "vue3-mq";
-import axios from "axios";
-import VueAxios from "vue-axios";
 import mitt from "mitt";
-
-// import solstice-vue
-//import SolsticeVue from "solstice-vue";
 
 import App from "@/app.vue";
 import router from "@/router";
@@ -38,6 +34,10 @@ app.config.productionTip = false;
 const emitter = mitt();
 app.config.globalProperties.emitter = emitter;
 
+// pinia (vuex) state management
+const pinia = createPinia();
+app.use(pinia);
+
 // vue-gtag-next
 app.use(VueGtag, {
   isEnabled: debugMode == "false",
@@ -54,10 +54,7 @@ app.use(VueGtag, {
 app.use(Vue3Mq, {
   preset: "bootstrap5",
 });
-app.component("mq-responsive", MqResponsive);
-
-// vue-axios
-app.use(VueAxios, axios);
+app.component(MqResponsive);
 
 // bootstrap-vue-next
 app.use(createBootstrap());

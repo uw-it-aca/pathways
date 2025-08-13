@@ -1,6 +1,6 @@
 // major.vue
 <template>
-  <layout :page-title="pageTitle">
+  <Layout :page-title="pageTitle">
     <!-- page content -->
     <template #content>
       <div class="d-flex flex-column">
@@ -48,12 +48,12 @@
 
         <div class="order-1 row justify-content-center">
           <div class="col-md-9">
-            <search />
+            <SearchComponent />
           </div>
         </div>
       </div>
     </template>
-  </layout>
+  </Layout>
 </template>
 
 <script>
@@ -61,17 +61,18 @@ import Layout from "@/layout.vue";
 import MajorDetails from "@/components/major/major-details.vue";
 import ExploreMajor from "@/components/major/explore-major.vue";
 import CommonCourses from "@/components/major/common-courses.vue";
-import Search from "@/components/search/search.vue";
 import D3Cgpa from "@/components/major/d3-cgpa.vue";
 import ContactAdviser from "@/components/common/contact-adviser.vue";
 import utils from "@/utils.js";
-import SimilarMajor from "../components/major/similar-major.vue";
+import { useCustomFetch } from "@/composables/customFetch";
+import SimilarMajor from "@/components/major/similar-major.vue";
+import SearchComponent from "@/components/search/search.vue";
 
 export default {
   name: "MajorComp",
   components: {
-    layout: Layout,
-    search: Search,
+    Layout,
+    SearchComponent,
     "d3-cgpa": D3Cgpa,
     "contact-adviser": ContactAdviser,
     "major-details": MajorDetails,
@@ -88,9 +89,6 @@ export default {
       showError: false,
       appName: "DawgPath",
     };
-  },
-  created() {
-    this.recentViewManager = utils.recentViewManager;
   },
   computed: {
     pageTitle: function () {
@@ -135,6 +133,38 @@ export default {
   watch: {
     majorID() {
       this.get_major_data();
+    },
+  },
+  created() {
+    this.recentViewManager = utils.recentViewManager;
+  },
+  methods: {
+    switch_major(data) {
+      this.majorID = data.id;
+      this.campus = data.campus;
+    },
+    async get_major_data() {
+      this.major_data = undefined;
+
+      if (this.majorID !== undefined) {
+        try {
+          const data = await useCustomFetch(
+            "/api/v1/majors/details/" + this.majorID
+          );
+          this.major_data = data;
+          this.majorTitle = data.credential_title;
+          this.showError = false;
+          this.recentViewManager(
+            this.majorTitle,
+            "major?id=" + this.majorID,
+            data.major_campus
+          );
+        } catch (error) {
+          this.showError = true;
+        }
+      } else {
+        this.showError = true;
+      }
     },
   },
 };
