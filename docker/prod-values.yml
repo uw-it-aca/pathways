@@ -202,3 +202,7 @@ environmentVariablesSecrets:
     name: GOOGLE_FEEDBACK_FORM
     secretName: dawgpath.uw.edu-feedback-form-secrets
     secretKey: form-url
+  azureStorageBlobUrl:
+    name: AZURE_BLOB_STORAGE_URL
+    secretName: dawgpath.uw.edu-azure-storage-secrets
+    secretKey: blob-url
