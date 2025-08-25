@@ -252,12 +252,10 @@ export default {
       // Filter similarMajorData based on filters
       let filtered_majors = this.similarMajorData;
       if (this.filters.campus.length > 0 && this.filters.campus.length < 3) {
-        filtered_majors = filtered_majors.filter(
-          (major) =>
-            major.campus &&
-            typeof major.campus === "string" &&
-            this.filters.campus.includes(major.campus.toLowerCase())
-        );
+        filtered_majors = filtered_majors.filter((major) => {
+          const campus_value = major.program_campus || major.campus || "";
+          return this.filters.campus.includes(campus_value.toLowerCase());
+        });
       }
       if (
         this.filters.admissionType.length > 0 &&
