@@ -264,13 +264,13 @@ export default {
         this.filters.admissionType.length < 3
       ) {
         filtered_majors = filtered_majors.filter((major) =>
-          this.filters.admissionType.includes(major.admission)
+          this.filters.admissionType.includes(major.major_admission)
         );
       }
       if (this.filters.stem.length === 1) {
         let isStem = this.filters.stem[0] === "stem";
         filtered_majors = filtered_majors.filter(
-          (major) => isStem === major.isStem
+          (major) => isStem === major.is_stem
         );
       }
       this.similarMajors = filtered_majors;

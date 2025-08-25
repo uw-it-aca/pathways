@@ -35,7 +35,7 @@ export default {
   methods: {},
   computed: {
     major_url() {
-      return "/major?id=" + encodeURIComponent(this.majorData.id);
+      return "/major?id=" + encodeURIComponent(this.majorData.credential_code);
     },
   },
 };
