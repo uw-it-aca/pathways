@@ -7,7 +7,7 @@
       {{ major["major_school"] }} - {{ major["major_campus"] }}
     </p>
     <p>
-      <strong class="me-2">Admission Policy:</strong>
+      <strong class="me-2">Admission Type:</strong>
       <a
         href="/faq#admission_types"
         class="router-link-active text-capitalize"

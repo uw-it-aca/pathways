@@ -9,7 +9,7 @@
           {{ majorData.program_school }} - {{ majorData.program_campus }}
         </p>
       </div>
-      <div class="col-1 text-center" style="font-size: 16px">
+      <div class="col-1 text-center" style="font-size: 18px">
         <a href="#" v-on:click.prevent="expandChildren" style="color: #2f68cb">
           <i :class="expand_icon"></i>
         </a>
@@ -18,14 +18,14 @@
 
     <div v-if="expanded">
       <div
-        class="border-bottom border-secondary-subtle"
+        class="border-bottom border-light-subtle"
         style="margin-left: -1rem; margin-right: -1rem"
       ></div>
       <div v-for="(major, index) in majorData.program_majors" :key="index">
         <similar-major-display :majorData="major" style="margin-left: 40px" />
         <div
           v-if="index !== majorData.program_majors.length - 1"
-          class="border-bottom border-secondary-subtle"
+          class="border-bottom border-light-subtle"
           style="margin-left: -1rem; margin-right: -1rem"
         ></div>
       </div>

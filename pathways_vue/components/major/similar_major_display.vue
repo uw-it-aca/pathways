@@ -11,6 +11,13 @@
     <p class="text-uppercase small text-black-50 mb-0">
       {{ majorData.major_school }} - {{ majorData.campus }}
     </p>
+    <!--
+    <a
+      href="/faq#admission_types"
+      class="router-link-active text-capitalize"
+      title="Admission to majors"
+      ><major-capacity-display :admissionType="majorData.major_admission"
+    /></a>-->
     <major-capacity-display :admissionType="majorData.major_admission" />
   </div>
 </template>
