@@ -176,15 +176,24 @@ class SimilarMajor(models.Model):
         for pc, majors in majors_by_program.items():
             # If multiple majors in program group by parent
             if len(majors) > 1:
-                program_majors = \
-                    [major.similar_major_json() for major in majors]
+                program_majors = []
+                is_stem = False
+                major_admission = ''
+                for major in majors:
+                    major_json = major.similar_major_json()
+                    program_majors.append(major_json)
+                    if major.is_stem:
+                        is_stem = True
+                    major_admission = major.major_admission
                 program_json = {
                     'program_code': majors[0].program_code,
                     'program_verind_id': majors[0].program_verind_id,
                     'program_title': majors[0].major_title,
                     'program_school': majors[0].major_school,
                     'program_campus': majors[0].major_campus,
-                    'program_majors': program_majors
+                    'program_majors': program_majors,
+                    'is_stem': is_stem,
+                    'major_admission': major_admission
                 }
                 major_data.append(program_json)
             else:
