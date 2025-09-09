@@ -1,7 +1,7 @@
 <template>
   <div class="card mb-5 shadow-sm rounded">
     <div class="card-body">
-      <div class="row pb-2">
+      <div class="row">
         <div class="col-sm-9">
           <h2 class="h4 axdd-font-encode-sans fw-bold">
             Topically Similar Majors
@@ -31,6 +31,7 @@
               style="width: 250px"
             >
               <form class="m-3">
+                <!-- commenting this part out for now because simialr major is not avaliable across all thre campuses yet
                 <fieldset>
                   <legend class="fw-bold" style="font-size: 16px">
                     Campus
@@ -70,6 +71,7 @@
                     </div>
                   </div>
                 </fieldset>
+                -->
                 <fieldset>
                   <div class="row mt-2">
                     <legend class="fw-bold" style="font-size: 16px">
@@ -145,11 +147,15 @@
           </div>
         </div>
       </div>
+      <div
+        class="pb-4 border-bottom border-light-subtle"
+        style="margin-left: -1rem; margin-right: -1rem"
+      ></div>
       <div v-for="(major, index) in similarMajors" :key="index">
         <similar-major-row :majorData="major" />
         <div
           v-if="index !== similarMajors.length - 1"
-          class="border-bottom border-secondary-subtle"
+          class="border-bottom border-light-subtle"
           style="margin-left: -1rem; margin-right: -1rem"
         ></div>
       </div>
@@ -167,9 +173,9 @@
   >
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
-        <div class="modal-body">
+        <div class="modal-body p-4">
           <div>
-            <h1>Similar Majors</h1>
+            <h1 class="mb-4">Topically Similar Majors</h1>
             <ul>
               <li>
                 The similarity between majors is gauged by analyzing the overlap
@@ -193,7 +199,7 @@
           <div class="text-end">
             <button
               type="button"
-              class="btn btn-purple text-end"
+              class="btn btn-md btn-primary me-1"
               data-bs-dismiss="modal"
               aria-label="Close"
             >
