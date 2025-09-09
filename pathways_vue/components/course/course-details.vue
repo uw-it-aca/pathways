@@ -22,11 +22,9 @@
           v-for="(term, i) in offered_terms"
           :key="i"
         >
-          <span
-            class="badge text-bg-secondary text-blac rounded-pill"
-            :class="term.class"
-            >{{ term.quarter }}</span
-          >
+          <span class="badge text-dark" :class="term.class">{{
+            term.quarter
+          }}</span>
         </li>
       </ul>
     </div>
@@ -68,16 +66,16 @@ export default {
             offered_string = offered_string.trim();
             let quarters = offered_string.match(/([A-Z]?[^A-Z]*)/g);
             if (quarters.includes("A")) {
-              matching_quarters.push({ quarter: "AUT", class: "bg-autumn" });
+              matching_quarters.push({ quarter: "AUT", class: "creamcicle" });
             }
             if (quarters.includes("Sp")) {
-              matching_quarters.push({ quarter: "SPR", class: "bg-spring" });
+              matching_quarters.push({ quarter: "SPR", class: "pw-green" });
             }
             if (quarters.includes("S")) {
-              matching_quarters.push({ quarter: "SUM", class: "bg-summer" });
+              matching_quarters.push({ quarter: "SUM", class: "yellow" });
             }
             if (quarters.includes("W")) {
-              matching_quarters.push({ quarter: "WIN", class: "bg-winter" });
+              matching_quarters.push({ quarter: "WIN", class: "bg-blue-200" });
             }
           }
         }

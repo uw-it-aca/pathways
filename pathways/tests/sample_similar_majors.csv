@@ -1,5 +1,0 @@
-credential_code,STEM_ind,similar_credential_code,similar_STEM_ind,similarity,similarity_group
-CSCI-0-50-5,1,TRAIN-2-1-0,1,0.6438895993232727,Mid
-CSCI-0-50-5,1,TRAIN-0-50-5,0,0.1875648069381714,Low
-CSCI-0-50-5,1,CAT-0-50-5,0,0.1875648069381714,Low
-BUS-0-50-5,1,TRAIN-0-50-5,0,0.1875648069381714,Low

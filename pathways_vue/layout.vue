@@ -1,6 +1,6 @@
 <template>
   <!-- layout.vue: this is where you override the layout -->
-  <STopbar
+  <axdd-topbar
     :app-name="appName"
     :app-root-url="appRootUrl"
     :page-title="pageTitle"
@@ -85,20 +85,18 @@
         </div>
       </div>
     </template>
-  </STopbar>
+  </axdd-topbar>
 </template>
 
 <script>
 import Feedback from "@/components/common/feedback.vue";
 import Banner from "@/components/common/banner.vue";
-import { STopbar } from "solstice-vue";
 
 export default {
   name: "DawgPath",
   components: {
     Feedback,
     Banner,
-    STopbar,
   },
   props: {
     pageTitle: {
