@@ -12,7 +12,6 @@ import re
 
 
 logger = getLogger(__name__)
-SEARCH_INDEX_DIR = "indexdir"
 
 
 def search(search_string, campus_values=None, types=None, is_bottleneck=None,
@@ -74,7 +73,7 @@ def _get_type_filters(types):
 
 
 def major_title_search(major_title, campus=None):
-    ix = open_dir(SEARCH_INDEX_DIR)
+    ix = open_dir("indexdir")
     with ix.searcher() as searcher:
         parser = qparser.QueryParser('major_title', ix.schema)
         campus_query = _get_campus_filters(campus)
@@ -87,7 +86,7 @@ def major_title_search(major_title, campus=None):
 
 
 def course_id_search(course_id, campus=None):
-    ix = open_dir(SEARCH_INDEX_DIR)
+    ix = open_dir("indexdir")
     with ix.searcher() as searcher:
         parser = qparser.QueryParser('course_id', ix.schema)
         campus_query = _get_campus_filters(campus)
@@ -128,7 +127,7 @@ def major_name_direct_match(major_name, campus=None):
 def text_search(search_string, campus_values=None, types=None,
                 is_bottleneck=None, is_gateway=None, min_coi_score=None,
                 max_coi_score=None):
-    ix = open_dir(SEARCH_INDEX_DIR)
+    ix = open_dir("indexdir")
     with ix.searcher() as searcher:
         filter_queries = []
         if is_bottleneck:

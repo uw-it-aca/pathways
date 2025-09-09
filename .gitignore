@@ -124,6 +124,3 @@ __diff_output__/
 
 # search index
 indexdir/
-
-# coverage
-coverage/

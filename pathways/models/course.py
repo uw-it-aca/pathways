@@ -70,6 +70,11 @@ class Course(models.Model):
     def get_course_data(course_id):
         return Course.objects.get(course_id=course_id).json_data()
 
+    @staticmethod
+    def get_course_data_by_campus(campus, course_id):
+        return Course.objects.get(course_campus=campus,
+                                  course_id=course_id).json_data()
+
     def json_data(self):
         graph = None
         if self.prereq_graph:
@@ -103,20 +108,16 @@ class Course(models.Model):
         return fixed
 
     def get_coi_data(self):
-        try:
-            curric, delim, num = self.course_id.rpartition(" ")
-            curric_score = (Curriculum.objects.get(abbrev=curric)
-                            .average_coi_score)
-            course_level = int(num)//100*100
-            level_score = CourseLevel.objects.get(level=course_level).coi_score
-            percent_in_range = COIRange.get_percent_by_score(self.coi_score)
+        curric, delim, num = self.course_id.rpartition(" ")
+        curric_score = Curriculum.objects.get(abbrev=curric).average_coi_score
+        course_level = int(num)//100*100
+        level_score = CourseLevel.objects.get(level=course_level).coi_score
+        percent_in_range = COIRange.get_percent_by_score(self.coi_score)
 
-            return {"course_coi": self.coi_score,
-                    "curric_coi": curric_score,
-                    "course_level_coi": level_score,
-                    "percent_in_range": percent_in_range}
-        except ObjectDoesNotExist:
-            return None
+        return {"course_coi": self.coi_score,
+                "curric_coi": curric_score,
+                "course_level_coi": level_score,
+                "percent_in_range": percent_in_range}
 
     def get_concurrent_with_coi_and_flags(self):
         if self.concurrent_courses is not None:
