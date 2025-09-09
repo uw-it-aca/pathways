@@ -1,7 +1,7 @@
 # Copyright 2025 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from pathways.models.major import Major
+from pathways.models.major import Major, SimilarMajor
 from pathways.models.course import Course
 from pathways.models.curriculum import Curriculum
 from pathways.models.course_level import CourseLevel
@@ -9,6 +9,10 @@ from pathways.models.coi_range import COIRange
 from django.core.exceptions import ObjectDoesNotExist
 import statistics
 import json
+from logging import getLogger
+
+
+logger = getLogger(__name__)
 
 
 def import_major_data(data):
@@ -25,6 +29,7 @@ def import_major_data(data):
             major_description=data[major]['major_description'],
             major_admission=data[major]['major_admission'],
             program_code=data[major]['program_code'],
+            program_verind_id=data[major]['program_verind_id'],
             major_home_url=data[major]['major_home_url'],
             common_course_decl=data[major]['common_course_decl'],
             credential_code=data[major]['credential_code'],
@@ -203,3 +208,45 @@ def import_career_center_mapping(career_major_data):
         except ObjectDoesNotExist:
             pass
     Major.objects.bulk_update(majors_to_update, ['career_center_major'])
+
+
+def import_stem_from_similar_majors(similar_major_data):
+    stem_majors = {}
+    for row in similar_major_data:
+        if row[1] == "1":
+            stem_majors[row[0]] = True
+        if row[3] == "1":
+            stem_majors[row[2]] = True
+    stem_credential_codes = stem_majors.keys()
+    (Major.objects.filter(credential_code__in=stem_credential_codes)
+     .update(is_stem=True))
+
+
+def import_similar_majors(similar_major_data):
+    SimilarMajor.objects.all().delete()
+    similar_majors_to_create = []
+    missing_majors = []
+    for row in similar_major_data:
+        found_major = False
+        try:
+            major = Major.objects.get(credential_code=row[0])
+            found_major = True
+            similar_major = Major.objects.get(credential_code=row[2])
+            desc = SimilarMajor.get_similarity_from_string(row[5])
+            similar_majors_to_create.append(
+                SimilarMajor(source_major=major,
+                             similar_major=similar_major,
+                             similarity_score=row[4],
+                             similarity_description=desc)
+            )
+        except ObjectDoesNotExist as ex:
+            if found_major:
+                missing_majors.append(row[2])
+            else:
+                missing_majors.append(row[0])
+            pass
+    SimilarMajor.objects.bulk_create(similar_majors_to_create, batch_size=1000)
+    logger.info("Imported %d similar majors", len(similar_majors_to_create))
+    if len(missing_majors) > 0:
+        logger.info("Similar majors not in Pathways: %s",
+                    set(missing_majors))

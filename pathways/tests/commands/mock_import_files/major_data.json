@@ -1,0 +1,143 @@
+{"INFO-40-1-6": {
+  "major_code": "INFO",
+  "program_code": "UG-INFO-MAJOR",
+  "program_verind_id": "123xyz",
+  "major_title": "Informatics",
+  "major_school": "The Information School",
+  "major_campus": "Seattle",
+  "major_description": "Informatics is the study of people, information, and technology.  Students are prepared to design, build, manage, and secure information systems that make a difference in society, organizations, and individual lives.  The curriculum uses an experiential learning approach that emphasizes problem solving, group work, research, writing, oral presentations, and technology. Focus areas in Human-Computer Interaction, Information Assurance and Cybersecurity, and Information Architecture are available, along with degree options in Biomedical and Health Informatics and Data Science.",
+  "major_admission": "capacity-constrained",
+  "major_home_url": "www.washington.edu/students/gencat/academic/info_school.html",
+  "common_course_decl": {
+    "INFO 200": {
+      "percent": 48,
+      "title": "Intellectual Foundations of Informatics"
+    },
+    "INFO 201": {
+      "percent": 47,
+      "title": "Foundational Skills for Data Science"
+    },
+    "CSE 142": {
+      "percent": 28,
+      "title": "Computer Programming I"
+    },
+    "CSE 143": {
+      "percent": 25,
+      "title": "Computer Programming II"
+    },
+    "ENGL 131": {
+      "percent": 20,
+      "title": "Composition: Exposition"
+    },
+    "MATH 126": {
+      "percent": 16,
+      "title": "Calculus with Analytic Geometry III"
+    },
+    "STAT 311": {
+      "percent": 16,
+      "title": "Elements of Statistical Methods"
+    },
+    "CSE 373": {
+      "percent": 16,
+      "title": "Data Structures and Algorithms"
+    },
+    "INFO 330": {
+      "percent": 16,
+      "title": "Databases and Data Modeling"
+    },
+    "GEN ST 199": {
+      "percent": 16,
+      "title": "The University Community"
+    }
+  },
+  "2_yr": {
+    "0": 2,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 2,
+    "7": 0,
+    "8": 0,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 0,
+    "13": 0,
+    "14": 0,
+    "15": 2,
+    "16": 4,
+    "17": 0,
+    "18": 3,
+    "19": 0,
+    "20": 3,
+    "21": 2,
+    "22": 9,
+    "23": 14,
+    "24": 13,
+    "25": 16,
+    "26": 18,
+    "27": 10,
+    "28": 31,
+    "29": 47,
+    "30": 76,
+    "31": 66,
+    "32": 95,
+    "33": 203,
+    "34": 291,
+    "35": 424,
+    "36": 771,
+    "37": 1031,
+    "38": 1259,
+    "39": 1187,
+    "40": 402
+  },
+  "5_yr": {
+    "0": 6,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 2,
+    "7": 0,
+    "8": 1,
+    "9": 0,
+    "10": 0,
+    "11": 2,
+    "12": 0,
+    "13": 2,
+    "14": 3,
+    "15": 3,
+    "16": 6,
+    "17": 3,
+    "18": 4,
+    "19": 4,
+    "20": 12,
+    "21": 9,
+    "22": 14,
+    "23": 26,
+    "24": 23,
+    "25": 31,
+    "26": 32,
+    "27": 34,
+    "28": 62,
+    "29": 78,
+    "30": 132,
+    "31": 155,
+    "32": 204,
+    "33": 373,
+    "34": 551,
+    "35": 835,
+    "36": 1396,
+    "37": 1905,
+    "38": 2375,
+    "39": 2011,
+    "40": 685
+  },
+  "credential_title": "Informatics: Data Science (BS)",
+  "credential_code": "INFO-40-1-6",
+  "credential_description": "Data science is an emerging interdisciplinary field that works to extract knowledge or insight from data. It combines fields such as information science, computer science, statistics, design, and social science. The data science degree option provides strong preparation for entry-level data science positions or for graduate studies providing more advanced training in data science methods and practices."
+}
+}

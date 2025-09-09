@@ -1,5 +1,3 @@
-//common-courses.
-
 <template>
   <div class="card mb-5">
     <div v-if="commonCourses.length === 0" class="card-body">
