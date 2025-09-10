@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-
+import { createBootstrap } from "bootstrap-vue-next";
 import VueGtag from "vue-gtag-next";
 import { Vue3Mq, MqResponsive } from "vue3-mq";
 import axios from "axios";
@@ -7,7 +7,7 @@ import VueAxios from "vue-axios";
 import mitt from "mitt";
 
 // import solstice-vue
-import SolsticeVue from "solstice-vue";
+//import SolsticeVue from "solstice-vue";
 
 import App from "@/app.vue";
 import router from "@/router";
@@ -16,9 +16,14 @@ import router from "@/router";
 import "bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-// bootstrap and solstice-vue
-import "@/css/custom.scss";
+// solstice bootstrap theme
+import "solstice-theme/dist/solstice.scss";
+
+// solstice-vue comps
 import "solstice-vue/dist/style.css";
+
+// bootstrap-vue-next css
+import "bootstrap-vue-next/dist/bootstrap-vue-next.css";
 
 const app = createApp(App);
 
@@ -54,8 +59,8 @@ app.component("mq-responsive", MqResponsive);
 // vue-axios
 app.use(VueAxios, axios);
 
-// solstice-vue
-app.use(SolsticeVue);
+// bootstrap-vue-next
+app.use(createBootstrap());
 
 // vue-router
 app.use(router);

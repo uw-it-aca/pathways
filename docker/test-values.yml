@@ -66,6 +66,21 @@ instance: test
 memcached:
   enabled: false
 
+daemon:
+  enabled: true
+  daemons:
+    - name: import-similar-majors # At 20:05 on Sunday
+      replicaCount: 1
+      command: ["/scripts/management_daemon.sh"]
+      args: ["--cron", "5 20 * * 0", "import_similar_majors"]
+      resources:
+        limits:
+          cpu: 500
+          memory: 1024Mi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+
 environmentVariables:
   - name: ENV
     value: test
@@ -110,6 +125,20 @@ externalSecrets:
       data:
         - name: form-url
           property: form-url
+    - name: test.dawgpath.uw.edu-azure-storage-secrets
+      externalKey: dawgpath/shared/azure-storage
+      data:
+        - name: blob-url
+          property: blob-url
+    - name: shared-proxy-secrets
+      externalKey: shared/proxies/uw_ssh_tunnel
+      data:
+        - name: proxy-id-key
+          property: key
+        - name: proxy-id
+          property: username
+        - name: proxy-hostname
+          property: hostname
 
 environmentVariablesSecrets:
   djangoSecret:
@@ -136,4 +165,8 @@ environmentVariablesSecrets:
     name: GOOGLE_FEEDBACK_FORM
     secretName: test.dawgpath.uw.edu-feedback-form-secrets
     secretKey: form-url
+  azureStorageBlobUrl:
+    name: AZURE_BLOB_STORAGE_URL
+    secretName: test.dawgpath.uw.edu-azure-storage-secrets
+    secretKey: blob-url
 
