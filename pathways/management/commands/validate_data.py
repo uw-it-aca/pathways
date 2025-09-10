@@ -13,12 +13,12 @@ class Command(BaseCommand):
         self.validate_majors()
         self.validate_courses()
 
-    def validate_majors(self)   :
+    def validate_majors(self):
         count_majors = Major.objects.count()
         count_gpa_2yr = (Major.objects.filter(gpa_2yr__isnull=False)
-                            .count())
+                         .count())
         count_gpa_5yr = (Major.objects.filter(gpa_5yr__isnull=False)
-                            .count())
+                         .count())
         count_common_courses = 0
         for major in Major.objects.all():
             cc = major.get_common_with_coi_and_flags()
@@ -60,10 +60,8 @@ class Command(BaseCommand):
         print(f"Courses with Concurrent: {count_with_concurrent}"
               f" ({(count_with_concurrent/count_courses)*100:.2f}%)")
 
-
     @staticmethod
     def _process_course(course):
         coi = course.get_coi_data()
         concurrent = course.get_concurrent_with_coi_and_flags()
         return (course.course_id, bool(coi), bool(concurrent))
-
