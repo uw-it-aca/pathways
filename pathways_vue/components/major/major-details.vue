@@ -1,5 +1,3 @@
-// major-details.vue
-
 <template>
   <div class="mb-5">
     <h1 class="h2 axdd-font-encode-sans fw-bold">
@@ -9,13 +7,13 @@
       {{ major["major_school"] }} - {{ major["major_campus"] }}
     </p>
     <p>
-      <strong>Admission Policy:</strong>
+      <strong class="me-2">Admission Type:</strong>
       <a
         href="/faq#admission_types"
         class="router-link-active text-capitalize"
         title="Admission to majors"
-        >{{ AdminReqs }}</a
-      >
+        ><major-capacity-display :admissionType="this.major.major_admission"
+      /></a>
     </p>
     <div class="major-info">
       <div class="major-description">
@@ -26,8 +24,13 @@
 </template>
 
 <script>
+import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
+
 export default {
   name: "MajorDetails",
+  components: {
+    MajorCapacityDisplay,
+  },
   props: {
     major: {
       type: Object,
@@ -36,16 +39,6 @@ export default {
   },
   data() {
     return {};
-  },
-  methods: {},
-  computed: {
-    AdminReqs() {
-      if (this.major["major_admission"] === "minimumRequirements") {
-        return "Minimum Requirements";
-      } else {
-        return this.major["major_admission"];
-      }
-    },
   },
 };
 </script>
