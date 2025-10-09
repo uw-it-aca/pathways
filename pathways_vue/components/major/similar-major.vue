@@ -151,12 +151,6 @@
         class="pb-4 border-bottom border-light-subtle"
         style="margin-left: -1rem; margin-right: -1rem"
       ></div>
-      <div
-        v-if="similarMajors.length === 0"
-        class="p-4 mt-3 text-center text-body-tertiary"
-      >
-        There are currently no topically similar majors available.
-      </div>
       <div v-for="(major, index) in similarMajors" :key="index">
         <similar-major-row :majorData="major" />
         <div
@@ -164,6 +158,12 @@
           class="border-bottom border-light-subtle"
           style="margin-left: -1rem; margin-right: -1rem"
         ></div>
+      </div>
+      <div
+        v-if="similarMajors.length === 0"
+        class="p-4 mt-3 text-center text-body-tertiary"
+      >
+        No results found.
       </div>
     </div>
   </div>
