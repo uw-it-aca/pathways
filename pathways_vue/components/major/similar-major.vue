@@ -159,6 +159,12 @@
           style="margin-left: -1rem; margin-right: -1rem"
         ></div>
       </div>
+      <div
+        v-if="similarMajors.length === 0"
+        class="p-4 mt-3 text-center text-body-tertiary"
+      >
+        No results found.
+      </div>
     </div>
   </div>
 
