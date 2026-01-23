@@ -1,0 +1,68 @@
+{
+  // ignore eslint
+  "language_servers": ["!eslint", "!biome", "oxlint", "oxfmt"],
+  "lsp": {
+    "biome": {
+      "settings": {
+        "require_config_file": true,
+      },
+    },
+    "oxlint": {
+      "initialization_options": {
+        "settings": {
+          "configPath": null,
+          "run": "onType",
+          "disableNestedConfig": false,
+          "fixKind": "safe_fix",
+          "typeAware": true,
+          "unusedDisableDirectives": "deny",
+        },
+      },
+    },
+    "oxfmt": {
+      "initialization_options": {
+        "settings": {
+          "configPath": null,
+          //"run": "onSave",
+        },
+      },
+    },
+    "ruff": {
+      "initialization_options": {
+        "settings": {
+          // ruff server settings goes here
+          "lineLength": 79,
+          "lint": {
+            "select": ["E", "W"], // pycodestyle rules only
+            "ignore": ["F"], // ignore pyflakes
+          },
+          "organizeImports": true,
+        },
+      },
+    },
+  },
+  // ... other settings
+  "languages": {
+    "CSS": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off",
+    },
+    "SCSS": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off",
+    },
+    "Vue.js": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off",
+    },
+    "JavaScript": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+    },
+    "TypeScript": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+    },
+    "Python": {
+      "formatter": { "language_server": { "name": "ruff" } },
+    },
+  },
+}
