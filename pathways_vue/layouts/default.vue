@@ -8,6 +8,15 @@
     :sign-out-url="signOutUrl"
   >
     <template #settings>
+      <!-- user comp here -->
+      <SUser
+        :user-netid="'javerage'"
+        :signout-url="'/'"
+        :clear-override-url="'/'"
+      >
+        i am the logged in user, here is my info
+      </SUser>
+
       <!-- profile section override -->
       <div class="d-flex">
         <div class="flex-fill text-white">
@@ -44,7 +53,7 @@
 <script>
   import Feedback from "@/components/common/feedback.vue";
   import Banner from "@/components/common/banner.vue";
-  import { STopbarNeo } from "solstice-vue";
+  import { STopbarNeo, SUser } from "solstice-vue";
 
   export default {
     name: "DawgPath",
@@ -52,6 +61,7 @@
       Feedback,
       Banner,
       STopbarNeo,
+      SUser
     },
     props: {
       pageTitle: {
