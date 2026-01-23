@@ -166,7 +166,7 @@
           </div>
         </div>
       </div>
-      <div class="bg-light" v-if="course_coi == null">
+      <div class="bg-body-tertiary" v-if="course_coi == null">
         <div class="alert alert-purple" role="alert">
           <p>
             The COI is not available for
@@ -175,13 +175,13 @@
           </p>
         </div>
       </div>
-      <div class="bg-light" :class="mq.smPlus ? 'p-3' : 'p-2'" v-else>
+      <div class="bg-body-tertiary" :class="mq.smPlus ? 'p-3' : 'p-2'" v-else>
         <div id="sr-text" class="screen-reader-only"></div>
         <div
           id="upper"
           class="d-flex justify-content-between align-items-start"
         >
-          <div class="card bg-gold me-2">
+          <div class="card bg-husky-gold-subtle me-2">
             <div class="card-body small text-center p-2">
               <span class="fw-bold">{{ course.course_id }}</span>
               <div id="score" class="fw-bold fs-3"></div>
