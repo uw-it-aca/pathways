@@ -9,30 +9,15 @@
   >
     <template #settings>
       <!-- user comp here -->
-      <SUser
-        :user-netid="'javerage'"
-        :signout-url="'/'"
-        :clear-override-url="'/'"
-      >
+      <SUser :user-netid="userName">
         i am the logged in user, here is my info
+        <template #action>
+          <a :href="signOutUrl" class="link-quiet-danger"
+            ><i class="bi bi-box-arrow-left me-2"></i>Sign out</a
+          >
+        </template>
       </SUser>
-
-      <!-- profile section override -->
-      <div class="d-flex">
-        <div class="flex-fill text-white">
-          <i class="bi bi-person-circle me-2"></i>{{ userName }}
-        </div>
-        <div class="flex-fill text-end">
-          <a
-            href="/faq"
-            class="router-link text-decoration-none me-3 text-white"
-            ><i class="bi bi-question-circle me-2"></i>FAQ</a
-          >
-          <a :href="signOutUrl" class="text-decoration-none text-white"
-            ><i class="bi bi-box-arrow-right me-2"></i>Sign out</a
-          >
-        </div>
-      </div>
+      <SColorMode color-class="text-white" class="ms-2" />
     </template>
 
     <template #system>
@@ -53,7 +38,7 @@
 <script>
   import Feedback from "@/components/common/feedback.vue";
   import Banner from "@/components/common/banner.vue";
-  import { STopbarNeo, SUser } from "solstice-vue";
+  import { STopbarNeo, SUser, SColorMode } from "solstice-vue";
 
   export default {
     name: "DawgPath",
@@ -61,7 +46,8 @@
       Feedback,
       Banner,
       STopbarNeo,
-      SUser
+      SUser,
+      SColorMode
     },
     props: {
       pageTitle: {
