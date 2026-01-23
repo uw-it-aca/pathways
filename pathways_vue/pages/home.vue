@@ -1,14 +1,15 @@
 // home.vue
 <template>
-  <layout :page-title="pageTitle">
+  <DefaultLayout :page-title="pageTitle">
     <!-- page content -->
     <template #content>
       <div class="flex-fill row justify-content-center">
         <div class="col-md-9">
           <h1 class="visually-hidden">{{ pageTitle }}</h1>
 
-          <search />
-          <div class="text-start w-75 mx-auto">
+          <Search />
+
+          <div class="mx-auto w-75 text-start">
             <p class="lead">
               DawgPath helps you discover courses and majors, and enables you to
               be strategic when making decisions about your schedule.
@@ -86,57 +87,58 @@
         </div>
       </div>
     </template>
-  </layout>
+  </DefaultLayout>
 </template>
 
 <script>
-import Layout from "@/layout.vue";
-import Search from "@/components/search/search.vue";
+  //import Layout from "@/layout.vue";
+  import DefaultLayout from "@/layouts/default.vue";
+  import Search from "@/components/search/search.vue";
 
-import { Modal } from "bootstrap";
+  import { Modal } from "bootstrap";
 
-export default {
-  name: "HomeComp",
-  components: {
-    layout: Layout,
-    search: Search,
-  },
-  data() {
-    return {
-      pageTitle: "Home",
-      welcomeModal: null,
-    };
-  },
-  mounted() {
-    // if (window.show_welcome) {
-    //   // show the welcome modal when the component is mounted
-    //   this.showWelcomeModal();
-    // }
-  },
-  methods: {
-    showWelcomeModal() {
-      this.welcomeModal = new Modal(
-        document.getElementById("exampleModal"),
-        {}
-      );
-      this.welcomeModal.show();
+  export default {
+    name: "HomeComp",
+    components: {
+      DefaultLayout,
+      Search,
     },
-    saveModalPref() {
-      this.axios({
-        method: "post",
-        url: "/api/v1/user_pref/",
-        headers: { "X-CSRFToken": window.csrf_token },
-        data: {
-          viewed_welcome_display: true,
-        },
-      });
+    data() {
+      return {
+        pageTitle: "Home",
+        welcomeModal: null,
+      };
     },
-  },
-};
+    mounted() {
+      // if (window.show_welcome) {
+      //   // show the welcome modal when the component is mounted
+      //   this.showWelcomeModal();
+      // }
+    },
+    methods: {
+      showWelcomeModal() {
+        this.welcomeModal = new Modal(
+          document.getElementById("exampleModal"),
+          {},
+        );
+        this.welcomeModal.show();
+      },
+      saveModalPref() {
+        this.axios({
+          method: "post",
+          url: "/api/v1/user_pref/",
+          headers: { "X-CSRFToken": window.csrf_token },
+          data: {
+            viewed_welcome_display: true,
+          },
+        });
+      },
+    },
+  };
 </script>
 
 <style lang="scss">
-.modal-body li {
-  margin-bottom: 1em;
-}
+  .modal-body li {
+    margin-bottom: 1em;
+  }
 </style>

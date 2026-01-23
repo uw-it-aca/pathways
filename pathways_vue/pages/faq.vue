@@ -365,25 +365,25 @@
 </template>
 
 <style lang="scss">
-.fs-5.about {
-  color: #452a78;
-  font-weight: bold;
-}
+  .fs-5.about {
+    color: #452a78;
+    font-weight: bold;
+  }
 </style>
 
 <script>
-import Layout from "@/layout.vue";
+  import DefaultLayout from "@/layouts/default.vue";
 
-export default {
-  name: "App",
-  components: {
-    layout: Layout,
-  },
-  data() {
-    return {
-      pageTitle: "Frequently Asked Questions",
-    };
-  },
-  methods: {},
-};
+  export default {
+    name: "App",
+    components: {
+      layout: DefaultLayout,
+    },
+    data() {
+      return {
+        pageTitle: "Frequently Asked Questions",
+      };
+    },
+    methods: {},
+  };
 </script>

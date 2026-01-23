@@ -4,7 +4,7 @@
     <!-- page content -->
     <template #content>
       <div class="d-flex flex-column">
-        <div v-if="major_data" class="row order-2 justify-content-sm-center">
+        <div v-if="major_data" class="row justify-content-sm-center order-2">
           <div class="col-md-9">
             <major-details :major="major_data" />
             <explore-major :major="major_data" />
@@ -25,7 +25,7 @@
             />
           </div>
         </div>
-        <div v-else class="row order-2 justify-content-sm-center">
+        <div v-else class="row justify-content-sm-center order-2">
           <div v-if="showError" class="col-md-9">
             <div class="alert alert-purple" role="alert">
               <p>
@@ -46,7 +46,7 @@
           </div>
         </div>
 
-        <div class="order-1 row justify-content-center">
+        <div class="row justify-content-center order-1">
           <div class="col-md-9">
             <search />
           </div>
@@ -57,85 +57,85 @@
 </template>
 
 <script>
-import Layout from "@/layout.vue";
-import MajorDetails from "@/components/major/major-details.vue";
-import ExploreMajor from "@/components/major/explore-major.vue";
-import CommonCourses from "@/components/major/common-courses.vue";
-import Search from "@/components/search/search.vue";
-import D3Cgpa from "@/components/major/d3-cgpa.vue";
-import ContactAdviser from "@/components/common/contact-adviser.vue";
-import utils from "@/utils.js";
-import SimilarMajor from "../components/major/similar-major.vue";
+  import DefaultLayout from "@/layouts/default.vue";
+  import MajorDetails from "@/components/major/major-details.vue";
+  import ExploreMajor from "@/components/major/explore-major.vue";
+  import CommonCourses from "@/components/major/common-courses.vue";
+  import Search from "@/components/search/search.vue";
+  import D3Cgpa from "@/components/major/d3-cgpa.vue";
+  import ContactAdviser from "@/components/common/contact-adviser.vue";
+  import utils from "@/utils.js";
+  import SimilarMajor from "../components/major/similar-major.vue";
 
-export default {
-  name: "MajorComp",
-  components: {
-    layout: Layout,
-    search: Search,
-    "d3-cgpa": D3Cgpa,
-    "contact-adviser": ContactAdviser,
-    "major-details": MajorDetails,
-    "explore-major": ExploreMajor,
-    "common-courses": CommonCourses,
-    "similar-major": SimilarMajor,
-  },
-  data() {
-    return {
-      selectedMajor: undefined,
-      majorID: undefined,
-      majorTitle: undefined,
-      major_data: undefined,
-      showError: false,
-      appName: "DawgPath",
-    };
-  },
-  created() {
-    this.recentViewManager = utils.recentViewManager;
-  },
-  computed: {
-    pageTitle: function () {
-      let no_title = this.showError ? "Error" : "Major";
-      return this.majorTitle !== undefined
-        ? (document.title = this.majorTitle + " - " + this.appName)
-        : no_title;
+  export default {
+    name: "MajorComp",
+    components: {
+      layout: DefaultLayout,
+      search: Search,
+      "d3-cgpa": D3Cgpa,
+      "contact-adviser": ContactAdviser,
+      "major-details": MajorDetails,
+      "explore-major": ExploreMajor,
+      "common-courses": CommonCourses,
+      "similar-major": SimilarMajor,
     },
-  },
-  methods: {
-    switch_major(data) {
-      this.majorID = data.id;
-      this.campus = data.campus;
+    data() {
+      return {
+        selectedMajor: undefined,
+        majorID: undefined,
+        majorTitle: undefined,
+        major_data: undefined,
+        showError: false,
+        appName: "DawgPath",
+      };
     },
-    get_major_data() {
-      const vue = this;
-      this.major_data = undefined;
-      if (this.majorID !== undefined) {
-        this.axios
-          .get("/api/v1/majors/details/" + this.majorID)
-          .then((response) => {
-            vue.major_data = response.data;
-            vue.majorTitle = vue.major_data.credential_title;
-            vue.showError = false;
-            vue.recentViewManager(
-              vue.majorTitle,
-              "major?id=" + vue.majorID,
-              vue.major_data.major_campus
-            );
-          })
-          .catch(function () {
-            vue.showError = true;
-          });
-      } else {
-        this.showError = true;
-      }
+    created() {
+      this.recentViewManager = utils.recentViewManager;
     },
-  },
-  mounted() {
-    this.majorID = this.$route.query.id;
-  },
-  watch: {
-    majorID() {
-      this.get_major_data();
+    computed: {
+      pageTitle: function () {
+        let no_title = this.showError ? "Error" : "Major";
+        return this.majorTitle !== undefined
+          ? (document.title = this.majorTitle + " - " + this.appName)
+          : no_title;
+      },
     },
-  },
-};
+    methods: {
+      switch_major(data) {
+        this.majorID = data.id;
+        this.campus = data.campus;
+      },
+      get_major_data() {
+        const vue = this;
+        this.major_data = undefined;
+        if (this.majorID !== undefined) {
+          this.axios
+            .get("/api/v1/majors/details/" + this.majorID)
+            .then((response) => {
+              vue.major_data = response.data;
+              vue.majorTitle = vue.major_data.credential_title;
+              vue.showError = false;
+              vue.recentViewManager(
+                vue.majorTitle,
+                "major?id=" + vue.majorID,
+                vue.major_data.major_campus,
+              );
+            })
+            .catch(function () {
+              vue.showError = true;
+            });
+        } else {
+          this.showError = true;
+        }
+      },
+    },
+    mounted() {
+      this.majorID = this.$route.query.id;
+    },
+    watch: {
+      majorID() {
+        this.get_major_data();
+      },
+    },
+  };
 </script>
