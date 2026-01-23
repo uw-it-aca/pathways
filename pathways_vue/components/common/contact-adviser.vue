@@ -1,5 +1,5 @@
 <template>
-  <div class="card mb-5 bg-husky-gold-subtle bg-opacity-50 border-0">
+  <div class="card bg-husky-gold-subtle bg-opacity-50 mb-5 border-0">
     <div class="card-body">
       <h2 class="h4">Are you considering this {{ type }}?</h2>
       <p>
@@ -20,51 +20,51 @@
 </template>
 
 <script>
-export default {
-  name: "ContactAdviserCourse",
-  props: ["campus", "type"],
-  data() {
-    return {};
-  },
-  computed: {
-    advisingInfo: function () {
-      let infoArray = [];
-      if (this.campus.toLowerCase() == "tacoma") {
-        infoArray = [
-          {
-            label: "Find your Tacoma adviser",
-            url: "https://www.tacoma.uw.edu/gaa#permalink-37917",
-          },
-        ];
-      } else if (this.campus.toLowerCase() == "seattle") {
-        infoArray = [
-          {
-            label: "Find your premajor adviser",
-            url: "https://www.washington.edu/uaa/advising/appointments/",
-          },
-          {
-            label:
-              "Find your Office of Minority Affairs & Diversity (OMA&D) adviser",
-            url: "https://depts.washington.edu/omadcs/location/",
-          },
-          {
-            label: "Find your departmental or major adviser",
-            url:
-              "https://advising.uw.edu/academic-support" +
-              "/advising-offices-by-program/"
-          },
-        ];
-      } else if (this.campus.toLowerCase() == "bothell") {
-        infoArray = [
-          {
-            label: "Find your Bothell adviser",
-            url: "https://uwb.navigate.eab.com/",
-          },
-        ];
-      }
-      return infoArray;
+  export default {
+    name: "ContactAdviserCourse",
+    props: ["campus", "type"],
+    data() {
+      return {};
     },
-  },
-  methods: {},
-};
+    computed: {
+      advisingInfo: function () {
+        let infoArray = [];
+        if (this.campus.toLowerCase() == "tacoma") {
+          infoArray = [
+            {
+              label: "Find your Tacoma adviser",
+              url: "https://www.tacoma.uw.edu/gaa#permalink-37917",
+            },
+          ];
+        } else if (this.campus.toLowerCase() == "seattle") {
+          infoArray = [
+            {
+              label: "Find your premajor adviser",
+              url: "https://www.washington.edu/uaa/advising/appointments/",
+            },
+            {
+              label:
+                "Find your Office of Minority Affairs & Diversity (OMA&D) adviser",
+              url: "https://depts.washington.edu/omadcs/location/",
+            },
+            {
+              label: "Find your departmental or major adviser",
+              url:
+                "https://advising.uw.edu/academic-support" +
+                "/advising-offices-by-program/",
+            },
+          ];
+        } else if (this.campus.toLowerCase() == "bothell") {
+          infoArray = [
+            {
+              label: "Find your Bothell adviser",
+              url: "https://uwb.navigate.eab.com/",
+            },
+          ];
+        }
+        return infoArray;
+      },
+    },
+    methods: {},
+  };
 </script>
