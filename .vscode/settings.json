@@ -1,4 +1,20 @@
 {
-  "black-formatter.args": ["--line-length=79"],
-  "stylelint.validate": ["vue", "scss"]
+  "editor.formatOnSave": false,
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+
+  "files.associations": {
+    "*.css": "tailwindcss",
+  },
+
+  "[vue]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.rulers": [80],
+  },
+  "[html]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.rulers": [120],
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+  },
 }
