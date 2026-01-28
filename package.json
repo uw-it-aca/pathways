@@ -26,7 +26,7 @@
   "homepage": "https://github.com/uw-it-aca/pathways#readme",
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "axios": "^1.13.2",
+    "axios": "^1.13.4",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "bootstrap-vue-next": "^0.42.0",
@@ -42,18 +42,17 @@
     "vue-gtag-next": "^1.14.0",
     "vue-router": "^4.6.4",
     "vue3-cookies": "^1.0.6",
-    "vue3-mq": "^4.0.3"
+    "vue3-mq": "^4.1.0"
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
     "@vitejs/plugin-vue": "^6.0.3",
     "@vitest/coverage-v8": "^4.0.18",
-    "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/test-utils": "^2.4.6",
     "dotenv": "^17.2.3",
     "jsdom": "^27.4.0",
-    "oxfmt": "^0.26.0",
-    "oxlint": "^1.41.0",
+    "oxfmt": "^0.27.0",
+    "oxlint": "^1.42.0",
     "postcss-html": "^1.8.1",
     "sass": "^1.97.3",
     "vite": "^7.3.1",
