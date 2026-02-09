@@ -1,12 +1,7 @@
 {
-  // ignore eslint
+  // ignore eslint and biome
   "language_servers": ["!eslint", "!biome", "oxlint", "oxfmt"],
   "lsp": {
-    "biome": {
-      "settings": {
-        "require_config_file": true,
-      },
-    },
     "oxlint": {
       "initialization_options": {
         "settings": {
@@ -48,6 +43,14 @@
       "format_on_save": "off",
     },
     "SCSS": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off",
+    },
+    "JSON": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off",
+    },
+    "JSONC": {
       "formatter": { "language_server": { "name": "oxfmt" } },
       "format_on_save": "off",
     },

@@ -1,8 +1,18 @@
 {
   "name": "pathways",
-  "type": "module",
   "version": "1.0.0",
   "description": "pathways some description text",
+  "homepage": "https://github.com/uw-it-aca/pathways#readme",
+  "bugs": {
+    "url": "https://github.com/uw-it-aca/pathways/issues"
+  },
+  "license": "ISC",
+  "author": "Your Name Here",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uw-it-aca/pathways.git"
+  },
+  "type": "module",
   "scripts": {
     "build": "vite build",
     "watch": "vite build --watch --mode development",
@@ -14,16 +24,6 @@
     "oxfmt": "oxfmt",
     "oxfmt:check": "oxfmt --check"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/uw-it-aca/pathways.git"
-  },
-  "author": "Your Name Here",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/uw-it-aca/pathways/issues"
-  },
-  "homepage": "https://github.com/uw-it-aca/pathways#readme",
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "axios": "^1.13.4",
