@@ -23,14 +23,14 @@
 
     <div v-if="expanded">
       <div
-        class="border-bottom border-secondary-subtle"
+        class="border-bottom border-light-subtle"
         style="margin-left: -1rem; margin-right: -1rem"
       ></div>
       <div v-for="(major, index) in majorData.program_majors" :key="index">
         <similar-major-display :majorData="major" style="margin-left: 40px" />
         <div
           v-if="index !== majorData.program_majors.length - 1"
-          class="border-bottom border-secondary-subtle"
+          class="border-bottom border-light-subtle"
           style="margin-left: -1rem; margin-right: -1rem"
         ></div>
       </div>

@@ -11,6 +11,13 @@
     <p class="text-uppercase small text-secondary mb-0">
       {{ majorData.major_school }} - {{ majorData.campus }}
     </p>
+    <!--
+    <a
+      href="/faq#admission_types"
+      class="router-link-active text-capitalize"
+      title="Admission to majors"
+      ><major-capacity-display :admissionType="majorData.major_admission"
+    /></a>-->
     <major-capacity-display :admissionType="majorData.major_admission" />
   </div>
 </template>
@@ -35,7 +42,7 @@ export default {
   methods: {},
   computed: {
     major_url() {
-      return "/major?id=" + encodeURIComponent(this.majorData.id);
+      return "/major?id=" + encodeURIComponent(this.majorData.credential_code);
     },
   },
 };
