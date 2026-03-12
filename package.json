@@ -26,10 +26,10 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "axios": "^1.13.5",
+    "axios": "^1.13.6",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
-    "bootstrap-vue-next": "^0.42.0",
+    "bootstrap-vue-next": "^0.43.9",
     "d3": "^7.9.0",
     "debounce": "^3.0.0",
     "mitt": "^3.0.1",
@@ -37,25 +37,25 @@
     "numeral": "^2.0.6",
     "solstice-theme": "github:uw-it-aca/solstice-theme#1.0.7",
     "solstice-vue": "github:uw-it-aca/solstice-vue#1.1.7",
-    "vue": "^3.5.28",
+    "vue": "^3.5.30",
     "vue-axios": "^3.5.2",
     "vue-gtag-next": "^1.14.0",
-    "vue-router": "^5.0.2",
+    "vue-router": "^5.0.3",
     "vue3-cookies": "^1.0.6",
     "vue3-mq": "^4.1.0"
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
-    "@vitejs/plugin-vue": "^6.0.4",
-    "@vitest/coverage-v8": "^4.0.18",
+    "@vitejs/plugin-vue": "^6.0.5",
+    "@vitest/coverage-v8": "^4.1.0",
     "@vue/test-utils": "^2.4.6",
-    "dotenv": "^17.2.4",
-    "jsdom": "^28.0.0",
-    "oxfmt": "^0.28.0",
-    "oxlint": "^1.43.0",
+    "dotenv": "^17.3.1",
+    "jsdom": "^28.1.0",
+    "oxfmt": "^0.40.0",
+    "oxlint": "^1.55.0",
     "postcss-html": "^1.8.1",
-    "sass": "^1.97.3",
+    "sass": "^1.98.0",
     "vite": "^7.3.1",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.0"
   }
 }
