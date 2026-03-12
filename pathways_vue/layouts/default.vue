@@ -10,7 +10,7 @@
     <template #settings>
       <!-- user comp here -->
       <SUser :user-netid="userName">
-        i am the logged in user, here is my info
+        Welcome back, {{ userName }}
         <template #action>
           <a :href="signOutUrl" class="link-quiet-danger"
             ><i class="bi bi-box-arrow-left me-2"></i>Sign out</a
@@ -27,8 +27,9 @@
     <template #main>
       <div class="d-flex flex-column align-items-start h-100 w-100 gap-3">
         <slot name="content"></slot>
+        <Feedback />
       </div>
-      <Feedback />
+
     </template>
 
     <template #footer></template>
