@@ -1,14 +1,14 @@
 <template>
   <div class="my-2 py-2">
-    <h6 class="fw-bold ff-open-sans mb-1">
+    <span class="fw-bold ff-open-sans mb-1">
       <a
         :href="major_url"
         class="text-decoration-none"
         style="color: #2f68cb"
         >{{ majorData.credential_title }}</a
       >
-    </h6>
-    <p class="text-uppercase small text-black-50 mb-0">
+    </span>
+    <p class="text-uppercase small text-secondary mb-0">
       {{ majorData.major_school }} - {{ majorData.campus }}
     </p>
     <major-capacity-display :admissionType="majorData.major_admission" />

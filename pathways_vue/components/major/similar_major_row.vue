@@ -2,15 +2,20 @@
   <div v-if="is_program">
     <div class="row my-2 py-2">
       <div class="col-11">
-        <h6 class="fw-bold ff-open-sans mb-1">
+        <span class="fw-bold ff-open-sans mb-1">
           {{ majorData.program_title }}
-        </h6>
-        <p class="text-uppercase small text-black-50 mb-0">
+        </span>
+        <p class="text-uppercase small text-secondary mb-0">
           {{ majorData.program_school }} - {{ majorData.program_campus }}
         </p>
       </div>
       <div class="col-1 text-center" style="font-size: 16px">
-        <a href="#" v-on:click.prevent="expandChildren" style="color: #2f68cb">
+        <a
+          href="#"
+          v-on:click.prevent="expandChildren"
+          style="color: #2f68cb"
+          aria-label="Expand"
+        >
           <i :class="expand_icon"></i>
         </a>
       </div>
@@ -40,39 +45,39 @@
 </template>
 
 <script>
-import SimilarMajorDisplay from "./similar_major_display.vue";
+  import SimilarMajorDisplay from "./similar_major_display.vue";
 
-export default {
-  name: "SimilarMajorRow",
-  components: {
-    SimilarMajorDisplay,
-  },
-  props: {
-    majorData: {
-      type: Object,
-      required: true,
+  export default {
+    name: "SimilarMajorRow",
+    components: {
+      SimilarMajorDisplay,
     },
-  },
-  data() {
-    return {
-      expanded: false,
-    };
-  },
-  methods: {
-    expandChildren() {
-      this.expanded = !this.expanded;
+    props: {
+      majorData: {
+        type: Object,
+        required: true,
+      },
     },
-  },
-  computed: {
-    major_url() {
-      return "/major?id=" + encodeURIComponent(this.majorData.id);
+    data() {
+      return {
+        expanded: false,
+      };
     },
-    is_program() {
-      return this.majorData.program_majors !== undefined;
+    methods: {
+      expandChildren() {
+        this.expanded = !this.expanded;
+      },
     },
-    expand_icon() {
-      return this.expanded ? "bi-chevron-down" : "bi-chevron-right";
+    computed: {
+      major_url() {
+        return "/major?id=" + encodeURIComponent(this.majorData.id);
+      },
+      is_program() {
+        return this.majorData.program_majors !== undefined;
+      },
+      expand_icon() {
+        return this.expanded ? "bi-chevron-down" : "bi-chevron-right";
+      },
     },
-  },
-};
+  };
 </script>
