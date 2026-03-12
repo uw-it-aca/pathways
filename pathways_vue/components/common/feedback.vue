@@ -1,9 +1,9 @@
 // feedback.vue
 
 <template>
-  <div class="position-absolute bottom-0 end-0 m-2">
+  <div class="fixed-bottom text-end m-2">
     <button
-      class="btn btn-sm btn-primary"
+      class="btn btn-sm btn-primary "
       type="button"
       data-bs-toggle="offcanvas"
       data-bs-target="#send_feedback"
