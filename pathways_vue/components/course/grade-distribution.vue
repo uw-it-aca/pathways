@@ -6,7 +6,7 @@
       <h2 class="h4 axdd-font-encode-sans fw-bold">
         Course Grade Distribution
       </h2>
-      <p aria-hidden="true">
+      <p>
         This graph represents the distribution of grades for every student who
         completed
         <strong>{{ course.course_id }}</strong> over the past 5 years.
