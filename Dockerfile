@@ -1,4 +1,4 @@
-ARG DJANGO_CONTAINER_VERSION=2.0.2
+ARG DJANGO_CONTAINER_VERSION=3.0.0
 
 FROM us-docker.pkg.dev/uwit-mci-axdd/containers/django-container:${DJANGO_CONTAINER_VERSION} as app-prebundler-container
 
