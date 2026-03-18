@@ -1,4 +1,4 @@
-ARG DJANGO_CONTAINER_VERSION=3.0.0
+ARG DJANGO_CONTAINER_VERSION=3.0.2
 
 FROM us-docker.pkg.dev/uwit-mci-axdd/containers/django-container:${DJANGO_CONTAINER_VERSION} as app-prebundler-container
 
@@ -18,8 +18,8 @@ ADD --chown=acait:acait docker/app_start.sh /scripts
 RUN chmod u+x /scripts/app_start.sh
 
 # latest node + ubuntu
-FROM node:lts AS node-base
-FROM ubuntu:latest AS node-bundler
+FROM node:24 AS node-base
+FROM ubuntu:24.04 AS node-bundler
 COPY --from=node-base / /
 
 ADD ./package.json /app/
