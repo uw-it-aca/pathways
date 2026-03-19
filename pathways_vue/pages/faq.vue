@@ -1,5 +1,5 @@
 <template>
-  <layout :page-title="pageTitle">
+  <DefaultLayout :page-title="pageTitle">
     <template #content>
       <div class="row justify-content-sm-center">
         <div class="col-md-9">
@@ -356,7 +356,7 @@
         </div>
       </div>
     </template>
-  </layout>
+  </DefaultLayout>
 </template>
 
 <style lang="scss">
@@ -372,7 +372,7 @@
   export default {
     name: "App",
     components: {
-      layout: DefaultLayout,
+      DefaultLayout,
     },
     data() {
       return {

@@ -1,6 +1,6 @@
 // major.vue
 <template>
-  <layout :page-title="pageTitle">
+  <DefaultLayout :page-title="pageTitle">
     <!-- page content -->
     <template #content>
       <div class="d-flex flex-column">
@@ -48,12 +48,12 @@
 
         <div class="row justify-content-center order-1">
           <div class="col-md-9">
-            <search />
+            <Search />
           </div>
         </div>
       </div>
     </template>
-  </layout>
+  </DefaultLayout>
 </template>
 
 <script>
@@ -70,8 +70,8 @@
   export default {
     name: "MajorComp",
     components: {
-      layout: DefaultLayout,
-      search: Search,
+      DefaultLayout,
+      Search,
       "d3-cgpa": D3Cgpa,
       "contact-adviser": ContactAdviser,
       "major-details": MajorDetails,
