@@ -30,6 +30,7 @@ class ViteTestClass(TestCase):
         )
         self.assertTrue(pattern.search(script))
 
+
 class HashTestClass(TestCase):
     def test_hash_netid(self):
         self.assertEqual(hash_netid(None), '')
