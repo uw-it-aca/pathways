@@ -1,30 +1,24 @@
 import { createWebHistory, createRouter } from "vue-router";
 import { trackRouter } from "vue-gtag-next";
 
-// page components
-import Home from "@/pages/home.vue";
-import Course from "@/pages/course.vue";
-import Major from "@/pages/major.vue";
-import Faq from "@/pages/faq.vue";
-
 const routes = [
   {
     path: "/",
-    component: Home,
+    component: () => import("@/pages/home.vue"),
   },
   {
     path: "/faq",
-    component: Faq,
+    component: () => import("@/pages/faq.vue"),
     pathToRegexpOptions: { strict: true },
   },
   {
     path: "/course",
-    component: Course,
+    component: () => import("@/pages/course.vue"),
     pathToRegexpOptions: { strict: true },
   },
   {
     path: "/major",
-    component: Major,
+    component: () => import("@/pages/major.vue"),
     pathToRegexpOptions: { strict: true },
   },
 ];
