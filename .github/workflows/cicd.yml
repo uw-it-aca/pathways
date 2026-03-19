@@ -47,7 +47,7 @@ on:
 
 jobs:
   context:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     outputs:
       commit_hash: ${{ steps.context.outputs.commit_hash }}
@@ -62,7 +62,7 @@ jobs:
           release_name: ${{ env.RELEASE_NAME }}
 
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     needs: context
 
@@ -92,6 +92,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
+      # Build App Image
       - name: Build App Image
         uses: docker/build-push-action@v3
         with:
@@ -103,6 +104,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
+      # Build Test Image
       - name: Build Test Image
         uses: docker/build-push-action@v3
         with:
@@ -111,7 +113,8 @@ jobs:
           push: false
           load: true
 
-      - name: Run Tests in Image
+      # Run Python Tests
+      - name: Run Python Tests in Image
         id: tests
         shell: bash
         run: >-
@@ -122,15 +125,48 @@ jobs:
           app-test-container
           bash -c ". ./docker/test.sh"
 
-      - name: Record Test Results
+      # Run Python Coverage and Upload to Coveralls
+      - name: Run Python Coverage and Upload to Coveralls
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
           python -m pip install --upgrade pip coverage coveralls==3.3.1
           coverage combine
-          coveralls
+          coveralls --service=github
+        continue-on-error: true
 
+      # Set up Node.js for Vue
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      # Install Vue Dependencies
+      - name: Install npm dependencies
+        run: npm install
+
+      # Run Vue Coverage
+      - name: Run Vue Coverage
+        run: npm run coverage
+
+      # Upload Vue Coverage to Coveralls
+      - name: Upload Vue Coverage to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./coverage/lcov.info
+          flag-name: app_name_vue
+          parallel: true
+
+      # Finalize Coveralls Parallel Build
+      - name: Finish Coveralls Build
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
+
+      # Build Search Index
       - name: Build Search Index
         if: github.event_name == 'push'
         id: search
@@ -143,6 +179,7 @@ jobs:
           ${{ needs.context.outputs.image_tag }}
           bash -c ". ./docker/build_index.sh"
 
+      # Push Image to Repository
       - name: Push Image to Repository
         if: github.event_name == 'push'
         uses: uw-it-aca/actions/gcr-push@main
