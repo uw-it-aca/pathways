@@ -156,7 +156,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: ./coverage/lcov.info
-          flag-name: app_name_vue
+          flag-name: pathways_vue
           parallel: true
 
       # Finalize Coveralls Parallel Build
