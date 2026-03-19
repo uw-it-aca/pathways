@@ -3,7 +3,7 @@
 
 import re
 from django.test import TestCase
-from app_name.templatetags.vite import vite_styles, vite_scripts
+from pathways.templatetags.vite import vite_styles, vite_scripts
 from pathways.templatetags.hashing_tag import hash_netid
 
 
@@ -17,13 +17,13 @@ class ViteTestClass(TestCase):
         pass
 
     def test_vite_styles(self):
-        entries = ("app_name_vue/main.js",)
+        entries = ("pathways_vue/main.js",)
         link = vite_styles(*entries)
         pattern = re.compile(r'<link\s+[^>]*href="[^"]*main-[^"]*"[^>]*>')
         self.assertTrue(pattern.search(link))
 
     def test_vite_scripts(self):
-        entries = ("app_name_vue/main.js",)
+        entries = ("pathways_vue/main.js",)
         script = vite_scripts(*entries)
         pattern = re.compile(
             r'<script\s+[^>]*src="[^"]*main-[^"]*"[^>]*></script>'
