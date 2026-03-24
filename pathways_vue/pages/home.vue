@@ -13,24 +13,23 @@
         <div class="col col-md-9">
           <p class="lead mb-5" style="max-width: 75ch">
             DawgPath helps you explore courses and majors and make strategic
-            decisions about your schedule. It also gives you key data for
-            applying to capacity‑constrained majors.
+            decisions about your schedule. It also provides useful data when
+            you're planning for applying to capacity‑constrained majors.
           </p>
 
           <p>A few things to keep in mind before getting started:</p>
 
           <ul style="max-width: 80ch">
-            <li>
+            <li class="mb-3">
               Grades are just one of the factors considered for
               capacity-constrained major. Reach out to your adviser to learn
               more.
             </li>
-            <li>
+            <li class="mb-3">
               The median course grade and GPA data are only included for those
               who had declared for the major.
             </li>
-
-            <li>
+            <li class="mb-3">
               Discovering and applying for a major can be a challenging
               experience. Look for the "Find your adviser” links to connect with
               your adviser.
