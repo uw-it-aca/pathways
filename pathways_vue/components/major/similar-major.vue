@@ -9,7 +9,7 @@
           Topically similar majors are determined through several sources,
           including major and course descriptions. Explore majors and
           concentrations that align with your interests and strengths.
-          <a href="#" v-on:click.prevent="showHelpModal" style="color: #2f68cb">
+          <a href="#" v-on:click.prevent="showHelpModal">
             About Topically Similar Majors</a
           >
         </div>
@@ -161,7 +161,7 @@
       </div>
       <div
         v-if="similarMajors.length === 0"
-        class="p-4 mt-3 text-center text-body-tertiary"
+        class="p-4 mt-3 text-center"
       >
         No results found.
       </div>

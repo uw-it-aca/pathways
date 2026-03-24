@@ -369,6 +369,7 @@ export default {
           .attr("dy", "0.5em")
           .style("text-anchor", "middle")
           .style("font-size", "0.85rem")
+          .style("fill", "currentColor")
           .classed("chart-label", true)
           .text("Number of students");
 
@@ -378,6 +379,7 @@ export default {
           .attr("y", height + margin.bottom)
           .style("text-anchor", "middle")
           .style("font-size", "0.85rem")
+          .style("fill", "currentColor")
           .text("GPA");
 
         // add the x Axis
