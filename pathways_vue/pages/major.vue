@@ -4,7 +4,7 @@
     <!-- page content -->
     <template #content>
       <template v-if="major_data">
-        <div class="row justify-content-center border-success order-2 border">
+        <div class="row justify-content-center order-2">
           <div class="col col-md-9">
             <MajorDetails :major="major_data" />
             <ExploreMajor :major="major_data" />
@@ -16,7 +16,7 @@
         </div>
       </template>
       <template v-else>
-        <div class="row justify-content-center border-danger border">
+        <div class="row justify-content-center">
           <div v-if="showError" class="col col-md-9">
             <div class="alert alert-purple" role="alert">
               <p>
@@ -30,14 +30,14 @@
               </ul>
             </div>
           </div>
-          <div v-else class="col col-md-9 border-danger border text-center">
+          <div v-else class="col col-md-9 text-center">
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
         </div>
       </template>
-      <div class="row justify-content-center border-warning order-1 border">
+      <div class="row justify-content-center order-1">
         <div class="col col-md-9">
           <Search />
         </div>

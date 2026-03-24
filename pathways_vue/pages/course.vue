@@ -4,7 +4,7 @@
     <!-- page content -->
     <template #content>
       <template v-if="courseData">
-        <div class="row justify-content-center border-success order-2 border">
+        <div class="row justify-content-center order-2">
           <div class="col-md-9">
             <CourseDetails :course="courseData" />
             <ExploreCourse :course="courseData" />
@@ -24,7 +24,7 @@
         </div>
       </template>
       <template v-else>
-        <div class="row justify-content-center border-danger border">
+        <div class="row justify-content-center">
           <div v-if="showError" class="col col-md-9">
             <div class="alert alert-purple border-0" role="alert">
               <p>
@@ -46,7 +46,7 @@
         </div>
       </template>
 
-      <div class="row justify-content-center border-warning order-1 border">
+      <div class="row justify-content-center order-1">
         <div class="col col-md-9">
           <Search />
         </div>
