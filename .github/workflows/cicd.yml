@@ -68,10 +68,10 @@ jobs:
 
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
@@ -82,10 +82,10 @@ jobs:
           exclude_paths: "migrations"
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v4
 
       - name: Cache Docker layers
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-$(echo ${{ hashFiles('Dockerfile') }} | head -c 16)
@@ -94,7 +94,7 @@ jobs:
 
       # Build App Image
       - name: Build App Image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v7
         with:
           context: .
           target: app-container
@@ -106,7 +106,7 @@ jobs:
 
       # Build Test Image
       - name: Build Test Image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v7
         with:
           target: app-test-container
           tags: app-test-container
@@ -152,7 +152,7 @@ jobs:
 
       # Upload Vue Coverage to Coveralls
       - name: Upload Vue Coverage to Coveralls
-        uses: coverallsapp/github-action@v2
+        uses: coverallsapp/github-action@v2.3.7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: ./coverage/lcov.info
@@ -161,7 +161,7 @@ jobs:
 
       # Finalize Coveralls Parallel Build
       - name: Finish Coveralls Build
-        uses: coverallsapp/github-action@v2
+        uses: coverallsapp/github-action@v2.3.7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
@@ -195,11 +195,11 @@ jobs:
     outputs:
       context: ${{ steps.context.outputs.context }}
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Deployment Pipeline
         if: >-
@@ -232,7 +232,7 @@ jobs:
 
     needs: [context, build, deploy]
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: House Keeping
