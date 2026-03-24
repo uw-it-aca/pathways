@@ -3,37 +3,29 @@
   <DefaultLayout :page-title="pageTitle">
     <!-- page content -->
     <template #content>
-      <div class="d-flex flex-column">
-        <div v-if="courseData" class="row justify-content-sm-center order-2">
+      <template v-if="courseData">
+        <div class="row justify-content-center border-success order-2 border">
           <div class="col-md-9">
-            <course-details :course="courseData" />
-            <explore-course :course="courseData" />
-          </div>
-
-          <div class="col-md-9">
-            <grade-distribution :course="courseData" />
-          </div>
-          <div v-if="courseCampus == 'seattle'" class="col-md-9">
-            <outcome-index :course="courseData" />
-          </div>
-          <!-- prereq map -->
-          <div class="col-md-9">
-            <prereq-map
+            <CourseDetails :course="courseData" />
+            <ExploreCourse :course="courseData" />
+            <GradeDistribution :course="courseData" />
+            <template v-if="courseCampus == 'seattle'">
+              <OutcomeIndex :course="courseData" />
+            </template>
+            <!-- prereq map -->
+            <PrereqMap
               :graph_data="courseData.prereq_graph"
               :active_course="courseId"
               :prereq_string="courseData.prereq_string"
             />
-          </div>
-
-          <div class="col-md-9">
-            <concurrent-courses :courseData="courseData" />
-          </div>
-          <div class="col-md-9">
-            <contact-adviser :campus="courseCampus" :type="'course'" />
+            <ConcurrentCourses :courseData="courseData" />
+            <ContactAdviser :campus="courseCampus" :type="'course'" />
           </div>
         </div>
-        <div v-else class="row justify-content-sm-center order-2">
-          <div v-if="showError" class="col-md-9">
+      </template>
+      <template v-else>
+        <div class="row justify-content-center border-danger border">
+          <div v-if="showError" class="col col-md-9">
             <div class="alert alert-purple border-0" role="alert">
               <p>
                 Data is not available for selected course. Here are some
@@ -46,17 +38,17 @@
               </ul>
             </div>
           </div>
-          <div v-else class="col-md-9 text-center">
+          <div v-else class="col col-md-9 text-center">
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
         </div>
+      </template>
 
-        <div class="row justify-content-center order-1">
-          <div class="col-md-9">
-            <Search />
-          </div>
+      <div class="row justify-content-center border-warning order-1 border">
+        <div class="col col-md-9">
+          <Search />
         </div>
       </div>
     </template>
@@ -80,13 +72,13 @@
     components: {
       DefaultLayout,
       Search,
-      "course-details": CourseDetails,
-      "explore-course": ExploreCourse,
-      "grade-distribution": GradeDistribution,
-      "outcome-index": OutcomeIndex,
-      "contact-adviser": ContactAdviser,
-      "prereq-map": PrereqMap,
-      "concurrent-courses": ConcurrentCourses,
+      CourseDetails,
+      ExploreCourse,
+      GradeDistribution,
+      OutcomeIndex,
+      ContactAdviser,
+      PrereqMap,
+      ConcurrentCourses,
     },
     data() {
       return {

@@ -1,8 +1,8 @@
 <template>
   <DefaultLayout :page-title="pageTitle">
     <template #content>
-      <div class="row justify-content-sm-center">
-        <div class="col-md-9">
+      <div class="row justify-content-center">
+        <div class="col col-md-9">
           <h1 class="fs-2 mt-4">{{ pageTitle }}</h1>
 
           <ul class="list-unstyled">

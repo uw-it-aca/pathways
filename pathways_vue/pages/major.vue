@@ -3,30 +3,21 @@
   <DefaultLayout :page-title="pageTitle">
     <!-- page content -->
     <template #content>
-      <div class="d-flex flex-column">
-        <div v-if="major_data" class="row justify-content-sm-center order-2">
-          <div class="col-md-9">
-            <major-details :major="major_data" />
-            <explore-major :major="major_data" />
-          </div>
-          <div class="col-md-9">
-            <d3-cgpa :major-data="major_data" />
-          </div>
-          <div class="col-md-9">
-            <common-courses :major="major_data" />
-          </div>
-          <div class="col-md-9">
-            <similar-major :similar-major-data="major_data.similar_majors" />
-          </div>
-          <div class="col-md-9">
-            <contact-adviser
-              :campus="major_data.major_campus"
-              :type="'major'"
-            />
+      <template v-if="major_data">
+        <div class="row justify-content-center border-success order-2 border">
+          <div class="col col-md-9">
+            <MajorDetails :major="major_data" />
+            <ExploreMajor :major="major_data" />
+            <D3Cgpa :major-data="major_data" />
+            <CommonCourses :major="major_data" />
+            <SimilarMajor :similar-major-data="major_data.similar_majors" />
+            <ContactAdviser :campus="major_data.major_campus" :type="'major'" />
           </div>
         </div>
-        <div v-else class="row justify-content-sm-center order-2">
-          <div v-if="showError" class="col-md-9">
+      </template>
+      <template v-else>
+        <div class="row justify-content-center border-danger border">
+          <div v-if="showError" class="col col-md-9">
             <div class="alert alert-purple" role="alert">
               <p>
                 Data is not available for selected major. Here are some possible
@@ -39,17 +30,16 @@
               </ul>
             </div>
           </div>
-          <div v-else class="col-md-9 text-center">
+          <div v-else class="col col-md-9 border-danger border text-center">
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
         </div>
-
-        <div class="row justify-content-center order-1">
-          <div class="col-md-9">
-            <Search />
-          </div>
+      </template>
+      <div class="row justify-content-center border-warning order-1 border">
+        <div class="col col-md-9">
+          <Search />
         </div>
       </div>
     </template>
@@ -64,20 +54,20 @@
   import Search from "@/components/search/search.vue";
   import D3Cgpa from "@/components/major/d3-cgpa.vue";
   import ContactAdviser from "@/components/common/contact-adviser.vue";
+  import SimilarMajor from "@/components/major/similar-major.vue";
   import utils from "@/utils.js";
-  import SimilarMajor from "../components/major/similar-major.vue";
 
   export default {
     name: "MajorComp",
     components: {
       DefaultLayout,
       Search,
-      "d3-cgpa": D3Cgpa,
-      "contact-adviser": ContactAdviser,
-      "major-details": MajorDetails,
-      "explore-major": ExploreMajor,
-      "common-courses": CommonCourses,
-      "similar-major": SimilarMajor,
+      D3Cgpa,
+      ContactAdviser,
+      MajorDetails,
+      ExploreMajor,
+      CommonCourses,
+      SimilarMajor,
     },
     data() {
       return {

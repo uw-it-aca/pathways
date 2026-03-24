@@ -1,16 +1,15 @@
 <template>
-  <div class="row justify-content-center my-5">
-    <button
-      type="button"
-      class="btn btn-lg btn-outline-primary mx-auto w-75 text-start"
-      @keydown.tab.exact="false"
-      @keydown.exact="handleKeyboard"
-      @click="openSearch"
-    >
-      <i class="bi bi-search me-3"></i>
-      <span>Search DawgPath</span>
-    </button>
-  </div>
+  <button
+    type="button"
+    class="btn btn-lg btn-outline-primary my-5 w-100 text-start"
+    @keydown.tab.exact="false"
+    @keydown.exact="handleKeyboard"
+    @click="openSearch"
+  >
+    <i class="bi bi-search me-3"></i>
+    <span>Search DawgPath</span>
+  </button>
+
   <!-- Modal -->
   <div
     class="modal"
@@ -173,7 +172,9 @@
             <results v-if="show_results" :search_results="search_results" />
             <template v-else>
               <div class="d-flex">
-                <div class="w-50"><recent-searches @set-search="setSearch" /></div>
+                <div class="w-50">
+                  <recent-searches @set-search="setSearch" />
+                </div>
                 <div class="w-50"><recent-views /></div>
               </div>
             </template>

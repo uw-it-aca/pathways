@@ -25,7 +25,7 @@
     </template>
 
     <template #main>
-      <div class="d-flex flex-column align-items-start h-100 w-100 gap-3">
+      <div class="d-flex flex-column h-100 w-100 gap-3">
         <slot name="content"></slot>
         <Feedback />
       </div>
