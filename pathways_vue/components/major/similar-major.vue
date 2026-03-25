@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-sm-9">
-          <h2 class="h4 axdd-font-encode-sans fw-bold">
+          <h2 class="h4 ff-encode-sans fw-bold">
             Topically Similar Majors
           </h2>
           Topically similar majors are determined through several sources,

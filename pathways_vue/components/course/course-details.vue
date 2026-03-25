@@ -2,7 +2,7 @@
 
 <template>
   <div class="mb-3">
-    <h1 class="h2 axdd-font-encode-sans fw-bold">
+    <h1 class="h2 ff-encode-sans fw-bold">
       {{ course.course_id }}: {{ course.course_title }}
     </h1>
     <icon-popover
@@ -23,7 +23,7 @@
           :key="i"
         >
           <span
-            class="badge text-bg-secondary text-blac rounded-pill"
+            class="badge text-black rounded-pill"
             :class="term.class"
             >{{ term.quarter }}</span
           >

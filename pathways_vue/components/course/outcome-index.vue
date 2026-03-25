@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body">
-      <h2 class="h4 axdd-font-encode-sans fw-bold">
+      <h2 class="h4 ff-encode-sans fw-bold">
         Course Outcome Index (COI)
         <small class="align-top"
           ><span class="h2 badge text-bg-info">BETA</span></small
@@ -774,6 +774,7 @@ export default {
           .append("text")
           .attr("class", "coi-labels fw-bold")
           .style("font-size", mainSize)
+           .style("fill", "currentColor")
           //.style("font-weight", "bold")
           .attr("x", x(3.31))
           .attr("y", labelPosY)
@@ -782,6 +783,7 @@ export default {
           .append("tspan")
           .style("font-weight", "normal")
           .style("font-size", subSize)
+
           .attr("x", x(1.45))
           .attr("y", sublabelPosY)
           .attr("text-anchor", "right")
@@ -791,6 +793,7 @@ export default {
           .append("text")
           .style("font-size", mainSize)
           .style("font-weight", "bold")
+          .style("fill", "currentColor")
           .attr("x", x(-5))
           .attr("y", labelPosY)
           .attr("text-anchor", "left")

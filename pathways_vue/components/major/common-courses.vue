@@ -1,7 +1,7 @@
 <template>
   <div class="card mb-5">
     <div v-if="commonCourses.length === 0" class="card-body">
-      <h2 class="h4 axdd-font-encode-sans fw-bold">Common Courses</h2>
+      <h2 class="h4 ff-encode-sans fw-bold">Common Courses</h2>
       <div class="alert alert-purple mt-2" role="alert">
         <p>
           No common courses available for
@@ -11,7 +11,7 @@
       </div>
     </div>
     <div v-else class="card-body explore-major">
-      <h2 class="h4 axdd-font-encode-sans fw-bold">
+      <h2 class="h4 ff-encode-sans fw-bold">
         Common courses for {{ major["major_title"] }}
       </h2>
       <p>
