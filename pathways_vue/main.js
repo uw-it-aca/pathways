@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import { createBootstrap } from "bootstrap-vue-next";
+import { createPinia } from "pinia";
 import VueGtag from "vue-gtag-next";
 import { Vue3Mq, MqResponsive } from "vue3-mq";
 import axios from "axios";
@@ -56,8 +56,9 @@ app.component("mq-responsive", MqResponsive);
 // vue-axios
 app.use(VueAxios, axios);
 
-// bootstrap-vue-next
-app.use(createBootstrap());
+// pinia (vuex) state management
+const pinia = createPinia();
+app.use(pinia);
 
 // vue-router
 app.use(router);

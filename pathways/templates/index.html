@@ -40,6 +40,8 @@
       window.hashed_netid = '{% hash_netid user %}';
     </script>
 
+    {% csrf_token %}
+
     <!-- vue app will be injected here -->
     <div id="app"></div>
 
