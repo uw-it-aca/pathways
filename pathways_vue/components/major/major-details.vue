@@ -1,6 +1,6 @@
 <template>
   <div class="mb-5">
-    <h1 class="h2 axdd-font-encode-sans fw-bold">
+    <h1 class="h2 ff-encode-sans fw-bold">
       {{ major["credential_title"] }}
     </h1>
     <p class="text-uppercase mb-1">

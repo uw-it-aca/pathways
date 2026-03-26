@@ -1,7 +1,6 @@
-import { fileURLToPath, URL } from "url";
-
-import { defineConfig } from "vite";
+import { fileURLToPath, URL } from "node:url";
 import vue from "@vitejs/plugin-vue";
+import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,7 +12,8 @@ export default defineConfig({
   // vite manifest prefaces all files with the path 'app_name/assets/xxxx'
   build: {
     manifest: true,
-    rollupOptions: {
+    chunkSizeWarningLimit: 1600,
+    rolldownOptions: {
       input: [
         // list all entry points
         "./pathways_vue/main.js",
@@ -30,6 +30,14 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./pathways_vue", import.meta.url)),
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        quietDeps: true,
+        silenceDeprecations: ["global-builtin", "import"], // silence bootstrap5 related deprecations
+      },
     },
   },
 });

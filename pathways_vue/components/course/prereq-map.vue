@@ -3,7 +3,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body">
-      <h2 class="h4 axdd-font-encode-sans fw-bold">Prerequisite Map</h2>
+      <h2 class="h4 ff-encode-sans fw-bold">Prerequisite Map</h2>
       <ul class="nav nav-tabs" id="PrereqMapTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button
@@ -13,7 +13,6 @@
             data-bs-toggle="tab"
             type="button"
             role="tab"
-            aria-controls="course-map"
             aria-selected="true"
           >
             {{ active_course }}
@@ -27,7 +26,6 @@
             data-bs-toggle="tab"
             type="button"
             role="tab"
-            aria-controls="curriculum-map"
             aria-selected="true"
           >
             All {{ active_dept }} courses
@@ -68,42 +66,42 @@
 </template>
 
 <script>
-import PrereqCourse from "@/components/course/prereq-course.vue";
-import PrereqCurriculum from "@/components/course/prereq-curriculum.vue";
+  import PrereqCourse from "@/components/course/prereq-course.vue";
+  import PrereqCurriculum from "@/components/course/prereq-curriculum.vue";
 
-export default {
-  name: "PrereqMap",
-  components: {
-    "prereq-course": PrereqCourse,
-    "prereq-curriculum": PrereqCurriculum,
-  },
-  data() {
-    return {};
-  },
-  props: {
-    graph_data: {
-      type: Object,
-      required: true,
+  export default {
+    name: "PrereqMap",
+    components: {
+      "prereq-course": PrereqCourse,
+      "prereq-curriculum": PrereqCurriculum,
     },
-    prereq_string: {
-      type: String,
-      required: false,
+    data() {
+      return {};
     },
-    active_course: {
-      type: String,
-      required: true,
+    props: {
+      graph_data: {
+        type: Object,
+        required: true,
+      },
+      prereq_string: {
+        type: String,
+        required: false,
+      },
+      active_course: {
+        type: String,
+        required: true,
+      },
     },
-  },
-  computed: {
-    active_dept: function () {
-      let activeCourse = "";
-      if (this.active_course) {
-        var split_pos = this.active_course.lastIndexOf(" ");
-        activeCourse = this.active_course.substring(0, split_pos);
-      }
-      return activeCourse;
+    computed: {
+      active_dept: function () {
+        let activeCourse = "";
+        if (this.active_course) {
+          var split_pos = this.active_course.lastIndexOf(" ");
+          activeCourse = this.active_course.substring(0, split_pos);
+        }
+        return activeCourse;
+      },
     },
-  },
-  methods: {},
-};
+    methods: {},
+  };
 </script>

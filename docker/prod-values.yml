@@ -115,11 +115,6 @@ externalSecrets:
           property: username
         - name: password
           property: password
-    - name: dawgpath.uw.edu-ic-certs
-      externalKey: dawgpath/prod/ic-certs
-      data:
-        - name: dawgpath.uw.edu-ic.cert
-          property: dawgpath.uw.edu-ic.cert
     - name: dawgpath.uw.edu-uw-idp-cert
       externalKey: idp-cert
       data:
@@ -150,10 +145,6 @@ environmentVariablesSecrets:
     name: DJANGO_SECRET
     secretName: dawgpath.uw.edu-secrets
     secretKey: django-secret
-  samlSPCert:
-    name: SP_CERT
-    secretName: dawgpath.uw.edu-ic-certs
-    secretKey: dawgpath.uw.edu-ic.cert
   samlIDPCert:
     name: IDP_CERT
     secretName: dawgpath.uw.edu-uw-idp-cert

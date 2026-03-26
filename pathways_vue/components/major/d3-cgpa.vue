@@ -1,7 +1,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body" v-if="!showCard">
-      <h2 class="h4 axdd-font-encode-sans fw-bold">
+      <h2 class="h4 ff-encode-sans fw-bold">
         Declared major cumulative GPA distribution
       </h2>
       <div class="alert alert-purple" role="alert">
@@ -19,7 +19,7 @@
       </div>
     </div>
     <div v-else class="card-body" id="blah">
-      <h2 class="h4 axdd-font-encode-sans fw-bold">
+      <h2 class="h4 ff-encode-sans fw-bold">
         Declared major cumulative GPA distribution
       </h2>
       <div class="px-1 py-1">
@@ -369,6 +369,7 @@ export default {
           .attr("dy", "0.5em")
           .style("text-anchor", "middle")
           .style("font-size", "0.85rem")
+          .style("fill", "currentColor")
           .classed("chart-label", true)
           .text("Number of students");
 
@@ -378,6 +379,7 @@ export default {
           .attr("y", height + margin.bottom)
           .style("text-anchor", "middle")
           .style("font-size", "0.85rem")
+          .style("fill", "currentColor")
           .text("GPA");
 
         // add the x Axis

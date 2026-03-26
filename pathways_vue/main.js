@@ -6,9 +6,6 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 import mitt from "mitt";
 
-// import solstice-vue
-//import SolsticeVue from "solstice-vue";
-
 import App from "@/app.vue";
 import router from "@/router";
 
