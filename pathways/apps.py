@@ -6,7 +6,8 @@ from django.contrib.staticfiles.apps import StaticFilesConfig
 
 
 class ViteStaticFilesConfig(StaticFilesConfig):
-    ignore_patterns = ['CVS', '*~']
+    ignore_patterns = ["CVS", "*~"]
+
 
 class PathwaysConfig(AppConfig):
-    name = 'pathways'
+    name = "pathways"
