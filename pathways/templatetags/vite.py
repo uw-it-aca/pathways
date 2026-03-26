@@ -1,14 +1,12 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-
 import os
 import json
 from django import template
 from django.conf import settings
 from django.utils.safestring import mark_safe
 from django.templatetags.static import static
-
 
 register = template.Library()
 

@@ -3,12 +3,13 @@ import os
 
 INSTALLED_APPS += [
     "pathways.apps.PathwaysConfig",
+    "pathways.apps.ViteStaticFilesConfig",
 ]
+
+INSTALLED_APPS.remove("django.contrib.staticfiles")
 
 if os.getenv("ENV") == "localdev":
     DEBUG = True
-
-if os.getenv("ENV") == "localdev":
     VITE_MANIFEST_PATH = os.path.join(
         BASE_DIR, "pathways", "static", ".vite", "manifest.json"
     )
@@ -88,4 +89,3 @@ LOGGING = {
 }
 
 AZURE_BLOB_STORAGE_URL = os.getenv("AZURE_BLOB_STORAGE_URL", default=None)
-
