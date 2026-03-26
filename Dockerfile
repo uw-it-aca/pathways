@@ -1,6 +1,6 @@
 ARG DJANGO_CONTAINER_VERSION=3.0.2
 
-FROM us-docker.pkg.dev/uwit-mci-axdd/containers/django-container:${DJANGO_CONTAINER_VERSION} as app-prebundler-container
+FROM us-docker.pkg.dev/uwit-mci-axdd/containers/django-container:${DJANGO_CONTAINER_VERSION} AS app-prebundler-container
 
 USER root
 
@@ -33,13 +33,13 @@ ENV VUE_DEVTOOLS=$VUE_DEVTOOLS
 RUN npm run build
 
 
-FROM app-prebundler-container as app-container
+FROM app-prebundler-container AS app-container
 
 COPY --chown=acait:acait --from=node-bundler /app/pathways/static /app/pathways/static
 
 RUN . /app/bin/activate && python manage.py collectstatic --noinput
 
-FROM us-docker.pkg.dev/uwit-mci-axdd/containers/django-test-container:${DJANGO_CONTAINER_VERSION} as app-test-container
+FROM us-docker.pkg.dev/uwit-mci-axdd/containers/django-test-container:${DJANGO_CONTAINER_VERSION} AS app-test-container
 
 ENV NODE_PATH=/app/lib/node_modules
 COPY --from=app-container /app/ /app/
