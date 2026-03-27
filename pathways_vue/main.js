@@ -2,8 +2,6 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import VueGtag from "vue-gtag-next";
 import { Vue3Mq, MqResponsive } from "vue3-mq";
-import axios from "axios";
-import VueAxios from "vue-axios";
 import mitt from "mitt";
 
 import App from "@/app.vue";
@@ -52,9 +50,6 @@ app.use(Vue3Mq, {
   preset: "bootstrap5",
 });
 app.component("mq-responsive", MqResponsive);
-
-// vue-axios
-app.use(VueAxios, axios);
 
 // pinia (vuex) state management
 const pinia = createPinia();

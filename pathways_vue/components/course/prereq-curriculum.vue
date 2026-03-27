@@ -14,57 +14,60 @@
 </template>
 
 <script>
-import PrereqCurrList from "@/components/course/prereq-curr-list.vue";
+  import PrereqCurrList from "@/components/course/prereq-curr-list.vue";
+  import { useCustomFetch } from "@/composables/customFetch";
 
-export default {
-  name: "PrereqCurriculum",
-  components: {
-    "prereq-curr-list": PrereqCurrList,
-  },
-  props: {
-    curric_id: {
-      type: String,
-      required: true,
+  export default {
+    name: "PrereqCurriculum",
+    components: {
+      "prereq-curr-list": PrereqCurrList,
     },
-    course_id: {
-      type: String,
-      required: false,
+    props: {
+      curric_id: {
+        type: String,
+        required: true,
+      },
+      course_id: {
+        type: String,
+        required: false,
+      },
     },
-  },
-  data() {
-    return {
-      viewCurrList: false,
-      curricData: undefined,
-    };
-  },
-  watch: {
-    curric_id(newValue) {
-      this.get_curric_prereqs(newValue);
+    data() {
+      return {
+        viewCurrList: false,
+        curricData: undefined,
+      };
     },
-  },
-  computed: {
-    has_data: function () {
-      return Object.keys(this.curricData).length > 0;
+    watch: {
+      curric_id(newValue) {
+        this.get_curric_prereqs(newValue);
+      },
     },
-  },
-  mounted() {
-    this.get_curric_prereqs(this.curric_id);
-  },
-  methods: {
-    get_curric_prereqs(curric_id) {
-      const vue = this;
-      this.axios
-        .get("/api/v1/curric_prereq/" + curric_id)
-        .then((response) => {
+    computed: {
+      has_data: function () {
+        return Object.keys(this.curricData).length > 0;
+      },
+    },
+    mounted() {
+      this.get_curric_prereqs(this.curric_id);
+    },
+    methods: {
+      async get_curric_prereqs(curric_id) {
+        const vue = this;
+
+        try {
+          const data = await useCustomFetch(
+            "/api/v1/curric_prereq/" + curric_id,
+          );
+
           // don't show graph if there are no nodes/edges to display
-          if (Object.keys(response.data.prereq_graph.x.edges.from).length > 0) {
-            vue.curricData = response.data;
+          if (Object.keys(data.prereq_graph.x.edges.from).length > 0) {
+            vue.curricData = data;
           }
-        })
-        .catch(function () {
+        } catch (error) {
           vue.curricData = {};
-        });
+        }
+      },
     },
-  },
-};
+  };
 </script>
