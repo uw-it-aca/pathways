@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from uw_person_client.models import Person
+from uw_person_client.exceptions import PersonNotFoundException
 
 
 def get_person_by_uwnetid(uwnetid):
