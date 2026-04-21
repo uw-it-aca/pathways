@@ -195,6 +195,7 @@
   import Results from "./results.vue";
   import debounce from "debounce";
   import { Modal } from "bootstrap";
+  import { useCustomFetch } from "@/composables/customFetch";
 
   export default {
     name: "SearchComponent",
@@ -298,25 +299,24 @@
         this.form_data.prev_type = this.form_data.type;
         this.form_data.prev_campus = this.form_data.campus;
       },
-      runSearch() {
-        const vue = this;
+      async runSearch() {
         this.handleFilterToggle();
         this.clearResults();
         this.addToRecent(this.search_string);
-        this.axios
-          .get("api/v1/search/", {
-            params: vue.form_data,
-          })
-          .then((response) => {
-            this.course_matches = response.data.course_matches;
-            this.major_matches = response.data.major_matches;
-            this.text_matches = response.data.text_matches;
-            this.search_error = false;
-            this.has_searched = true;
-          })
-          .catch((error) => {
-            this.search_error = true;
-          });
+
+        const queryParams = new URLSearchParams(this.form_data).toString();
+        const url = "api/v1/search/?" + queryParams;
+
+        try {
+          const data = await useCustomFetch(url);
+          this.course_matches = data.course_matches;
+          this.major_matches = data.major_matches;
+          this.text_matches = data.text_matches;
+          this.search_error = false;
+          this.has_searched = true;
+        } catch (error) {
+          this.search_error = true;
+        }
       },
       addToRecent(searchString) {
         if (searchString.length === 0) {

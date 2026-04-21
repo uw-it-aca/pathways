@@ -66,6 +66,7 @@
   import ConcurrentCourses from "@/components/course/concurrent-courses.vue";
   import ContactAdviser from "@/components/common/contact-adviser.vue";
   import utils from "@/utils.js";
+  import { useCustomFetch } from "@/composables/customFetch";
 
   export default {
     name: "CourseComp",
@@ -108,7 +109,6 @@
       if (this.courseId == undefined) {
         this.showError = true;
       }
-
       this.emitter.on("update:selected", (selectedKey) => {
         this.courseId = selectedKey;
       });
@@ -118,26 +118,26 @@
         this.courseId = data.id;
         this.courseCampus = data.campus;
       },
-      get_course_data(course_id) {
+      async get_course_data(course_id) {
         const vue = this;
         this.courseData = undefined;
-        this.axios
-          .get("/api/v1/courses/details/" + course_id)
-          .then((response) => {
-            vue.showError = false;
-            vue.courseData = response.data;
-            vue.courseCampus = response.data.course_campus;
-            //vue.courseTitle = this.courseId + ': ' + response.data.course_title + ' - Course ';
-            vue.courseTitle = this.courseId + ": " + response.data.course_title;
-            vue.recentViewManager(
-              vue.courseId,
-              "course?id=" + vue.courseId,
-              vue.courseCampus,
-            );
-          })
-          .catch(function () {
-            vue.showError = true;
-          });
+
+        try {
+          const data = await useCustomFetch(
+            "/api/v1/courses/details/" + course_id,
+          );
+          vue.showError = false;
+          vue.courseData = data;
+          vue.courseCampus = data.course_campus;
+          vue.courseTitle = vue.courseId + ": " + data.course_title;
+          vue.recentViewManager(
+            vue.courseId,
+            "course?id=" + vue.courseId,
+            vue.courseCampus,
+          );
+        } catch (error) {
+          vue.showError = true;
+        }
       },
     },
     watch: {

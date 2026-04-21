@@ -27,9 +27,17 @@
     <template #main>
       <div class="d-flex flex-column h-100 w-100 gap-3">
         <slot name="content"></slot>
-        <Feedback />
+        <div class="fixed-bottom m-2 text-end">
+          <BButton
+            href="https://forms.office.com/r/BwFCpA0RYZ"
+            size="sm"
+            role="link"
+            target="_blank"
+            ><i class="bi bi-chat-right-text-fill me-2"></i>Send us
+            feedback</BButton
+          >
+        </div>
       </div>
-
     </template>
 
     <template #footer></template>
@@ -37,18 +45,18 @@
 </template>
 
 <script>
-  import Feedback from "@/components/common/feedback.vue";
   import Banner from "@/components/common/banner.vue";
+  import { BButton } from "bootstrap-vue-next";
   import { STopbarNeo, SUser, SColorMode } from "solstice-vue";
 
   export default {
     name: "DawgPath",
     components: {
-      Feedback,
       Banner,
+      BButton,
       STopbarNeo,
       SUser,
-      SColorMode
+      SColorMode,
     },
     props: {
       pageTitle: {

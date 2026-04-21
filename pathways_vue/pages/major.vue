@@ -56,6 +56,7 @@
   import ContactAdviser from "@/components/common/contact-adviser.vue";
   import SimilarMajor from "@/components/major/similar-major.vue";
   import utils from "@/utils.js";
+  import { useCustomFetch } from "@/composables/customFetch";
 
   export default {
     name: "MajorComp",
@@ -95,25 +96,24 @@
         this.majorID = data.id;
         this.campus = data.campus;
       },
-      get_major_data() {
-        const vue = this;
+      async get_major_data() {
         this.major_data = undefined;
         if (this.majorID !== undefined) {
-          this.axios
-            .get("/api/v1/majors/details/" + this.majorID)
-            .then((response) => {
-              vue.major_data = response.data;
-              vue.majorTitle = vue.major_data.credential_title;
-              vue.showError = false;
-              vue.recentViewManager(
-                vue.majorTitle,
-                "major?id=" + vue.majorID,
-                vue.major_data.major_campus,
-              );
-            })
-            .catch(function () {
-              vue.showError = true;
-            });
+          try {
+            const data = await useCustomFetch(
+              "/api/v1/majors/details/" + this.majorID,
+            );
+            this.major_data = data;
+            this.majorTitle = this.major_data.credential_title;
+            this.showError = false;
+            this.recentViewManager(
+              this.majorTitle,
+              "major?id=" + this.majorID,
+              this.major_data.major_campus,
+            );
+          } catch (error) {
+            this.showError = true;
+          }
         } else {
           this.showError = true;
         }
