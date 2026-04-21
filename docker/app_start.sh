@@ -2,11 +2,10 @@
 
 python3 manage.py migrate
 python3 manage.py import_data
+python3 manage.py build_search_index
 
 if [ "$ENV"  = "localdev" ]
 then
-
-  python manage.py build_search_index
-
-
+    # Add any other localdev specific commands here
+    :
 fi
