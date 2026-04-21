@@ -63,7 +63,7 @@
                   <div class="carousel-inner">
                     <div class="carousel-item active">
                       <img
-                        src="/pathways/static/pathways/img/modal-1-scale1.png"
+                        :src="`${baseUrl}pathways/img/modal-1-scale1.png`"
                         class="d-block w-100"
                         alt="alt text"
                       />
@@ -81,7 +81,7 @@
                     </div>
                     <div class="carousel-item">
                       <img
-                        src="/pathways/static/pathways/img/modal-2-scale2.png"
+                        :src="`${baseUrl}pathways/img/modal-2-scale2.png`"
                         class="d-block w-100"
                         alt="alt text"
                       />
@@ -104,7 +104,7 @@
                     </div>
                     <div class="carousel-item">
                       <img
-                        src="/pathways/static/pathways/img/modal-3-scale3.png"
+                        :src="`${baseUrl}pathways/img/modal-3-scale3.png`"
                         class="d-block w-100"
                         alt="alt text"
                       />
@@ -207,6 +207,7 @@
     name: "OutcomeScore",
     data() {
       return {
+        baseUrl: import.meta.env.BASE_URL,
         percent_in_range: null,
         course_coi: null,
         course_level_coi: null,

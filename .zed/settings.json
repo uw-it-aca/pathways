@@ -1,71 +1,63 @@
 {
-  // ignore eslint and biome
-  "language_servers": ["!eslint", "!biome", "oxlint", "oxfmt"],
+  "language_servers": ["oxlint", "..."],
   "lsp": {
     "oxlint": {
       "initialization_options": {
         "settings": {
-          "configPath": null,
           "run": "onType",
           "disableNestedConfig": false,
           "fixKind": "safe_fix",
           "typeAware": true,
-          "unusedDisableDirectives": "deny",
-        },
-      },
-    },
-    "oxfmt": {
-      "initialization_options": {
-        "settings": {
-          "configPath": null,
-          //"run": "onSave",
-        },
-      },
+          "unusedDisableDirectives": "deny"
+        }
+      }
     },
     "ruff": {
       "initialization_options": {
         "settings": {
-          // ruff server settings goes here
           "lineLength": 79,
           "lint": {
-            "select": ["E", "W"], // pycodestyle rules only
-            "ignore": ["F"], // ignore pyflakes
+            "select": ["E", "W"],
+            "ignore": ["F"]
           },
-          "organizeImports": true,
-        },
-      },
-    },
+          "organizeImports": true
+        }
+      }
+    }
   },
-  // ... other settings
   "languages": {
     "CSS": {
       "formatter": { "language_server": { "name": "oxfmt" } },
-      "format_on_save": "off",
+      "format_on_save": "off"
     },
     "SCSS": {
       "formatter": { "language_server": { "name": "oxfmt" } },
-      "format_on_save": "off",
-    },
-    "JSON": {
-      "formatter": { "language_server": { "name": "oxfmt" } },
-      "format_on_save": "off",
-    },
-    "JSONC": {
-      "formatter": { "language_server": { "name": "oxfmt" } },
-      "format_on_save": "off",
+      "format_on_save": "off"
     },
     "Vue.js": {
+      "language_servers": ["vue-language-server", "oxlint", "..."],
       "formatter": { "language_server": { "name": "oxfmt" } },
-      "format_on_save": "off",
+      "format_on_save": "off"
     },
     "JavaScript": {
       "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off"
     },
-    "TypeScript": {
+    "JSON": {
       "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off"
+    },
+    "JSONC": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off"
     },
     "Python": {
       "formatter": { "language_server": { "name": "ruff" } },
+      "format_on_save": "off"
     },
-  },
+    "TypeScript": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off"
+    }
+  }
 }
