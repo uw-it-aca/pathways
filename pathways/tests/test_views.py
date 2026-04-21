@@ -24,13 +24,18 @@ class PagesViewTest(TestCase):
         self.request.session.save()
 
     def test_context(self):
-        with self.settings(GOOGLE_ANALYTICS_KEY=" "):
+        with self.settings(GOOGLE_ANALYTICS_KEY=""):
             response = DefaultPageView.as_view()(self.request)
             self.assertIsInstance(response.context_data, dict)
             self.assertEqual(
-                response.context_data.get("googleAnalyticsKey"), " "
+                response.context_data["context_data"].get(
+                    "googleAnalyticsKey"
+                ),
+                "",
             )
-            self.assertEqual(response.context_data.get("debugMode"), False)
+            self.assertEqual(
+                response.context_data["context_data"].get("debugMode"), False
+            )
 
     def test_auth(self):
         with self.settings(LIMIT_USER_ACCESS=True):
