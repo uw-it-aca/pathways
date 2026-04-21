@@ -6,6 +6,7 @@ import mitt from "mitt";
 
 import App from "@/app.vue";
 import router from "@/router";
+import { useContextStore } from "@/stores/context";
 
 // bootstrap js + bootstrap-icons
 import "bootstrap";
@@ -19,6 +20,9 @@ import "solstice-vue/dist/style.css";
 
 // bootstrap-vue-next css
 import "bootstrap-vue-next/dist/bootstrap-vue-next.css";
+
+// microsoft clarity
+import Clarity from "@microsoft/clarity";
 
 const app = createApp(App);
 
@@ -55,7 +59,13 @@ app.component("mq-responsive", MqResponsive);
 const pinia = createPinia();
 app.use(pinia);
 
+// get contextStore values
+const contextStore = useContextStore();
+
 // vue-router
 app.use(router);
+
+// microsoft clarity
+Clarity.init(contextStore.context.clarityProjectId);
 
 app.mount("#app");
