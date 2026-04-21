@@ -35,7 +35,7 @@
         graph_type="course"
         :active_course="active_course"
       />
-      <div class="text-dark p-3 bg-light rounded-top rounded-sm">
+      <div class="text-dark bg-light rounded-top rounded-sm p-3">
         <small
           >Use the scroll function on your mouse or touchpad to zoom in and
           out</small
@@ -46,37 +46,37 @@
 </template>
 
 <script>
-import PrereqCourseList from "@/components/course/prereq-course-list.vue";
-import PrereqGraph from "@/components/course/prereq-graph.vue";
+  import PrereqCourseList from "@/components/course/prereq-course-list.vue";
+  import PrereqGraph from "@/components/course/prereq-graph.vue";
 
-export default {
-  name: "PrereqCourse",
-  components: {
-    PrereqGraph,
-    "prereq-course-list": PrereqCourseList,
-  },
-  data() {
-    return {
-      viewCourseList: false,
-    };
-  },
-  props: {
-    graph_data: {
-      type: Object,
-      required: true,
+  export default {
+    name: "PrereqCourse",
+    components: {
+      PrereqGraph,
+      "prereq-course-list": PrereqCourseList,
     },
-    active_course: {
-      type: String,
-      required: true,
+    data() {
+      return {
+        viewCourseList: false,
+      };
     },
-  },
-  computed: {
-    show_graph: function () {
-      if (this.graph_data && this.graph_data.x) {
-        return Object.keys(this.graph_data.x.edges.from).length > 0;
-      }
-      return false;
+    props: {
+      graph_data: {
+        type: Object,
+        required: true,
+      },
+      active_course: {
+        type: String,
+        required: true,
+      },
     },
-  },
-};
+    computed: {
+      show_graph: function () {
+        if (this.graph_data && this.graph_data.x) {
+          return Object.keys(this.graph_data.x.edges.from).length > 0;
+        }
+        return false;
+      },
+    },
+  };
 </script>
