@@ -4,13 +4,13 @@
     :app-name="appName"
     :app-root-url="appRootUrl"
     :page-title="pageTitle"
-    :user-name="userName"
+    :user-name="contextStore.context.loginUser"
     :sign-out-url="signOutUrl"
   >
     <template #settings>
       <!-- user comp here -->
-      <SUser :user-netid="userName">
-        Welcome back, {{ userName }}
+      <SUser :user-netid="contextStore.context.user" data-clarity-mask="True">
+        Welcome back, {{ contextStore.context.user }}
         <template #action>
           <a :href="signOutUrl" class="link-quiet-danger"
             ><i class="bi bi-box-arrow-left me-2"></i>Sign out</a
@@ -48,6 +48,7 @@
   import Banner from "@/components/common/banner.vue";
   import { BButton } from "bootstrap-vue-next";
   import { STopbarNeo, SUser, SColorMode } from "solstice-vue";
+  import { useContextStore } from "@/stores/context";
 
   export default {
     name: "DawgPath",
@@ -64,18 +65,20 @@
         required: true,
       },
     },
+    setup() {
+      const contextStore = useContextStore();
+      return {
+        contextStore,
+      };
+    },
     data() {
       return {
         // minimum application setup overrides
         appName: "DawgPath",
         appRootUrl: "/",
-        userName: "",
         signOutUrl: "/saml/logout",
         tagLine: "Discover your path to a degree",
       };
-    },
-    mounted() {
-      this.userName = window.user;
     },
     created: function () {
       // constructs page title in the following format "Page Title - AppName"
