@@ -9,7 +9,7 @@
   >
     <template #settings>
       <!-- user comp here -->
-      <SUser :user-netid="contextStore.context.user" data-clarity-mask="True">
+      <SUser :user-netid="contextStore.context.user" data-clarity-mask="true">
         Welcome back, {{ contextStore.context.user }}
         <template #action>
           <a :href="signOutUrl" class="link-quiet-danger"
