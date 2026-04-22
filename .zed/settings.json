@@ -25,6 +25,9 @@
       }
     }
   },
+  "file_types": {
+    "Django": ["**/templates/**/*.html"]
+  },
   "languages": {
     "CSS": {
       "formatter": { "language_server": { "name": "oxfmt" } },
@@ -53,7 +56,11 @@
     },
     "Python": {
       "formatter": { "language_server": { "name": "ruff" } },
+      "language_servers": ["basedpyright", "!pyright", "!pylsp",],
       "format_on_save": "off"
+    },
+    "Django": {
+      "language_servers": ["django-language-server", "!django-template-lsp",]
     },
     "TypeScript": {
       "formatter": { "language_server": { "name": "oxfmt" } },
