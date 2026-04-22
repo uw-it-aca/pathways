@@ -7,9 +7,12 @@
       <li class="" v-for="result in displayed_results" :key="result.id">
         <template v-if="result.is_major">
           <div class="clearfix">
-            <a v-bind:href="result.url" class="float-start">{{
-              result.title
-            }}</a>
+            <a
+              v-bind:href="result.url"
+              class="float-start"
+              data-clarity-unmask="true"
+              >{{ result.title }}</a
+            >
             <div
               class="badge text-bg-light rounded-pill text-uppercase float-end"
             >
@@ -23,7 +26,11 @@
         </template>
         <template v-if="result.is_course">
           <div class="clearfix">
-            <a v-bind:href="result.url" class="float-start">
+            <a
+              v-bind:href="result.url"
+              class="float-start"
+              data-clarity-unmask="true"
+            >
               <span class="text-decoration-none fw-semibold"
                 >{{ result.id }}
               </span>
@@ -75,57 +82,57 @@
   </div>
 </template>
 <script>
-export default {
-  name: "Results",
-  components: {},
-  props: {
-    search_results: {
-      type: Array,
-      required: true,
+  export default {
+    name: "Results",
+    components: {},
+    props: {
+      search_results: {
+        type: Array,
+        required: true,
+      },
     },
-  },
-  data() {
-    return {
-      page: 1,
-      pageSize: 30,
-    };
-  },
-  computed: {
-    result_count() {
-      if (this.search_results === null) {
-        return 0;
-      } else {
-        return this.search_results.length;
-      }
+    data() {
+      return {
+        page: 1,
+        pageSize: 30,
+      };
     },
-    displayed_results() {
-      return this.search_results.slice(
-        (this.page - 1) * this.pageSize,
-        this.page * this.pageSize
-      );
+    computed: {
+      result_count() {
+        if (this.search_results === null) {
+          return 0;
+        } else {
+          return this.search_results.length;
+        }
+      },
+      displayed_results() {
+        return this.search_results.slice(
+          (this.page - 1) * this.pageSize,
+          this.page * this.pageSize,
+        );
+      },
+      page_numbers() {
+        return Array.from(
+          { length: Math.ceil(this.result_count / this.pageSize) },
+          (_, i) => i + 1,
+        );
+      },
     },
-    page_numbers() {
-      return Array.from(
-        { length: Math.ceil(this.result_count / this.pageSize) },
-        (_, i) => i + 1
-      );
+    watch: {},
+    methods: {
+      goToPage(pagenum) {
+        this.page = pagenum;
+      },
+      goToPrevious() {
+        if (this.page > 1) {
+          this.page -= 1;
+        }
+      },
+      goToNext() {
+        if (this.page < this.page_numbers.length) {
+          this.page += 1;
+        }
+      },
     },
-  },
-  watch: {},
-  methods: {
-    goToPage(pagenum) {
-      this.page = pagenum;
-    },
-    goToPrevious() {
-      if (this.page > 1) {
-        this.page -= 1;
-      }
-    },
-    goToNext() {
-      if (this.page < this.page_numbers.length) {
-        this.page += 1;
-      }
-    },
-  },
-};
+  };
 </script>
