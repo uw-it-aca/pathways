@@ -18,23 +18,23 @@ ALLOWED_USERS_GROUP = getattr(settings, "ALLOWED_USERS_GROUP", None)
 class PageView(TemplateView):
     template_name = "index.html"
 
-    """
-    Superclass for all page views.
-    """
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response({"context_data": context})
+
     def get_context_data(self, **kwargs):
         uwnetid = get_user(self.request)
-        context = super().get_context_data(**kwargs)
-        context["ga_key"] = getattr(settings, "GOOGLE_ANALYTICS_KEY", " ")
-        context["google_feedback_form"] = \
-            getattr(settings, "GOOGLE_FEEDBACK_FORM", "")
+        context = {}
+        context["googleAnalyticsKey"] = settings.GOOGLE_ANALYTICS_KEY
+        context["googleFeedbackForm"] = settings.GOOGLE_FEEDBACK_FORM
+        context["clarityProjectId"] = settings.CLARITY_PROJECT_ID
         context['user'] = uwnetid
         banners = User.show_banners(uwnetid)
         context['show_welcome'] = "welcome" in banners
         context['show_bottleneck'] = "bottleneck" in banners
         context['show_outcomes'] = "outcomes" in banners
         context['show_coi'] = "coi" in banners
-
-        context["django_debug"] = getattr(settings, "DEBUG", False)
+        context["debugMode"] = getattr(settings, "DEBUG", False)
         return context
 
 
