@@ -24,21 +24,21 @@
 </template>
 
 <script>
-import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
+  import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
 
-export default {
-  name: "MajorDetails",
-  components: {
-    MajorCapacityDisplay,
-  },
-  props: {
-    major: {
-      type: Object,
-      required: true,
+  export default {
+    name: "MajorDetails",
+    components: {
+      MajorCapacityDisplay,
     },
-  },
-  data() {
-    return {};
-  },
-};
+    props: {
+      major: {
+        type: Object,
+        required: true,
+      },
+    },
+    data() {
+      return {};
+    },
+  };
 </script>

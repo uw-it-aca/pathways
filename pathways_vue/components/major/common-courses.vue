@@ -19,7 +19,7 @@
         students who declared this major in the last 5 years.
       </p>
 
-      <table class="table table-borderless table-striped">
+      <table class="table-borderless table-striped table">
         <thead>
           <tr class="bg-light text-dark">
             <th scope="col" class="pe-0" style="width: 5%"></th>
@@ -90,78 +90,82 @@
 </template>
 
 <script>
-import { Popover } from "bootstrap";
-import IconPopover from "@/components/common/icon-popover.vue";
+  import { Popover } from "bootstrap";
+  import IconPopover from "@/components/common/icon-popover.vue";
 
-export default {
-  name: "CommonCourses",
-  components: {
-    "icon-popover": IconPopover,
-  },
-  props: {
-    major: {
-      type: Object,
-      required: true,
+  export default {
+    name: "CommonCourses",
+    components: {
+      "icon-popover": IconPopover,
     },
-  },
-  data() {
-    return {
-      commonCourses: [],
-    };
-  },
-  mounted() {
-    this.commonCourses = this.get_common_courses();
-    if (this.commonCourses.length > 0) {
-      // var popover = new Popover(document.querySelector('.info-common-coi'));
-      // var popover2 = new Popover(document.querySelector('.info-major-common'));
-    }
-  },
-  methods: {
-    get_common_courses: function () {
-      let processed_courses = [];
-
-      for (const [course, data] of Object.entries(
-        this.major.common_course_decl
-      )) {
-        let style_string = `width: ${data["percent"]}%`;
-        processed_courses.push({
-          course: course,
-          percent: data["percent"],
-          title: data["title"],
-          width: style_string,
-          coi_score: data["coi_score"],
-          is_bottleneck: data["is_bottleneck"],
-          is_gateway: data["is_gateway"],
-        });
-      }
-
-      return processed_courses.sort((a, b) => (a.percent < b.percent ? 1 : -1));
+    props: {
+      major: {
+        type: Object,
+        required: true,
+      },
     },
-  },
-  watch: {
-    commonCourses: function () {
+    data() {
+      return {
+        commonCourses: [],
+      };
+    },
+    mounted() {
+      this.commonCourses = this.get_common_courses();
       if (this.commonCourses.length > 0) {
-        // Hack to get popovers to only init once element has rendered
-        setTimeout(function () {
-          var popover = new Popover(document.querySelector(".info-common-coi"));
-        }, 1);
+        // var popover = new Popover(document.querySelector('.info-common-coi'));
+        // var popover2 = new Popover(document.querySelector('.info-major-common'));
       }
     },
-  },
-};
+    methods: {
+      get_common_courses: function () {
+        let processed_courses = [];
+
+        for (const [course, data] of Object.entries(
+          this.major.common_course_decl,
+        )) {
+          let style_string = `width: ${data["percent"]}%`;
+          processed_courses.push({
+            course: course,
+            percent: data["percent"],
+            title: data["title"],
+            width: style_string,
+            coi_score: data["coi_score"],
+            is_bottleneck: data["is_bottleneck"],
+            is_gateway: data["is_gateway"],
+          });
+        }
+
+        return processed_courses.sort((a, b) =>
+          a.percent < b.percent ? 1 : -1,
+        );
+      },
+    },
+    watch: {
+      commonCourses: function () {
+        if (this.commonCourses.length > 0) {
+          // Hack to get popovers to only init once element has rendered
+          setTimeout(function () {
+            var popover = new Popover(
+              document.querySelector(".info-common-coi"),
+            );
+          }, 1);
+        }
+      },
+    },
+  };
 </script>
 
 <style lang="scss" scoped>
-.table {
-  --bs-table-striped-bg: rgb(179 175 124 / 12%);
-}
+  .table {
+    --bs-table-striped-bg: rgb(179 175 124 / 12%);
+  }
 
-tbody {
-  counter-reset: rank;
-}
+  tbody {
+    counter-reset: rank;
+  }
 
-tbody tr td.rank:not(:first-child)::after {
-  counter-increment: rank;
-  content: counter(rank);
-}
+  tbody tr td.rank:not(:first-child)::after {
+    counter-increment: rank;
+    content: counter(rank);
+  }
 </style>
