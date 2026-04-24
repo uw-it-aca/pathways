@@ -9,7 +9,7 @@ from pathways.views.api.major import MajorDetails, MajorList
 from pathways.views.api.course import CourseList, CourseDetails
 from pathways.views.api.search import Search
 from pathways.views.api.curric import CurricPrereq
-from pathways.views.api.user import UserPersonal, UserPreference
+from pathways.views.api.user import UserPreference
 from pathways.views.api.coi import CourseCOI, CurricCOI
 
 # start with an empty url array
@@ -28,9 +28,6 @@ if settings.DEBUG:
     ]
 
 urlpatterns += [
-    re_path(
-        r'^api/v1/user_personal/$',
-        UserPersonal.as_view(), name='user-personal'),
     re_path(
         r'^api/v1/user_pref/$',
         UserPreference.as_view(), name='user-pref'),

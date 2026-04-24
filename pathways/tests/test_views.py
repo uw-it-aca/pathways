@@ -15,6 +15,11 @@ from pathways.views.pages import DefaultPageView
 
 
 class PagesViewTest(TestCase):
+    databases = "__all__"
+    fixtures = ["person.json", "employee.json", "term.json", "major.json",
+                "student.json", "adviser.json", "transfer.json",
+                "transcript.json", "hold.json", "degree.json", "sport.json"]
+
     def setUp(self):
         self.request = RequestFactory().get("/")
         self.request.user = User()

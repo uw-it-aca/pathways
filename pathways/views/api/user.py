@@ -3,24 +3,10 @@
 
 from pathways.views.api import RESTDispatch
 from pathways.models.user import User
-from pathways.dao.person import get_person_by_uwnetid, PersonNotFoundException
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from uw_saml.utils import get_user
 import json
-
-
-@method_decorator(login_required, name="dispatch")
-class UserPersonal(RESTDispatch):
-    def get(self, request, *args, **kwargs):
-        uwnetid = get_user(self.request)
-        try:
-            person = get_person_by_uwnetid(uwnetid)
-            # TODO: Return required data only
-            return self.json_response(person.to_dict())
-        except PersonNotFoundException as ex:
-            return self.error_response(
-                status=404, message="Person data for {uwnetid} not found")
 
 
 @method_decorator(login_required, name="dispatch")

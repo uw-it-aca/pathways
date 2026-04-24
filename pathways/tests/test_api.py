@@ -5,7 +5,7 @@ from pathways.tests import ApiTest
 from pathways.views.api import RESTDispatch
 from pathways.views.api.major import MajorDetails, MajorList
 from pathways.views.api.coi import CurricCOI, CourseCOI
-from pathways.views.api.user import UserPersonal, UserPreference
+from pathways.views.api.user import UserPreference
 from pathways.views.api.search import Search
 from pathways.views.api.curric import CurricPrereq
 from pathways.views.api.course import CourseList, CourseDetails
@@ -65,31 +65,6 @@ class TestCoiApi(ApiTest):
         self.assertEqual(len(course_coi), 19)
         self.assertEqual(course_coi[0]['score'], 2.1)
         self.assertEqual(course_coi[0]['course_id'], 'TRAIN 1')
-
-
-class TestUserPersonalApi(ApiTest):
-    databases = '__all__'
-    fixtures = ['person.json', 'employee.json', 'term.json', 'major.json',
-                'student.json', 'adviser.json', 'transfer.json',
-                'transcript.json', 'hold.json', 'degree.json', 'sport.json']
-
-    @patch('pathways.views.api.user.get_user', return_value='javerage')
-    def test_user_personal(self, mock_get_user):
-        request = RequestFactory().get('/')
-        request.user = User()
-        response = UserPersonal.as_view()(request)
-        self.assertEqual(response.status_code, 200)
-
-        person = json.loads(response.content)
-        self.assertEqual(person['display_name'], 'Jamesy McJamesy')
-        self.assertEqual(person['student']['student_number'], '1033334')
-
-    @patch('pathways.views.api.user.get_user', return_value='n1i9c8k5')
-    def test_user_personal_notfound(self, mock_get_user):
-        request = RequestFactory().get('/')
-        request.user = User()
-        response = UserPersonal.as_view()(request)
-        self.assertEqual(response.status_code, 404)
 
 
 class TestUserPreferenceApi(ApiTest):
