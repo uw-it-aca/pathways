@@ -125,8 +125,8 @@ externalSecrets:
       data:
         - name: blob-url
           property: blob-url
-    - name: test.dawgpath.uw.edu-person-secrets
-      externalKey: dawgpath/shared/person
+    - name: test.dawgpath.uw.edu-shared-secrets
+      externalKey: dawgpath/shared/secrets
       data:
         - name: person-db-user
           property: person-db-user
@@ -175,21 +175,21 @@ environmentVariablesSecrets:
     secretKey: blob-url
   personDBUser:
     name: UW_PERSON_DB_USER
-    secretName: test.dawgpath.uw.edu-person-secrets
+    secretName: test.dawgpath.uw.edu-shared-secrets
     secretKey: person-db-user
   personDBPass:
     name: UW_PERSON_DB_PASSWORD
-    secretName: test.dawgpath.uw.edu-person-secrets
+    secretName: test.dawgpath.uw.edu-shared-secrets
     secretKey: person-db-pass
   personDBHost:
     name: UW_PERSON_DB_HOST
-    secretName: test.dawgpath.uw.edu-person-secrets
+    secretName: test.dawgpath.uw.edu-shared-secrets
     secretKey: person-db-host
   personDBPort:
     name: UW_PERSON_DB_PORT
-    secretName: test.dawgpath.uw.edu-person-secrets
+    secretName: test.dawgpath.uw.edu-shared-secrets
     secretKey: person-db-port
   personDBDatabase:
     name: UW_PERSON_DB_NAME
-    secretName: test.dawgpath.uw.edu-person-secrets
+    secretName: test.dawgpath.uw.edu-shared-secrets
     secretKey: person-db-database
