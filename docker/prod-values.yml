@@ -130,6 +130,19 @@ externalSecrets:
       data:
         - name: blob-url
           property: blob-url
+    - name: dawgpath.uw.edu-shared-secrets
+      externalKey: dawgpath/shared/secrets
+      data:
+        - name: person-db-user
+          property: person-db-user
+        - name: person-db-pass
+          property: person-db-pass
+        - name: person-db-host
+          property: person-db-host
+        - name: person-db-port
+          property: person-db-port
+        - name: person-db-database
+          property: person-db-database
     - name: shared-proxy-secrets
       externalKey: shared/proxies/uw_ssh_tunnel
       data:
@@ -165,3 +178,23 @@ environmentVariablesSecrets:
     name: AZURE_BLOB_STORAGE_URL
     secretName: dawgpath.uw.edu-azure-storage-secrets
     secretKey: blob-url
+  personDBUser:
+    name: UW_PERSON_DB_USER
+    secretName: dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-user
+  personDBPass:
+    name: UW_PERSON_DB_PASSWORD
+    secretName: dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-pass
+  personDBHost:
+    name: UW_PERSON_DB_HOST
+    secretName: dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-host
+  personDBPort:
+    name: UW_PERSON_DB_PORT
+    secretName: dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-port
+  personDBDatabase:
+    name: UW_PERSON_DB_NAME
+    secretName: dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-database
