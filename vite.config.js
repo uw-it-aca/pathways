@@ -21,8 +21,9 @@ export default defineConfig({
     },
     outDir: "./pathways/static/", // relative path to django's static directory
     assetsDir: "pathways/assets", // default ('assets')... this is the namespaced subdirectory of outDir that vite uses
-    emptyOutDir: false, // set to false to ensure favicon is not overwritten
+    emptyOutDir: true,
   },
+  publicDir: "pathways_vue/public", // Vite will copy contents to outDir (/static/pathways/img/)
   base: "/static/", // allows for proper css url path creation during the build process
 
   // MARK: standard vite/vue plugin and resolver config

@@ -3,9 +3,7 @@
 <template>
   <div class="card mb-5">
     <div class="card-body">
-      <h2 class="h4 ff-encode-sans fw-bold">
-        Course Grade Distribution
-      </h2>
+      <h2 class="h4 ff-encode-sans fw-bold">Course Grade Distribution</h2>
       <p>
         This graph represents the distribution of grades for every student who
         completed

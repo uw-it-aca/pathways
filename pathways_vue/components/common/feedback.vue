@@ -1,9 +1,9 @@
 // feedback.vue
 
 <template>
-  <div class="fixed-bottom text-end m-2">
+  <div class="fixed-bottom m-2 text-end">
     <button
-      class="btn btn-sm btn-primary "
+      class="btn btn-sm btn-primary"
       type="button"
       data-bs-toggle="offcanvas"
       data-bs-target="#send_feedback"
@@ -36,29 +36,29 @@
 </template>
 
 <script>
-export default {
-  name: "FeedbackComp",
-  data() {
-    return {};
-  },
-  methods: {},
-  computed: {
-    form_url: function () {
-      var url = document.body.getAttribute("data-google-feedback-form");
-      return url;
+  export default {
+    name: "FeedbackComp",
+    data() {
+      return {};
     },
-  },
-};
+    methods: {},
+    computed: {
+      form_url: function () {
+        var url = document.body.getAttribute("data-google-feedback-form");
+        return url;
+      },
+    },
+  };
 </script>
 
 <style lang="scss">
-iframe {
-  position: absolute;
-  top: 50px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-}
+  iframe {
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+  }
 </style>

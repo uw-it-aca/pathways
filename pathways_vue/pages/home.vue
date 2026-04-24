@@ -48,6 +48,7 @@
   import DefaultLayout from "@/layouts/default.vue";
   import Search from "@/components/search/search.vue";
   import { Modal } from "bootstrap";
+  import { useCustomFetch } from "@/composables/customFetch";
 
   export default {
     name: "HomeComp",
@@ -70,15 +71,20 @@
         );
         this.welcomeModal.show();
       },
-      saveModalPref() {
-        this.axios({
-          method: "post",
-          url: "/api/v1/user_pref/",
-          headers: { "X-CSRFToken": window.csrf_token },
-          data: {
-            viewed_welcome_display: true,
-          },
-        });
+      async saveModalPref() {
+        try {
+          await useCustomFetch("/api/v1/user_pref/", {
+            method: "POST",
+            body: JSON.stringify({
+              viewed_welcome_display: true,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+        } catch (error) {
+          console.error("Failed to save welcome display preference:", error);
+        }
       },
     },
   };

@@ -1,13 +1,12 @@
 import { createApp } from "vue";
-import { createBootstrap } from "bootstrap-vue-next";
+import { createPinia } from "pinia";
 import VueGtag from "vue-gtag-next";
 import { Vue3Mq, MqResponsive } from "vue3-mq";
-import axios from "axios";
-import VueAxios from "vue-axios";
 import mitt from "mitt";
 
 import App from "@/app.vue";
 import router from "@/router";
+import { useContextStore } from "@/stores/context";
 
 // bootstrap js + bootstrap-icons
 import "bootstrap";
@@ -21,6 +20,9 @@ import "solstice-vue/dist/style.css";
 
 // bootstrap-vue-next css
 import "bootstrap-vue-next/dist/bootstrap-vue-next.css";
+
+// microsoft clarity
+import Clarity from "@microsoft/clarity";
 
 const app = createApp(App);
 
@@ -53,13 +55,17 @@ app.use(Vue3Mq, {
 });
 app.component("mq-responsive", MqResponsive);
 
-// vue-axios
-app.use(VueAxios, axios);
+// pinia (vuex) state management
+const pinia = createPinia();
+app.use(pinia);
 
-// bootstrap-vue-next
-app.use(createBootstrap());
+// get contextStore values
+const contextStore = useContextStore();
 
 // vue-router
 app.use(router);
+
+// microsoft clarity
+Clarity.init(contextStore.context.clarityProjectId);
 
 app.mount("#app");

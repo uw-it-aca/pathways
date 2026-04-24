@@ -114,9 +114,8 @@ constring.txt
 node_modules/
 package-lock.json
 
-# vite bundle
-assets/
-manifest.json
+# django + vite static bundle
+pathways/static/
 
 # cypress image snapshots diffs
 screenshots/
@@ -130,3 +129,6 @@ coverage/
 
 # lighthouse
 .lighthouseci
+
+# ruff
+.ruff_cache/

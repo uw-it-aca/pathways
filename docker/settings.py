@@ -38,8 +38,9 @@ DATABASE_ROUTERS = ["pathways.routers.UWPersonRouter"]
 # DATA_ROOT = os.path.join(BASE_DIR, "app_name/data")
 DATA_ROOT = os.path.join(BASE_DIR, "pathways/data")
 
-GOOGLE_ANALYTICS_KEY = os.getenv("GOOGLE_ANALYTICS_KEY", default=" ")
-GOOGLE_FEEDBACK_FORM = os.getenv("GOOGLE_FEEDBACK_FORM", default=" ")
+GOOGLE_ANALYTICS_KEY = os.getenv("GOOGLE_ANALYTICS_KEY", "")
+GOOGLE_FEEDBACK_FORM = os.getenv("GOOGLE_FEEDBACK_FORM", "")
+CLARITY_PROJECT_ID = os.getenv("CLARITY_PROJECT_ID", "")
 
 if os.getenv("ENV") == "localdev":
     DEBUG = True
