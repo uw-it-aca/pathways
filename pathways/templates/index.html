@@ -30,6 +30,8 @@
   {% if google_feedback_form %}data-google-feedback-form="{{ google_feedback_form }}"{% endif %}
       data-django-debug="{{ django_debug|lower}}" class="ff-open-sans">
 
+    {{ context_data|json_script:"django-context-data" }}
+
     <script type="text/javascript">
       window.user = '{{ user }}';
       window.show_welcome = {{  show_welcome | yesno:"true,false" }};

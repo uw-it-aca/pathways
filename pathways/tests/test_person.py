@@ -13,26 +13,21 @@ class TestPerson(TestCase):
 
     def test_get_person_by_uwnetid(self):
         person = get_person_by_uwnetid("javerage")
-        self.assertEqual(person.uwnetid, "javerage")
-        self.assertEqual(person.student.student_number, "1033334")
+
+        self.assertEqual(person.get("student_number"), "1033334")
+        self.assertEqual(person.get("class_desc"), "Sophomore")
+        self.assertEqual(person.get("total_credits"), "79.00")
+        self.assertEqual(person.get("quarters_completed"), 3)
+        self.assertEqual(person.get("cumulative_gpa"), "3.84")
 
         # Advisers
-        advisers = person.student.advisers.all()
-        self.assertEqual(len(advisers), 1)
-        self.assertEqual(advisers.first().employee.person.full_name,
+        self.assertEqual(len(person.get("advisers")), 1)
+        self.assertEqual(person.get("advisers")[0].get("display_name"),
                          "Jay Adviser")
 
-        # Intended majors
-        self.assertEqual(len(person.student.intended_majors), 2)
-
         # Majors
-        self.assertEqual(len(person.student.majors), 2)
-        self.assertEqual(person.student.majors[0].major_name,
+        self.assertEqual(len(person.get("majors")), 2)
+        self.assertEqual(person.get("majors")[0].get("major_name"),
                          "PRE SOCIAL SCIENCE")
-        self.assertEqual(person.student.majors[1].major_name,
+        self.assertEqual(person.get("majors")[1].get("major_name"),
                          "INTERNATIONAL STUDIES")
-
-        # Transcripts
-        transcripts = person.student.transcripts.all()
-        self.assertEqual(len(transcripts), 3)
-        self.assertEqual(transcripts.last().cmp_cum_gpa, "2.00")
