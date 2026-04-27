@@ -25,6 +25,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "django~=5.2",
+        "psycopg2==2.9.11",
         "uw-django-saml2~=1.8",
         "django-person-client~=2.0",
         "whoosh~=2.7",
