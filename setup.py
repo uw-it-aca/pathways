@@ -26,7 +26,7 @@ setup(
     install_requires=[
         "django~=5.2",
         "uw-django-saml2~=1.8",
-        #"django-person-client~=2.0",
+        "django-person-client~=2.1",
         "whoosh~=2.7",
         "azure-storage-blob~=12.25",
     ],

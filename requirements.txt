@@ -1,2 +1,1 @@
 -e .
-django-person-client@git+https://github.com/uw-it-aca/django-person-client@task/psycopg-3
