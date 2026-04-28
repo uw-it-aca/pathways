@@ -4,7 +4,7 @@ FROM us-docker.pkg.dev/uwit-mci-axdd/containers/django-container:${DJANGO_CONTAI
 
 USER root
 
-RUN apt-get update && apt-get install libpq-dev -y
+RUN apt-get update && apt-get install libpq5 libpq-dev -y
 
 USER acait
 
