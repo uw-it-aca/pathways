@@ -5,6 +5,7 @@ INSTALLED_APPS += [
     "pathways.apps.PathwaysConfig",
     "pathways.apps.ViteStaticFilesConfig",
     "uw_person_client",
+    "django.contrib.postgres",
 ]
 
 INSTALLED_APPS.remove("django.contrib.staticfiles")
@@ -30,6 +31,9 @@ DATABASES["uw_person"] = {
     "NAME": os.getenv("UW_PERSON_DB_NAME", "postgres"),
     "USER": os.getenv("UW_PERSON_DB_USER", "postgres"),
     "PASSWORD": os.getenv("UW_PERSON_DB_PASSWORD", "postgres"),
+    "OPTIONS": {
+        "pool": {"max_size": None},
+    },
 }
 
 DATABASE_ROUTERS = ["pathways.routers.UWPersonRouter"]
