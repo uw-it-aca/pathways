@@ -20,7 +20,7 @@ if os.getenv("ENV") == "localdev":
     }
     FIXTURE_DIRS = ["uw_person_client/fixtures"]
 else:
-    CSRF_TRUSTED_ORIGINS = ['https://' + os.getenv('CLUSTER_CNAME')]
+    CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv("CLUSTER_CNAME")]
     VITE_MANIFEST_PATH = os.path.join(os.sep, "static", ".vite", "manifest.json")
 
 # PDS config, default values are for localdev
@@ -32,7 +32,10 @@ DATABASES["uw_person"] = {
     "USER": os.getenv("UW_PERSON_DB_USER", "postgres"),
     "PASSWORD": os.getenv("UW_PERSON_DB_PASSWORD", "postgres"),
     "OPTIONS": {
-        "pool": {"max_size": None},
+        "pool": {
+            "min_size": int(os.getenv("UW_PERSON_DB_POOL_MIN", 1)),
+            "max_size": int(os.getenv("UW_PERSON_DB_POOL_MAX", 4)),
+        },
     },
 }
 

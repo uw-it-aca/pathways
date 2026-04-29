@@ -1,10 +1,6 @@
-ARG DJANGO_CONTAINER_VERSION=3.0.2
+ARG DJANGO_CONTAINER_VERSION=3.1.0
 
 FROM us-docker.pkg.dev/uwit-mci-axdd/containers/django-container:${DJANGO_CONTAINER_VERSION} AS app-prebundler-container
-
-USER root
-RUN apt-get update && apt-get install libpq-dev -y
-USER acait
 
 COPY --chown=acait:acait . /app/
 COPY --chown=acait:acait docker/ /app/project/
@@ -37,10 +33,6 @@ COPY --chown=acait:acait --from=node-bundler /app/pathways/static /app/pathways/
 RUN . /app/bin/activate && python manage.py collectstatic --noinput
 
 FROM us-docker.pkg.dev/uwit-mci-axdd/containers/django-test-container:${DJANGO_CONTAINER_VERSION} AS app-test-container
-
-USER root
-RUN apt-get update && apt-get install libpq-dev -y
-USER acait
 
 ENV NODE_PATH=/app/lib/node_modules
 COPY --from=app-container /app/ /app/
