@@ -1,2 +1,1 @@
 -e .
-git+https://github.com/uw-it-aca/django-person-client.git@task/psycopg-dependency
