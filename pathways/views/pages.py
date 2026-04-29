@@ -9,7 +9,11 @@ from django.conf import settings
 from uw_saml.utils import get_user
 from pathways.views import eval_group_required
 from pathways.models.user import User
+<<<<<<< char/updates-part2
 from pathways.utils import hash_netid
+=======
+from pathways.dao.person import get_person_by_uwnetid, PersonNotFoundException
+>>>>>>> feature/personalization
 
 ALLOWED_USERS_GROUP = getattr(settings, "ALLOWED_USERS_GROUP", None)
 
@@ -38,6 +42,12 @@ class PageView(TemplateView):
         context['show_outcomes'] = True if "outcomes" in banners else False
         context['show_coi'] = True if "coi" in banners else False
         context["debugMode"] = getattr(settings, "DEBUG", False)
+
+        try:
+            context['personData'] = get_person_by_uwnetid(uwnetid)
+        except PersonNotFoundException:
+            context['personData'] = {}
+
         return context
 
 

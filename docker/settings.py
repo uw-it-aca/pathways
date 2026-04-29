@@ -4,6 +4,8 @@ import os
 INSTALLED_APPS += [
     "pathways.apps.PathwaysConfig",
     "pathways.apps.ViteStaticFilesConfig",
+    "uw_person_client",
+    "django.contrib.postgres",
 ]
 
 INSTALLED_APPS.remove("django.contrib.staticfiles")
@@ -13,9 +15,31 @@ if os.getenv("ENV") == "localdev":
     VITE_MANIFEST_PATH = os.path.join(
         BASE_DIR, "pathways", "static", ".vite", "manifest.json"
     )
+    MIGRATION_MODULES = {
+        "uw_person_client": "uw_person_client.test_migrations",
+    }
+    FIXTURE_DIRS = ["uw_person_client/fixtures"]
 else:
-    CSRF_TRUSTED_ORIGINS = ['https://' + os.getenv('CLUSTER_CNAME')]
+    CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv("CLUSTER_CNAME")]
     VITE_MANIFEST_PATH = os.path.join(os.sep, "static", ".vite", "manifest.json")
+
+# PDS config, default values are for localdev
+DATABASES["uw_person"] = {
+    "ENGINE": "django.db.backends.postgresql",
+    "HOST": os.getenv("UW_PERSON_DB_HOST", "postgres"),
+    "PORT": os.getenv("UW_PERSON_DB_PORT", "5432"),
+    "NAME": os.getenv("UW_PERSON_DB_NAME", "postgres"),
+    "USER": os.getenv("UW_PERSON_DB_USER", "postgres"),
+    "PASSWORD": os.getenv("UW_PERSON_DB_PASSWORD", "postgres"),
+    "OPTIONS": {
+        "pool": {
+            "min_size": int(os.getenv("UW_PERSON_DB_POOL_MIN", 1)),
+            "max_size": int(os.getenv("UW_PERSON_DB_POOL_MAX", 4)),
+        },
+    },
+}
+
+DATABASE_ROUTERS = ["pathways.routers.UWPersonRouter"]
 
 # If you have file data, define the path here
 # DATA_ROOT = os.path.join(BASE_DIR, "app_name/data")

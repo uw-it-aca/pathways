@@ -40,9 +40,9 @@ env:
 # defined in the "deploy" job
 on:
   push:
-    branches: [main, master, qa, develop, feature/personalization]
+    branches: [main, master, qa, develop, feature/eval-me]
   pull_request:
-    branches: [main, master, qa, develop, feature/personalization]
+    branches: [main, master, qa, develop, feature/eval-me]
     types: [opened, reopened, synchronize]
 
 jobs:
@@ -65,6 +65,21 @@ jobs:
     runs-on: ubuntu-24.04
 
     needs: context
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
       - name: Checkout Repo
@@ -118,7 +133,7 @@ jobs:
         id: tests
         shell: bash
         run: >-
-          docker run -u root -t
+          docker run -u root -t --network ${{ job.container.network }}
           -v ${PWD}:/coverage
           -e DJANGO_APP="$DJANGO_APP"
           -e "ENV=localdev" -e "AUTH=SAML_MOCK"
