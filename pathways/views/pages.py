@@ -9,11 +9,9 @@ from django.conf import settings
 from uw_saml.utils import get_user
 from pathways.views import eval_group_required
 from pathways.models.user import User
-<<<<<<< char/updates-part2
 from pathways.utils import hash_netid
-=======
 from pathways.dao.person import get_person_by_uwnetid, PersonNotFoundException
->>>>>>> feature/personalization
+
 
 ALLOWED_USERS_GROUP = getattr(settings, "ALLOWED_USERS_GROUP", None)
 
