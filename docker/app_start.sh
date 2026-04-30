@@ -1,5 +1,3 @@
-#!/bin/bash
-
 if [ "$ENV"  = "localdev" ]
 then
 
@@ -14,8 +12,8 @@ then
   source "/app/bin/activate"
 
   cd /app
+  python manage.py initialize_db
   python manage.py migrate
-  python manage.py loaddata person employee term major student adviser transfer transcript hold degree sport
   python manage.py build_search_index
 
 fi
