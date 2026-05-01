@@ -26,10 +26,12 @@ import Clarity from "@microsoft/clarity";
 
 const app = createApp(App);
 
-// google analytics data stream measurement and user hashed ids
-const gaCode = document.body.getAttribute("data-google-analytics");
-const debugMode = document.body.getAttribute("data-django-debug");
-const hashedId = window.hashed_netid;
+// pinia (vuex) state management
+const pinia = createPinia();
+app.use(pinia);
+
+// get contextStore values
+const contextStore = useContextStore();
 
 app.config.productionTip = false;
 
@@ -37,30 +39,24 @@ app.config.productionTip = false;
 const emitter = mitt();
 app.config.globalProperties.emitter = emitter;
 
-// vue-gtag-next
-app.use(VueGtag, {
-  isEnabled: debugMode == "false",
-  property: {
-    id: gaCode,
-    params: {
-      anonymize_ip: true,
-      user_id: hashedId,
-    },
-  },
-});
-
 // vue-mq (media queries)
 app.use(Vue3Mq, {
   preset: "bootstrap5",
 });
 app.component("mq-responsive", MqResponsive);
 
-// pinia (vuex) state management
-const pinia = createPinia();
-app.use(pinia);
-
-// get contextStore values
-const contextStore = useContextStore();
+// google analytics data stream measurement and user hashed ids
+// vue-gtag-next
+app.use(VueGtag, {
+  isEnabled: contextStore.context.debugMode == false,
+  property: {
+    id: contextStore.context.googleAnalyticsKey,
+    params: {
+      anonymize_ip: true,
+      user_id: contextStore.context.hashedNetid,
+    },
+  },
+});
 
 // vue-router
 app.use(router);

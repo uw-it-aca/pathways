@@ -360,8 +360,6 @@
   }
 
   .form-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
     text-indent: 1px;
   }
 

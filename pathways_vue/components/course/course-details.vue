@@ -2,7 +2,7 @@
 
 <template>
   <div class="mb-3">
-    <h1 class="h2 ff-encode-sans fw-bold">
+    <h1 class="h2 ff-encode-sans fw-bold" data-clarity-unmask="true">
       {{ course.course_id }}: {{ course.course_title }}
     </h1>
     <icon-popover

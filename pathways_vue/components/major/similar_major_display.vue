@@ -23,27 +23,29 @@
 </template>
 
 <script>
-import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
+  import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
 
-export default {
-  name: "SimilarMajorDisplay",
-  components: {
-    MajorCapacityDisplay,
-  },
-  props: {
-    majorData: {
-      type: Object,
-      required: true,
+  export default {
+    name: "SimilarMajorDisplay",
+    components: {
+      MajorCapacityDisplay,
     },
-  },
-  data() {
-    return {};
-  },
-  methods: {},
-  computed: {
-    major_url() {
-      return "/major?id=" + encodeURIComponent(this.majorData.credential_code);
+    props: {
+      majorData: {
+        type: Object,
+        required: true,
+      },
     },
-  },
-};
+    data() {
+      return {};
+    },
+    methods: {},
+    computed: {
+      major_url() {
+        return (
+          "/major?id=" + encodeURIComponent(this.majorData.credential_code)
+        );
+      },
+    },
+  };
 </script>

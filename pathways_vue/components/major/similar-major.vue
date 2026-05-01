@@ -1,11 +1,9 @@
 <template>
-  <div class="card mb-5 shadow-sm rounded">
+  <div class="card mb-5 rounded shadow-sm">
     <div class="card-body">
       <div class="row">
         <div class="col-sm-9">
-          <h2 class="h4 ff-encode-sans fw-bold">
-            Topically Similar Majors
-          </h2>
+          <h2 class="h4 ff-encode-sans fw-bold">Topically Similar Majors</h2>
           Topically similar majors are determined through several sources,
           including major and course descriptions. Explore majors and
           concentrations that align with your interests and strengths.
@@ -148,7 +146,7 @@
         </div>
       </div>
       <div
-        class="pb-4 border-bottom border-light-subtle"
+        class="border-bottom border-light-subtle pb-4"
         style="margin-left: -1rem; margin-right: -1rem"
       ></div>
       <div v-for="(major, index) in similarMajors" :key="index">
@@ -159,10 +157,7 @@
           style="margin-left: -1rem; margin-right: -1rem"
         ></div>
       </div>
-      <div
-        v-if="similarMajors.length === 0"
-        class="p-4 mt-3 text-center"
-      >
+      <div v-if="similarMajors.length === 0" class="mt-3 p-4 text-center">
         No results found.
       </div>
     </div>
@@ -219,73 +214,73 @@
 </template>
 
 <script>
-import { Modal } from "bootstrap";
-import SimilarMajorRow from "@/components/major/similar_major_row.vue";
+  import { Modal } from "bootstrap";
+  import SimilarMajorRow from "@/components/major/similar_major_row.vue";
 
-export default {
-  name: "SimilarMajor",
-  components: {
-    SimilarMajorRow,
-  },
-  props: {
-    similarMajorData: {
-      type: Object,
-      required: true,
+  export default {
+    name: "SimilarMajor",
+    components: {
+      SimilarMajorRow,
     },
-  },
-  data() {
-    return {
-      helpModal: undefined,
+    props: {
+      similarMajorData: {
+        type: Object,
+        required: true,
+      },
+    },
+    data() {
+      return {
+        helpModal: undefined,
+        filters: {
+          campus: [],
+          admissionType: [],
+          stem: [],
+        },
+        similarMajors: [],
+      };
+    },
+    watch: {
       filters: {
-        campus: [],
-        admissionType: [],
-        stem: [],
+        handler: function () {
+          this.filterMajors();
+        },
+        deep: true,
       },
-      similarMajors: [],
-    };
-  },
-  watch: {
-    filters: {
-      handler: function () {
-        this.filterMajors();
+    },
+    mounted() {
+      this.similarMajors = this.similarMajorData;
+    },
+    methods: {
+      showHelpModal() {
+        this.helpModal = new Modal(document.getElementById("help_modal"), {});
+        this.helpModal.show();
       },
-      deep: true,
+      filterMajors() {
+        // Filter similarMajorData based on filters
+        let filtered_majors = this.similarMajorData;
+        if (this.filters.campus.length > 0 && this.filters.campus.length < 3) {
+          filtered_majors = filtered_majors.filter((major) => {
+            const campus_value = major.program_campus || major.campus || "";
+            return this.filters.campus.includes(campus_value.toLowerCase());
+          });
+        }
+        if (
+          this.filters.admissionType.length > 0 &&
+          this.filters.admissionType.length < 3
+        ) {
+          filtered_majors = filtered_majors.filter((major) =>
+            this.filters.admissionType.includes(major.major_admission),
+          );
+        }
+        if (this.filters.stem.length === 1) {
+          let isStem = this.filters.stem[0] === "stem";
+          filtered_majors = filtered_majors.filter(
+            (major) => isStem === major.is_stem,
+          );
+        }
+        this.similarMajors = filtered_majors;
+      },
     },
-  },
-  mounted() {
-    this.similarMajors = this.similarMajorData;
-  },
-  methods: {
-    showHelpModal() {
-      this.helpModal = new Modal(document.getElementById("help_modal"), {});
-      this.helpModal.show();
-    },
-    filterMajors() {
-      // Filter similarMajorData based on filters
-      let filtered_majors = this.similarMajorData;
-      if (this.filters.campus.length > 0 && this.filters.campus.length < 3) {
-        filtered_majors = filtered_majors.filter((major) => {
-          const campus_value = major.program_campus || major.campus || "";
-          return this.filters.campus.includes(campus_value.toLowerCase());
-        });
-      }
-      if (
-        this.filters.admissionType.length > 0 &&
-        this.filters.admissionType.length < 3
-      ) {
-        filtered_majors = filtered_majors.filter((major) =>
-          this.filters.admissionType.includes(major.major_admission)
-        );
-      }
-      if (this.filters.stem.length === 1) {
-        let isStem = this.filters.stem[0] === "stem";
-        filtered_majors = filtered_majors.filter(
-          (major) => isStem === major.is_stem
-        );
-      }
-      this.similarMajors = filtered_majors;
-    },
-  },
-  computed: {},
-};
+    computed: {},
+  };
 </script>

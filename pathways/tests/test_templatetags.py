@@ -6,7 +6,6 @@ import json
 from unittest.mock import patch, mock_open
 from django.test import TestCase
 from pathways.templatetags.vite import vite_styles, vite_scripts
-from pathways.templatetags.hashing_tag import hash_netid
 
 
 class ViteTestClass(TestCase):
@@ -40,10 +39,3 @@ class ViteTestClass(TestCase):
             r'<script\s+[^>]*src="[^"]*main-[^"]*"[^>]*></script>'
         )
         self.assertTrue(pattern.search(script))
-
-
-class HashTestClass(TestCase):
-    def test_hash_netid(self):
-        self.assertEqual(hash_netid(None), '')
-        self.assertEqual(hash_netid('javerage'),
-                         'c13c917a1822a8acd58c48d2c8c6880a')

@@ -12,6 +12,13 @@
         }
       }
     },
+    "basedpyright": {
+      "settings": {
+        "python": {
+          "pythonPath": ".venv/bin/python"
+        }
+      }
+    },
     "ruff": {
       "initialization_options": {
         "settings": {
@@ -56,11 +63,11 @@
     },
     "Python": {
       "formatter": { "language_server": { "name": "ruff" } },
-      "language_servers": ["basedpyright", "!pyright", "!pylsp",],
+      "language_servers": ["basedpyright", "!pyright", "!pylsp"],
       "format_on_save": "off"
     },
     "Django": {
-      "language_servers": ["django-language-server", "!django-template-lsp",]
+      "language_servers": ["django-language-server", "!django-template-lsp"]
     },
     "TypeScript": {
       "formatter": { "language_server": { "name": "oxfmt" } },

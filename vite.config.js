@@ -18,6 +18,17 @@ export default defineConfig({
         // list all entry points
         "./pathways_vue/main.js",
       ],
+      output: {
+        // optimize css asset file names (remove hash) for better Clarity caching
+        assetFileNames: (assetInfo) => {
+          const prefix = "pathways/assets/";
+          const name = assetInfo.names?.[0] ?? "";
+          if (name.endsWith(".css")) {
+            return `${prefix}[name][extname]`;
+          }
+          return `${prefix}[name]-[hash][extname]`;
+        },
+      },
     },
     outDir: "./pathways/static/", // relative path to django's static directory
     assetsDir: "pathways/assets", // default ('assets')... this is the namespaced subdirectory of outDir that vite uses
