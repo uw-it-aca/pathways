@@ -38,8 +38,7 @@ DATABASES["uw_person"] = {
         },
     },
 }
-
-DATABASE_ROUTERS = ["pathways.routers.UWPersonRouter"]
+DATABASE_ROUTERS = ["uw_person_client.routers.UWPersonRouter"]
 
 # If you have file data, define the path here
 # DATA_ROOT = os.path.join(BASE_DIR, "app_name/data")
