@@ -18,7 +18,7 @@ if os.getenv("ENV") == "localdev":
     MIGRATION_MODULES = {
         "uw_person_client": "uw_person_client.test_migrations",
     }
-    FIXTURE_DIRS = ["uw_person_client/fixtures"]
+    FIXTURE_DIRS = (os.path.join(BASE_DIR, "uw_person_client", "fixtures"),)
 else:
     CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv("CLUSTER_CNAME")]
     VITE_MANIFEST_PATH = os.path.join(os.sep, "static", ".vite", "manifest.json")
