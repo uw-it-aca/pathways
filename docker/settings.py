@@ -31,13 +31,8 @@ DATABASES["uw_person"] = {
     "NAME": os.getenv("UW_PERSON_DB_NAME", "postgres"),
     "USER": os.getenv("UW_PERSON_DB_USER", "postgres"),
     "PASSWORD": os.getenv("UW_PERSON_DB_PASSWORD", "postgres"),
-    "OPTIONS": {
-        "pool": {
-            "min_size": int(os.getenv("UW_PERSON_DB_POOL_MIN", 1)),
-            "max_size": int(os.getenv("UW_PERSON_DB_POOL_MAX", 4)),
-        },
-    },
 }
+
 DATABASE_ROUTERS = ["uw_person_client.routers.UWPersonRouter"]
 
 # If you have file data, define the path here
