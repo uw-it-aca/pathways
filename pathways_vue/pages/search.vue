@@ -217,7 +217,11 @@
         return this.form_data.search_string.trim();
       },
     },
-    watch: {},
+    watch: {
+      search_string(val) {
+        this.$router.replace({ query: { ...this.$route.query, q: val || undefined } });
+      },
+    },
     methods: {
       clearSearch() {
         this.form_data.search_string = "";
@@ -283,6 +287,13 @@
         this.form_data.search_string = search_string;
         this.runSearch();
       },
+    },
+    mounted() {
+      const q = this.$route.query.q;
+      if (q) {
+        this.form_data.search_string = q;
+        this.runSearch();
+      }
     },
   };
 </script>

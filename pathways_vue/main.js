@@ -1,3 +1,4 @@
+import { createBootstrap } from "bootstrap-vue-next";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import VueGtag from "vue-gtag-next";
@@ -57,6 +58,9 @@ app.use(VueGtag, {
     },
   },
 });
+
+// bootstrap-vue-next
+app.use(createBootstrap());
 
 // vue-router
 app.use(router);

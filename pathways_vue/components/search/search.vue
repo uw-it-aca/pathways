@@ -29,6 +29,9 @@
                   <i
                     class="bi bi-search position-absolute translate-middle-y start-0 top-50 ms-3"
                   ></i>
+
+                  <i class="bi bi-search"></i>
+
                   <input
                     type="text"
                     role="search"

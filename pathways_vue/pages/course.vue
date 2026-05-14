@@ -4,8 +4,16 @@
     <!-- page content -->
     <template #content>
       <template v-if="courseData">
-        <div class="row justify-content-center order-2">
-          <div class="col-md-9">
+        <div class="row mt-5">
+          <div class="col-md-4 col-12"><SearchMini /></div>
+          <div class="order-md-first col-md-8 col-12">
+            <h1 class="h2 ff-encode-sans fw-bold my-3 my-md-0" data-clarity-unmask="true">
+              {{ courseData.course_id }}: {{ courseData.course_title }}
+            </h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 col-12">
             <CourseDetails :course="courseData" />
             <ExploreCourse :course="courseData" />
             <GradeDistribution :course="courseData" />
@@ -18,13 +26,15 @@
               :active_course="courseId"
               :prereq_string="courseData.prereq_string"
             />
+          </div>
+          <div class="col-md-4 col-12">
             <ConcurrentCourses :courseData="courseData" />
             <ContactAdviser :campus="courseCampus" :type="'course'" />
           </div>
         </div>
       </template>
       <template v-else>
-        <div class="row justify-content-center">
+        <div class="row">
           <div v-if="showError" class="col col-md-9">
             <div class="alert alert-purple border-0" role="alert">
               <p>
@@ -45,19 +55,12 @@
           </div>
         </div>
       </template>
-
-      <div class="row justify-content-center order-1">
-        <div class="col col-md-9">
-          <Search />
-        </div>
-      </div>
     </template>
   </DefaultLayout>
 </template>
 
 <script>
   import DefaultLayout from "@/layouts/default.vue";
-  import Search from "@/components/search/search.vue";
   import GradeDistribution from "@/components/course/grade-distribution.vue";
   import CourseDetails from "@/components/course/course-details.vue";
   import ExploreCourse from "@/components/course/explore-course.vue";
@@ -65,6 +68,7 @@
   import PrereqMap from "@/components/course/prereq-map.vue";
   import ConcurrentCourses from "@/components/course/concurrent-courses.vue";
   import ContactAdviser from "@/components/common/contact-adviser.vue";
+  import SearchMini from "@/components/search/search-mini.vue";
   import utils from "@/utils.js";
   import { useCustomFetch } from "@/composables/customFetch";
 
@@ -72,7 +76,6 @@
     name: "CourseComp",
     components: {
       DefaultLayout,
-      Search,
       CourseDetails,
       ExploreCourse,
       GradeDistribution,
@@ -80,6 +83,7 @@
       ContactAdviser,
       PrereqMap,
       ConcurrentCourses,
+      SearchMini
     },
     data() {
       return {

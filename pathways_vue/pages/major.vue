@@ -4,13 +4,27 @@
     <!-- page content -->
     <template #content>
       <template v-if="major_data">
-        <div class="row justify-content-center order-2">
-          <div class="col col-md-9">
+        <div class="row mt-5">
+          <div class="col-md-4 col-12"><SearchMini /></div>
+          <div class="order-md-first col-md-8 col-12">
+            <h1
+              class="fs-2 fw-semibold ff-encode-sans my-md-0 my-3"
+              data-clarity-unmask="true"
+            >
+              {{ major_data["credential_title"] }}
+            </h1>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8 col-12">
             <MajorDetails :major="major_data" />
             <ExploreMajor :major="major_data" />
             <D3Cgpa :major-data="major_data" />
-            <CommonCourses :major="major_data" />
             <SimilarMajor :similar-major-data="major_data.similar_majors" />
+          </div>
+          <div class="col-md-4 col-12">
+            <CommonCourses :major="major_data" />
             <ContactAdviser :campus="major_data.major_campus" :type="'major'" />
           </div>
         </div>
@@ -37,11 +51,6 @@
           </div>
         </div>
       </template>
-      <div class="row justify-content-center order-1">
-        <div class="col col-md-9">
-          <Search />
-        </div>
-      </div>
     </template>
   </DefaultLayout>
 </template>
@@ -51,10 +60,10 @@
   import MajorDetails from "@/components/major/major-details.vue";
   import ExploreMajor from "@/components/major/explore-major.vue";
   import CommonCourses from "@/components/major/common-courses.vue";
-  import Search from "@/components/search/search.vue";
   import D3Cgpa from "@/components/major/d3-cgpa.vue";
   import ContactAdviser from "@/components/common/contact-adviser.vue";
   import SimilarMajor from "@/components/major/similar-major.vue";
+  import SearchMini from "@/components/search/search-mini.vue";
   import utils from "@/utils.js";
   import { useCustomFetch } from "@/composables/customFetch";
 
@@ -62,13 +71,13 @@
     name: "MajorComp",
     components: {
       DefaultLayout,
-      Search,
       D3Cgpa,
       ContactAdviser,
       MajorDetails,
       ExploreMajor,
       CommonCourses,
       SimilarMajor,
+      SearchMini,
     },
     data() {
       return {

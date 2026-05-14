@@ -3,42 +3,14 @@
   <DefaultLayout :page-title="pageTitle">
     <!-- page content -->
     <template #content>
-      <div class="row justify-content-center">
-        <div class="col col-md-9">
-          <h1 class="visually-hidden">{{ pageTitle }}</h1>
-          <Search />
+      <div class="row my-5">
+        <div class="col-12 col-md-4"><SearchMini /></div>
+        <div class="order-md-first col-12 col-md-8">
+          <h1 class="my-3 my-md-0">{{ pageTitle }}</h1>
         </div>
       </div>
-      <div class="row justify-content-center">
-        <div class="col col-md-9">
-          <p class="lead mb-5" style="max-width: 75ch">
-            DawgPath helps you explore courses and majors and make strategic
-            decisions about your schedule. It also provides useful data when
-            you're planning for applying to capacity‑constrained majors.
-          </p>
-
-          <p>A few things to keep in mind before getting started:</p>
-
-          <ul style="max-width: 80ch">
-            <li class="mb-3">
-              Grades are just one of the factors considered for
-              capacity-constrained major. Reach out to your adviser to learn
-              more.
-            </li>
-            <li class="mb-3">
-              The median course grade and GPA data are only included for those
-              who had declared for the major.
-            </li>
-            <li class="mb-3">
-              Discovering and applying for a major can be a challenging
-              experience. Look for the "Find your adviser” links to connect with
-              your adviser.
-            </li>
-            <li>
-              Check out the <a href="/faq">DawgPath FAQ</a> for more info.
-            </li>
-          </ul>
-        </div>
+      <div class="row">
+        <div class="col">jasdflkjlka sdflk jlkajsdflk;asjdf</div>
       </div>
     </template>
   </DefaultLayout>
@@ -47,7 +19,7 @@
 <script>
   import DefaultLayout from "@/layouts/default.vue";
   import Search from "@/components/search/search.vue";
-  import { Modal } from "bootstrap";
+  import SearchMini from "@/components/search/search-mini.vue";
   import { useCustomFetch } from "@/composables/customFetch";
 
   export default {
@@ -55,10 +27,11 @@
     components: {
       DefaultLayout,
       Search,
+      SearchMini,
     },
     data() {
       return {
-        pageTitle: "Home",
+        pageTitle: "Welcome back, Jack!",
         welcomeModal: null,
       };
     },

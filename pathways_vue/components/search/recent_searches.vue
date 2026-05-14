@@ -2,8 +2,8 @@
   <div>
     <h2 class="h5 mb-3">Recent Searches</h2>
     <div v-if="recent_searches">
-      <ul v-for="search in recent_searches" class="list-unstyled">
-        <li>
+      <ul class="list-unstyled mb-3">
+        <li v-for="search in recent_searches" class="mb-2">
           <a
             href="#"
             @click.prevent="setSearch(search)"
@@ -35,8 +35,14 @@
     watch: {},
     methods: {
       setSearch(search_string) {
-        this.$emit("setSearch", search_string);
+        this.$router.push({ path: "/search", query: { q: search_string } });
       },
     },
   };
 </script>
+
+<style scoped>
+  li:last-child {
+    margin-bottom: 0 !important;
+  }
+</style>
