@@ -118,7 +118,11 @@
         );
       },
     },
-    watch: {},
+    watch: {
+      search_results() {
+        this.page = 1;
+      },
+    },
     methods: {
       goToPage(pagenum) {
         this.page = pagenum;
