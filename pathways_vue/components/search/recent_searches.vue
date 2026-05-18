@@ -5,8 +5,7 @@
       <ul class="list-unstyled mb-3">
         <li v-for="search in recent_searches" class="mb-2">
           <a
-            href="#"
-            @click.prevent="setSearch(search)"
+            :href="`/search?q=${encodeURIComponent(search)}`"
             data-clarity-unmask="true"
             >{{ search }}</a
           >
@@ -19,26 +18,9 @@
 <script>
   export default {
     name: "RecentSearches",
-    components: {},
-    emits: ["set-search"],
-    props: {},
-    data() {
-      return {};
-    },
     computed: {
       recent_searches() {
-        let recent_searches = JSON.parse(
-          localStorage.getItem("recentSearches"),
-        );
-        return recent_searches;
-      },
-    },
-    watch: {},
-    methods: {
-      setSearch(search_string) {
-        // Emit to parent instead of pushing router — pushing to the same route
-        // (/search) won't re-trigger mounted(), so the new query param is ignored.
-        this.$emit("set-search", search_string);
+        return JSON.parse(localStorage.getItem("recentSearches"));
       },
     },
   };

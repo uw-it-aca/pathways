@@ -146,7 +146,7 @@
       <template v-else>
         <div class="d-flex">
           <div class="w-50">
-            <RecentSearches @set-search="setSearch" />
+            <RecentSearches />
           </div>
           <div class="w-50"><RecentViews /></div>
         </div>
@@ -277,10 +277,6 @@
           "recentSearches",
           JSON.stringify(currentRecentSearches),
         );
-      },
-      setSearch(search_string) {
-        this.form_data.search_string = search_string;
-        this.runSearch();
       },
     },
     mounted() {
