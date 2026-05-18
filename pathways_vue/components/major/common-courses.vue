@@ -1,5 +1,5 @@
 <template>
-  <div class="card mb-5">
+  <div class="card mb-3">
     <div v-if="commonCourses.length === 0" class="card-body">
       <h2 class="h4 ff-encode-sans fw-bold">Common Courses</h2>
       <div class="alert alert-purple mt-2" role="alert">

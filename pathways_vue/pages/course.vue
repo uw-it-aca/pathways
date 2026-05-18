@@ -1,13 +1,14 @@
-// course.vue
 <template>
   <DefaultLayout :page-title="pageTitle">
-    <!-- page content -->
     <template #content>
       <template v-if="courseData">
         <div class="row mt-5">
           <div class="col-md-4 col-12"><SearchMini /></div>
           <div class="order-md-first col-md-8 col-12">
-            <h1 class="h2 ff-encode-sans fw-bold my-3 my-md-0" data-clarity-unmask="true">
+            <h1
+              class="h2 ff-encode-sans fw-bold my-md-0 my-3"
+              data-clarity-unmask="true"
+            >
               {{ courseData.course_id }}: {{ courseData.course_title }}
             </h1>
           </div>
@@ -17,10 +18,10 @@
             <CourseDetails :course="courseData" />
             <ExploreCourse :course="courseData" />
             <GradeDistribution :course="courseData" />
-            <template v-if="courseCampus == 'seattle'">
-              <OutcomeIndex :course="courseData" />
-            </template>
-            <!-- prereq map -->
+            <OutcomeIndex
+              v-if="courseCampus === 'seattle'"
+              :course="courseData"
+            />
             <PrereqMap
               :graph_data="courseData.prereq_graph"
               :active_course="courseId"
@@ -48,7 +49,7 @@
               </ul>
             </div>
           </div>
-          <div v-else class="col col-md-9 text-center">
+          <div v-else-if="loading" class="col col-md-9 text-center">
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
@@ -60,17 +61,29 @@
 </template>
 
 <script>
+  import { defineAsyncComponent } from "vue";
   import DefaultLayout from "@/layouts/default.vue";
-  import GradeDistribution from "@/components/course/grade-distribution.vue";
   import CourseDetails from "@/components/course/course-details.vue";
   import ExploreCourse from "@/components/course/explore-course.vue";
-  import OutcomeIndex from "@/components/course/outcome-index.vue";
-  import PrereqMap from "@/components/course/prereq-map.vue";
-  import ConcurrentCourses from "@/components/course/concurrent-courses.vue";
   import ContactAdviser from "@/components/common/contact-adviser.vue";
   import SearchMini from "@/components/search/search-mini.vue";
   import utils from "@/utils.js";
   import { useCustomFetch } from "@/composables/customFetch";
+
+  // Lazy-load heavy below-the-fold components so they are code-split into
+  // separate chunks and only downloaded/parsed after course data has loaded.
+  const GradeDistribution = defineAsyncComponent(
+    () => import("@/components/course/grade-distribution.vue"),
+  );
+  const OutcomeIndex = defineAsyncComponent(
+    () => import("@/components/course/outcome-index.vue"),
+  );
+  const PrereqMap = defineAsyncComponent(
+    () => import("@/components/course/prereq-map.vue"),
+  );
+  const ConcurrentCourses = defineAsyncComponent(
+    () => import("@/components/course/concurrent-courses.vue"),
+  );
 
   export default {
     name: "CourseComp",
@@ -83,7 +96,7 @@
       ContactAdviser,
       PrereqMap,
       ConcurrentCourses,
-      SearchMini
+      SearchMini,
     },
     data() {
       return {
@@ -92,61 +105,63 @@
         courseTitle: undefined,
         courseCampus: undefined,
         showError: false,
-        appName: "DawgPath",
+        loading: false,
       };
     },
-    created() {
-      this.recentViewManager = utils.recentViewManager;
-    },
     computed: {
-      pageTitle: function () {
-        let no_title = this.showError ? "Error" : "Course";
-        return this.courseTitle !== undefined
-          ? (document.title = this.courseTitle + " - " + this.appName)
-          : no_title;
+      pageTitle() {
+        if (this.courseTitle) return this.courseTitle;
+        return this.showError ? "Error" : "Course";
+      },
+    },
+    watch: {
+      // Side effect kept out of computed — update document title when courseTitle changes
+      courseTitle(val) {
+        if (val) document.title = val + " - DawgPath";
+      },
+      courseId(newValue) {
+        this.get_course_data(newValue);
       },
     },
     mounted() {
       this.courseId = this.$route.query.id;
       this.courseCampus = this.$route.query.campus;
 
-      if (this.courseId == undefined) {
+      if (!this.courseId) {
         this.showError = true;
       }
+
+      // Listen for course changes emitted by child components (e.g. prereq graph node clicks)
       this.emitter.on("update:selected", (selectedKey) => {
         this.courseId = selectedKey;
       });
     },
+    beforeUnmount() {
+      // Remove listener to prevent duplicate handlers if component remounts
+      this.emitter.off("update:selected");
+    },
     methods: {
-      switch_course(data) {
-        this.courseId = data.id;
-        this.courseCampus = data.campus;
-      },
       async get_course_data(course_id) {
-        const vue = this;
         this.courseData = undefined;
-
+        this.showError = false;
+        this.loading = true;
         try {
           const data = await useCustomFetch(
             "/api/v1/courses/details/" + course_id,
           );
-          vue.showError = false;
-          vue.courseData = data;
-          vue.courseCampus = data.course_campus;
-          vue.courseTitle = vue.courseId + ": " + data.course_title;
-          vue.recentViewManager(
-            vue.courseId,
-            "course?id=" + vue.courseId,
-            vue.courseCampus,
+          this.courseData = data;
+          this.courseCampus = data.course_campus;
+          this.courseTitle = this.courseId + ": " + data.course_title;
+          utils.recentViewManager(
+            this.courseId,
+            "course?id=" + this.courseId,
+            this.courseCampus,
           );
-        } catch (error) {
-          vue.showError = true;
+        } catch {
+          this.showError = true;
+        } finally {
+          this.loading = false;
         }
-      },
-    },
-    watch: {
-      courseId(newValue) {
-        this.get_course_data(newValue);
       },
     },
   };

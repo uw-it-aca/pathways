@@ -228,19 +228,13 @@
           return value.count > 0;
         });
       },
+      // Use .some() to short-circuit on the first non-zero value instead of
+      // summing the entire array — avoids unnecessary iteration.
       show2Year() {
-        let count = 0;
-        for (const value of this.majorData.gpa_2yr) {
-          count += value.count;
-        }
-        return count > 0;
+        return this.majorData.gpa_2yr.some((v) => v.count > 0);
       },
       show5Year() {
-        let count = 0;
-        for (const value of this.majorData.gpa_5yr) {
-          count += value.count;
-        }
-        return count > 0;
+        return this.majorData.gpa_5yr.some((v) => v.count > 0);
       },
       showGraph() {
         let showYears = "";
@@ -291,12 +285,17 @@
             rwidth = width + margin.left + margin.right,
             rheight = height + margin.top + margin.bottom;
 
-          var tooltip = d3
-            .select("body")
-            .append("div")
-            .attr("class", "tooltip")
-            .style("opacity", 0)
-            .style("left", "-9999px");
+          // Reuse the existing tooltip if it already exists to avoid leaking
+          // a new <div> into <body> every time the chart regenerates.
+          let tooltip = d3.select("body").select(".tooltip");
+          if (tooltip.empty()) {
+            tooltip = d3
+              .select("body")
+              .append("div")
+              .attr("class", "tooltip")
+              .style("opacity", 0)
+              .style("left", "-9999px");
+          }
 
           // set the ranges
           var x = d3.scaleBand().range([0, width]).padding(0.3);

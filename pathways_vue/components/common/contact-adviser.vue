@@ -1,5 +1,5 @@
 <template>
-  <div class="card bg-husky-gold-subtle bg-opacity-50 mb-5 border-0">
+  <div class="card bg-husky-gold-subtle bg-opacity-50 mb-3 border-0">
     <div class="card-body">
       <h2 class="h4">Are you considering this {{ type }}?</h2>
       <p>

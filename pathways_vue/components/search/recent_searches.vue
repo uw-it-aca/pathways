@@ -20,6 +20,7 @@
   export default {
     name: "RecentSearches",
     components: {},
+    emits: ["set-search"],
     props: {},
     data() {
       return {};
@@ -35,7 +36,9 @@
     watch: {},
     methods: {
       setSearch(search_string) {
-        this.$router.push({ path: "/search", query: { q: search_string } });
+        // Emit to parent instead of pushing router — pushing to the same route
+        // (/search) won't re-trigger mounted(), so the new query param is ignored.
+        this.$emit("set-search", search_string);
       },
     },
   };
