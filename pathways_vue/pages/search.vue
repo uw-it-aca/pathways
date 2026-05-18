@@ -23,7 +23,6 @@
                 v-model="form_data.search_string"
                 aria-label="Recipient's username"
                 aria-describedby="button-addon2"
-                @input="debouncedSearch"
               />
               <button
                 v-if="show_results"
@@ -44,7 +43,7 @@
               Search
             </button>
             <div class="text-secondary">
-              Start typing to search for courses, majors, or subjects
+              Press Enter to search for courses, majors, or subjects
             </div>
           </div>
         </div>
@@ -161,7 +160,6 @@
   import RecentSearches from "@/components/search/recent_searches.vue";
   import RecentViews from "@/components/search/recent_views.vue";
   import SearchResults from "@/components/search/results.vue";
-  import debounce from "debounce";
   import { useCustomFetch } from "@/composables/customFetch";
   import { BFormRadio } from "bootstrap-vue-next";
 
@@ -236,9 +234,6 @@
         this.course_matches = [];
         this.text_matches = [];
       },
-      debouncedSearch: debounce(function () {
-        this.runSearch();
-      }, 500),
       async runSearch() {
         this.clearResults();
         this.addToRecent(this.search_string);

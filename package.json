@@ -31,7 +31,6 @@
     "bootstrap-icons": "^1.13.1",
     "bootstrap-vue-next": "^0.44.7",
     "d3": "^7.9.0",
-    "debounce": "^3.0.0",
     "mitt": "^3.0.1",
     "multi-range-slider-vue": "^1.1.4",
     "numeral": "^2.0.6",

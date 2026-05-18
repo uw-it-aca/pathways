@@ -18,7 +18,6 @@
 
 <script>
   import DefaultLayout from "@/layouts/default.vue";
-  import Search from "@/components/search/search.vue";
   import SearchMini from "@/components/search/search-mini.vue";
   import { useCustomFetch } from "@/composables/customFetch";
 
@@ -26,7 +25,6 @@
     name: "HomeComp",
     components: {
       DefaultLayout,
-      Search,
       SearchMini,
     },
     data() {
