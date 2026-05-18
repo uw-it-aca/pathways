@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import RecentSearches from "@/components/search/recent_searches.vue";
-import RecentViews from "@/components/search/recent_views.vue";
+import RecentSearches from "@/components/search/recent-searches.vue";
+import RecentViews from "@/components/search/recent-views.vue";
 
   import {
     BInputGroup,

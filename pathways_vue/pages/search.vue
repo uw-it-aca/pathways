@@ -157,8 +157,8 @@
 
 <script>
   import DefaultLayout from "@/layouts/default.vue";
-  import RecentSearches from "@/components/search/recent_searches.vue";
-  import RecentViews from "@/components/search/recent_views.vue";
+  import RecentSearches from "@/components/search/recent-searches.vue";
+  import RecentViews from "@/components/search/recent-views.vue";
   import SearchResults from "@/components/search/results.vue";
   import { useCustomFetch } from "@/composables/customFetch";
   import { BFormRadio } from "bootstrap-vue-next";
