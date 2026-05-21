@@ -1,7 +1,7 @@
 // concurrent-courses.vue
 
 <template>
-  <BCard class="bg-body-tertiary rounded-3" border-variant="0">
+  <BCard class="bg-body-tertiary rounded-3 mb-3" border-variant="0">
     <template v-if="concurrent_courses.length === 0">
       <h2 class="h4 ff-encode-sans fw-bold">Concurrent Courses</h2>
       <div class="alert alert-purple" role="alert">
