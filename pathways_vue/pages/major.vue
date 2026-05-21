@@ -2,25 +2,16 @@
   <DefaultLayout :page-title="pageTitle">
     <template #content>
       <template v-if="major_data">
-        <div class="row mt-5">
-          <div class="col-lg-4 col-12"><SearchMini /></div>
-          <div class="order-md-first col-lg-8 col-12">
-            <h1
-              class="fs-2 fw-semibold ff-encode-sans my-md-0 my-3"
-              data-clarity-unmask="true"
-            >
-              {{ major_data.credential_title }}
-            </h1>
-          </div>
-        </div>
-        <div class="row">
+        <div class="row my-5">
           <div class="col-lg-8 col-12">
+            <SearchMini class="d-md-none" />
             <MajorDetails :major="major_data" />
             <ExploreMajor :major="major_data" />
             <D3Cgpa :major-data="major_data" />
             <SimilarMajor :similar-major-data="major_data.similar_majors" />
           </div>
           <div class="col-lg-4 col-12">
+            <SearchMini class="d-none d-md-block" />
             <CommonCourses :major="major_data" />
             <ContactAdviser :campus="major_data.major_campus" :type="'major'" />
           </div>
@@ -30,7 +21,10 @@
         <div class="row justify-content-center">
           <div v-if="showError" class="col col-lg-8">
             <div class="alert alert-purple" role="alert">
-              <p>Data is not available for selected major. Here are some possible reasons:</p>
+              <p>
+                Data is not available for selected major. Here are some possible
+                reasons:
+              </p>
               <ul>
                 <li>This major is no longer offered</li>
                 <li>It is a graduate degree</li>
@@ -61,9 +55,15 @@
 
   // Lazy-load heavy below-the-fold components so they are code-split into
   // separate chunks and only downloaded/parsed after major data has loaded.
-  const D3Cgpa = defineAsyncComponent(() => import("@/components/major/d3-cgpa.vue"));
-  const SimilarMajor = defineAsyncComponent(() => import("@/components/major/similar-major.vue"));
-  const CommonCourses = defineAsyncComponent(() => import("@/components/major/common-courses.vue"));
+  const D3Cgpa = defineAsyncComponent(
+    () => import("@/components/major/d3-cgpa.vue"),
+  );
+  const SimilarMajor = defineAsyncComponent(
+    () => import("@/components/major/similar-major.vue"),
+  );
+  const CommonCourses = defineAsyncComponent(
+    () => import("@/components/major/common-courses.vue"),
+  );
 
   export default {
     name: "MajorComp",
@@ -113,10 +113,16 @@
         this.showError = false;
         this.loading = true;
         try {
-          const data = await useCustomFetch("/api/v1/majors/details/" + this.majorID);
+          const data = await useCustomFetch(
+            "/api/v1/majors/details/" + this.majorID,
+          );
           this.major_data = data;
           this.majorTitle = data.credential_title;
-          utils.recentViewManager(this.majorTitle, "major?id=" + this.majorID, data.major_campus);
+          utils.recentViewManager(
+            this.majorTitle,
+            "major?id=" + this.majorID,
+            data.major_campus,
+          );
         } catch {
           this.showError = true;
         } finally {

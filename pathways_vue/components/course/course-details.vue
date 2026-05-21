@@ -1,6 +1,9 @@
 // course-details.vue
 
 <template>
+  <h1 class="h2 ff-encode-sans fw-bold my-md-0 my-3" data-clarity-unmask="true">
+    {{ course.course_id }}: {{ course.course_title }}
+  </h1>
   <div class="mb-3">
     <icon-popover
       v-if="course.is_bottleneck"

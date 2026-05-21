@@ -1,7 +1,6 @@
 <template>
-  <div class="dropdown" @focusout="onFocusOut">
+  <div class="dropdown mb-3" @focusout="onFocusOut">
     <BInputGroup size="md">
-      <BInputGroupText><i class="bi bi-search"></i></BInputGroupText>
       <BFormInput
         v-model="query"
         type="text"
@@ -12,8 +11,12 @@
       />
       <BButton variant="outline-primary" @click="navigate">Search</BButton>
     </BInputGroup>
-
-    <div v-show="open" class="dropdown-menu show w-100 mt-1 p-3" @mousedown.prevent>
+    <div
+      v-show="open"
+      class="dropdown-menu show mt-1 w-100 p-3"
+      style=""
+      @mousedown.prevent
+    >
       <RecentSearches />
       <RecentViews />
     </div>
@@ -21,8 +24,8 @@
 </template>
 
 <script>
-import RecentSearches from "@/components/search/recent-searches.vue";
-import RecentViews from "@/components/search/recent-views.vue";
+  import RecentSearches from "@/components/search/recent-searches.vue";
+  import RecentViews from "@/components/search/recent-views.vue";
 
   import {
     BInputGroup,
@@ -49,7 +52,10 @@ import RecentViews from "@/components/search/recent-views.vue";
     methods: {
       navigate() {
         if (this.query.trim()) {
-          this.$router.push({ path: "/search", query: { q: this.query.trim() } });
+          this.$router.push({
+            path: "/search",
+            query: { q: this.query.trim() },
+          });
           this.open = false;
         }
       },

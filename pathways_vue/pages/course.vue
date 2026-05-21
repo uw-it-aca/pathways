@@ -2,19 +2,9 @@
   <DefaultLayout :page-title="pageTitle">
     <template #content>
       <template v-if="courseData">
-        <div class="row mt-5">
-          <div class="col-md-4 col-12"><SearchMini /></div>
-          <div class="order-md-first col-md-8 col-12">
-            <h1
-              class="h2 ff-encode-sans fw-bold my-md-0 my-3"
-              data-clarity-unmask="true"
-            >
-              {{ courseData.course_id }}: {{ courseData.course_title }}
-            </h1>
-          </div>
-        </div>
-        <div class="row">
+        <div class="row my-5">
           <div class="col-md-8 col-12">
+            <SearchMini class="d-md-none" />
             <CourseDetails :course="courseData" />
             <ExploreCourse :course="courseData" />
             <GradeDistribution :course="courseData" />
@@ -29,6 +19,7 @@
             />
           </div>
           <div class="col-md-4 col-12">
+            <SearchMini class="d-none d-md-block" />
             <ConcurrentCourses :courseData="courseData" />
             <ContactAdviser :campus="courseCampus" :type="'course'" />
           </div>
@@ -36,7 +27,7 @@
       </template>
       <template v-else>
         <div class="row">
-          <div v-if="showError" class="col col-md-9">
+          <div v-if="showError" class="col col-md-8">
             <div class="alert alert-purple border-0" role="alert">
               <p>
                 Data is not available for selected course. Here are some
@@ -49,7 +40,7 @@
               </ul>
             </div>
           </div>
-          <div v-else-if="loading" class="col col-md-9 text-center">
+          <div v-else-if="loading" class="col col-md-8 text-center">
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
