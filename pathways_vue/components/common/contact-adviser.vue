@@ -1,6 +1,8 @@
 <template>
   <BCard class="bg-body-tertiary rounded-3" border-variant="0">
-    <h2 class="h4">Are you considering this {{ type }}?</h2>
+    <h2 class="h4 ff-encode-sans fw-bold">
+      Are you considering this {{ type }}?
+    </h2>
     <p>
       We understand this can be a challenging process with many sources of
       information to consider. DawgPath is designed to be a useful tool but not
