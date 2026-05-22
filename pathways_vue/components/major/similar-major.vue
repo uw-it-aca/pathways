@@ -236,51 +236,43 @@
           admissionType: [],
           stem: [],
         },
-        similarMajors: [],
       };
     },
-    watch: {
-      filters: {
-        handler: function () {
-          this.filterMajors();
-        },
-        deep: true,
-      },
-    },
-    mounted() {
-      this.similarMajors = this.similarMajorData;
-    },
+    watch: {},
+    mounted() {},
     methods: {
       showHelpModal() {
         this.helpModal = new Modal(document.getElementById("help_modal"), {});
         this.helpModal.show();
       },
-      filterMajors() {
-        // Filter similarMajorData based on filters
-        let filtered_majors = this.similarMajorData;
+    },
+    computed: {
+      // Derive filtered list directly from the prop + filters instead of
+      // maintaining a separate mutable copy. Vue recomputes automatically
+      // whenever filters or similarMajorData change.
+      similarMajors() {
+        let results = this.similarMajorData;
+
         if (this.filters.campus.length > 0 && this.filters.campus.length < 3) {
-          filtered_majors = filtered_majors.filter((major) => {
-            const campus_value = major.program_campus || major.campus || "";
-            return this.filters.campus.includes(campus_value.toLowerCase());
+          results = results.filter((major) => {
+            const campus = major.program_campus || major.campus || "";
+            return this.filters.campus.includes(campus.toLowerCase());
           });
         }
-        if (
-          this.filters.admissionType.length > 0 &&
-          this.filters.admissionType.length < 3
-        ) {
-          filtered_majors = filtered_majors.filter((major) =>
+
+        if (this.filters.admissionType.length > 0 && this.filters.admissionType.length < 3) {
+          results = results.filter((major) =>
             this.filters.admissionType.includes(major.major_admission),
           );
         }
+
         if (this.filters.stem.length === 1) {
-          let isStem = this.filters.stem[0] === "stem";
-          filtered_majors = filtered_majors.filter(
-            (major) => isStem === major.is_stem,
-          );
+          const isStem = this.filters.stem[0] === "stem";
+          results = results.filter((major) => isStem === major.is_stem);
         }
-        this.similarMajors = filtered_majors;
+
+        return results;
       },
     },
-    computed: {},
   };
 </script>

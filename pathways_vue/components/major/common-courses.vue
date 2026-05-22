@@ -1,6 +1,6 @@
 <template>
-  <div class="card mb-5">
-    <div v-if="commonCourses.length === 0" class="card-body">
+  <BCard class="bg-body-tertiary rounded-3 mb-3" border-variant="0">
+    <template v-if="commonCourses.length === 0">
       <h2 class="h4 ff-encode-sans fw-bold">Common Courses</h2>
       <div class="alert alert-purple mt-2" role="alert">
         <p>
@@ -9,8 +9,9 @@
           >.
         </p>
       </div>
-    </div>
-    <div v-else class="card-body explore-major">
+    </template>
+
+    <template v-else>
       <h2 class="h4 ff-encode-sans fw-bold">
         Common courses for {{ major["major_title"] }}
       </h2>
@@ -56,11 +57,11 @@
           >
             <td>
               <div class="icon-col">
-                <icon-popover
+                <IconPopover
                   v-if="course.is_bottleneck"
                   :variant="'bottleneck'"
                 />
-                <icon-popover v-if="course.is_gateway" :variant="'gateway'" />
+                <IconPopover v-if="course.is_gateway" :variant="'gateway'" />
               </div>
             </td>
             <td class="rank" scope="row"></td>
@@ -85,18 +86,20 @@
           </tr>
         </tbody>
       </table>
-    </div>
-  </div>
+    </template>
+  </BCard>
 </template>
 
 <script>
   import { Popover } from "bootstrap";
+  import { BCard } from "bootstrap-vue-next";
   import IconPopover from "@/components/common/icon-popover.vue";
 
   export default {
     name: "CommonCourses",
     components: {
-      "icon-popover": IconPopover,
+      BCard,
+      IconPopover,
     },
     props: {
       major: {

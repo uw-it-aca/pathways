@@ -56,6 +56,6 @@ urlpatterns += [
         r'^api/v1/coi/curric/$',
         CurricCOI.as_view(), name='curric-coi'),
 
-    re_path(r'^(major|course|faq)$', DefaultPageView.as_view()),
+    re_path(r'^(major|course|faq|search)$', DefaultPageView.as_view()),
     re_path(r'^$', DefaultPageView.as_view()),
 ]

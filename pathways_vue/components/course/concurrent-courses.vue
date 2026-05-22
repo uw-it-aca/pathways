@@ -1,8 +1,8 @@
 // concurrent-courses.vue
 
 <template>
-  <div class="card mb-5">
-    <div v-if="concurrent_courses.length === 0" class="card-body">
+  <BCard class="bg-body-tertiary rounded-3 mb-3" border-variant="0">
+    <template v-if="concurrent_courses.length === 0">
       <h2 class="h4 ff-encode-sans fw-bold">Concurrent Courses</h2>
       <div class="alert alert-purple" role="alert">
         <p>
@@ -11,8 +11,8 @@
           >.
         </p>
       </div>
-    </div>
-    <div v-else class="card-body">
+    </template>
+    <template v-else>
       <h2 class="h4 ff-encode-sans fw-bold">Concurrent Courses</h2>
       <p>
         Students who took <strong>{{ courseData.course_id }}</strong> in the
@@ -70,26 +70,26 @@
           >
             <th scope="row">
               <div class="icon-col">
-                <icon-popover
+                <IconPopover
                   v-if="course.is_bottleneck"
                   :variant="'bottleneck'"
                 />
-                <icon-popover v-if="course.is_gateway" :variant="'gateway'" />
+                <IconPopover v-if="course.is_gateway" :variant="'gateway'" />
               </div>
             </th>
             <td>{{ course.percent }}%</td>
             <!-- <td>
-               <div class="progress">
-                <div
-                  class="progress-bar bg-secondary"
-                  role="progressbar"
-                  :style="course.width"
-                  :aria-valuenow="course.percent"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-            </td> -->
+             <div class="progress">
+              <div
+                class="progress-bar bg-secondary"
+                role="progressbar"
+                :style="course.width"
+                :aria-valuenow="course.percent"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+          </td> -->
             <td>
               <a
                 :href="'/course?id=' + course.course"
@@ -114,18 +114,20 @@
           </tr>
         </tbody>
       </table>
-    </div>
-  </div>
+    </template>
+  </BCard>
 </template>
 
 <script>
+  import { BCard } from "bootstrap-vue-next";
   import { Popover } from "bootstrap";
   import IconPopover from "@/components/common/icon-popover.vue";
 
   export default {
     name: "ConcurrentCourses",
     components: {
-      "icon-popover": IconPopover,
+      BCard,
+      IconPopover,
     },
     props: {
       courseData: {

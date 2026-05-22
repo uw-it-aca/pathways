@@ -1,8 +1,11 @@
 <template>
+<h1
+  class="fs-2 fw-semibold ff-encode-sans my-md-0 my-3"
+  data-clarity-unmask="true"
+>
+  {{ major.credential_title }}
+</h1>
   <div class="mb-5">
-    <h1 class="h2 ff-encode-sans fw-bold">
-      {{ major["credential_title"] }}
-    </h1>
     <p class="text-uppercase mb-1">
       {{ major["major_school"] }} - {{ major["major_campus"] }}
     </p>

@@ -1,28 +1,33 @@
 <template>
-  <div class="card bg-husky-gold-subtle bg-opacity-50 mb-5 border-0">
-    <div class="card-body">
-      <h2 class="h4">Are you considering this {{ type }}?</h2>
-      <p>
-        We understand this can be a challenging process with many sources of
-        information to consider. DawgPath is designed to be a useful tool but
-        not a replacement for meeting with an academic adviser. As you begin to
-        consider what you want to major in, we recommend scheduling a meeting
-        with your adviser to discuss your interests, goals, degree requirements
-        and academic planning.
-      </p>
-      <ul>
-        <li class="list-unstyled" v-for="info in advisingInfo" :key="info.url">
-          <a :href="info.url"><i class="bi bi-dot me-1"></i>{{ info.label }}</a>
-        </li>
-      </ul>
-    </div>
-  </div>
+  <BCard class="bg-body-tertiary rounded-3" border-variant="0">
+    <h2 class="h4 ff-encode-sans fw-bold">
+      Are you considering this {{ type }}?
+    </h2>
+    <p>
+      We understand this can be a challenging process with many sources of
+      information to consider. DawgPath is designed to be a useful tool but not
+      a replacement for meeting with an academic adviser. As you begin to
+      consider what you want to major in, we recommend scheduling a meeting with
+      your adviser to discuss your interests, goals, degree requirements and
+      academic planning.
+    </p>
+    <ul>
+      <li v-for="info in advisingInfo" :key="info.url">
+        <a :href="info.url">{{ info.label }}</a>
+      </li>
+    </ul>
+  </BCard>
 </template>
 
 <script>
+  import { BCard } from "bootstrap-vue-next";
+
   export default {
     name: "ContactAdviserCourse",
     props: ["campus", "type"],
+    components: {
+      BCard,
+    },
     data() {
       return {};
     },
