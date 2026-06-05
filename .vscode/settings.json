@@ -1,20 +1,27 @@
 {
   "editor.formatOnSave": false,
   "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "explicit"
+  },
+
+  "oxc.lint.run": "onType",
+  "oxc.unusedDisableDirectives": "deny",
+  "oxc.fixKind": "safe_fix",
 
   "files.associations": {
-    "*.css": "tailwindcss",
+    "*.css": "tailwindcss"
   },
 
   "[vue]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
-    "editor.rulers": [80],
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+    //"editor.rulers": [80]
   },
   "[html]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
-    "editor.rulers": [120],
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+    //"editor.rulers": [120]
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
-  },
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  }
 }
