@@ -25,3 +25,7 @@ def eval_group_required(group_id):
         return login_required(function=wrapper)
 
     return decorator
+
+
+def can_manage_persistent_message(request):
+    return is_member_of_group(request, settings.ADMIN_USERS_GROUP)

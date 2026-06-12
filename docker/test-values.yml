@@ -101,6 +101,8 @@ externalSecrets:
           property: django-secret
         - name: access-group-id
           property: access-group-id
+        - name: admin-group-id
+          property: admin-group-id
         - name: google-analytics-key
           property: google-analytics-key
     - name: test.dawgpath.uw.edu-sql-secrets
@@ -161,6 +163,10 @@ environmentVariablesSecrets:
     name: ACCESS_GROUP
     secretName: test.dawgpath.uw.edu-secrets
     secretKey: access-group-id
+  adminGroup:
+    name: ADMIN_GROUP
+    secretName: test.dawgpath.uw.edu-secrets
+    secretKey: admin-group-id
   googleAnalyticsKey:
     name: GOOGLE_ANALYTICS_KEY
     secretName: test.dawgpath.uw.edu-secrets
