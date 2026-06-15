@@ -6,9 +6,15 @@ INSTALLED_APPS += [
     "pathways.apps.ViteStaticFilesConfig",
     "uw_person_client",
     "django.contrib.postgres",
+    "supporttools",
+    "persistent_message",
 ]
 
 INSTALLED_APPS.remove("django.contrib.staticfiles")
+
+TEMPLATES[0]["OPTIONS"]["context_processors"] += [
+    "pathways.context_processors.persistent_messages",
+]
 
 if os.getenv("ENV") == "localdev":
     DEBUG = True
@@ -19,9 +25,16 @@ if os.getenv("ENV") == "localdev":
         "uw_person_client": "uw_person_client.test_migrations",
     }
     FIXTURE_DIRS = (os.path.join(BASE_DIR, "uw_person_client", "fixtures"),)
+    LIMIT_USER_ACCESS = False
+    ALLOWED_USERS_GROUP = "u_test_group"
+    ADMIN_USERS_GROUP = "u_test_group"
+
 else:
     CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv("CLUSTER_CNAME")]
     VITE_MANIFEST_PATH = os.path.join(os.sep, "static", ".vite", "manifest.json")
+    LIMIT_USER_ACCESS = os.getenv("ENV") == "eval"
+    ALLOWED_USERS_GROUP = os.getenv("ACCESS_GROUP")
+    ADMIN_USERS_GROUP = os.getenv("ADMIN_GROUP")
 
 # PDS config, default values are for localdev
 DATABASES["uw_person"] = {
@@ -43,11 +56,10 @@ GOOGLE_ANALYTICS_KEY = os.getenv("GOOGLE_ANALYTICS_KEY", "")
 GOOGLE_FEEDBACK_FORM = os.getenv("GOOGLE_FEEDBACK_FORM", "")
 CLARITY_PROJECT_ID = os.getenv("CLARITY_PROJECT_ID", "")
 
-if os.getenv("ENV") == "localdev":
-    DEBUG = True
+SUPPORTTOOLS_PARENT_APP = "DawgPath"
+SUPPORTTOOLS_PARENT_APP_URL = "/"
 
-LIMIT_USER_ACCESS = os.getenv("ENV") == "eval"
-ALLOWED_USERS_GROUP = os.getenv("ACCESS_GROUP", default=None)
+PERSISTENT_MESSAGE_AUTH_MODULE = "pathways.views.can_manage_persistent_message"
 
 LOGGING = {
     "version": 1,

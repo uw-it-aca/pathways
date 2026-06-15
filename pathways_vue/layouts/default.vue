@@ -20,8 +20,21 @@
       <SColorMode color-class="text-white" class="ms-2" />
     </template>
 
-    <template #system>
-      <Banner />
+    <template v-if="window.pathways.messages" #system>
+      <div class="row">
+        <div class="col">
+          <ul
+            class="list-unstyled text-info-emphasis small m-0 py-2 text-center"
+          >
+            <li
+              v-for="(message, index) in window.pathways.messages"
+              :key="index"
+              class="mb-2"
+              v-html="message"
+            ></li>
+          </ul>
+        </div>
+      </div>
     </template>
 
     <template #main>

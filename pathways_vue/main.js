@@ -26,6 +26,7 @@ import "bootstrap-vue-next/dist/bootstrap-vue-next.css";
 import Clarity from "@microsoft/clarity";
 
 const app = createApp(App);
+app.config.globalProperties.window = window;
 
 // pinia (vuex) state management
 const pinia = createPinia();
