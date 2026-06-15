@@ -9,6 +9,9 @@ def get_person_by_uwnetid(uwnetid):
     person = Person.objects.get_person_by_uwnetid(
         uwnetid, include_student=True, include_student_transcripts=True)
 
+    if not person.student or not person.student.transcripts:
+        return {}
+
     latest_transcript = person.student.transcripts.last()
 
     return {

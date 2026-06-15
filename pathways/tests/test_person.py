@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.test import TestCase
-from pathways.dao.person import get_person_by_uwnetid
+from pathways.dao.person import get_person_by_uwnetid, PersonNotFoundException
 
 
 class TestPerson(TestCase):
@@ -31,3 +31,11 @@ class TestPerson(TestCase):
                          "PRE SOCIAL SCIENCE")
         self.assertEqual(person.get("majors")[1].get("major_name"),
                          "INTERNATIONAL STUDIES")
+
+        # Not a student
+        person = get_person_by_uwnetid("jadviser")
+        self.assertEqual(person, {})
+
+        # Not a person
+        self.assertRaises(PersonNotFoundException,
+                          get_person_by_uwnetid, "xxxxxxx")
