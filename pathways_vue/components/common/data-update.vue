@@ -1,24 +1,24 @@
 // data-update.vue
 
 <template>
-  <div class="fw-lighter float-end mt-2 text-secondary small">
+  <div class="fw-lighter text-secondary small float-end mt-2">
     <i class="bi-bar-chart-fill"></i> Data updated: Winter 2024
   </div>
 </template>
 
 <script>
-export default {
-  name: "DataUpdate",
-  data() {
-    return {};
-  },
-  methods: {},
-  computed: {},
-};
+  export default {
+    name: "DataUpdate",
+    data() {
+      return {};
+    },
+    methods: {},
+    computed: {},
+  };
 </script>
 
 <style lang="scss" scoped>
-.small {
-  font-size: 0.75rem;
-}
+  .small {
+    font-size: 0.75rem;
+  }
 </style>

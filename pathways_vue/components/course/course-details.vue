@@ -1,10 +1,10 @@
 // course-details.vue
 
 <template>
+  <h1 class="h2 ff-encode-sans fw-bold my-md-0 my-3" data-clarity-unmask="true">
+    {{ course.course_id }}: {{ course.course_title }}
+  </h1>
   <div class="mb-3">
-    <h1 class="h2 ff-encode-sans fw-bold">
-      {{ course.course_id }}: {{ course.course_title }}
-    </h1>
     <icon-popover
       v-if="course.is_bottleneck"
       :variant="'bottleneck'"
@@ -16,17 +16,15 @@
     </div>
     <div class="mb-2" v-if="offered_terms">
       <strong>Typically offered:</strong>
-      <ul class="ms-2 d-inline list-inline">
+      <ul class="d-inline list-inline ms-2">
         <li
           class="list-inline-item"
           v-for="(term, i) in offered_terms"
           :key="i"
         >
-          <span
-            class="badge text-black rounded-pill"
-            :class="term.class"
-            >{{ term.quarter }}</span
-          >
+          <span class="badge rounded-pill text-black" :class="term.class">{{
+            term.quarter
+          }}</span>
         </li>
       </ul>
     </div>
@@ -37,71 +35,71 @@
 r
 
 <script>
-import IconPopover from "@/components/common/icon-popover.vue";
+  import IconPopover from "@/components/common/icon-popover.vue";
 
-export default {
-  name: "CourseDetails",
-  components: {
-    "icon-popover": IconPopover,
-  },
-  props: {
-    course: {
-      type: Object,
-      required: true,
+  export default {
+    name: "CourseDetails",
+    components: {
+      "icon-popover": IconPopover,
     },
-  },
-  data() {
-    return {};
-  },
-  mounted() {},
-  computed: {
-    offered_terms: function () {
-      let matching_quarters = [];
-      if (
-        this.course.course_offered !== undefined &&
-        this.course.course_offered !== null
-      ) {
-        let offered_string = this.course.course_offered;
-        if (offered_string.length > 0) {
-          offered_string = this.get_quarters_from_offered(offered_string);
-          if (offered_string !== undefined) {
-            offered_string = offered_string.trim();
-            let quarters = offered_string.match(/([A-Z]?[^A-Z]*)/g);
-            if (quarters.includes("A")) {
-              matching_quarters.push({ quarter: "AUT", class: "bg-autumn" });
-            }
-            if (quarters.includes("Sp")) {
-              matching_quarters.push({ quarter: "SPR", class: "bg-spring" });
-            }
-            if (quarters.includes("S")) {
-              matching_quarters.push({ quarter: "SUM", class: "bg-summer" });
-            }
-            if (quarters.includes("W")) {
-              matching_quarters.push({ quarter: "WIN", class: "bg-winter" });
+    props: {
+      course: {
+        type: Object,
+        required: true,
+      },
+    },
+    data() {
+      return {};
+    },
+    mounted() {},
+    computed: {
+      offered_terms: function () {
+        let matching_quarters = [];
+        if (
+          this.course.course_offered !== undefined &&
+          this.course.course_offered !== null
+        ) {
+          let offered_string = this.course.course_offered;
+          if (offered_string.length > 0) {
+            offered_string = this.get_quarters_from_offered(offered_string);
+            if (offered_string !== undefined) {
+              offered_string = offered_string.trim();
+              let quarters = offered_string.match(/([A-Z]?[^A-Z]*)/g);
+              if (quarters.includes("A")) {
+                matching_quarters.push({ quarter: "AUT", class: "bg-autumn" });
+              }
+              if (quarters.includes("Sp")) {
+                matching_quarters.push({ quarter: "SPR", class: "bg-spring" });
+              }
+              if (quarters.includes("S")) {
+                matching_quarters.push({ quarter: "SUM", class: "bg-summer" });
+              }
+              if (quarters.includes("W")) {
+                matching_quarters.push({ quarter: "WIN", class: "bg-winter" });
+              }
             }
           }
         }
-      }
-      return matching_quarters;
+        return matching_quarters;
+      },
     },
-  },
-  methods: {
-    get_quarters_from_offered(offered) {
-      offered = offered.replace(".", "");
-      if (offered.includes(";")) {
-        let parts = offered.split(";");
-        offered = parts[1];
-      }
-      if (offered.includes("jointly")) {
-        return undefined;
-      }
-      if (offered.includes(",")) {
-        let parts = offered.split(",");
-        return parts[0];
-      } else {
-        return offered;
-      }
+    methods: {
+      get_quarters_from_offered(offered) {
+        offered = offered.replace(".", "");
+        if (offered.includes(";")) {
+          let parts = offered.split(";");
+          offered = parts[1];
+        }
+        if (offered.includes("jointly")) {
+          return undefined;
+        }
+        if (offered.includes(",")) {
+          let parts = offered.split(",");
+          return parts[0];
+        } else {
+          return offered;
+        }
+      },
     },
-  },
-};
+  };
 </script>

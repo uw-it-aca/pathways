@@ -34,7 +34,7 @@
           <div class="collapse" :id="'collapsePrereqs_' + index">
             <div class="container">
               <div class="row">
-                <div class="p-0 mb-3 col-sm-6">
+                <div class="col-sm-6 mb-3 p-0">
                   <div>
                     <small
                       ><strong class="text-dark">Prerequisites</strong>
@@ -59,7 +59,7 @@
                     <small>This course has no prerequisites.</small>
                   </div>
                 </div>
-                <div class="p-0 col-sm-6">
+                <div class="col-sm-6 p-0">
                   <div>
                     <small
                       ><strong class="text-dark">Is a prerequisite for</strong>
@@ -99,38 +99,38 @@
 </template>
 
 <script>
-export default {
-  name: "PrereqCurrList",
-  data() {
-    return {};
-  },
-  props: {
-    courseData: {
-      type: Array,
-      required: true,
+  export default {
+    name: "PrereqCurrList",
+    data() {
+      return {};
     },
-  },
-  methods: {},
-};
+    props: {
+      courseData: {
+        type: Array,
+        required: true,
+      },
+    },
+    methods: {},
+  };
 </script>
 
 <style lang="scss" scoped>
-.prereq-list {
-  list-style: none;
-  padding: 0;
-}
+  .prereq-list {
+    list-style: none;
+    padding: 0;
+  }
 
-.prereq-list li {
-  display: inline-block;
-  margin-right: 5px;
-}
+  .prereq-list li {
+    display: inline-block;
+    margin-right: 5px;
+  }
 
-.prereq-list li:last-child a::after {
-  content: "";
-}
+  .prereq-list li:last-child a::after {
+    content: "";
+  }
 
-.rounded-pill {
-  font-size: 75%;
-  margin-left: 0.3rem;
-}
+  .rounded-pill {
+    font-size: 75%;
+    margin-left: 0.3rem;
+  }
 </style>

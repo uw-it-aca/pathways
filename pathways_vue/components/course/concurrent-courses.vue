@@ -1,8 +1,8 @@
 // concurrent-courses.vue
 
 <template>
-  <div class="card mb-5">
-    <div v-if="concurrent_courses.length === 0" class="card-body">
+  <BCard class="bg-body-tertiary rounded-3 mb-3" border-variant="0">
+    <template v-if="concurrent_courses.length === 0">
       <h2 class="h4 ff-encode-sans fw-bold">Concurrent Courses</h2>
       <div class="alert alert-purple" role="alert">
         <p>
@@ -11,14 +11,14 @@
           >.
         </p>
       </div>
-    </div>
-    <div v-else class="card-body">
+    </template>
+    <template v-else>
       <h2 class="h4 ff-encode-sans fw-bold">Concurrent Courses</h2>
       <p>
         Students who took <strong>{{ courseData.course_id }}</strong> in the
         past 2 years also took the following courses at the same time.
       </p>
-      <table class="table table-borderless table-striped">
+      <table class="table-borderless table-striped table">
         <thead>
           <tr class="bg-light text-dark">
             <th scope="col" class="pe-0" style="width: 5%"></th>
@@ -70,26 +70,26 @@
           >
             <th scope="row">
               <div class="icon-col">
-                <icon-popover
+                <IconPopover
                   v-if="course.is_bottleneck"
                   :variant="'bottleneck'"
                 />
-                <icon-popover v-if="course.is_gateway" :variant="'gateway'" />
+                <IconPopover v-if="course.is_gateway" :variant="'gateway'" />
               </div>
             </th>
             <td>{{ course.percent }}%</td>
             <!-- <td>
-               <div class="progress">
-                <div
-                  class="progress-bar bg-secondary"
-                  role="progressbar"
-                  :style="course.width"
-                  :aria-valuenow="course.percent"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-            </td> -->
+             <div class="progress">
+              <div
+                class="progress-bar bg-secondary"
+                role="progressbar"
+                :style="course.width"
+                :aria-valuenow="course.percent"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+          </td> -->
             <td>
               <a
                 :href="'/course?id=' + course.course"
@@ -114,83 +114,85 @@
           </tr>
         </tbody>
       </table>
-    </div>
-  </div>
+    </template>
+  </BCard>
 </template>
 
 <script>
-import { Popover } from "bootstrap";
-import IconPopover from "@/components/common/icon-popover.vue";
+  import { BCard } from "bootstrap-vue-next";
+  import { Popover } from "bootstrap";
+  import IconPopover from "@/components/common/icon-popover.vue";
 
-export default {
-  name: "ConcurrentCourses",
-  components: {
-    "icon-popover": IconPopover,
-  },
-  props: {
-    courseData: {
-      type: Object,
-      required: true,
+  export default {
+    name: "ConcurrentCourses",
+    components: {
+      BCard,
+      IconPopover,
     },
-  },
-  data() {
-    return {};
-  },
-  mounted() {
-    if (this.concurrent_courses.length > 0) {
-      var popover = new Popover(
-        document.querySelector(".info-course-concurrent")
-      );
-      //var popover = new Popover(document.querySelector('.info-common-coi'));
-    }
-  },
-  methods: {},
-  computed: {
-    concurrent_courses: function () {
-      if (!this.courseData.concurrent_courses) {
-        return [];
+    props: {
+      courseData: {
+        type: Object,
+        required: true,
+      },
+    },
+    data() {
+      return {};
+    },
+    mounted() {
+      if (this.concurrent_courses.length > 0) {
+        var popover = new Popover(
+          document.querySelector(".info-course-concurrent"),
+        );
+        //var popover = new Popover(document.querySelector('.info-common-coi'));
       }
-      let processed_courses = [];
-      for (const [course, data] of Object.entries(
-        this.courseData.concurrent_courses
-      )) {
-        let percent = Math.round(data["percent"] * 100);
-        let style_string = `width: ${percent}%`;
+    },
+    methods: {},
+    computed: {
+      concurrent_courses: function () {
+        if (!this.courseData.concurrent_courses) {
+          return [];
+        }
+        let processed_courses = [];
+        for (const [course, data] of Object.entries(
+          this.courseData.concurrent_courses,
+        )) {
+          let percent = Math.round(data["percent"] * 100);
+          let style_string = `width: ${percent}%`;
 
-        processed_courses.push({
-          course: course,
-          percent: percent,
-          title: data["title"],
-          width: style_string,
-          coi_score: data["coi_score"],
-          is_bottleneck: data["is_bottleneck"],
-          is_gateway: data["is_gateway"],
-        });
-      }
-      return processed_courses
-        .sort((a, b) => (a.percent < b.percent ? 1 : -1))
-        .slice(0, 10);
+          processed_courses.push({
+            course: course,
+            percent: percent,
+            title: data["title"],
+            width: style_string,
+            coi_score: data["coi_score"],
+            is_bottleneck: data["is_bottleneck"],
+            is_gateway: data["is_gateway"],
+          });
+        }
+        return processed_courses
+          .sort((a, b) => (a.percent < b.percent ? 1 : -1))
+          .slice(0, 10);
+      },
     },
-  },
-};
+  };
 </script>
 
 <style lang="scss">
-.table {
-  --bs-table-striped-bg: rgb(179 175 124 / 12%);
-}
+  .table {
+    --bs-table-striped-bg: rgb(179 175 124 / 12%);
+  }
 
-.icon-col {
-  .round-sm {
-    height: 18px;
-    width: 18px;
-    line-height: 18px;
-    border-radius: 15px;
-    font-size: 0.7em;
+  .icon-col {
+    .round-sm {
+      height: 18px;
+      width: 18px;
+      line-height: 18px;
+      border-radius: 15px;
+      font-size: 0.7em;
 
-    .material-symbols-outlined {
-      font-size: 0.8rem;
+      .material-symbols-outlined {
+        font-size: 0.8rem;
+      }
     }
   }
-}
 </style>

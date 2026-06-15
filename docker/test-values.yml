@@ -101,6 +101,8 @@ externalSecrets:
           property: django-secret
         - name: access-group-id
           property: access-group-id
+        - name: admin-group-id
+          property: admin-group-id
         - name: google-analytics-key
           property: google-analytics-key
     - name: test.dawgpath.uw.edu-sql-secrets
@@ -125,6 +127,19 @@ externalSecrets:
       data:
         - name: blob-url
           property: blob-url
+    - name: test.dawgpath.uw.edu-shared-secrets
+      externalKey: dawgpath/shared/secrets
+      data:
+        - name: person-db-user
+          property: person-db-user
+        - name: person-db-pass
+          property: person-db-pass
+        - name: person-db-host
+          property: person-db-host
+        - name: person-db-port
+          property: person-db-port
+        - name: person-db-database
+          property: person-db-database
     - name: shared-proxy-secrets
       externalKey: shared/proxies/uw_ssh_tunnel
       data:
@@ -148,6 +163,10 @@ environmentVariablesSecrets:
     name: ACCESS_GROUP
     secretName: test.dawgpath.uw.edu-secrets
     secretKey: access-group-id
+  adminGroup:
+    name: ADMIN_GROUP
+    secretName: test.dawgpath.uw.edu-secrets
+    secretKey: admin-group-id
   googleAnalyticsKey:
     name: GOOGLE_ANALYTICS_KEY
     secretName: test.dawgpath.uw.edu-secrets
@@ -160,3 +179,23 @@ environmentVariablesSecrets:
     name: AZURE_BLOB_STORAGE_URL
     secretName: test.dawgpath.uw.edu-azure-storage-secrets
     secretKey: blob-url
+  personDBUser:
+    name: UW_PERSON_DB_USER
+    secretName: test.dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-user
+  personDBPass:
+    name: UW_PERSON_DB_PASSWORD
+    secretName: test.dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-pass
+  personDBHost:
+    name: UW_PERSON_DB_HOST
+    secretName: test.dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-host
+  personDBPort:
+    name: UW_PERSON_DB_PORT
+    secretName: test.dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-port
+  personDBDatabase:
+    name: UW_PERSON_DB_NAME
+    secretName: test.dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-database

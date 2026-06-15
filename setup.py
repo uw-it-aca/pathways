@@ -26,8 +26,11 @@ setup(
     install_requires=[
         "django~=5.2",
         "uw-django-saml2~=1.8",
+        "django-person-client~=2.1",
+        "django-supporttools~=3.6",
+        "django-persistent-message~=1.3",
         "whoosh~=2.7",
-        'azure-storage-blob~=12.25',
+        "azure-storage-blob~=12.25",
     ],
     license="Apache License, Version 2.0",
     description="A tool for visually displaying UW course prerequisites",
