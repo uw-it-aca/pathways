@@ -7,12 +7,19 @@ INSTALLED_APPS += [
     "uw_person_client",
     "django.contrib.postgres",
     "supporttools",
+    "userservice",
     "persistent_message",
 ]
 
 INSTALLED_APPS.remove("django.contrib.staticfiles")
 
+MIDDLEWARE += [
+    "userservice.user.UserServiceMiddleware",
+    "pathways.log.UserLoggingMiddleware",
+]
+
 TEMPLATES[0]["OPTIONS"]["context_processors"] += [
+    "supporttools.context_processors.supportools_globals",
     "pathways.context_processors.persistent_messages",
 ]
 
@@ -59,6 +66,8 @@ CLARITY_PROJECT_ID = os.getenv("CLARITY_PROJECT_ID", "")
 SUPPORTTOOLS_PARENT_APP = "DawgPath"
 SUPPORTTOOLS_PARENT_APP_URL = "/"
 
+USERSERVICE_VALIDATION_MODULE = "pathways.dao.person.valid_uwnetid"
+USERSERVICE_OVERRIDE_AUTH_MODULE = "pathways.views.can_override_user"
 PERSISTENT_MESSAGE_AUTH_MODULE = "pathways.views.can_manage_persistent_message"
 
 LOGGING = {

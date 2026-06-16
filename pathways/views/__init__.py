@@ -1,10 +1,10 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from uw_saml.utils import is_member_of_group
-from django.conf import settings
 
 
 def eval_group_required(group_id):
@@ -25,6 +25,10 @@ def eval_group_required(group_id):
         return login_required(function=wrapper)
 
     return decorator
+
+
+def can_override_user(request):
+    return is_member_of_group(request, settings.ADMIN_USERS_GROUP)
 
 
 def can_manage_persistent_message(request):
