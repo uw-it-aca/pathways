@@ -9,12 +9,17 @@ def get_person_by_uwnetid(uwnetid):
     person = Person.objects.get_person_by_uwnetid(
         uwnetid, include_student=True, include_student_transcripts=True)
 
+    person_data = {
+        'uwnetid': person.uwnetid,
+        'display_name': person.display_name,
+    }
+
     if not person.student or not person.student.transcripts:
-        return {}
+        return person_data
 
     latest_transcript = person.student.transcripts.last()
 
-    return {
+    person_data.update({
         'student_number': person.student.student_number,
         'class_desc': person.student.class_desc,
         'scholarship_desc': latest_transcript.scholarship_desc if (
@@ -34,4 +39,23 @@ def get_person_by_uwnetid(uwnetid):
                     'home_department': a.employee.home_department,
                 } for a in person.student.advisers.all()
             ],
-    }
+    })
+
+    return person_data
+
+
+def valid_uwnetid(username):
+    error_msg = None
+    if username is not None and len(username) > 0:
+        try:
+            person = Person.objects.get_person_by_uwnetid(username)
+            if username.lower() == person.uwnetid:
+                pass
+            else:
+                error_msg = (
+                    f"Current UWNetID: {person.uwnetid}, Prior UWNetID: ")
+        except PersonNotFoundException:
+            error_msg = f"Not a valid UWNetID: "
+    else:
+        error_msg = "No override user supplied, please enter a UWNetID"
+    return error_msg

@@ -12,6 +12,7 @@ from pathways.views.api.course import CourseList, CourseDetails
 from pathways.models.curriculum import Curriculum
 from django.test import RequestFactory
 from django.contrib.auth.models import User
+from userservice.user import UserServiceMiddleware
 from unittest.mock import patch
 import json
 
@@ -68,8 +69,10 @@ class TestCoiApi(ApiTest):
 
 
 class TestUserPreferenceApi(ApiTest):
-    @patch('pathways.views.api.user.get_user', return_value='javerage')
-    def test_user_preference(self, mock_get_user):
+    def setUp(self):
+        self.user = User.objects.create_user('javerage', password='a')
+
+    def test_user_preference(self):
         request = RequestFactory().post('/',
                                         data={
                                             'viewed_welcome_display': True,
@@ -78,7 +81,10 @@ class TestUserPreferenceApi(ApiTest):
                                             'viewed_coi_banner': True
                                         },
                                         content_type='application/json')
-        request.user = User()
+        request.session = {}
+        request.user = self.user
+        UserServiceMiddleware().process_request(request)
+
         response = UserPreference.as_view()(request)
         self.assertEqual(response.status_code, 200)
 

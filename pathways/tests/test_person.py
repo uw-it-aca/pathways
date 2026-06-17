@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.test import TestCase
-from pathways.dao.person import get_person_by_uwnetid, PersonNotFoundException
+from pathways.dao.person import (
+    get_person_by_uwnetid, valid_uwnetid, PersonNotFoundException)
 
 
 class TestPerson(TestCase):
@@ -34,8 +35,18 @@ class TestPerson(TestCase):
 
         # Not a student
         person = get_person_by_uwnetid("jadviser")
-        self.assertEqual(person, {})
+        self.assertEqual(person, {
+            "display_name": "Jay Adviser", "uwnetid": "jadviser"})
 
         # Not a person
         self.assertRaises(PersonNotFoundException,
                           get_person_by_uwnetid, "xxxxxxx")
+
+    def test_valid_netid(self):
+        self.assertEqual(valid_uwnetid("javerage"), None)
+        self.assertEqual(valid_uwnetid("jadviser"), None)
+        self.assertEqual(valid_uwnetid("xxxxxx"), "Not a valid UWNetID: ")
+        self.assertEqual(valid_uwnetid(None),
+                         "No override user supplied, please enter a UWNetID")
+        self.assertEqual(valid_uwnetid(""),
+                         "No override user supplied, please enter a UWNetID")
