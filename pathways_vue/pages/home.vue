@@ -39,13 +39,15 @@
     },
     data() {
       return {
-        pageTitle: "Welcome back, Jack!",
         welcomeModal: null,
       };
     },
     computed: {
       contextStore() {
         return useContextStore();
+      },
+      pageTitle() {
+        return `Welcome back, ${this.contextStore.context.user}!`;
       },
     },
     mounted() {
