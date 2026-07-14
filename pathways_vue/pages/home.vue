@@ -6,7 +6,7 @@
       <div class="row mt-5">
         <div class="col-md-8 col-12">
           <SearchMini class="d-md-none" />
-          <h1 class="my-md-0 my-3">{{ pageTitle }}</h1>
+          <h1 class="my-md-0 my-3">Welcome back, {{ contextStore.context.personData.display_name }}</h1>
         </div>
         <div class="col-md-4 col-12">
           <SearchMini class="d-none d-md-block" />
@@ -14,9 +14,23 @@
       </div>
       <div class="row">
         <div class="col">
-          <BCard class="bg-body-tertiary rounded-3" border-variant="0">
+          <BCard class="bg-body-tertiary rounded-3 mb-5" border-variant="0">
             <pre>{{ JSON.stringify(contextStore.context.personData, null, 2) }}</pre>
           </BCard>
+
+          <h2>My Intended Majors</h2>
+          <div class="row mb-5">
+            <div
+              v-for="(major, index) in contextStore.context.personData.majors"
+              :key="index"
+              class="col-4"
+            >
+              <BCard class="rounded-3 mb-3">
+                <pre>{{ JSON.stringify(major, null, 2) }}</pre>
+              </BCard>
+            </div>
+          </div>
+
         </div>
       </div>
     </template>
@@ -47,7 +61,7 @@
         return useContextStore();
       },
       pageTitle() {
-        return `Welcome back, ${this.contextStore.context.user}!`;
+        return this.contextStore.context.personData.display_name;
       },
     },
     mounted() {
