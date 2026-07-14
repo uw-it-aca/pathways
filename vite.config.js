@@ -4,6 +4,9 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // ensure font assets from dependencies are included in the build
+  assetsInclude: ["**/*.woff", "**/*.woff2"],
+
   // MARK: start vite build config
 
   // vite creates a manifest and assets during the build process (local and prod)
