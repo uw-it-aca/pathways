@@ -9,10 +9,19 @@
   "oxc.unusedDisableDirectives": "deny",
   "oxc.fixKind": "safe_fix",
 
-  "files.associations": {
-    "*.css": "tailwindcss"
-  },
+  "djlint.useVenv": false,
+  "djlint.executablePath": "/Library/Frameworks/Python.framework/Versions/3.14/bin/djlint",
 
+  "files.associations": {
+    "*.css": "tailwindcss",
+    "**/templates/*.html": "django-html",
+  },
+  "[django-html]": {
+    "editor.defaultFormatter": "monosans.djlint"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
   "[vue]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
     //"editor.rulers": [80]
