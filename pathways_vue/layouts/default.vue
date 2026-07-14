@@ -20,14 +20,14 @@
       <SColorMode color-class="text-white" class="ms-2" />
     </template>
 
-    <template v-if="window.pathways.messages" #system>
+    <template v-if="systemMessages.length" #system>
       <div class="row">
         <div class="col">
           <ul
             class="list-unstyled text-info-emphasis small m-0 py-2 text-center"
           >
             <li
-              v-for="(message, index) in window.pathways.messages"
+              v-for="(message, index) in systemMessages"
               :key="index"
               class="mb-2"
               v-html="message"
@@ -92,6 +92,12 @@
         signOutUrl: "/saml/logout",
         tagLine: "Discover your path to a degree",
       };
+    },
+  computed: {
+      // get system messages from window.pathways.messages (django persistent messages)
+      systemMessages() {
+        return window.pathways?.messages || [];
+      },
     },
     created: function () {
       // constructs page title in the following format "Page Title - AppName"
