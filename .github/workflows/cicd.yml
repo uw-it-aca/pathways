@@ -194,7 +194,13 @@ jobs:
           ${{ needs.context.outputs.image_tag }}
           bash -c ". ./docker/build_index.sh"
 
-      # Push Image to Repository
+      - name: Run vulnerability scan
+        id: vuln-scan
+        uses: uw-it-aca/actions/container-vuln-scan@main
+        with:
+          image_tag: ${{ needs.context.outputs.image_tag }}
+          severity: 'HIGH,CRITICAL'
+
       - name: Push Image to Repository
         if: github.event_name == 'push'
         uses: uw-it-aca/actions/gcr-push@main

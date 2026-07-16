@@ -15,6 +15,9 @@ class TestPerson(TestCase):
     def test_get_person_by_uwnetid(self):
         person = get_person_by_uwnetid("javerage")
 
+        self.assertEqual(person.get("display_name"), "Jamesy McJamesy")
+        self.assertEqual(person.get("preferred_first_name"), "Jamesy")
+        self.assertEqual(person.get("preferred_surname"), "McJamesy")
         self.assertEqual(person.get("student_number"), "1033334")
         self.assertEqual(person.get("class_desc"), "Sophomore")
         self.assertEqual(person.get("total_credits"), "79.00")
@@ -32,6 +35,9 @@ class TestPerson(TestCase):
                          "PRE SOCIAL SCIENCE")
         self.assertEqual(person.get("majors")[1].get("major_name"),
                          "INTERNATIONAL STUDIES")
+
+        # Intended majors
+        self.assertEqual(len(person.get("intended_majors")), 2)
 
         # Not a student
         person = get_person_by_uwnetid("jadviser")

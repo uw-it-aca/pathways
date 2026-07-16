@@ -20,6 +20,9 @@ def get_person_by_uwnetid(uwnetid):
     latest_transcript = person.student.transcripts.last()
 
     person_data.update({
+        'display_name': person.display_name,
+        'preferred_first_name': person.preferred_first_name,
+        'preferred_surname': person.preferred_surname,
         'student_number': person.student.student_number,
         'class_desc': person.student.class_desc,
         'scholarship_desc': latest_transcript.scholarship_desc if (
@@ -32,6 +35,7 @@ def get_person_by_uwnetid(uwnetid):
                     'major_name': m.major_name,
                 } for m in person.student.majors
             ],
+        'intended_majors': person.student.intended_majors,
         'advisers': [{
                     'uwnetid': a.employee.person.uwnetid,
                     'display_name': a.employee.person.display_name,
