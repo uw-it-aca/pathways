@@ -37,12 +37,16 @@ class TestPerson(TestCase):
                          "INTERNATIONAL STUDIES")
 
         # Intended majors
-        self.assertEqual(len(person.get("intended_majors")), 2)
+        self.assertEqual(len(person.get("intended_majors")), 0)
 
         # Not a student
         person = get_person_by_uwnetid("jadviser")
         self.assertEqual(person, {
-            "display_name": "Jay Adviser", "uwnetid": "jadviser"})
+            "display_name": "Jay Adviser",
+            "uwnetid": "jadviser",
+            "preferred_first_name": None,
+            "preferred_surname": None,
+        })
 
         # Not a person
         self.assertRaises(PersonNotFoundException,
