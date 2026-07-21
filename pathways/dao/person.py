@@ -1,8 +1,23 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+from django.db.models.functions import JSONObject
 from uw_person_client.models import Person, Major
 from uw_person_client.exceptions import PersonNotFoundException
+
+
+def get_major_name_by_code(code):
+    query = Major.objects.filter(major_abbr_code=code).values(
+        json=JSONObject(
+            major_abbr_code='major_abbr_code',
+            major_name='major_name'
+        )
+    ).order_by('-major_last_yr').first()
+
+    try:
+        return query.get('json')
+    except AttributeError:
+        pass
 
 
 def get_person_by_uwnetid(uwnetid):
@@ -19,18 +34,13 @@ def get_person_by_uwnetid(uwnetid):
     if not person.student or not person.student.transcripts:
         return person_data
 
-    intended_majors = []
-    for major_code in person.student.intended_majors:
-        try:
-            intended_majors.append({
-                'major_abbr_code': major_code,
-                'major_name': Major.objects.only('major_name').get(
-                    major_abbr_code=major_code).major_name,
-            })
-        except Major.DoesNotExist as ex:
-            pass
-
     latest_transcript = person.student.transcripts.last()
+
+    intended_majors = []
+    for code in person.student.intended_majors:
+        json = get_major_name_by_code(code)
+        if json:
+            intended_majors.append(json)
 
     person_data.update({
         'student_number': person.student.student_number,
