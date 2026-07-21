@@ -173,6 +173,7 @@ jobs:
           path-to-lcov: ./coverage/lcov.info
           flag-name: pathways_vue
           parallel: true
+        continue-on-error: true
 
       # Finalize Coveralls Parallel Build
       - name: Finish Coveralls Build
@@ -180,6 +181,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
+        continue-on-error: true
 
       # Build Search Index
       - name: Build Search Index
@@ -194,7 +196,13 @@ jobs:
           ${{ needs.context.outputs.image_tag }}
           bash -c ". ./docker/build_index.sh"
 
-      # Push Image to Repository
+      - name: Run vulnerability scan
+        id: vuln-scan
+        uses: uw-it-aca/actions/container-vuln-scan@main
+        with:
+          image_tag: ${{ needs.context.outputs.image_tag }}
+          severity: 'HIGH,CRITICAL'
+
       - name: Push Image to Repository
         if: github.event_name == 'push'
         uses: uw-it-aca/actions/gcr-push@main

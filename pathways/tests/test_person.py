@@ -15,6 +15,9 @@ class TestPerson(TestCase):
     def test_get_person_by_uwnetid(self):
         person = get_person_by_uwnetid("javerage")
 
+        self.assertEqual(person.get("display_name"), "Jamesy McJamesy")
+        self.assertEqual(person.get("preferred_first_name"), "Jamesy")
+        self.assertEqual(person.get("preferred_surname"), "McJamesy")
         self.assertEqual(person.get("student_number"), "1033334")
         self.assertEqual(person.get("class_desc"), "Sophomore")
         self.assertEqual(person.get("total_credits"), "79.00")
@@ -33,10 +36,17 @@ class TestPerson(TestCase):
         self.assertEqual(person.get("majors")[1].get("major_name"),
                          "INTERNATIONAL STUDIES")
 
+        # Intended majors
+        self.assertEqual(len(person.get("intended_majors")), 0)
+
         # Not a student
         person = get_person_by_uwnetid("jadviser")
         self.assertEqual(person, {
-            "display_name": "Jay Adviser", "uwnetid": "jadviser"})
+            "display_name": "Jay Adviser",
+            "uwnetid": "jadviser",
+            "preferred_first_name": None,
+            "preferred_surname": None,
+        })
 
         # Not a person
         self.assertRaises(PersonNotFoundException,
