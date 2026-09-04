@@ -66,6 +66,14 @@ jobs:
 
     needs: context
 
+    permissions:
+      contents: read
+      security-events: write
+      # Coveralls may or may not need the following permissions
+      # pull-requests: write    # For PR comments
+      # statuses: write        # For commit status updates
+      # checks: write          # For check runs
+
     services:
       postgres:
         image: postgres:17
@@ -95,6 +103,7 @@ jobs:
         with:
           app_name: ${DJANGO_APP}
           exclude_paths: "migrations"
+          linter: "pycodestyle"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4

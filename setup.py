@@ -32,6 +32,7 @@ setup(
         "django-persistent-message~=1.3",
         "whoosh~=2.7",
         "azure-storage-blob~=12.25",
+        "psycopg[c]",
     ],
     license="Apache License, Version 2.0",
     description="A tool for visually displaying UW course prerequisites",
