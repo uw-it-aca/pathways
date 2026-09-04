@@ -2,6 +2,7 @@ autoscaling:
   enabled: true
   minReplicas: 2
   maxReplicas: 40
+
 ingress:
   enabled: true
   tls:
@@ -37,6 +38,14 @@ ingress:
       if ($host != 'dawgpath.uw.edu' ) {
         return 301 $scheme://dawgpath.uw.edu;
       }
+
+gateway:
+  enabled: true
+  hostnames:
+    - dawgpath.uw.edu
+    - pivot.uw.edu
+    - prereqmap.uw.edu
+  redirectToFirstHostname: true
 
 namespace:
   enabled: true
