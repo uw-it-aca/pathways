@@ -1,5 +1,5 @@
 <template>
-  <h2 class="fs-3 fw-light ff-encode-sans mb-3">Explore this Major</h2>
+  <SHeading level="2" class="mb-3">Explore this Major</SHeading>
   <div class="row mb-5">
     <div class="col-md-4 mb-3" v-if="major['program_code']">
       <a class="card-link text-decoration-none p-0" :href="myplanProgramURL">
@@ -73,8 +73,12 @@
 </template>
 
 <script>
+  import { SHeading } from "solstice-vue";
   export default {
     name: "ExploreMajor",
+    components: {
+      SHeading,
+    },
     props: {
       major: {
         type: Object,

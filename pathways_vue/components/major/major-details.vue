@@ -1,10 +1,10 @@
 <template>
-<h1
-  class="fs-2 fw-semibold ff-encode-sans my-md-0 my-3"
-  data-clarity-unmask="true"
->
-  {{ major.credential_title }}
-</h1>
+  <SHeading
+    level="1"
+    class="fw-bold ff-encode-sans mb-3"
+    data-clarity-unmask="true"
+    >{{ major.credential_title }}</SHeading
+  >
   <div class="mb-5">
     <p class="text-uppercase mb-1">
       {{ major["major_school"] }} - {{ major["major_campus"] }}
@@ -28,10 +28,12 @@
 
 <script>
   import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
+  import { SHeading } from "solstice-vue";
 
   export default {
     name: "MajorDetails",
     components: {
+      SHeading,
       MajorCapacityDisplay,
     },
     props: {
