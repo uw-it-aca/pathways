@@ -333,6 +333,14 @@ class ModelTest(TestCase):
         self.assertEqual(search_results['id'], 'CHEM')
         self.assertEqual(search_results['url'], '/major?id=CHEM')
 
+    def test_find_by_bare_code(self):
+        matches = Major.find_by_bare_code(' other ')
+        self.assertEqual([m.credential_code for m in matches],
+                         ['OTHER-10-3-4', 'OTHER-10-4-4'])
+        self.assertEqual(Major.find_by_bare_code('NOPE'), [])
+        self.assertEqual([m.credential_code for m in
+                          Major.find_by_bare_code('chem')], ['CHEM-0-1-2'])
+
     def test_major_list(self):
         major_list = Major.get_major_list()
         self.assertEqual(major_list, [

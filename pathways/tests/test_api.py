@@ -49,6 +49,19 @@ class TestMajorApi(ApiTest):
         response = MajorDetails.as_view()(self.request,
                                           credential_abbr='Fake-Cred')
         self.assertEqual(response.status_code, 404)
+        response = MajorDetails.as_view()(self.request,
+                                          credential_abbr='NOPE')
+        self.assertEqual(response.status_code, 404)
+
+    def test_bare_code(self):
+        response = MajorDetails.as_view()(self.request,
+                                          credential_abbr='train')
+        major = json.loads(response.content)
+        self.assertEqual(major['credential_code'], 'TRAIN-0-50-5')
+        response = MajorDetails.as_view()(self.request,
+                                          credential_abbr='CSCI  ')
+        major = json.loads(response.content)
+        self.assertEqual(major['credential_code'], 'CSCI-0-50-5')
 
 
 class TestCoiApi(ApiTest):
