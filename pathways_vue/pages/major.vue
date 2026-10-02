@@ -19,7 +19,25 @@
       </template>
       <template v-else>
         <div class="row justify-content-center">
-          <div v-if="showError" class="col col-lg-8">
+          <div v-if="matches.length" class="col col-lg-8 my-5">
+            <h2 class="h4">Select a major</h2>
+            <ul class="list-unstyled">
+              <li v-for="match in matches" :key="match.credential_code">
+                <router-link
+                  :to="{
+                    path: '/major',
+                    query: { id: match.credential_code },
+                  }"
+                >
+                  {{ match.credential_title }}
+                </router-link>
+                <span class="text-muted">
+                  ({{ match.major_campus }}, {{ match.major_school }})
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div v-else-if="showError" class="col col-lg-8">
             <div class="alert alert-purple" role="alert">
               <p>
                 Data is not available for selected major. Here are some possible
@@ -82,6 +100,7 @@
         majorID: undefined,
         majorTitle: undefined,
         major_data: undefined,
+        matches: [],
         showError: false,
         loading: false,
       };
@@ -89,6 +108,7 @@
     computed: {
       pageTitle() {
         if (this.majorTitle) return this.majorTitle;
+        if (this.matches.length) return "Select a major";
         return this.showError ? "Error" : "Major";
       },
     },
@@ -99,9 +119,12 @@
       majorID() {
         this.get_major_data();
       },
+      "$route.query.id"(val) {
+        this.majorID = val?.trim();
+      },
     },
     mounted() {
-      this.majorID = this.$route.query.id;
+      this.majorID = this.$route.query.id?.trim();
     },
     methods: {
       async get_major_data() {
@@ -110,12 +133,25 @@
           return;
         }
         this.major_data = undefined;
+        this.majorTitle = undefined;
+        this.matches = [];
         this.showError = false;
         this.loading = true;
         try {
           const data = await useCustomFetch(
-            "/api/v1/majors/details/" + this.majorID,
+            "/api/v1/majors/details/" + encodeURIComponent(this.majorID),
           );
+          if (data.matches) {
+            if (data.matches.length === 1) {
+              this.$router.replace({
+                path: "/major",
+                query: { id: data.matches[0].credential_code },
+              });
+            } else {
+              this.matches = data.matches;
+            }
+            return;
+          }
           this.major_data = data;
           this.majorTitle = data.credential_title;
           utils.recentViewManager(
