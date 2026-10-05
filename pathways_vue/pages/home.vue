@@ -27,32 +27,23 @@
           <BCard class="bg-body-tertiary rounded-3 mb-5" border-variant="0">
             <div class="row">
               <div class="col border-end px-4">
-                <p class="fw-bold text-secondary">Major</p>
+                <p class="fw-bold text-secondary">Degree Information</p>
                 <ul class="list-unstyled p-0">
                   <li class="d-flex justify-content-between">
-                    <div>Major</div>
+                    <div>{{ majorCount > 1 ? "Majors" : "Major" }}</div>
                     <div class="fs-5 fw-bold text-end">
-                      <template
-                        v-if="
-                          !contextStore.context.personData.majors ||
-                          contextStore.context.personData.majors.length === 0
-                        "
-                      >
-                        <div>Pre-Major</div>
-                      </template>
-                      <template
-                        v-for="(major, index) in contextStore.context.personData
-                          .majors"
+                      <div v-if="!hasMajors">Pre-Major</div>
+                      <MajorTitle
+                        v-for="(major, index) in majors"
                         :key="index"
-                      >
-                        <div>{{ major.major_name }}</div>
-                      </template>
+                        :major-abbr-code="major.major_abbr_code"
+                      />
                     </div>
                   </li>
                 </ul>
               </div>
               <div class="col border-end px-4">
-                <p class="fw-bold text-secondary">Satisfactory Progress</p>
+                <p class="fw-bold text-secondary">Progress</p>
                 <ul class="list-unstyled p-0">
                   <li class="d-flex justify-content-between mb-2">
                     <div>Class Standing</div>
@@ -63,39 +54,28 @@
                   <li class="d-flex justify-content-between">
                     <div>Credits</div>
                     <div>
-                      {{ contextStore.context.personData.total_credits }} / 225
+                      {{ contextStore.context.personData.total_credits }} /
+                      {{ creditsRequired }}
                     </div>
                   </li>
                   <li class="mb-2">
-                    <div
-                      class="progress"
-                      role="progressbar"
-                      aria-label="Basic example"
-                      aria-valuenow="25"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <div class="progress-bar" style="width: 25%"></div>
-                    </div>
+                    <BProgress
+                      :value="creditsPercent"
+                      aria-label="Credits completed"
+                    />
                   </li>
                   <li class="d-flex justify-content-between">
                     <div>Quarters Completed</div>
                     <div>
                       {{ contextStore.context.personData.quarters_completed }} /
-                      16 (4yr)
+                      {{ quartersRequired }} (4yr)
                     </div>
                   </li>
                   <li class="mb-2">
-                    <div
-                      class="progress"
-                      role="progressbar"
-                      aria-label="Basic example"
-                      aria-valuenow="25"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <div class="progress-bar" style="width: 25%"></div>
-                    </div>
+                    <BProgress
+                      :value="quartersPercent"
+                      aria-label="Quarters completed"
+                    />
                   </li>
                 </ul>
               </div>
@@ -112,66 +92,59 @@
               </div>
             </div>
           </BCard>
-          <div>
-            <pre>{{
-              JSON.stringify(contextStore.context.personData, null, 2)
-            }}</pre>
-          </div>
+          <template v-if="contextStore.context.debugMode">
+            <div>
+              <pre>{{
+                JSON.stringify(contextStore.context.personData, null, 2)
+              }}</pre>
+            </div>
+          </template>
 
-          <!-- TODO: hide intended majors when majors exist -->
-          <SHeading level="2" class="mb-3">My Intended Majors</SHeading>
-          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5">
-            <template
-              v-if="
-                (contextStore.context.personData.intended_majors || []).length
-              "
-            >
-              <div
-                v-for="(major, index) in contextStore.context.personData
-                  .intended_majors || []"
+          <!-- declared majors take precedence; intended majors are the
+               fallback for students who have not declared yet -->
+          <template v-if="hasMajors">
+            <SHeading level="2" class="mb-3">{{
+              majorCount > 1 ? "My Majors" : "My Major"
+            }}</SHeading>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5">
+              <MajorMini
+                v-for="(major, index) in majors"
                 :key="index"
-                class="col-4"
-              >
-                <div>
-                  <pre>{{ JSON.stringify(major, null, 2) }}</pre>
-                </div>
+                :major-abbr-code="major.major_abbr_code"
+              />
+            </div>
+          </template>
+          <template v-else-if="hasIntendedMajors">
+            <SHeading level="2" class="mb-3">{{
+              intendedMajors.length > 1
+                ? "My Intended Majors"
+                : "My Intended Major"
+            }}</SHeading>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5">
+              <MajorMini
+                v-for="(major, index) in intendedMajors"
+                :key="index"
+                :major-abbr-code="major.major_abbr_code"
+              />
+            </div>
+          </template>
+          <template v-else>
+            <SHeading level="2" class="mb-3">My Major</SHeading>
+            <p class="mb-5">No majors or intended majors found.</p>
+          </template>
 
-                <BCard class="rounded-3 mb-3"> asldkfjasdklfjasdfklj </BCard>
-              </div>
-            </template>
-            <template v-else>
-              <p>No intended majors found.</p>
-            </template>
-          </div>
-
-          <SHeading level="2" class="mb-3">My Majors</SHeading>
-          <div
-            v-if="(contextStore.context.personData.majors || []).length"
-            class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5"
-          >
-            <template
-              v-for="(major, index) in contextStore.context.personData.majors ||
-              []"
-              :key="index"
-            >
-              <MajorMini :major-abbr-code="major.major_abbr_code" />
-            </template>
-          </div>
-          <p v-else class="mb-5">No majors found.</p>
-
-          <SHeading level="2" class="mb-3">Test Display Majors</SHeading>
-          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5">
-
-            <MajorMini :major-abbr-code="'CSSE'" />
-            <MajorMini :major-abbr-code="'COMP E'" />
-            <MajorMini :major-abbr-code="'CMP E'" />
-            <MajorMini :major-abbr-code="'ACMS'" />
-            <MajorMini :major-abbr-code="'C SCI'" />
-            <MajorMini :major-abbr-code="'AMATH'" />
-            <MajorMini :major-abbr-code="'B CRS'" />
-
-          </div>
-
+          <template v-if="contextStore.context.debugMode">
+            <SHeading level="2" class="mb-3">Test Display Majors</SHeading>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5">
+              <MajorMini :major-abbr-code="'CSSE'" />
+              <MajorMini :major-abbr-code="'COMP E'" />
+              <MajorMini :major-abbr-code="'CMP E'" />
+              <MajorMini :major-abbr-code="'ACMS'" />
+              <MajorMini :major-abbr-code="'C SCI'" />
+              <MajorMini :major-abbr-code="'AMATH'" />
+              <MajorMini :major-abbr-code="'B CRS'" />
+            </div>
+          </template>
         </div>
       </div>
     </template>
@@ -182,9 +155,9 @@
   import DefaultLayout from "@/layouts/default.vue";
   import SearchMini from "@/components/search/search-mini.vue";
   import MajorMini from "@/components/common/major-mini.vue";
-  import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
+  import MajorTitle from "@/components/common/major-title.vue";
   import { useCustomFetch } from "@/composables/customFetch";
-  import { BCard, BLink } from "bootstrap-vue-next";
+  import { BCard, BProgress } from "bootstrap-vue-next";
   import { SHeading } from "solstice-vue";
   import { useContextStore } from "@/stores/context";
 
@@ -192,21 +165,51 @@
     name: "HomeComp",
     components: {
       BCard,
-      BLink,
+      BProgress,
       DefaultLayout,
-      MajorCapacityDisplay,
       MajorMini,
+      MajorTitle,
       SearchMini,
       SHeading,
     },
     data() {
       return {
         welcomeModal: null,
+        // degree requirements used as the progress bar maximums
+        creditsRequired: 225,
+        quartersRequired: 16,
       };
     },
     computed: {
       contextStore() {
         return useContextStore();
+      },
+      majors() {
+        return this.contextStore.context.personData.majors || [];
+      },
+      intendedMajors() {
+        return this.contextStore.context.personData.intended_majors || [];
+      },
+      hasMajors() {
+        return this.majors.length > 0;
+      },
+      hasIntendedMajors() {
+        return this.intendedMajors.length > 0;
+      },
+      majorCount() {
+        return this.majors.length;
+      },
+      creditsPercent() {
+        return this.toPercent(
+          this.contextStore.context.personData.total_credits,
+          this.creditsRequired,
+        );
+      },
+      quartersPercent() {
+        return this.toPercent(
+          this.contextStore.context.personData.quarters_completed,
+          this.quartersRequired,
+        );
       },
       pageTitle() {
         return this.contextStore.context.personData.display_name;
@@ -217,6 +220,12 @@
       console.log("Context store data:", contextStore.context);
     },
     methods: {
+      // percentage of a maximum, clamped to 0-100 and safe for missing data
+      toPercent(value, max) {
+        const current = Number(value);
+        if (!max || !Number.isFinite(current)) return 0;
+        return Math.min(100, Math.max(0, (current / max) * 100));
+      },
       showWelcomeModal() {
         this.welcomeModal = new Modal(
           document.getElementById("exampleModal"),
