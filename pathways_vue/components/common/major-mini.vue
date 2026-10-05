@@ -5,7 +5,7 @@
       :key="majorData.credential_code"
       class="col"
     >
-      <BCard class="rounded-3 h-100">
+      <BCard class="rounded-3 h-100" body-class="d-flex flex-column">
         <SHeading level="3" class="fw-bold h5">{{
           majorData.credential_title
         }}</SHeading>
@@ -14,7 +14,7 @@
           <strong class="me-2">Admission Type:</strong>
           <MajorCapacityDisplay :admission-type="majorData.major_admission" />
         </div>
-        <div class="text-end">
+        <div class="text-end mt-auto">
           <BLink
             :to="{ path: '/major', query: { id: majorData.credential_code } }"
             >Learn more about this major</BLink
