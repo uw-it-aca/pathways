@@ -26,6 +26,21 @@ class MajorDetails(RESTDispatch):
         try:
             major = Major.get_major_data(credential_abbr)
             return self.json_response(major)
-        except ObjectDoesNotExist as ex:
+        except ObjectDoesNotExist:
+            # Bare major abbrs (e.g. requested majors) lack the pathway suffix
+            if "-" not in credential_abbr:
+                majors = Major.find_by_bare_code(credential_abbr)
+                parents = [major for major in majors
+                           if major.is_parent_major()]
+                if len(parents) == 1:
+                    parent = parents[0]
+                    return self.json_response(parent.json_data())
+                if majors:
+                    matches = [{"credential_code": major.credential_code,
+                                "credential_title": major.credential_title,
+                                "major_campus": major.major_campus,
+                                "major_school": major.major_school}
+                               for major in majors]
+                    return self.json_response({"matches": matches})
             return self.error_response(404,
                                        "Major %s not found" % credential_abbr)

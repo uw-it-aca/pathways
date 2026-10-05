@@ -38,7 +38,7 @@
     </template>
 
     <template #main>
-      <div class="d-flex flex-column h-100 w-100 gap-3">
+      <div class="d-flex flex-column h-100 w-100">
         <slot name="content"></slot>
         <div class="fixed-bottom m-2 text-end">
           <BButton
