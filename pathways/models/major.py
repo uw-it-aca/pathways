@@ -75,9 +75,10 @@ class Major(models.Model):
 
     @staticmethod
     def find_by_bare_code(code):
-        return list(Major.objects\
-            .filter(major_abbr=code.strip().upper())\
-            .order_by("credential_code"))
+        return list(Major.objects.filter(
+                major_abbr=code.strip().upper()
+            ).order_by("credential_code")
+        )
 
     def json_data(self):
         return {"major_abbr": self.major_abbr,
