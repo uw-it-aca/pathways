@@ -131,7 +131,7 @@
                 :major-abbr-code="major.major_abbr_code"
               />
             </div>
-            <p v-else class="mb-5">No intended majors found. <a href="/">Update your intended majors</a></p>
+            <p v-else class="mb-5">No intended majors found. <a href="https://sdb.admin.uw.edu/sisStudents/uwnetid/prefmajor.aspx" target="_blank">Update your intended majors</a></p>
           </template>
 
           <template v-if="contextStore.context.debugMode">
