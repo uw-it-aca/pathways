@@ -35,6 +35,9 @@ class TestPerson(TestCase):
                          "PRE SOCIAL SCIENCE")
         self.assertEqual(person.get("majors")[1].get("major_name"),
                          "INTERNATIONAL STUDIES")
+        self.assertEqual(person.get("majors")[0].get("major_premaj"), True)
+        self.assertEqual(
+            person.get("majors")[0].get("major_premaj_ext"), False)
 
         # Intended majors
         self.assertEqual(len(person.get("intended_majors")), 0)

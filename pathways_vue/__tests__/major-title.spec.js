@@ -6,8 +6,8 @@ vi.mock("@/composables/customFetch", () => ({ useCustomFetch: vi.fn() }));
 import { useCustomFetch } from "@/composables/customFetch";
 import MajorTitle from "@/components/common/major-title.vue";
 
-const mountTitle = async (majorAbbrCode) => {
-  const wrapper = mount(MajorTitle, { props: { majorAbbrCode } });
+const mountTitle = async (majorAbbrCode, props = {}) => {
+  const wrapper = mount(MajorTitle, { props: { majorAbbrCode, ...props } });
   await flushPromises();
   return wrapper;
 };
@@ -26,6 +26,18 @@ describe("MajorTitle", () => {
   it("renders 'Pre-Major' when abbr code is only whitespace", async () => {
     const wrapper = await mountTitle("   ");
     expect(wrapper.text()).toContain("Pre-Major");
+    expect(useCustomFetch).not.toHaveBeenCalled();
+  });
+
+  it("renders 'Pre-Major (CODE)' when majorPremaj is true", async () => {
+    const wrapper = await mountTitle("PSOCS", { majorPremaj: true });
+    expect(wrapper.text()).toContain("Pre-Major (PSOCS)");
+    expect(useCustomFetch).not.toHaveBeenCalled();
+  });
+
+  it("trims the abbr code in the pre-major display", async () => {
+    const wrapper = await mountTitle("  PSOCS  ", { majorPremaj: true });
+    expect(wrapper.text()).toContain("Pre-Major (PSOCS)");
     expect(useCustomFetch).not.toHaveBeenCalled();
   });
 

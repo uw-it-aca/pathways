@@ -1,10 +1,8 @@
 <template>
+  <h2 class="fs-6 fw-semibold fst-italic">{{ result_count }} results</h2>
   <div>
-    <h2 class="fs-6 fw-semibold fst-italic">{{ result_count }} results</h2>
-  </div>
-  <div class="container">
     <ul class="list-unstyled pt-3">
-      <li class="" v-for="result in displayed_results" :key="result.id">
+      <li class="mb-3" v-for="result in displayed_results" :key="result.id">
         <template v-if="result.is_major">
           <div class="clearfix">
             <a
@@ -19,7 +17,7 @@
               {{ result.campus }}
             </div>
           </div>
-          <div class="small">{{ result.description }}</div>
+          <div style="max-width: 85ch;">{{ result.description }}</div>
 
           <!-- {{ result.abbr }} -->
           <!-- {{ result.description }} -->
@@ -42,7 +40,7 @@
               {{ result.campus }}
             </div>
           </div>
-          <div class="small">{{ result.description }}</div>
+          <div style="max-width: 85ch;">{{ result.description }}</div>
         </template>
       </li>
     </ul>

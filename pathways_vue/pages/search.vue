@@ -2,155 +2,166 @@
   <DefaultLayout :page-title="pageTitle">
     <!-- page content -->
     <template #content>
-      <h1>Search</h1>
-      <form @submit.prevent="runSearch" role="search" class="w-100">
-        <div class="d-flex flex-fill">
-          <div class="w-100">
-            <div class="position-relative">
-              <i
-                class="bi bi-search position-absolute translate-middle-y start-0 top-50 ms-3"
-              ></i>
-              <input
-                type="text"
-                role="search"
-                class="form-control form-control-lg mb-2 border-2 px-5"
-                id="search-string"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="off"
-                enterkeyhint="go"
-                spellcheck="false"
-                v-model="form_data.search_string"
-                aria-label="Recipient's username"
-                aria-describedby="button-addon2"
-              />
-              <button
-                v-if="show_results"
-                type="button"
-                @click="clearSearch"
-                class="btn btn-link position-absolute translate-middle-y end-0 top-50 me-2 p-1"
-              >
-                clear
-              </button>
+      <div class="row my-5">
+        <div class="col">
+          <!-- start content -->
+
+          <SHeading level="1" class="fw-bold ff-encode-sans">
+            Search
+          </SHeading>
+          <form @submit.prevent="runSearch" role="search" class="mb-3 w-100">
+            <div class="d-flex flex-fill">
+              <div class="w-100">
+                <div class="position-relative">
+                  <i
+                    class="bi bi-search position-absolute translate-middle-y start-0 top-50 ms-3"
+                  ></i>
+                  <input
+                    type="text"
+                    role="search"
+                    class="form-control form-control-lg mb-2 border-2 px-5"
+                    id="search-string"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    enterkeyhint="go"
+                    spellcheck="false"
+                    v-model="form_data.search_string"
+                    aria-label="Recipient's username"
+                    aria-describedby="button-addon2"
+                  />
+                  <button
+                    v-if="show_results"
+                    type="button"
+                    @click="clearSearch"
+                    class="btn btn-link position-absolute translate-middle-y end-0 top-50 me-2 p-1"
+                  >
+                    clear
+                  </button>
+                </div>
+                <!-- MARK: remove search button -->
+                <button
+                  class="btn btn-primary visually-hidden"
+                  id="button-addon2"
+                  type="submit"
+                  @click="runSearch"
+                >
+                  Search
+                </button>
+                <div class="text-secondary">
+                  Press Enter to search for courses, majors, or subjects
+                </div>
+              </div>
             </div>
-            <!-- MARK: remove search button -->
-            <button
-              class="btn btn-primary visually-hidden"
-              id="button-addon2"
-              type="submit"
-              @click="runSearch"
-            >
-              Search
-            </button>
-            <div class="text-secondary">
-              Press Enter to search for courses, majors, or subjects
+          </form>
+
+          <template v-if="show_results">
+            <div class="d-flex mb-5 gap-4">
+              <div>
+                <div>
+                  <label class="form-label small fw-bold me-2">Type</label>
+                </div>
+                <ul class="list-inline m-0">
+                  <li class="list-inline-item me-3">
+                    <BFormRadio
+                      id="allType"
+                      v-model="form_data.type"
+                      name="type-radios"
+                      value="all"
+                      @change="runSearch"
+                      >All
+                    </BFormRadio>
+                  </li>
+                  <li class="list-inline-item me-3">
+                    <BFormRadio
+                      id="courseType"
+                      v-model="form_data.type"
+                      name="type-radios"
+                      value="course"
+                      @change="runSearch"
+                      >Course
+                    </BFormRadio>
+                  </li>
+                  <li class="list-inline-item me-1 mb-1">
+                    <BFormRadio
+                      id="majorType"
+                      v-model="form_data.type"
+                      name="type-radios"
+                      value="major"
+                      @change="runSearch"
+                      >Major
+                    </BFormRadio>
+                  </li>
+                </ul>
+              </div>
+              <div class="btn-group-toggle" data-toggle="buttons">
+                <div>
+                  <label class="form-label small fw-bold me-2">Campus</label>
+                </div>
+                <ul class="list-inline m-0">
+                  <li class="list-inline-item me-1 mb-1">
+                    <BFormRadio
+                      id="allCampus"
+                      v-model="form_data.campus"
+                      name="campus-radios"
+                      value="all"
+                      @change="runSearch"
+                      >All
+                    </BFormRadio>
+                  </li>
+                  <li class="list-inline-item me-1 mb-1">
+                    <BFormRadio
+                      id="seattleCampus"
+                      v-model="form_data.campus"
+                      name="campus-radios"
+                      value="seattle"
+                      @change="runSearch"
+                      >Seattle
+                    </BFormRadio>
+                  </li>
+                  <li class="list-inline-item me-1 mb-1">
+                    <BFormRadio
+                      id="tacomaCampus"
+                      v-model="form_data.campus"
+                      name="campus-radios"
+                      value="tacoma"
+                      @change="runSearch"
+                      >Tacoma
+                    </BFormRadio>
+                  </li>
+                  <li class="list-inline-item me-1 mb-1">
+                    <BFormRadio
+                      id="bothellCampus"
+                      v-model="form_data.campus"
+                      name="campus-radios"
+                      value="bothell"
+                      @change="runSearch"
+                      >Bothell
+                    </BFormRadio>
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
+
+            <h2>Results</h2>
+            <SearchResults
+              v-if="show_results"
+              :search_results="search_results"
+            />
+          </template>
+
+          <template v-else>
+            <div class="d-flex">
+              <div class="w-50">
+                <RecentSearches />
+              </div>
+              <div class="w-50"><RecentViews /></div>
+            </div>
+          </template>
+
+          <!-- end content   -->
         </div>
-      </form>
-
-      <template v-if="show_results">
-        <div class="d-flex">
-          <div class="me-3">
-            <div>
-              <label class="form-label small fw-bold me-2">Type</label>
-            </div>
-            <ul class="list-inline">
-              <li class="list-inline-item me-1 mb-1">
-                <BFormRadio
-                  id="allType"
-                  v-model="form_data.type"
-                  name="type-radios"
-                  value="all"
-                  @change="runSearch"
-                  >All
-                </BFormRadio>
-              </li>
-              <li class="list-inline-item me-1 mb-1">
-                <BFormRadio
-                  id="courseType"
-                  v-model="form_data.type"
-                  name="type-radios"
-                  value="course"
-                  @change="runSearch"
-                  >Course
-                </BFormRadio>
-              </li>
-              <li class="list-inline-item me-1 mb-1">
-                <BFormRadio
-                  id="majorType"
-                  v-model="form_data.type"
-                  name="type-radios"
-                  value="major"
-                  @change="runSearch"
-                  >Major
-                </BFormRadio>
-              </li>
-            </ul>
-          </div>
-          <div class="btn-group-toggle" data-toggle="buttons">
-            <div>
-              <label class="form-label small fw-bold me-2">Campus</label>
-            </div>
-            <ul class="list-inline">
-              <li class="list-inline-item me-1 mb-1">
-
-                <BFormRadio
-                  id="allCampus"
-                  v-model="form_data.campus"
-                  name="campus-radios"
-                  value="all"
-                  @change="runSearch"
-                  >All
-                </BFormRadio>
-              </li>
-              <li class="list-inline-item me-1 mb-1">
-                <BFormRadio
-                  id="seattleCampus"
-                  v-model="form_data.campus"
-                  name="campus-radios"
-                  value="seattle"
-                  @change="runSearch"
-                  >Seattle
-                </BFormRadio>
-
-              </li>
-              <li class="list-inline-item me-1 mb-1">
-                <BFormRadio
-                  id="tacomaCampus"
-                  v-model="form_data.campus"
-                  name="campus-radios"
-                  value="tacoma"
-                  @change="runSearch"
-                  >Tacoma
-                </BFormRadio>
-              </li>
-              <li class="list-inline-item me-1 mb-1">
-                <BFormRadio
-                  id="bothellCampus"
-                  v-model="form_data.campus"
-                  name="campus-radios"
-                  value="bothell"
-                  @change="runSearch"
-                  >Bothell
-                </BFormRadio>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <h2>Results</h2>
-        <SearchResults v-if="show_results" :search_results="search_results" />
-      </template>
-
-      <template v-else>
-        <div class="d-flex">
-          <div class="w-50">
-            <RecentSearches />
-          </div>
-          <div class="w-50"><RecentViews /></div>
-        </div>
-      </template>
+      </div>
     </template>
   </DefaultLayout>
 </template>
@@ -162,6 +173,7 @@
   import SearchResults from "@/components/search/results.vue";
   import { useCustomFetch } from "@/composables/customFetch";
   import { BFormRadio } from "bootstrap-vue-next";
+  import { SHeading } from "solstice-vue";
 
   export default {
     components: {
@@ -170,6 +182,7 @@
       RecentViews,
       SearchResults,
       BFormRadio,
+      SHeading,
     },
     props: {},
     data() {
@@ -201,8 +214,7 @@
 
         if (this.form_data.campus !== "all") {
           results = results.filter(
-            (r) =>
-              (r.campus || "").toLowerCase() === this.form_data.campus,
+            (r) => (r.campus || "").toLowerCase() === this.form_data.campus,
           );
         }
 
@@ -217,7 +229,9 @@
     },
     watch: {
       search_string(val) {
-        this.$router.replace({ query: { ...this.$route.query, q: val || undefined } });
+        this.$router.replace({
+          query: { ...this.$route.query, q: val || undefined },
+        });
       },
     },
     methods: {

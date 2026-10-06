@@ -2,6 +2,9 @@
   <template v-if="!majorAbbrCode || !majorAbbrCode.trim()">
     <div>Pre-Major</div>
   </template>
+  <template v-else-if="majorPremaj">
+    <div>Pre-Major ({{ majorAbbrCode.trim() }})</div>
+  </template>
   <template v-else-if="titles.length">
     <div v-for="(title, index) in titles" :key="index">{{ title }}</div>
   </template>
@@ -20,6 +23,10 @@
       majorAbbrCode: {
         type: String,
         default: "",
+      },
+      majorPremaj: {
+        type: Boolean,
+        default: false,
       },
     },
     data() {
@@ -47,8 +54,8 @@
         const code = this.majorAbbrCode?.trim();
         this.titles = [];
         this.showError = false;
-        if (!code) {
-          // no abbr code means the student is a pre-major
+        if (!code || this.majorPremaj) {
+          // no abbr code or a pre-major means we don't fetch a title
           return;
         }
         this.loading = true;
