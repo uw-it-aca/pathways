@@ -10,7 +10,9 @@ def get_major_name_by_code(code):
     query = Major.objects.filter(major_abbr_code=code).values(
         json=JSONObject(
             major_abbr_code='major_abbr_code',
-            major_name='major_name'
+            major_name='major_name',
+            major_premaj='major_premaj',
+            major_premaj_ext='major_premaj_ext',
         )
     ).order_by('-major_last_yr').first()
 
@@ -53,6 +55,8 @@ def get_person_by_uwnetid(uwnetid):
         'majors': [{
                 'major_abbr_code': m.major_abbr_code,
                 'major_name': m.major_name,
+                'major_premaj': m.major_premaj,
+                'major_premaj_ext': m.major_premaj_ext,
             } for m in person.student.majors
         ],
         'intended_majors': intended_majors,
