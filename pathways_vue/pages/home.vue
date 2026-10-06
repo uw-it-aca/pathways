@@ -143,6 +143,7 @@
               <MajorMini :major-abbr-code="'PSOCS'" />
               <MajorMini :major-abbr-code="'PREARC'" />
               <MajorMini :major-abbr-code="'PRESCI'" />
+              <MajorMini :major-abbr-code="'ENGRUD'" />
             </div>
           </template>
         </div>
