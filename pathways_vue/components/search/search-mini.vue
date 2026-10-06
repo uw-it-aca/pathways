@@ -1,17 +1,22 @@
 <template>
   <div class="dropdown mb-3" @focusout="onFocusOut">
+    <label for="search-mini-input" class="visually-hidden">Search</label>
     <BInputGroup size="md">
       <BFormInput
+        id="search-mini-input"
         v-model="query"
         type="text"
         autocomplete="off"
+        role="combobox"
+        aria-controls="search-mini-dropdown"
+        :aria-expanded="open.toString()"
         @focus="open = true"
         @keyup.enter="navigate"
-        :aria-expanded="open.toString()"
       />
       <BButton variant="outline-primary" @click="navigate">Search</BButton>
     </BInputGroup>
     <div
+      id="search-mini-dropdown"
       v-show="open"
       class="dropdown-menu show mt-1 w-100 p-3"
       style=""

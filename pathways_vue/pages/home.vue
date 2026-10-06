@@ -27,7 +27,7 @@
           <BCard class="bg-body-tertiary rounded-3 mb-5" border-variant="0">
             <div class="row">
               <div class="col border-end px-4">
-                <p class="fw-bold text-secondary">Degree Information</p>
+                <p class="fw-bold text-body-secondary">Degree Information</p>
                 <ul class="list-unstyled p-0">
                   <li class="d-flex justify-content-between">
                     <div>{{ majorCount > 1 ? "Majors" : "Major" }}</div>
@@ -43,7 +43,7 @@
                 </ul>
               </div>
               <div class="col border-end px-4">
-                <p class="fw-bold text-secondary">Progress</p>
+                <p class="fw-bold text-body-secondary">Progress</p>
                 <ul class="list-unstyled p-0">
                   <li class="d-flex justify-content-between mb-2">
                     <div>Class Standing</div>
@@ -80,7 +80,7 @@
                 </ul>
               </div>
               <div class="col px-4">
-                <p class="fw-bold text-secondary">Academics</p>
+                <p class="fw-bold text-body-secondary">Academics</p>
                 <ul class="list-unstyled p-0">
                   <li class="d-flex justify-content-between">
                     <div>Cummulative GPA</div>
@@ -100,38 +100,35 @@
             </div>
           </template>
 
-          <!-- declared majors take precedence; intended majors are the
-               fallback for students who have not declared yet -->
-          <template v-if="hasMajors">
-            <SHeading level="2" class="mb-3">{{
-              majorCount > 1 ? "My Majors" : "My Major"
-            }}</SHeading>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5">
-              <MajorMini
-                v-for="(major, index) in majors"
-                :key="index"
-                :major-abbr-code="major.major_abbr_code"
-              />
-            </div>
-          </template>
-          <template v-else-if="hasIntendedMajors">
-            <SHeading level="2" class="mb-3">{{
-              intendedMajors.length > 1
-                ? "My Intended Majors"
-                : "My Intended Major"
-            }}</SHeading>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5">
-              <MajorMini
-                v-for="(major, index) in intendedMajors"
-                :key="index"
-                :major-abbr-code="major.major_abbr_code"
-              />
-            </div>
-          </template>
-          <template v-else>
-            <SHeading level="2" class="mb-3">My Major</SHeading>
-            <p class="mb-5">No majors or intended majors found.</p>
-          </template>
+          <!-- show declared majors and intended majors as separate
+               sections; a student may have both at the same time -->
+          <SHeading level="2" class="mb-3">{{ majorsHeading }}</SHeading>
+          <div
+            v-if="hasMajors"
+            class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5"
+          >
+            <MajorMini
+              v-for="(major, index) in majors"
+              :key="index"
+              :major-abbr-code="major.major_abbr_code"
+            />
+          </div>
+          <p v-else class="mb-5">No majors found.</p>
+
+          <SHeading level="2" class="mb-3">{{
+            intendedMajorsHeading
+          }}</SHeading>
+          <div
+            v-if="hasIntendedMajors"
+            class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5"
+          >
+            <MajorMini
+              v-for="(major, index) in intendedMajors"
+              :key="index"
+              :major-abbr-code="major.major_abbr_code"
+            />
+          </div>
+          <p v-else class="mb-5">No intended majors found.</p>
 
           <template v-if="contextStore.context.debugMode">
             <SHeading level="2" class="mb-3">Test Display Majors</SHeading>
@@ -143,6 +140,9 @@
               <MajorMini :major-abbr-code="'C SCI'" />
               <MajorMini :major-abbr-code="'AMATH'" />
               <MajorMini :major-abbr-code="'B CRS'" />
+              <MajorMini :major-abbr-code="'PSOCS'" />
+              <MajorMini :major-abbr-code="'PREARC'" />
+              <MajorMini :major-abbr-code="'PRESCI'" />
             </div>
           </template>
         </div>
@@ -198,6 +198,14 @@
       },
       majorCount() {
         return this.majors.length;
+      },
+      majorsHeading() {
+        return this.majorCount > 1 ? "My Majors" : "My Major";
+      },
+      intendedMajorsHeading() {
+        return this.intendedMajors.length > 1
+          ? "My Intended Majors"
+          : "My Intended Major";
       },
       creditsPercent() {
         return this.toPercent(
