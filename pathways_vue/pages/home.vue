@@ -27,7 +27,7 @@
           <BCard class="bg-body-tertiary rounded-3 mb-5" border-variant="0">
             <div class="row">
               <div class="col border-end px-4">
-                <p class="fw-bold text-secondary">Degree Information</p>
+                <p class="fw-bold text-body-secondary">Degree Information</p>
                 <ul class="list-unstyled p-0">
                   <li class="d-flex justify-content-between">
                     <div>{{ majorCount > 1 ? "Majors" : "Major" }}</div>
@@ -43,7 +43,7 @@
                 </ul>
               </div>
               <div class="col border-end px-4">
-                <p class="fw-bold text-secondary">Progress</p>
+                <p class="fw-bold text-body-secondary">Progress</p>
                 <ul class="list-unstyled p-0">
                   <li class="d-flex justify-content-between mb-2">
                     <div>Class Standing</div>
@@ -80,7 +80,7 @@
                 </ul>
               </div>
               <div class="col px-4">
-                <p class="fw-bold text-secondary">Academics</p>
+                <p class="fw-bold text-body-secondary">Academics</p>
                 <ul class="list-unstyled p-0">
                   <li class="d-flex justify-content-between">
                     <div>Cummulative GPA</div>
