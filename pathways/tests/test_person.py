@@ -36,7 +36,8 @@ class TestPerson(TestCase):
         self.assertEqual(person.get("majors")[1].get("major_name"),
                          "INTERNATIONAL STUDIES")
         self.assertEqual(person.get("majors")[0].get("major_premaj"), True)
-        self.assertEqual(person.get("majors")[0].get("major_premaj_ext"), False)
+        self.assertEqual(
+            person.get("majors")[0].get("major_premaj_ext"), False)
 
         # Intended majors
         self.assertEqual(len(person.get("intended_majors")), 0)
