@@ -32,11 +32,11 @@
                   <li class="d-flex justify-content-between">
                     <div>{{ majorCount > 1 ? "Majors" : "Major" }}</div>
                     <div class="fs-5 fw-bold text-end">
-                      <div v-if="!hasMajors">Pre-Major</div>
                       <MajorTitle
                         v-for="(major, index) in majors"
                         :key="index"
                         :major-abbr-code="major.major_abbr_code"
+                        :major-premaj="major.major_premaj"
                       />
                     </div>
                   </li>
@@ -100,35 +100,39 @@
             </div>
           </template>
 
-          <!-- show declared majors and intended majors as separate
-               sections; a student may have both at the same time -->
-          <SHeading level="2" class="mb-3">{{ majorsHeading }}</SHeading>
-          <div
-            v-if="hasMajors"
-            class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5"
-          >
-            <MajorMini
-              v-for="(major, index) in majors"
-              :key="index"
-              :major-abbr-code="major.major_abbr_code"
-            />
-          </div>
-          <p v-else class="mb-5">No majors found.</p>
+          <!-- show declared majors; however, if any declared major is a
+               pre-major, show the intended majors instead -->
+          <template v-if="!hasPremajor">
+            <SHeading level="2" class="mb-3">{{ majorsHeading }}</SHeading>
+            <div
+              v-if="hasMajors"
+              class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5"
+            >
+              <MajorMini
+                v-for="(major, index) in majors"
+                :key="index"
+                :major-abbr-code="major.major_abbr_code"
+              />
+            </div>
+            <p v-else class="mb-5">No majors found.</p>
+          </template>
 
-          <SHeading level="2" class="mb-3">{{
-            intendedMajorsHeading
-          }}</SHeading>
-          <div
-            v-if="hasIntendedMajors"
-            class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5"
-          >
-            <MajorMini
-              v-for="(major, index) in intendedMajors"
-              :key="index"
-              :major-abbr-code="major.major_abbr_code"
-            />
-          </div>
-          <p v-else class="mb-5">No intended majors found.</p>
+          <template v-else>
+            <SHeading level="2" class="mb-3">{{
+              intendedMajorsHeading
+            }}</SHeading>
+            <div
+              v-if="hasIntendedMajors"
+              class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5"
+            >
+              <MajorMini
+                v-for="(major, index) in intendedMajors"
+                :key="index"
+                :major-abbr-code="major.major_abbr_code"
+              />
+            </div>
+            <p v-else class="mb-5">No intended majors found. <a href="/">Update your intended majors</a></p>
+          </template>
 
           <template v-if="contextStore.context.debugMode">
             <SHeading level="2" class="mb-3">Test Display Majors</SHeading>
@@ -196,6 +200,9 @@
       },
       hasIntendedMajors() {
         return this.intendedMajors.length > 0;
+      },
+      hasPremajor() {
+        return this.majors.some((major) => major.major_premaj);
       },
       majorCount() {
         return this.majors.length;
