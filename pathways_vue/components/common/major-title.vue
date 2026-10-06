@@ -1,9 +1,9 @@
 <template>
   <template v-if="!majorAbbrCode || !majorAbbrCode.trim()">
-    <div>Pre-Major</div>
+    <div>{{ majorName || "Pre-Major" }}</div>
   </template>
   <template v-else-if="majorPremaj">
-    <div>Pre-Major ({{ majorAbbrCode.trim() }})</div>
+    <div>{{ majorName || "Pre-Major" }} ({{ majorAbbrCode.trim() }})</div>
   </template>
   <template v-else-if="titles.length">
     <div v-for="(title, index) in titles" :key="index">{{ title }}</div>
@@ -27,6 +27,10 @@
       majorPremaj: {
         type: Boolean,
         default: false,
+      },
+      majorName: {
+        type: String,
+        default: "",
       },
     },
     data() {

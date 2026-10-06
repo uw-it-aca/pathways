@@ -37,6 +37,7 @@
                         :key="index"
                         :major-abbr-code="major.major_abbr_code"
                         :major-premaj="major.major_premaj"
+                        :major-name="major.major_name"
                       />
                     </div>
                   </li>
