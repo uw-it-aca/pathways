@@ -3,7 +3,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createMemoryHistory, createRouter } from "vue-router";
 
 vi.mock("@/composables/customFetch", () => ({ useCustomFetch: vi.fn() }));
-vi.mock("@/utils.js", () => ({ default: { recentViewManager: vi.fn() } }));
+vi.mock("@/utils.js", () => ({
+  default: { recentViewManager: vi.fn() },
+  preventWidow: (str) => str,
+}));
 // Stubs don't apply to defineAsyncComponent wrappers, so mock the modules
 vi.mock("@/components/major/d3-cgpa.vue", () => ({ default: {} }));
 vi.mock("@/components/major/similar-major.vue", () => ({ default: {} }));

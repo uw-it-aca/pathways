@@ -6,7 +6,9 @@
     <div>{{ majorName }} ({{ majorAbbrCode.trim() }})</div>
   </template>
   <template v-else-if="titles.length">
-    <div v-for="(title, index) in titles" :key="index">{{ title }}</div>
+    <div v-for="(title, index) in titles" :key="index">
+      {{ preventWidow(title) }}
+    </div>
   </template>
   <div
     v-else-if="loading"
@@ -20,6 +22,7 @@
 
 <script>
   import { useCustomFetch } from "@/composables/customFetch";
+  import { preventWidow } from "@/utils";
 
   export default {
     name: "MajorTitle",
@@ -53,6 +56,7 @@
       this.getMajorTitles();
     },
     methods: {
+      preventWidow,
       fetchMajor(code) {
         return useCustomFetch(
           "/api/v1/majors/details/" + encodeURIComponent(code),

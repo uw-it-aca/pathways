@@ -3,7 +3,7 @@
     level="1"
     class="fw-bold ff-encode-sans mb-3"
     data-clarity-unmask="true"
-    >{{ major.credential_title }}</SHeading
+    >{{ preventWidow(major.credential_title) }}</SHeading
   >
   <div class="mb-5">
     <p class="text-uppercase mb-1">
@@ -29,6 +29,7 @@
 <script>
   import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
   import { SHeading } from "solstice-vue";
+  import { preventWidow } from "@/utils";
 
   export default {
     name: "MajorDetails",
@@ -44,6 +45,9 @@
     },
     data() {
       return {};
+    },
+    methods: {
+      preventWidow,
     },
   };
 </script>

@@ -71,8 +71,8 @@ describe("MajorTitle", () => {
     const wrapper = await mountTitle("ACMS");
     const divs = wrapper.findAll("div");
     const texts = divs.map((d) => d.text());
-    expect(texts).toContain("ACMS A");
-    expect(texts).toContain("ACMS B");
+    expect(texts).toContain("ACMS\u00A0A");
+    expect(texts).toContain("ACMS\u00A0B");
     expect(useCustomFetch).toHaveBeenCalledWith(
       "/api/v1/majors/details/ACMS-0-1-1",
     );
@@ -89,7 +89,7 @@ describe("MajorTitle", () => {
       .mockResolvedValueOnce({ credential_title: "ACMS A" })
       .mockRejectedValueOnce(new Error("404"));
     const wrapper = await mountTitle("ACMS");
-    expect(wrapper.text()).toContain("ACMS A");
+    expect(wrapper.text()).toContain("ACMS\u00A0A");
     expect(wrapper.vm.titles).toEqual(["ACMS A"]);
   });
 

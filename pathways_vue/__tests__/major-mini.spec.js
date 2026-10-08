@@ -69,8 +69,8 @@ describe("MajorMini", () => {
       .mockResolvedValueOnce(major("ACMS-1-1-1", "ACMS B"));
     const wrapper = await mountMini("ACMS");
     expect(wrapper.findAll(".b-card")).toHaveLength(2);
-    expect(wrapper.text()).toContain("ACMS A");
-    expect(wrapper.text()).toContain("ACMS B");
+    expect(wrapper.text()).toContain("ACMS\u00A0A");
+    expect(wrapper.text()).toContain("ACMS\u00A0B");
   });
 
   it("skips matches that fail to resolve", async () => {
@@ -86,7 +86,7 @@ describe("MajorMini", () => {
     const wrapper = await mountMini("ACMS");
     expect(wrapper.findAll(".b-card")).toHaveLength(1);
     expect(wrapper.vm.majors).toHaveLength(1);
-    expect(wrapper.text()).toContain("ACMS A");
+    expect(wrapper.text()).toContain("ACMS\u00A0A");
   });
 
   it("trims whitespace and encodes the abbr code", async () => {

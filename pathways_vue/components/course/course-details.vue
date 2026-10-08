@@ -6,7 +6,7 @@
     class="fw-bold ff-encode-sans mb-3"
     data-clarity-unmask="true"
   >
-    {{ course.course_id }}: {{ course.course_title }}
+    {{ course.course_id }}: {{ preventWidow(course.course_title) }}
   </SHeading>
   <div class="mb-3">
     <icon-popover
@@ -41,6 +41,7 @@ r
 <script>
   import IconPopover from "@/components/common/icon-popover.vue";
   import { SHeading } from "solstice-vue";
+  import { preventWidow } from "@/utils";
 
   export default {
     name: "CourseDetails",
@@ -90,6 +91,7 @@ r
       },
     },
     methods: {
+      preventWidow,
       get_quarters_from_offered(offered) {
         offered = offered.replace(".", "");
         if (offered.includes(";")) {
