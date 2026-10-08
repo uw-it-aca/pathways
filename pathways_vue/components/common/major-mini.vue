@@ -7,7 +7,7 @@
     >
       <BCard class="rounded-3 h-100" body-class="d-flex flex-column">
         <SHeading level="3" class="fw-bold h5">{{
-          majorData.credential_title
+          preventWidow(majorData.credential_title)
         }}</SHeading>
         <div>{{ majorData.major_school }} - {{ majorData.major_campus }}</div>
         <div class="mb-3">
@@ -48,6 +48,7 @@
   import { SHeading } from "solstice-vue";
   import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
   import { useCustomFetch } from "@/composables/customFetch";
+  import { preventWidow } from "@/utils";
 
   export default {
     name: "MajorMini",
@@ -79,6 +80,7 @@
       this.getMajorData();
     },
     methods: {
+      preventWidow,
       fetchMajor(code) {
         return useCustomFetch(
           "/api/v1/majors/details/" + encodeURIComponent(code),
