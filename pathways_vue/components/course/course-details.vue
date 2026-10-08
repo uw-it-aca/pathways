@@ -1,9 +1,13 @@
 // course-details.vue
 
 <template>
-  <h1 class="h2 ff-encode-sans fw-bold my-md-0 my-3" data-clarity-unmask="true">
+  <SHeading
+    level="1"
+    class="fw-bold ff-encode-sans mb-3"
+    data-clarity-unmask="true"
+  >
     {{ course.course_id }}: {{ course.course_title }}
-  </h1>
+  </SHeading>
   <div class="mb-3">
     <icon-popover
       v-if="course.is_bottleneck"
@@ -36,11 +40,13 @@ r
 
 <script>
   import IconPopover from "@/components/common/icon-popover.vue";
+  import { SHeading } from "solstice-vue";
 
   export default {
     name: "CourseDetails",
     components: {
       "icon-popover": IconPopover,
+      SHeading,
     },
     props: {
       course: {
