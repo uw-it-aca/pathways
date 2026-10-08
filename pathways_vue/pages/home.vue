@@ -6,7 +6,7 @@
       <div class="row mt-5">
         <div class="col-md-8 col-12">
           <SearchMini class="d-md-none" />
-          <SHeading level="1" class="fw-bold ff-encode-sans mb-5"
+          <SHeading level="1" class="fw-bold ff-encode-sans mb-5" data-clarity-mask="true"
             >Welcome back,
             <template
               v-if="contextStore.context.personData.preferred_first_name"
@@ -55,7 +55,7 @@
                   <li class="d-flex justify-content-between">
                     <div>Credits</div>
                     <div>
-                      {{ contextStore.context.personData.total_credits }} /
+                      {{ totalCredits }} /
                       {{ creditsRequired }}
                     </div>
                   </li>
@@ -69,7 +69,7 @@
                     <div>Quarters Completed</div>
                     <div>
                       {{ contextStore.context.personData.quarters_completed }} /
-                      {{ quartersRequired }} (4yr)
+                      {{ quartersRequired }}
                     </div>
                   </li>
                   <li class="mb-2">
@@ -119,9 +119,16 @@
           </template>
 
           <template v-else>
-            <SHeading level="2" class="mb-3">{{
-              intendedMajorsHeading
-            }}</SHeading>
+            <div class="d-flex justify-content-between align-items-center">
+              <SHeading level="2" class="mb-3">{{
+                intendedMajorsHeading
+              }}</SHeading>
+              <a
+                href="https://sdb.admin.uw.edu/sisStudents/uwnetid/prefmajor.aspx"
+                target="_blank"
+                >Update your intended majors</a
+              >
+            </div>
             <div
               v-if="hasIntendedMajors"
               class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5"
@@ -132,7 +139,7 @@
                 :major-abbr-code="major.major_abbr_code"
               />
             </div>
-            <p v-else class="mb-5">No intended majors found. <a href="https://sdb.admin.uw.edu/sisStudents/uwnetid/prefmajor.aspx" target="_blank">Update your intended majors</a></p>
+            <p v-else class="mb-5">No intended majors found.</p>
           </template>
 
           <template v-if="contextStore.context.debugMode">
@@ -230,6 +237,11 @@
       },
       pageTitle() {
         return this.contextStore.context.personData.display_name;
+      },
+      totalCredits() {
+        return Math.trunc(
+          Number(this.contextStore.context.personData.total_credits),
+        );
       },
     },
     mounted() {

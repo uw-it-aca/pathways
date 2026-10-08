@@ -17,44 +17,33 @@ describe("MajorTitle", () => {
     vi.mocked(useCustomFetch).mockReset();
   });
 
-  it("renders 'Pre-Major' when no abbr code is given", async () => {
-    const wrapper = await mountTitle("");
-    expect(wrapper.text()).toContain("Pre-Major");
-    expect(useCustomFetch).not.toHaveBeenCalled();
-  });
-
-  it("renders 'Pre-Major' when abbr code is only whitespace", async () => {
-    const wrapper = await mountTitle("   ");
-    expect(wrapper.text()).toContain("Pre-Major");
-    expect(useCustomFetch).not.toHaveBeenCalled();
-  });
-
-  it("renders majorName instead of 'Pre-Major' when no abbr code is given", async () => {
+  it("renders majorName when no abbr code is given", async () => {
     const wrapper = await mountTitle("", { majorName: "Pre Sciences" });
     expect(wrapper.text()).toContain("Pre Sciences");
-    expect(wrapper.text()).not.toContain("Pre-Major");
     expect(useCustomFetch).not.toHaveBeenCalled();
   });
 
-  it("renders 'Pre-Major (CODE)' when majorPremaj is true", async () => {
-    const wrapper = await mountTitle("PSOCS", { majorPremaj: true });
-    expect(wrapper.text()).toContain("Pre-Major (PSOCS)");
+  it("renders majorName when abbr code is only whitespace", async () => {
+    const wrapper = await mountTitle("   ", { majorName: "Pre Sciences" });
+    expect(wrapper.text()).toContain("Pre Sciences");
     expect(useCustomFetch).not.toHaveBeenCalled();
   });
 
-  it("trims the abbr code in the pre-major display", async () => {
-    const wrapper = await mountTitle("  PSOCS  ", { majorPremaj: true });
-    expect(wrapper.text()).toContain("Pre-Major (PSOCS)");
-    expect(useCustomFetch).not.toHaveBeenCalled();
-  });
-
-  it("renders majorName instead of 'Pre-Major' when majorPremaj is true", async () => {
+  it("renders 'majorName (CODE)' when majorPremaj is true", async () => {
     const wrapper = await mountTitle("PSOCS", {
       majorPremaj: true,
       majorName: "Pre Sciences",
     });
     expect(wrapper.text()).toContain("Pre Sciences (PSOCS)");
-    expect(wrapper.text()).not.toContain("Pre-Major");
+    expect(useCustomFetch).not.toHaveBeenCalled();
+  });
+
+  it("trims the abbr code in the pre-major display", async () => {
+    const wrapper = await mountTitle("  PSOCS  ", {
+      majorPremaj: true,
+      majorName: "Pre Sciences",
+    });
+    expect(wrapper.text()).toContain("Pre Sciences (PSOCS)");
     expect(useCustomFetch).not.toHaveBeenCalled();
   });
 

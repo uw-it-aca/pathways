@@ -1,14 +1,18 @@
 <template>
   <template v-if="!majorAbbrCode || !majorAbbrCode.trim()">
-    <div>{{ majorName || "Pre-Major" }}</div>
+    <div>{{ majorName }}</div>
   </template>
   <template v-else-if="majorPremaj">
-    <div>{{ majorName || "Pre-Major" }} ({{ majorAbbrCode.trim() }})</div>
+    <div>{{ majorName }} ({{ majorAbbrCode.trim() }})</div>
   </template>
   <template v-else-if="titles.length">
     <div v-for="(title, index) in titles" :key="index">{{ title }}</div>
   </template>
-  <div v-else-if="loading" class="spinner-border spinner-border-sm" role="status">
+  <div
+    v-else-if="loading"
+    class="spinner-border spinner-border-sm"
+    role="status"
+  >
     <span class="visually-hidden">Loading...</span>
   </div>
   <div v-else-if="showError">{{ majorAbbrCode }}</div>
