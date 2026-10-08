@@ -96,4 +96,57 @@ describe("Major page", () => {
     const { wrapper } = await mountAt("NOPE");
     expect(wrapper.find(".alert").exists()).toBe(true);
   });
+
+  it("shows a loading spinner while the request is in flight", async () => {
+    let resolveFetch;
+    vi.mocked(useCustomFetch).mockReturnValue(
+      new Promise((resolve) => {
+        resolveFetch = resolve;
+      }),
+    );
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [{ path: "/major", component: Major }],
+    });
+    router.push({ path: "/major", query: { id: "MUSAP-0-1-8" } });
+    await router.isReady();
+    const wrapper = mount(Major, {
+      global: {
+        plugins: [router],
+        stubs: {
+          DefaultLayout: { template: "<div><slot name='content' /></div>" },
+          MajorDetails: true,
+          ExploreMajor: true,
+          D3Cgpa: true,
+          SimilarMajor: true,
+          CommonCourses: true,
+          ContactAdviser: true,
+          SearchMini: true,
+        },
+      },
+    });
+    await flushPromises();
+    expect(wrapper.find(".spinner-border").exists()).toBe(true);
+
+    resolveFetch({ credential_title: "Music", major_campus: "Seattle" });
+    await flushPromises();
+    expect(wrapper.find(".spinner-border").exists()).toBe(false);
+  });
+
+  it("re-fetches major data when the route query id changes", async () => {
+    vi.mocked(useCustomFetch)
+      .mockResolvedValueOnce({ credential_title: "Music" })
+      .mockResolvedValueOnce({ credential_title: "Biology" });
+    const { wrapper, router } = await mountAt("MUSAP-0-1-8");
+    expect(wrapper.vm.major_data.credential_title).toBe("Music");
+
+    await router.push({ path: "/major", query: { id: " BIOL-0-1-1 " } });
+    await flushPromises();
+
+    expect(wrapper.vm.majorID).toBe("BIOL-0-1-1");
+    expect(useCustomFetch).toHaveBeenLastCalledWith(
+      "/api/v1/majors/details/BIOL-0-1-1",
+    );
+    expect(wrapper.vm.major_data.credential_title).toBe("Biology");
+  });
 });

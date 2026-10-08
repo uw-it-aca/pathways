@@ -56,6 +56,19 @@ describe("Home page pre-major display", () => {
     expect(wrapper.text()).toContain("CSE");
   });
 
+  it("pluralizes the heading when there are multiple majors", async () => {
+    setContext({
+      majors: [
+        { major_abbr_code: "CSE", major_premaj: false },
+        { major_abbr_code: "MATH", major_premaj: false },
+      ],
+      intended_majors: [],
+    });
+    const wrapper = await mountHome();
+    expect(wrapper.text()).toContain("Majors");
+    expect(wrapper.findAll("h2").map((h) => h.text())).toContain("My Majors");
+  });
+
   it("shows intended majors when any declared major is a pre-major", async () => {
     setContext({
       majors: [{ major_abbr_code: "PSOCS", major_premaj: true }],
@@ -88,12 +101,55 @@ describe("Home page pre-major display", () => {
     expect(wrapper.text()).toContain("No intended majors found.");
   });
 
+  it("pluralizes the intended majors heading when there are multiple", async () => {
+    setContext({
+      majors: [{ major_abbr_code: "PSOCS", major_premaj: true }],
+      intended_majors: [
+        { major_abbr_code: "PHYS" },
+        { major_abbr_code: "CHEM" },
+      ],
+    });
+    const wrapper = await mountHome();
+    const headings = wrapper.findAll("h2").map((h) => h.text());
+    expect(headings).toContain("My Intended Majors");
+  });
+
+  it("defaults majors and intended_majors to an empty array when absent", async () => {
+    setContext({});
+    const wrapper = await mountHome();
+    expect(wrapper.vm.majors).toEqual([]);
+    expect(wrapper.vm.intendedMajors).toEqual([]);
+    expect(wrapper.text()).toContain("No majors found.");
+  });
+
   it("shows the debug-only test display majors section when debugMode is enabled", async () => {
     setContext({ majors: [], intended_majors: [] });
     const wrapper = await mountHome();
     wrapper.vm.contextStore.context.debugMode = true;
     await wrapper.vm.$nextTick();
     expect(wrapper.text()).toContain("Test Display Majors");
+  });
+
+  it("shows the preferred first name and debug JSON dump when provided", async () => {
+    const el = document.createElement("div");
+    el.id = "django-context-data";
+    el.textContent = JSON.stringify({
+      debugMode: true,
+      personData: {
+        majors: [],
+        intended_majors: [],
+        preferred_first_name: "Jamie",
+        uwnetid: "jdoe",
+        class_desc: "Junior",
+      },
+    });
+    document.body.appendChild(el);
+    const wrapper = await mountHome();
+    const welcomeHeading = wrapper.findAll("h2")[0];
+    expect(welcomeHeading.text()).toContain("Jamie");
+    expect(welcomeHeading.text()).not.toContain("jdoe");
+    expect(wrapper.text()).toContain("Junior");
+    expect(wrapper.text()).toContain('"preferred_first_name": "Jamie"');
   });
 });
 

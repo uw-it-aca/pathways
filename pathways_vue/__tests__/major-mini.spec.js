@@ -130,4 +130,23 @@ describe("MajorMini", () => {
     );
     expect(wrapper.text()).toContain("Art");
   });
+
+  it("shows a loading spinner while the request is in flight", async () => {
+    let resolveFetch;
+    vi.mocked(useCustomFetch).mockReturnValue(
+      new Promise((resolve) => {
+        resolveFetch = resolve;
+      }),
+    );
+    const wrapper = mount(MajorMini, {
+      props: { majorAbbrCode: "MUSAP-0-1-8" },
+      global: { stubs },
+    });
+    await flushPromises();
+    expect(wrapper.find(".spinner-border").exists()).toBe(true);
+
+    resolveFetch(major("MUSAP-0-1-8", "Music"));
+    await flushPromises();
+    expect(wrapper.find(".spinner-border").exists()).toBe(false);
+  });
 });
