@@ -12,12 +12,12 @@
       <SUser :user-netid="contextStore.context.user" data-clarity-mask="true">
         Welcome back,
         <template
-          v-if="contextStore.context.personData.preferred_first_name"
+          v-if="contextStore.context.personData?.preferred_first_name"
         >
           {{ contextStore.context.personData.preferred_first_name }}
         </template>
         <template v-else>
-          {{ contextStore.context.personData.uwnetid }}
+          {{ contextStore.context.personData?.uwnetid }}
         </template>
         <template #action>
           <a :href="signOutUrl" class="link-quiet-danger"
