@@ -32,7 +32,7 @@ describe("MajorDetails", () => {
   it("renders the credential title in the heading", () => {
     const wrapper = mountDetails();
     const heading = wrapper.find("h1");
-    expect(heading.text()).toBe("Computer Science");
+    expect(heading.text()).toBe("Computer\u00A0Science");
     expect(heading.attributes("data-clarity-unmask")).toBe("true");
   });
 

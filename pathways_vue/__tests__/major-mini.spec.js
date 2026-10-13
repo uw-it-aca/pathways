@@ -69,8 +69,8 @@ describe("MajorMini", () => {
       .mockResolvedValueOnce(major("ACMS-1-1-1", "ACMS B"));
     const wrapper = await mountMini("ACMS");
     expect(wrapper.findAll(".b-card")).toHaveLength(2);
-    expect(wrapper.text()).toContain("ACMS A");
-    expect(wrapper.text()).toContain("ACMS B");
+    expect(wrapper.text()).toContain("ACMS\u00A0A");
+    expect(wrapper.text()).toContain("ACMS\u00A0B");
   });
 
   it("skips matches that fail to resolve", async () => {
@@ -86,7 +86,7 @@ describe("MajorMini", () => {
     const wrapper = await mountMini("ACMS");
     expect(wrapper.findAll(".b-card")).toHaveLength(1);
     expect(wrapper.vm.majors).toHaveLength(1);
-    expect(wrapper.text()).toContain("ACMS A");
+    expect(wrapper.text()).toContain("ACMS\u00A0A");
   });
 
   it("trims whitespace and encodes the abbr code", async () => {
@@ -129,5 +129,24 @@ describe("MajorMini", () => {
       "/api/v1/majors/details/ARTAP-0-1-8",
     );
     expect(wrapper.text()).toContain("Art");
+  });
+
+  it("shows a loading spinner while the request is in flight", async () => {
+    let resolveFetch;
+    vi.mocked(useCustomFetch).mockReturnValue(
+      new Promise((resolve) => {
+        resolveFetch = resolve;
+      }),
+    );
+    const wrapper = mount(MajorMini, {
+      props: { majorAbbrCode: "MUSAP-0-1-8" },
+      global: { stubs },
+    });
+    await flushPromises();
+    expect(wrapper.find(".spinner-border").exists()).toBe(true);
+
+    resolveFetch(major("MUSAP-0-1-8", "Music"));
+    await flushPromises();
+    expect(wrapper.find(".spinner-border").exists()).toBe(false);
   });
 });

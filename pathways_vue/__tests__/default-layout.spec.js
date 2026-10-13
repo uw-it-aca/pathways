@@ -68,4 +68,27 @@ describe("DefaultLayout (DawgPath)", () => {
     ]);
     expect(wrapper.text()).toContain("Scheduled maintenance tonight");
   });
+
+  it("shows the preferred first name when available on personData", () => {
+    document.getElementById("django-context-data").textContent =
+      JSON.stringify({
+        user: "jdoe",
+        loginUser: "jdoe",
+        personData: { preferred_first_name: "Jamie", uwnetid: "jdoe" },
+      });
+    const wrapper = mountLayout();
+    expect(wrapper.text()).toContain("Jamie");
+    expect(wrapper.text()).not.toContain("jdoe");
+  });
+
+  it("falls back to uwnetid when preferred first name is not available", () => {
+    document.getElementById("django-context-data").textContent =
+      JSON.stringify({
+        user: "jdoe",
+        loginUser: "jdoe",
+        personData: { uwnetid: "jdoe" },
+      });
+    const wrapper = mountLayout();
+    expect(wrapper.text()).toContain("jdoe");
+  });
 });

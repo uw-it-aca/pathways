@@ -10,7 +10,15 @@
     <template #settings>
       <!-- user comp here -->
       <SUser :user-netid="contextStore.context.user" data-clarity-mask="true">
-        Welcome back, {{ contextStore.context.user }}
+        Welcome back,
+        <template
+          v-if="contextStore.context.personData?.preferred_first_name"
+        >
+          {{ contextStore.context.personData.preferred_first_name }}
+        </template>
+        <template v-else>
+          {{ contextStore.context.personData?.uwnetid }}
+        </template>
         <template #action>
           <a :href="signOutUrl" class="link-quiet-danger"
             ><i class="bi bi-box-arrow-left me-2"></i>Sign out</a
