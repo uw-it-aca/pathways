@@ -22,7 +22,7 @@
 
       <table class="table-borderless table-striped table">
         <thead>
-          <tr class="bg-light text-dark">
+          <tr class="bg-light text-body-secondary">
             <th scope="col" class="pe-0" style="width: 5%"></th>
             <th scope="col" style="width: 5%">Rank</th>
             <th scope="col" style="width: 90%">Common Course</th>

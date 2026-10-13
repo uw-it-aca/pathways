@@ -6,11 +6,11 @@
         <li v-for="view in recent_views" class="mb-2">
           <a
             :href="view.url"
-            class="recent_view_link"
+            class="recent_view_link text-wrap d-flex align-items-start"
             data-clarity-unmask="true"
-            >{{ view.title }}
+            ><span class="flex-grow-1">{{ view.title }}</span>
             <div
-              class="badge text-bg-light rounded-pill text-uppercase float-end"
+              class="badge text-bg-light rounded-pill text-uppercase ms-2 flex-shrink-0"
             >
               {{ view.campus }}
             </div></a

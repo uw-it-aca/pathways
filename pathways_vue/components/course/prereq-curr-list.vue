@@ -37,7 +37,7 @@
                 <div class="col-sm-6 mb-3 p-0">
                   <div>
                     <small
-                      ><strong class="text-dark">Prerequisites</strong>
+                      ><strong class="text-body-secondary">Prerequisites</strong>
                       <span class="badge rounded-pill bg-purple">{{
                         course.prereqs.length
                       }}</span
@@ -62,7 +62,7 @@
                 <div class="col-sm-6 p-0">
                   <div>
                     <small
-                      ><strong class="text-dark">Is a prerequisite for</strong>
+                      ><strong class="text-body-secondary">Is a prerequisite for</strong>
                       <span class="badge rounded-pill bg-purple">{{
                         course.postreqs.length
                       }}</span

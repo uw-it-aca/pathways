@@ -7,6 +7,7 @@
           <a
             :href="`/search?q=${encodeURIComponent(search)}`"
             data-clarity-unmask="true"
+            class="text-wrap"
             >{{ search }}</a
           >
         </li>
@@ -29,5 +30,9 @@
 <style scoped>
   li:last-child {
     margin-bottom: 0 !important;
+  }
+
+  a {
+    word-break: break-word;
   }
 </style>
