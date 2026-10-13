@@ -22,7 +22,7 @@
             >
             <button
               type="button"
-              class="btn btn-outline-secondary btn-sm"
+              class="btn btn-outline-primary btn-sm"
               data-bs-toggle="collapse"
               :data-bs-target="'#collapsePrereqs_' + index"
               aria-expanded="false"
@@ -37,7 +37,9 @@
                 <div class="col-sm-6 mb-3 p-0">
                   <div>
                     <small
-                      ><strong class="text-dark">Prerequisites</strong>
+                      ><strong class="text-body-secondary"
+                        >Prerequisites</strong
+                      >
                       <span class="badge rounded-pill bg-purple">{{
                         course.prereqs.length
                       }}</span
@@ -48,7 +50,7 @@
                     <li v-for="(prereq, index) in course.prereqs" :key="index">
                       <a
                         :href="'/course?id=' + prereq.course_id"
-                        class="btn-primary btn-course router-link-active text-decoration-none"
+                        class="router-link-active me-1"
                       >
                         {{ prereq.course_id }}</a
                       >
@@ -62,7 +64,9 @@
                 <div class="col-sm-6 p-0">
                   <div>
                     <small
-                      ><strong class="text-dark">Is a prerequisite for</strong>
+                      ><strong class="text-body-secondary"
+                        >Is a prerequisite for</strong
+                      >
                       <span class="badge rounded-pill bg-purple">{{
                         course.postreqs.length
                       }}</span
@@ -76,7 +80,7 @@
                     >
                       <a
                         :href="'/course?id=' + postreq.course_id"
-                        class="btn-primary btn-course router-link-active text-decoration-none"
+                        class="router-link-active me-1"
                       >
                         {{ postreq.course_id }}</a
                       >

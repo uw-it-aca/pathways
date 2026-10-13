@@ -4,11 +4,10 @@
       <a
         :href="major_url"
         class="text-decoration-none"
-        style="color: #2f68cb"
         >{{ majorData.credential_title }}</a
       >
     </span>
-    <p class="text-uppercase small text-secondary mb-0">
+    <p class="text-uppercase small text-body-secondary mb-0">
       {{ majorData.major_school }} - {{ majorData.campus }}
     </p>
     <!--

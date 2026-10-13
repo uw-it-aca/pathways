@@ -40,7 +40,8 @@ describe("RecentViews", () => {
     expect(links[0].text()).toContain("Seattle");
 
     expect(links[1].attributes("href")).toBe("/course?id=CSE142");
-    expect(links[1].text()).toContain("CSE 142");
+    // preventWidow replaces the last space with a non-breaking space
+    expect(links[1].text()).toContain("CSE\u00A0142");
     expect(links[1].text()).toContain("Tacoma");
 
     expect(wrapper.find(".badge").exists()).toBe(true);

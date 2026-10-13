@@ -18,11 +18,11 @@
         Students who took <strong>{{ courseData.course_id }}</strong> in the
         past 2 years also took the following courses at the same time.
       </p>
-      <table class="table-borderless table-striped table">
+      <table class="table">
         <thead>
-          <tr class="bg-light text-dark">
-            <th scope="col" class="pe-0" style="width: 5%"></th>
-            <th scope="col" class="pe-0" style="width: 5%">
+          <tr class="text-body-secondary">
+            <th scope="col" class="pe-0 bg-transparent" style="width: 5%"></th>
+            <th scope="col" class="pe-0 bg-transparent" style="width: 5%">
               %
               <a
                 tabindex="0"
@@ -38,11 +38,11 @@
               </a>
             </th>
             <!-- <th scope="col" class="visually-hidden" style="width: 20%">Percentage Graph</th> -->
-            <th scope="col" style="width: 90%">Concurrent Course</th>
+            <th scope="col" class="bg-transparent" style="width: 90%">Concurrent Course</th>
             <!-- change this % to 62 when adding COI back in -->
             <th
               scope="col"
-              class="px-0"
+              class="px-0 bg-transparent"
               style="width: 10%; min-width: 60px; display: none"
             >
               <!-- hidden -->
@@ -68,7 +68,7 @@
             v-for="(course, index) in concurrent_courses"
             :key="index"
           >
-            <th scope="row">
+            <th scope="row" class="bg-transparent">
               <div class="icon-col">
                 <IconPopover
                   v-if="course.is_bottleneck"
@@ -77,7 +77,7 @@
                 <IconPopover v-if="course.is_gateway" :variant="'gateway'" />
               </div>
             </th>
-            <td>{{ course.percent }}%</td>
+            <td class="bg-transparent">{{ course.percent }}%</td>
             <!-- <td>
              <div class="progress">
               <div
@@ -90,26 +90,20 @@
               ></div>
             </div>
           </td> -->
-            <td>
+            <td class="bg-transparent">
               <a
                 :href="'/course?id=' + course.course"
-                :title="'Go to course ' + course.course"
-                class="btn-primary btn-course router-link-active text-decoration-none"
-                >{{ course.course }}</a
-              >
-              <a
-                :href="'/course?id=' + course.course"
-                class="router-link-active ps-3"
                 :title="'Go to course ' + course.course + ' ' + course.title"
-              >
-                {{ course.title }}</a
+                class="router-link-active"
+                >{{ course.course }}:
+                <span class="ms-1">{{ course.title }}</span></a
               >
             </td>
-            <td v-if="course.coi_score" style="display: none">
+            <td v-if="course.coi_score" class="bg-transparent" style="display: none">
               {{ course.coi_score }}
             </td>
             <!-- hidden -->
-            <td v-else style="display: none">No Data</td>
+            <td v-else style="display: none" class="bg-transparent">No Data</td>
             <!-- hidden -->
           </tr>
         </tbody>
@@ -178,9 +172,6 @@
 </script>
 
 <style lang="scss">
-  .table {
-    --bs-table-striped-bg: rgb(179 175 124 / 12%);
-  }
 
   .icon-col {
     .round-sm {

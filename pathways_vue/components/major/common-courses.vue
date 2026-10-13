@@ -20,16 +20,18 @@
         students who declared this major in the last 5 years.
       </p>
 
-      <table class="table-borderless table-striped table">
+      <table class="table">
         <thead>
-          <tr class="bg-light text-dark">
-            <th scope="col" class="pe-0" style="width: 5%"></th>
-            <th scope="col" style="width: 5%">Rank</th>
-            <th scope="col" style="width: 90%">Common Course</th>
+          <tr class="text-body-secondary">
+            <th scope="col" class="pe-0 bg-transparent" style="width: 5%"></th>
+            <th scope="col" class="bg-transparent" style="width: 5%">Rank</th>
+            <th scope="col" class="bg-transparent" style="width: 90%">
+              Common Course
+            </th>
             <!-- change this % to 62 when adding COI back in -->
             <th
               scope="col"
-              class="px-0"
+              class="px-0 bg-transparent"
               style="width: 10%; min-width: 60px; display: none"
             >
               <!-- hidden -->
@@ -55,7 +57,7 @@
             :key="index"
             class="align-middle"
           >
-            <td>
+            <td class="bg-transparent">
               <div class="icon-col">
                 <IconPopover
                   v-if="course.is_bottleneck"
@@ -64,25 +66,20 @@
                 <IconPopover v-if="course.is_gateway" :variant="'gateway'" />
               </div>
             </td>
-            <td class="rank" scope="row"></td>
-            <td>
+            <td class="rank bg-transparent" scope="row"></td>
+            <td class="bg-transparent">
               <a
                 v-bind:href="'/course?id=' + encodeURIComponent(course.course)"
-                :title="'Go to course ' + course.course"
-                class="btn-primary btn-course router-link-active text-decoration-none"
-                >{{ course.course }}</a
-              >
-              <a
-                v-bind:href="'/course?id=' + encodeURIComponent(course.course)"
-                class="router-link-active ps-3"
                 :title="'Go to course ' + course.course + ' ' + course.title"
-                >{{ course.title }}</a
+                class="router-link-active"
+                >{{ course.course }}:
+                <span class="ms-1">{{ course.title }}</span></a
               >
             </td>
-            <td v-if="course.coi_score" style="display: none">
+            <td v-if="course.coi_score" class="bg-transparent" style="display: none">
               {{ course.coi_score }}
             </td>
-            <td v-else style="display: none">No Data</td>
+            <td v-else class="bg-transparent" style="display: none">No Data</td>
           </tr>
         </tbody>
       </table>
