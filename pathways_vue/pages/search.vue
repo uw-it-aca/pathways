@@ -48,7 +48,7 @@
                 >
                   Search
                 </button>
-                <div class="text-secondary">
+                <div class="text-body-secondary">
                   Press Enter to search for courses, majors, or subjects
                 </div>
               </div>

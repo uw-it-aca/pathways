@@ -8,7 +8,7 @@
             :href="view.url"
             class="recent_view_link text-wrap d-flex align-items-start"
             data-clarity-unmask="true"
-            ><span class="flex-grow-1">{{ view.title }}</span>
+            ><span class="flex-grow-1">{{ preventWidow(view.title) }}</span>
             <div
               class="badge text-bg-light rounded-pill text-uppercase ms-2 flex-shrink-0"
             >
@@ -22,6 +22,8 @@
   </div>
 </template>
 <script>
+  import { preventWidow } from "@/utils";
+
   export default {
     name: "RecentViews",
     components: {},
@@ -36,7 +38,9 @@
       },
     },
     watch: {},
-    methods: {},
+    methods: {
+      preventWidow,
+    },
   };
 </script>
 

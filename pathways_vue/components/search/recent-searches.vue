@@ -8,7 +8,7 @@
             :href="`/search?q=${encodeURIComponent(search)}`"
             data-clarity-unmask="true"
             class="text-wrap"
-            >{{ search }}</a
+            >{{ preventWidow(search) }}</a
           >
         </li>
       </ul>
@@ -17,12 +17,17 @@
   </div>
 </template>
 <script>
+  import { preventWidow } from "@/utils";
+
   export default {
     name: "RecentSearches",
     computed: {
       recent_searches() {
         return JSON.parse(localStorage.getItem("recentSearches"));
       },
+    },
+    methods: {
+      preventWidow,
     },
   };
 </script>

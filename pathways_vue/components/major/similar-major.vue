@@ -260,7 +260,10 @@
           });
         }
 
-        if (this.filters.admissionType.length > 0 && this.filters.admissionType.length < 3) {
+        if (
+          this.filters.admissionType.length > 0 &&
+          this.filters.admissionType.length < 3
+        ) {
           results = results.filter((major) =>
             this.filters.admissionType.includes(major.major_admission),
           );

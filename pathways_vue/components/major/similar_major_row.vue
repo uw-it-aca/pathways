@@ -5,7 +5,7 @@
         <span class="fw-bold ff-open-sans mb-1">
           {{ majorData.program_title }}
         </span>
-        <p class="text-uppercase small text-secondary mb-0">
+        <p class="text-uppercase small text-body-secondary mb-0">
           {{ majorData.program_school }} - {{ majorData.program_campus }}
         </p>
       </div>
@@ -13,7 +13,6 @@
         <a
           href="#"
           v-on:click.prevent="expandChildren"
-          style="color: #2f68cb"
           aria-label="Expand"
         >
           <i :class="expand_icon"></i>
