@@ -63,7 +63,7 @@
     },
     "Python": {
       "formatter": { "language_server": { "name": "ruff" } },
-      "language_servers": ["basedpyright", "!pyright", "!pylsp"],
+      "language_servers": ["basedpyright", "ruff", "!pyright", "!pylsp"],
       "format_on_save": "off"
     },
     "Django": {
