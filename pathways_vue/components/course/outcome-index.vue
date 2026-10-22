@@ -856,14 +856,15 @@
     width: auto;
   }
 
+
   .carousel-caption {
     position: initial;
+    color: var(--bs-body-color);
     right: 15%;
     bottom: 1.25rem;
     left: 15%;
     padding-top: 1.25rem;
     padding-bottom: 1.25rem;
-    color: #000;
   }
 
   .carousel-indicators [data-bs-target] {
