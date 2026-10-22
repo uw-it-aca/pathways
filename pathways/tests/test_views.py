@@ -4,7 +4,7 @@
 from django.contrib.auth.models import User
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import RequestFactory, TestCase
-from django.urls import reverse
+from django.urls import clear_url_caches, reverse
 from django.urls.exceptions import NoReverseMatch
 from pathways.views.pages import DefaultPageView
 from userservice.user import UserService, UserServiceMiddleware
@@ -66,6 +66,8 @@ class PagesViewTest(TestCase):
         with self.settings(DEBUG=True):
             reload(sys.modules["pathways.urls"])
             reload(sys.modules["project.urls"])
+            # reverse() uses a cached resolver built from the old urlconf
+            clear_url_caches()
             try:
                 reverse("500_response")
             except NoReverseMatch:

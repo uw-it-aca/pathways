@@ -35,7 +35,7 @@
         graph_type="course"
         :active_course="active_course"
       />
-      <div class="text-body-secondary bg-light rounded-top rounded-sm p-3">
+      <div class="text-body-secondary bg-body-tertiary rounded-top rounded-sm p-3">
         <small
           >Use the scroll function on your mouse or touchpad to zoom in and
           out</small
