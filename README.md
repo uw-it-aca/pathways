@@ -54,6 +54,58 @@ View your application using your specified port number in the .env file
 
         Demo: http://localhost:800?/
 
+#### Offline snapshot builds and downloaded-release verification
+
+The shared `dawgpath-search` dependency is pinned to the same exact Git commit as
+the pipeline. It pins Whoosh 2.7.4. Installing dependencies during the image build
+needs GitHub access (and Git); building or preparing indexes does not use GCS,
+credentials, or network access.
+
+The existing no-argument `build_search_index` command and startup flow still
+build from the local database, using the shared schema. Neither production
+startup nor automatic refresh/activation changes in this increment.
+
+To build directly from the checked-in offline snapshot without reading a
+database, run inside the application environment:
+
+```bash
+python manage.py build_search_index \
+  --input-root pathways/data \
+  --output-dir indexdir/offline-check \
+  --release-id local-snapshot
+```
+
+This uses the shared builder and the five local files `course_data.json`,
+`major_data.json`, `coi_scores.csv`, `gateway_courses.csv`, and
+`bottleneck_courses.csv`. It writes index metadata and never downloads data.
+The output directory must be new; it does not overwrite the active index.
+
+To test a complete, manually downloaded pipeline release:
+
+```bash
+python manage.py prepare_search_release \
+  --release-dir /path/to/downloaded-release \
+  --output-dir /path/to/new-prepared-index \
+  --release-id <expected-release-id>
+```
+
+Use the directory containing `manifest.json` and all ten release artifacts,
+not its parent download directory. Obtain it from a trusted source: manifest
+checksums detect corruption but do not authenticate Whoosh's serialized schema.
+The command verifies manifest version, release identity, all artifact hashes,
+index source hashes, and the bundle's exact regular-file inventory. It rejects
+symlinks, traversal paths, duplicate/missing archive members, metadata mismatches,
+unsupported index contracts, and incompatible Whoosh versions. Legacy pickle
+exports are only hashed, never deserialized. It stages extraction, verifies the
+index with the shared reader, and exposes the fresh output only on success.
+
+Preparation does not import JSON/CSV data into the database, change query/result
+shapes, or select the new index for serving. Keep the downloaded release outside
+the checked-in snapshot; local development does not need to pull from GCS.
+Future production cutover/refresh must coordinate the database data and index
+from the same release. That activation work is separate from these explicit,
+offline preparation commands.
+
 ## Testing
 
 ### Front-end Testing (using Vitest)

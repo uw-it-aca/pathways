@@ -1,15 +1,15 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.core.management.base import BaseCommand
+import os
+from logging import getLogger
+
+from dawgpath_search import IndexValidationError, build_index, make_schema
+from django.core.management.base import BaseCommand, CommandError
+from whoosh.index import create_in
+
 from pathways.models.course import Course
 from pathways.models.major import Major
-from logging import getLogger
-from whoosh.index import create_in
-from whoosh.fields import *
-from whoosh.analysis import StemmingAnalyzer
-import os
-
 
 logger = getLogger(__name__)
 INDEXDIR = "indexdir"
@@ -17,24 +17,33 @@ INDEXDIR = "indexdir"
 
 class Command(BaseCommand):
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--input-root", help="Build offline from five local snapshot files.")
+        parser.add_argument(
+            "--output-dir", help="Fresh output directory for a snapshot build.")
+        parser.add_argument(
+            "--release-id", help="Release identity recorded in snapshot metadata.")
+
     def handle(self, *args, **options):
+        if options.get("input_root"):
+            if not options.get("output_dir") or not options.get("release_id"):
+                raise CommandError(
+                    "--input-root requires --output-dir and --release-id.")
+            try:
+                metadata = build_index(
+                    options["input_root"], options["output_dir"],
+                    release_id=options["release_id"])
+            except (IndexValidationError, OSError) as exc:
+                raise CommandError(str(exc)) from exc
+            self.stdout.write(self.style.SUCCESS(
+                f"Built snapshot index: {metadata['counts']}"))
+            return
+        if options.get("output_dir") or options.get("release_id"):
+            raise CommandError("--output-dir/--release-id require --input-root.")
         if not os.path.exists(INDEXDIR):
             os.makedirs(INDEXDIR)
-        stem_ana = StemmingAnalyzer()
-        schema = Schema(course_id=TEXT(stored=True),
-                        major_id=TEXT(stored=True),
-                        major_abbr=TEXT(stored=True),
-                        major_title=TEXT(stored=True),
-                        course_title=TEXT(stored=True),
-                        type=TEXT(stored=True),
-                        contents=TEXT(analyzer=stem_ana,
-                                      stored=True),
-                        campus=TEXT(stored=True),
-                        is_gateway=BOOLEAN(),
-                        is_bottleneck=BOOLEAN(),
-                        coi_score=NUMERIC(),
-                        description=TEXT(stored=True)
-                        )
+        schema = make_schema()
         ix = create_in(INDEXDIR, schema)
         writer = ix.writer()
 

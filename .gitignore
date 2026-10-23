@@ -94,6 +94,17 @@ ENV/
 env.bak/
 venv.bak/
 
+# Virtual environment created at the repository root
+/bin/
+/include/
+/lib64
+/pyvenv.cfg
+/share/
+
+# Local IDE configuration
+/.idea/
+/*.code-workspace
+
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -123,6 +134,11 @@ __diff_output__/
 
 # search index
 indexdir/
+
+# Local downloaded snapshots and test outputs
+/new-data/
+/testdir
+/pathways/testdir
 
 # coverage
 coverage/
