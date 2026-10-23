@@ -32,7 +32,7 @@ setup(
         "django-persistent-message~=1.3",
         (
             "dawgpath-search @ git+https://github.com/uw-it-aca/dawgpath-search.git"
-            "@c261107dbfeb3d7969e90683b2f46ef34aa2b922"
+            "@46bdcb94b5252a61856b2e45a1f00da6c51a17f2"
         ),
         "azure-storage-blob~=12.25",
         "psycopg[c]",

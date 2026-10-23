@@ -4,23 +4,17 @@
 """Prepare a trusted, already-downloaded release without network or activation."""
 
 import hashlib
-import io
 import json
-import os
 import re
-import tarfile
-import tempfile
-import zlib
 from pathlib import Path
 
-from dawgpath_search import IndexValidationError, open_index
-from dawgpath_search.builder import INPUT_FILES, METADATA_FILE
+from dawgpath_search import IndexValidationError, prepare_bundle
+from dawgpath_search.builder import INPUT_FILES
 
 RELEASE_FILES = {
     *INPUT_FILES, "curric_data.json", "admit_major_mapping.csv",
     "course_prereq_data.pkl", "prereq_data.pkl", "search-index.tar.gz",
 }
-MAX_INDEX_METADATA_BYTES = 1024 * 1024
 
 
 def _json(content, label):
@@ -104,64 +98,6 @@ def prepare_release(release_dir, output_dir, *, release_id):
             for key in ("size_bytes", "checksum_sha256")
         ):
             raise IndexValidationError(f"Index input does not match release: {name}")
-    files = index_metadata.get("files")
-    if not isinstance(files, dict) or not files:
-        raise IndexValidationError("Missing index file metadata")
-    for name, info in files.items():
-        if (
-            not isinstance(name, str) or not name or name in {
-                ".", "..", METADATA_FILE, "MAIN_WRITELOCK",
-            } or "/" in name or "\\" in name or not _file_info(info)
-        ):
-            raise IndexValidationError("Invalid index filename or checksum metadata")
-    output.parent.mkdir(parents=True, exist_ok=True)
-    # A sibling staging directory keeps failed preparation away from readers.
-    with tempfile.TemporaryDirectory(
-        prefix=".prepare-index-", dir=output.parent
-    ) as temporary:
-        staging = Path(temporary) / "index"
-        staging.mkdir()
-        seen = set()
-        expected = {*files, METADATA_FILE}
-        try:
-            with tarfile.open(fileobj=io.BytesIO(bundle), mode="r:gz") as archive:
-                for member in archive:
-                    if (
-                        member.name not in expected or member.name in seen
-                        or not member.isfile()
-                        or member.size < 0
-                    ):
-                        raise IndexValidationError("Unexpected or unsafe archive member")
-                    limit = (
-                        MAX_INDEX_METADATA_BYTES
-                        if member.name == METADATA_FILE
-                        else files[member.name]["size_bytes"]
-                    )
-                    if member.size > limit:
-                        raise IndexValidationError("Archive member exceeds recorded size")
-                    stream = archive.extractfile(member)
-                    if stream is None:
-                        raise IndexValidationError("Cannot read archive member")
-                    with stream:
-                        content = stream.read(limit + 1)
-                    if member.name == METADATA_FILE:
-                        if _json(content, METADATA_FILE) != index_metadata:
-                            raise IndexValidationError("Bundle metadata differs from manifest")
-                    else:
-                        _verify(content, files[member.name], member.name)
-                    (staging / member.name).write_bytes(content)
-                    seen.add(member.name)
-        except (tarfile.TarError, EOFError, zlib.error) as exc:
-            raise IndexValidationError(f"Invalid index archive: {exc}") from exc
-        if seen != expected:
-            raise IndexValidationError("Archive is missing index files")
-        index = open_index(staging, release_id=release_id)
-        index.close()
-        # Reserve the fresh destination; never replace an existing active index.
-        output.mkdir()
-        try:
-            os.replace(staging, output)
-        except OSError:
-            output.rmdir()
-            raise
+    assert bundle is not None
+    prepare_bundle(bundle, output, metadata=index_metadata, release_id=release_id)
     return manifest

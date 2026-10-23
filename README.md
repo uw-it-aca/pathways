@@ -96,8 +96,10 @@ The command verifies manifest version, release identity, all artifact hashes,
 index source hashes, and the bundle's exact regular-file inventory. It rejects
 symlinks, traversal paths, duplicate/missing archive members, metadata mismatches,
 unsupported index contracts, and incompatible Whoosh versions. Legacy pickle
-exports are only hashed, never deserialized. It stages extraction, verifies the
-index with the shared reader, and exposes the fresh output only on success.
+exports are only hashed, never deserialized. Pathways owns the full release
+manifest and source-data consistency checks; `dawgpath-search` owns archive
+validation, staged extraction, and index verification. The fresh output is
+exposed only on success.
 
 Preparation does not import JSON/CSV data into the database, change query/result
 shapes, or select the new index for serving. Keep the downloaded release outside
