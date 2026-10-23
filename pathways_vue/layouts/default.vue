@@ -4,23 +4,33 @@
     :app-name="appName"
     :app-root-url="appRootUrl"
     :page-title="pageTitle"
-    :user-name="contextStore.context.loginUser"
-    :sign-out-url="signOutUrl"
+    :user-name="contextStore.context.login_user"
+    :sign-out-url="contextStore.context.signout_url"
   >
     <template #settings>
       <!-- user comp here -->
-      <SUser :user-netid="contextStore.context.user" data-clarity-mask="true">
+      <SUser
+        :user-netid="contextStore.context.login_user"
+        :user-override="contextStore.context.override_user"
+        :signout-url="contextStore.context.signout_url"
+        :clear-override-url="'/'"
+        data-clarity-mask="true"
+      >
         Welcome back,
-        <template
-          v-if="contextStore.context.personData?.preferred_first_name"
-        >
+        <template v-if="contextStore.context.personData?.preferred_first_name">
           {{ contextStore.context.personData.preferred_first_name }}
         </template>
         <template v-else>
           {{ contextStore.context.personData?.uwnetid }}
         </template>
         <template #action>
-          <a :href="signOutUrl" class="link-quiet-danger"
+          <a v-if="isOverriding" href="/support/" class="link-quiet-danger"
+            ><i class="bi bi-x-circle me-2"></i>Clear override</a
+          >
+          <a
+            v-else
+            :href="contextStore.context.signout_url"
+            class="link-quiet-danger"
             ><i class="bi bi-box-arrow-left me-2"></i>Sign out</a
           >
         </template>
@@ -97,11 +107,16 @@
         // minimum application setup overrides
         appName: "DawgPath",
         appRootUrl: "/",
-        signOutUrl: "/saml/logout",
         tagLine: "Discover your path to a degree",
       };
     },
-  computed: {
+    computed: {
+      // true only when an override is set AND differs from the login user
+      isOverriding() {
+        const { override_user: overrideUser, login_user: loginUser } =
+          this.contextStore.context;
+        return !!overrideUser && overrideUser !== loginUser;
+      },
       // get system messages from window.pathways.messages (django persistent messages)
       systemMessages() {
         return window.pathways?.messages || [];

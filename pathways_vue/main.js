@@ -50,7 +50,7 @@ app.component("mq-responsive", MqResponsive);
 // google analytics data stream measurement and user hashed ids
 // vue-gtag-next
 app.use(VueGtag, {
-  isEnabled: contextStore.context.debugMode == false,
+  isEnabled: contextStore.context.debug_mode == false,
   property: {
     id: contextStore.context.googleAnalyticsKey,
     params: {

@@ -38,7 +38,7 @@ class PagesViewTest(TestCase):
                 response.context_data["context_data"].get(
                     "googleAnalyticsKey"), "")
             self.assertEqual(
-                response.context_data["context_data"].get("debugMode"), False
+                response.context_data["context_data"].get("debug_mode"), False
             )
             user_data = response.context_data["context_data"].get("personData")
             self.assertEqual(user_data.get("uwnetid"), "javerage")

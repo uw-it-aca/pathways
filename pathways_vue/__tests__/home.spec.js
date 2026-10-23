@@ -122,10 +122,10 @@ describe("Home page pre-major display", () => {
     expect(wrapper.text()).toContain("No majors found.");
   });
 
-  it("shows the debug-only test display majors section when debugMode is enabled", async () => {
+  it("shows the debug-only test display majors section when debug_mode is enabled", async () => {
     setContext({ majors: [], intended_majors: [] });
     const wrapper = await mountHome();
-    wrapper.vm.contextStore.context.debugMode = true;
+    wrapper.vm.contextStore.context.debug_mode = true;
     await wrapper.vm.$nextTick();
     expect(wrapper.text()).toContain("Test Display Majors");
   });
@@ -134,7 +134,7 @@ describe("Home page pre-major display", () => {
     const el = document.createElement("div");
     el.id = "django-context-data";
     el.textContent = JSON.stringify({
-      debugMode: true,
+      debug_mode: true,
       personData: {
         majors: [],
         intended_majors: [],

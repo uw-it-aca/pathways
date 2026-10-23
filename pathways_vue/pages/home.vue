@@ -93,7 +93,7 @@
               </div>
             </div>
           </BCard>
-          <template v-if="contextStore.context.debugMode">
+          <template v-if="contextStore.context.debug_mode">
             <div>
               <pre>{{
                 JSON.stringify(contextStore.context.personData, null, 2)
@@ -142,7 +142,7 @@
             <p v-else class="mb-5">No intended majors found.</p>
           </template>
 
-          <template v-if="contextStore.context.debugMode">
+          <template v-if="contextStore.context.debug_mode">
             <SHeading level="2" class="mb-3">Test Display Majors</SHeading>
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5">
               <MajorMini :major-abbr-code="'CSSE'" />

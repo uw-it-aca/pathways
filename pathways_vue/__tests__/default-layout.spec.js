@@ -29,7 +29,12 @@ describe("DefaultLayout (DawgPath)", () => {
     // Use a non-executable element so jsdom doesn't try to run it as JS.
     const el = document.createElement("div");
     el.id = "django-context-data";
-    el.textContent = JSON.stringify({ user: "jdoe", loginUser: "jdoe" });
+    el.textContent = JSON.stringify({
+      user: "jdoe",
+      login_user: "jdoe",
+      override_user: null,
+      signout_url: "/saml/logout",
+    });
     document.body.appendChild(el);
     window.pathways = undefined;
   });
@@ -73,7 +78,7 @@ describe("DefaultLayout (DawgPath)", () => {
     document.getElementById("django-context-data").textContent =
       JSON.stringify({
         user: "jdoe",
-        loginUser: "jdoe",
+        login_user: "jdoe",
         personData: { preferred_first_name: "Jamie", uwnetid: "jdoe" },
       });
     const wrapper = mountLayout();
@@ -85,10 +90,56 @@ describe("DefaultLayout (DawgPath)", () => {
     document.getElementById("django-context-data").textContent =
       JSON.stringify({
         user: "jdoe",
-        loginUser: "jdoe",
+        login_user: "jdoe",
         personData: { uwnetid: "jdoe" },
       });
     const wrapper = mountLayout();
     expect(wrapper.text()).toContain("jdoe");
+  });
+
+  describe("user override", () => {
+    const setContext = (extra = {}) => {
+      document.getElementById("django-context-data").textContent =
+        JSON.stringify({
+          user: "jdoe",
+          login_user: "jdoe",
+          signout_url: "/saml/logout",
+          personData: { uwnetid: "jdoe" },
+          ...extra,
+        });
+    };
+
+    it.each([
+      ["null", null],
+      ["empty string", ""],
+      ["undefined", undefined],
+      ["same as login user", "jdoe"],
+    ])("isOverriding is false when override_user is %s", (_, value) => {
+      setContext({ override_user: value });
+      const wrapper = mountLayout();
+      expect(wrapper.vm.isOverriding).toBe(false);
+    });
+
+    it("isOverriding is true when override_user differs from login_user", () => {
+      setContext({ override_user: "billy" });
+      const wrapper = mountLayout();
+      expect(wrapper.vm.isOverriding).toBe(true);
+    });
+
+    it("shows the sign out link and no clear override link without an override", () => {
+      setContext({ override_user: null });
+      const wrapper = mountLayout();
+      expect(wrapper.find("a[href='/support/']").exists()).toBe(false);
+      expect(wrapper.find("a[href='/saml/logout']").exists()).toBe(true);
+      expect(wrapper.text()).not.toContain("Clear override");
+    });
+
+    it("shows the clear override link instead of sign out when overriding", () => {
+      setContext({ override_user: "billy" });
+      const wrapper = mountLayout();
+      const clear = wrapper.find("a[href='/support/']");
+      expect(clear.exists()).toBe(true);
+      expect(clear.text()).toContain("Clear override");
+    });
   });
 });
