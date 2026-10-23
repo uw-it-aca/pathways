@@ -7,3 +7,4 @@ from .curriculum import Curriculum
 from .course_level import CourseLevel
 from .coi_range import COIRange
 from .data_import import DataImport
+from .data_release_import import DataReleaseImport

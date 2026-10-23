@@ -6,6 +6,7 @@
 import hashlib
 import json
 import re
+import tempfile
 from pathlib import Path
 
 from dawgpath_search import IndexValidationError, prepare_bundle
@@ -14,6 +15,10 @@ from dawgpath_search.builder import INPUT_FILES
 RELEASE_FILES = {
     *INPUT_FILES, "curric_data.json", "admit_major_mapping.csv",
     "course_prereq_data.pkl", "prereq_data.pkl", "search-index.tar.gz",
+}
+RELEASE_FILES_BY_VERSION = {
+    "1.0": RELEASE_FILES,
+    "1.1": RELEASE_FILES | {"similar_majors.csv"},
 }
 
 
@@ -52,38 +57,38 @@ def _plain_file(path):
     return path.read_bytes()
 
 
-def prepare_release(release_dir, output_dir, *, release_id):
-    """Verify all release files and extract only listed regular index files.
-
-    Caller must trust the manifest's origin; checksums do not authenticate
-    Whoosh's serialized schema. Never unpickle the legacy data exports here.
-    """
+def release_artifacts(manifest, release_id):
     if not isinstance(release_id, str) or not re.fullmatch(
         r"[A-Za-z0-9_-]+", release_id
     ):
         raise IndexValidationError("Invalid release ID")
-    root = Path(release_dir)
-    output = Path(output_dir)
-    if output.exists() or output.is_symlink():
-        raise FileExistsError(f"Output directory already exists: {output}")
-    manifest = _json(_plain_file(root / "manifest.json"), "manifest.json")
-    if manifest.get("schema_version") != "1.0":
+    version = manifest.get("schema_version")
+    files = RELEASE_FILES_BY_VERSION.get(version) if isinstance(version, str) else None
+    if files is None:
         raise IndexValidationError("Unsupported release manifest version")
     if manifest.get("release_id") != release_id:
         raise IndexValidationError("Release identity mismatch")
     artifacts = manifest.get("artifacts")
-    if not isinstance(artifacts, dict) or set(artifacts) != RELEASE_FILES:
-        raise IndexValidationError("Release must contain all ten artifact entries")
-    bundle = None
+    if not isinstance(artifacts, dict) or set(artifacts) != files:
+        raise IndexValidationError("Release artifact inventory mismatch")
     for name, info in artifacts.items():
         if not _file_info(info) or info.get("version_path") != (
             f"releases/{release_id}/{name}"
         ):
             raise IndexValidationError(f"Invalid release artifact metadata: {name}")
+    return artifacts
+
+
+def verify_release(release_dir, *, release_id):
+    """Read verified bytes once so import never rereads unverified source files."""
+    root = Path(release_dir)
+    manifest = _json(_plain_file(root / "manifest.json"), "manifest.json")
+    artifacts = release_artifacts(manifest, release_id)
+    contents = {}
+    for name, info in artifacts.items():
         content = _plain_file(root / name)
         _verify(content, info, name)
-        if name == "search-index.tar.gz":
-            bundle = content
+        contents[name] = content
     index_metadata = manifest.get("search_index")
     if (
         not isinstance(index_metadata, dict)
@@ -98,6 +103,24 @@ def prepare_release(release_dir, output_dir, *, release_id):
             for key in ("size_bytes", "checksum_sha256")
         ):
             raise IndexValidationError(f"Index input does not match release: {name}")
-    assert bundle is not None
-    prepare_bundle(bundle, output, metadata=index_metadata, release_id=release_id)
+    return manifest, contents
+
+
+def prepare_release(release_dir, output_dir, *, release_id):
+    """Verify trusted local release bytes and prepare a fresh index."""
+    output = Path(output_dir)
+    if output.exists() or output.is_symlink():
+        raise FileExistsError(f"Output directory already exists: {output}")
+    manifest, contents = verify_release(release_dir, release_id=release_id)
+    prepare_bundle(
+        contents["search-index.tar.gz"], output,
+        metadata=manifest["search_index"], release_id=release_id)
     return manifest
+
+
+def verify_release_index(manifest, contents):
+    """Check a trusted bundle without retaining or activating an index."""
+    with tempfile.TemporaryDirectory(prefix="verify-release-") as temporary:
+        prepare_bundle(
+            contents["search-index.tar.gz"], Path(temporary) / "index",
+            metadata=manifest["search_index"], release_id=manifest["release_id"])
