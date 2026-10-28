@@ -1,17 +1,17 @@
 # pathways
 
-[![Build Status](https://github.com/uw-it-aca/pathways/workflows/Build%2C%20Test%20and%20Deploy/badge.svg?branch=main)](https://github.com/uw-it-aca/pathways/actions)
+[![Build Status](https://github.com/uw-it-aca/pathways/workflows/Build%2C%20Test%20and%20Deploy/badge.svg)](https://github.com/uw-it-aca/pathways/actions)
 [![Coverage Status](https://coveralls.io/repos/github/uw-it-aca/pathways/badge.svg?branch=main)](https://coveralls.io/github/uw-it-aca/pathways?branch=main)
 
 ## System Requirements
 
-- Python (3+)
+- Python (3.12)
 - Docker
 - Node
 
 ## Development Stack
 
-- Django (4.2)
+- Django (5.2)
 - Vue (3.2)
 - Vite (2.9)
 - Vitest (0.10.2)
@@ -40,6 +40,13 @@ Update any .env variables for local development purposes
 ## Development (using Docker)
 
 Docker/Docker Compose is used to containerize your local build environment and deploy it to an 'app' container which is exposed to your localhost so you can view your application. Docker Compose creates a 'devtools' container - which is used for local development. Changes made locally are automatically syncd to the 'app' container.
+
+### Search Index
+
+The search index in `indexdir/` is automatically built when the docker container starts (via `docker/app_start.sh`). 
+
+Note: `indexdir/` is ignored by Git. If Whoosh index files were previously tracked, they should be removed from the Git index using:
+`git rm -r --cached indexdir`
 
         $ docker-compose up --build
 

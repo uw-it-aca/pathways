@@ -30,56 +30,56 @@
 </template>
 
 <script>
-import { Popover } from "bootstrap";
-export default {
-  name: "IconPopover",
-  props: {
-    variant: {
-      type: String,
-      required: true,
+  import { Popover } from "bootstrap";
+  export default {
+    name: "IconPopover",
+    props: {
+      variant: {
+        type: String,
+        required: true,
+      },
     },
-  },
-  data() {
-    return {};
-  },
-  mounted() {
-    // enable popovers everywhere
-    // https://getbootstrap.com/docs/5.1/components/popovers/#example-enable-popovers-everywhere
-    var popoverTriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="popover"]')
-    );
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-      return new Popover(popoverTriggerEl);
-    });
-  },
-};
+    data() {
+      return {};
+    },
+    mounted() {
+      // enable popovers everywhere
+      // https://getbootstrap.com/docs/5.1/components/popovers/#example-enable-popovers-everywhere
+      var popoverTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="popover"]'),
+      );
+      var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new Popover(popoverTriggerEl);
+      });
+    },
+  };
 </script>
 
 <style lang="scss">
-.material-symbols-outlined {
-  vertical-align: middle;
-  line-height: 0 !important;
-  position: relative;
-  top: -1px;
-  font-size: 1rem;
-}
+  .material-symbols-outlined {
+    vertical-align: middle;
+    line-height: 0 !important;
+    position: relative;
+    top: -1px;
+    font-size: 1rem;
+  }
 
-.round {
-  display: inline-block;
-  height: 30px;
-  width: 30px;
-  line-height: 30px;
-  border-radius: 15px;
-  background-color: #222;
-  color: #fff;
-  text-align: center;
-}
+  .round {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    border-radius: 15px;
+    background-color: #222;
+    color: #fff;
+    text-align: center;
+  }
 
-.round.round-sm {
-  height: 25px;
-  width: 25px;
-  line-height: 25px;
-  border-radius: 15px;
-  font-size: 0.7em;
-}
+  .round.round-sm {
+    height: 25px;
+    width: 25px;
+    line-height: 25px;
+    border-radius: 15px;
+    font-size: 0.7em;
+  }
 </style>

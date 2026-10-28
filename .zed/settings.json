@@ -1,0 +1,77 @@
+{
+  "language_servers": ["oxlint", "..."],
+  "lsp": {
+    "oxlint": {
+      "initialization_options": {
+        "settings": {
+          "run": "onType",
+          "disableNestedConfig": false,
+          "fixKind": "safe_fix",
+          "typeAware": true,
+          "unusedDisableDirectives": "deny"
+        }
+      }
+    },
+    "basedpyright": {
+      "settings": {
+        "python": {
+          "pythonPath": ".venv/bin/python"
+        }
+      }
+    },
+    "ruff": {
+      "initialization_options": {
+        "settings": {
+          "lineLength": 79,
+          "lint": {
+            "select": ["E", "W"],
+            "ignore": ["F"]
+          },
+          "organizeImports": true
+        }
+      }
+    }
+  },
+  "file_types": {
+    "Django": ["**/templates/**/*.html"]
+  },
+  "languages": {
+    "CSS": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off"
+    },
+    "SCSS": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off"
+    },
+    "Vue.js": {
+      "language_servers": ["vue-language-server", "oxlint", "..."],
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off"
+    },
+    "JavaScript": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off"
+    },
+    "JSON": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off"
+    },
+    "JSONC": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off"
+    },
+    "Python": {
+      "formatter": { "language_server": { "name": "ruff" } },
+      "language_servers": ["basedpyright", "ruff", "!pyright", "!pylsp"],
+      "format_on_save": "off"
+    },
+    "Django": {
+      "language_servers": ["django-language-server", "!django-template-lsp"]
+    },
+    "TypeScript": {
+      "formatter": { "language_server": { "name": "oxfmt" } },
+      "format_on_save": "off"
+    }
+  }
+}

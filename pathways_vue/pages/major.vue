@@ -1,32 +1,43 @@
-// major.vue
 <template>
-  <layout :page-title="pageTitle">
-    <!-- page content -->
+  <DefaultLayout :page-title="pageTitle">
     <template #content>
-      <div class="d-flex flex-column">
-        <div v-if="major_data" class="row order-2 justify-content-sm-center">
-          <div class="col-md-9">
-            <major-details :major="major_data" />
-            <explore-major :major="major_data" />
+      <template v-if="major_data">
+        <div class="row my-5">
+          <div class="col-lg-8 col-12">
+            <SearchMini class="d-md-none" />
+            <MajorDetails :major="major_data" />
+            <ExploreMajor :major="major_data" />
+            <D3Cgpa :major-data="major_data" />
+            <SimilarMajor :similar-major-data="major_data.similar_majors" />
           </div>
-          <div class="col-md-9">
-            <d3-cgpa :major-data="major_data" />
-          </div>
-          <div class="col-md-9">
-            <common-courses :major="major_data" />
-          </div>
-          <div class="col-md-9">
-            <similar-major :similar-major-data="major_data.similar_majors" />
-          </div>
-          <div class="col-md-9">
-            <contact-adviser
-              :campus="major_data.major_campus"
-              :type="'major'"
-            />
+          <div class="col-lg-4 col-12">
+            <SearchMini class="d-none d-md-block" />
+            <CommonCourses :major="major_data" />
+            <ContactAdviser :campus="major_data.major_campus" :type="'major'" />
           </div>
         </div>
-        <div v-else class="row order-2 justify-content-sm-center">
-          <div v-if="showError" class="col-md-9">
+      </template>
+      <template v-else>
+        <div class="row justify-content-center">
+          <div v-if="matches.length" class="col col-lg-8 my-5">
+            <h2 class="h4">Select a major</h2>
+            <ul class="list-unstyled">
+              <li v-for="match in matches" :key="match.credential_code">
+                <router-link
+                  :to="{
+                    path: '/major',
+                    query: { id: match.credential_code },
+                  }"
+                >
+                  {{ match.credential_title }}
+                </router-link>
+                <span class="text-muted">
+                  ({{ match.major_campus }}, {{ match.major_school }})
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div v-else-if="showError" class="col col-lg-8">
             <div class="alert alert-purple" role="alert">
               <p>
                 Data is not available for selected major. Here are some possible
@@ -39,103 +50,121 @@
               </ul>
             </div>
           </div>
-          <div v-else class="col-md-9 text-center">
+          <div v-else-if="loading" class="col col-lg-8 text-center">
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
         </div>
-
-        <div class="order-1 row justify-content-center">
-          <div class="col-md-9">
-            <search />
-          </div>
-        </div>
-      </div>
+      </template>
     </template>
-  </layout>
+  </DefaultLayout>
 </template>
 
 <script>
-import Layout from "@/layout.vue";
-import MajorDetails from "@/components/major/major-details.vue";
-import ExploreMajor from "@/components/major/explore-major.vue";
-import CommonCourses from "@/components/major/common-courses.vue";
-import Search from "@/components/search/search.vue";
-import D3Cgpa from "@/components/major/d3-cgpa.vue";
-import ContactAdviser from "@/components/common/contact-adviser.vue";
-import utils from "@/utils.js";
-import SimilarMajor from "../components/major/similar-major.vue";
+  import { defineAsyncComponent } from "vue";
+  import DefaultLayout from "@/layouts/default.vue";
+  import MajorDetails from "@/components/major/major-details.vue";
+  import ExploreMajor from "@/components/major/explore-major.vue";
+  import SearchMini from "@/components/search/search-mini.vue";
+  import ContactAdviser from "@/components/common/contact-adviser.vue";
+  import utils from "@/utils.js";
+  import { useCustomFetch } from "@/composables/customFetch";
 
-export default {
-  name: "MajorComp",
-  components: {
-    layout: Layout,
-    search: Search,
-    "d3-cgpa": D3Cgpa,
-    "contact-adviser": ContactAdviser,
-    "major-details": MajorDetails,
-    "explore-major": ExploreMajor,
-    "common-courses": CommonCourses,
-    "similar-major": SimilarMajor,
-  },
-  data() {
-    return {
-      selectedMajor: undefined,
-      majorID: undefined,
-      majorTitle: undefined,
-      major_data: undefined,
-      showError: false,
-      appName: "DawgPath",
-    };
-  },
-  created() {
-    this.recentViewManager = utils.recentViewManager;
-  },
-  computed: {
-    pageTitle: function () {
-      let no_title = this.showError ? "Error" : "Major";
-      return this.majorTitle !== undefined
-        ? (document.title = this.majorTitle + " - " + this.appName)
-        : no_title;
+  // Lazy-load heavy below-the-fold components so they are code-split into
+  // separate chunks and only downloaded/parsed after major data has loaded.
+  const D3Cgpa = defineAsyncComponent(
+    () => import("@/components/major/d3-cgpa.vue"),
+  );
+  const SimilarMajor = defineAsyncComponent(
+    () => import("@/components/major/similar-major.vue"),
+  );
+  const CommonCourses = defineAsyncComponent(
+    () => import("@/components/major/common-courses.vue"),
+  );
+
+  export default {
+    name: "MajorComp",
+    components: {
+      DefaultLayout,
+      D3Cgpa,
+      ContactAdviser,
+      MajorDetails,
+      ExploreMajor,
+      CommonCourses,
+      SimilarMajor,
+      SearchMini,
     },
-  },
-  methods: {
-    switch_major(data) {
-      this.majorID = data.id;
-      this.campus = data.campus;
+    data() {
+      return {
+        majorID: undefined,
+        majorTitle: undefined,
+        major_data: undefined,
+        matches: [],
+        showError: false,
+        loading: false,
+      };
     },
-    get_major_data() {
-      const vue = this;
-      this.major_data = undefined;
-      if (this.majorID !== undefined) {
-        this.axios
-          .get("/api/v1/majors/details/" + this.majorID)
-          .then((response) => {
-            vue.major_data = response.data;
-            vue.majorTitle = vue.major_data.credential_title;
-            vue.showError = false;
-            vue.recentViewManager(
-              vue.majorTitle,
-              "major?id=" + vue.majorID,
-              vue.major_data.major_campus
-            );
-          })
-          .catch(function () {
-            vue.showError = true;
-          });
-      } else {
-        this.showError = true;
-      }
+    computed: {
+      pageTitle() {
+        if (this.majorTitle) return this.majorTitle;
+        if (this.matches.length) return "Select a major";
+        return this.showError ? "Error" : "Major";
+      },
     },
-  },
-  mounted() {
-    this.majorID = this.$route.query.id;
-  },
-  watch: {
-    majorID() {
-      this.get_major_data();
+    watch: {
+      majorTitle(val) {
+        if (val) document.title = val + " - DawgPath";
+      },
+      majorID() {
+        this.get_major_data();
+      },
+      "$route.query.id"(val) {
+        this.majorID = val?.trim();
+      },
     },
-  },
-};
+    mounted() {
+      this.majorID = this.$route.query.id?.trim();
+    },
+    methods: {
+      async get_major_data() {
+        if (!this.majorID) {
+          this.showError = true;
+          return;
+        }
+        this.major_data = undefined;
+        this.majorTitle = undefined;
+        this.matches = [];
+        this.showError = false;
+        this.loading = true;
+        try {
+          const data = await useCustomFetch(
+            "/api/v1/majors/details/" + encodeURIComponent(this.majorID),
+          );
+          if (data.matches) {
+            if (data.matches.length === 1) {
+              this.$router.replace({
+                path: "/major",
+                query: { id: data.matches[0].credential_code },
+              });
+            } else {
+              this.matches = data.matches;
+            }
+            return;
+          }
+          this.major_data = data;
+          this.majorTitle = data.credential_title;
+          utils.recentViewManager(
+            this.majorTitle,
+            "major?id=" + this.majorID,
+            data.major_campus,
+          );
+        } catch {
+          this.showError = true;
+        } finally {
+          this.loading = false;
+        }
+      },
+    },
+  };
 </script>

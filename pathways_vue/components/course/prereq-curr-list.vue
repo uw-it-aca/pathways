@@ -22,7 +22,7 @@
             >
             <button
               type="button"
-              class="btn btn-outline-secondary btn-sm"
+              class="btn btn-outline-primary btn-sm"
               data-bs-toggle="collapse"
               :data-bs-target="'#collapsePrereqs_' + index"
               aria-expanded="false"
@@ -34,10 +34,12 @@
           <div class="collapse" :id="'collapsePrereqs_' + index">
             <div class="container">
               <div class="row">
-                <div class="p-0 mb-3 col-sm-6">
+                <div class="col-sm-6 mb-3 p-0">
                   <div>
                     <small
-                      ><strong class="text-dark">Prerequisites</strong>
+                      ><strong class="text-body-secondary"
+                        >Prerequisites</strong
+                      >
                       <span class="badge rounded-pill bg-purple">{{
                         course.prereqs.length
                       }}</span
@@ -48,7 +50,7 @@
                     <li v-for="(prereq, index) in course.prereqs" :key="index">
                       <a
                         :href="'/course?id=' + prereq.course_id"
-                        class="btn-primary btn-course router-link-active text-decoration-none"
+                        class="router-link-active me-1"
                       >
                         {{ prereq.course_id }}</a
                       >
@@ -59,10 +61,12 @@
                     <small>This course has no prerequisites.</small>
                   </div>
                 </div>
-                <div class="p-0 col-sm-6">
+                <div class="col-sm-6 p-0">
                   <div>
                     <small
-                      ><strong class="text-dark">Is a prerequisite for</strong>
+                      ><strong class="text-body-secondary"
+                        >Is a prerequisite for</strong
+                      >
                       <span class="badge rounded-pill bg-purple">{{
                         course.postreqs.length
                       }}</span
@@ -76,7 +80,7 @@
                     >
                       <a
                         :href="'/course?id=' + postreq.course_id"
-                        class="btn-primary btn-course router-link-active text-decoration-none"
+                        class="router-link-active me-1"
                       >
                         {{ postreq.course_id }}</a
                       >
@@ -99,38 +103,38 @@
 </template>
 
 <script>
-export default {
-  name: "PrereqCurrList",
-  data() {
-    return {};
-  },
-  props: {
-    courseData: {
-      type: Array,
-      required: true,
+  export default {
+    name: "PrereqCurrList",
+    data() {
+      return {};
     },
-  },
-  methods: {},
-};
+    props: {
+      courseData: {
+        type: Array,
+        required: true,
+      },
+    },
+    methods: {},
+  };
 </script>
 
 <style lang="scss" scoped>
-.prereq-list {
-  list-style: none;
-  padding: 0;
-}
+  .prereq-list {
+    list-style: none;
+    padding: 0;
+  }
 
-.prereq-list li {
-  display: inline-block;
-  margin-right: 5px;
-}
+  .prereq-list li {
+    display: inline-block;
+    margin-right: 5px;
+  }
 
-.prereq-list li:last-child a::after {
-  content: "";
-}
+  .prereq-list li:last-child a::after {
+    content: "";
+  }
 
-.rounded-pill {
-  font-size: 75%;
-  margin-left: 0.3rem;
-}
+  .rounded-pill {
+    font-size: 75%;
+    margin-left: 0.3rem;
+  }
 </style>

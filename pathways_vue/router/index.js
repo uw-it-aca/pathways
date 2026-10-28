@@ -3,9 +3,10 @@ import { trackRouter } from "vue-gtag-next";
 
 // page components
 import Home from "@/pages/home.vue";
+import Faq from "@/pages/faq.vue";
 import Course from "@/pages/course.vue";
 import Major from "@/pages/major.vue";
-import Faq from "@/pages/faq.vue";
+import Search from "@/pages/search.vue";
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
   {
     path: "/major",
     component: Major,
+    pathToRegexpOptions: { strict: true },
+  },
+  {
+    path: "/search",
+    component: Search,
     pathToRegexpOptions: { strict: true },
   },
 ];

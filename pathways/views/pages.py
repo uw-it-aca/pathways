@@ -1,40 +1,63 @@
-# Copyright 2025 UW-IT, University of Washington
+# Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.views.generic import TemplateView
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
+from re import T
+
 from django.conf import settings
-from uw_saml.utils import get_user
-from pathways.views import eval_group_required
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.views.generic import TemplateView
+from userservice.user import UserService
+
+from pathways.dao.person import PersonNotFoundException, get_person_by_uwnetid
 from pathways.models.user import User
+from pathways.utils import hash_netid
+from pathways.views import eval_group_required
 
 ALLOWED_USERS_GROUP = getattr(settings, "ALLOWED_USERS_GROUP", None)
 
 
 @method_decorator(login_required, name="dispatch")
-@method_decorator(eval_group_required(ALLOWED_USERS_GROUP),
-                  name='dispatch')
+@method_decorator(eval_group_required(ALLOWED_USERS_GROUP), name="dispatch")
 class PageView(TemplateView):
     template_name = "index.html"
 
-    """
-    Superclass for all page views.
-    """
-    def get_context_data(self, **kwargs):
-        uwnetid = get_user(self.request)
-        context = super().get_context_data(**kwargs)
-        context["ga_key"] = getattr(settings, "GOOGLE_ANALYTICS_KEY", " ")
-        context["google_feedback_form"] = \
-            getattr(settings, "GOOGLE_FEEDBACK_FORM", "")
-        context['user'] = uwnetid
-        banners = User.show_banners(uwnetid)
-        context['show_welcome'] = "welcome" in banners
-        context['show_bottleneck'] = "bottleneck" in banners
-        context['show_outcomes'] = "outcomes" in banners
-        context['show_coi'] = "coi" in banners
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response({**context, "context_data": context})
 
-        context["django_debug"] = getattr(settings, "DEBUG", False)
+    def get_context_data(self, **kwargs):
+
+        user_service = UserService()
+        user = user_service.get_user()
+
+        banners = User.show_banners(user)
+        context = {}
+        context["googleAnalyticsKey"] = settings.GOOGLE_ANALYTICS_KEY
+        context["googleFeedbackForm"] = settings.GOOGLE_FEEDBACK_FORM
+        context["clarityProjectId"] = settings.CLARITY_PROJECT_ID
+
+        # Dawgpath customization
+        context["show_welcome"] = True if "welcome" in banners else False
+        context["show_bottleneck"] = True if "bottleneck" in banners else False
+        context["show_outcomes"] = True if "outcomes" in banners else False
+        context["show_coi"] = True if "coi" in banners else False
+
+        # User context
+        context["user"] = user
+        context["hashedNetid"] = hash_netid(user)
+        context["login_user"] = user_service.get_original_user()
+        context["override_user"] = user_service.get_override_user()
+        # context["user_fullname"] = person_display_name(person)
+        context["signout_url"] = reverse("saml_logout")
+        context["debug_mode"] = settings.DEBUG
+
+        try:
+            context["personData"] = get_person_by_uwnetid(user)
+        except PersonNotFoundException:
+            context["personData"] = {}
+
         return context
 
 

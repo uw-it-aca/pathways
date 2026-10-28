@@ -1,12 +1,10 @@
 {
   "recommendations": [
-    "editorconfig.editorconfig",
-    "ms-python.black-formatter",
+    "charliermarsh.ruff",
+    "monosans.djlint",
     "ms-python.python",
     "batisteo.vscode-django",
-    "esbenp.prettier-vscode",
     "vue.volar",
-    "dbaeumer.vscode-eslint",
-    "stylelint.vscode-stylelint"
-  ]
+    "oxc.oxc-vscode",
+  ],
 }

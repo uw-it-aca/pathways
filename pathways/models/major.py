@@ -1,4 +1,4 @@
-# Copyright 2025 UW-IT, University of Washington
+# Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from django.db import models
@@ -72,6 +72,13 @@ class Major(models.Model):
     @staticmethod
     def get_major_data(credential_abbr):
         return Major.objects.get(credential_code=credential_abbr).json_data()
+
+    @staticmethod
+    def find_by_bare_code(code):
+        return list(Major.objects.filter(
+                major_abbr=code.strip().upper()
+            ).order_by("credential_code")
+        )
 
     def json_data(self):
         return {"major_abbr": self.major_abbr,

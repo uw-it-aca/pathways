@@ -1,39 +1,33 @@
-// course.vue
 <template>
-  <layout :page-title="pageTitle">
-    <!-- page content -->
+  <DefaultLayout :page-title="pageTitle">
     <template #content>
-      <div class="d-flex flex-column">
-        <div v-if="courseData" class="order-2 row justify-content-sm-center">
-          <div class="col-md-9">
-            <course-details :course="courseData" />
-            <explore-course :course="courseData" />
-          </div>
-
-          <div class="col-md-9">
-            <grade-distribution :course="courseData" />
-          </div>
-          <div v-if="courseCampus == 'seattle'" class="col-md-9">
-            <outcome-index :course="courseData" />
-          </div>
-          <!-- prereq map -->
-          <div class="col-md-9">
-            <prereq-map
+      <template v-if="courseData">
+        <div class="row my-5">
+          <div class="col-md-8 col-12">
+            <SearchMini class="d-md-none" />
+            <CourseDetails :course="courseData" />
+            <ExploreCourse :course="courseData" />
+            <GradeDistribution :course="courseData" />
+            <OutcomeIndex
+              v-if="courseCampus === 'seattle'"
+              :course="courseData"
+            />
+            <PrereqMap
               :graph_data="courseData.prereq_graph"
               :active_course="courseId"
               :prereq_string="courseData.prereq_string"
             />
           </div>
-
-          <div class="col-md-9">
-            <concurrent-courses :courseData="courseData" />
-          </div>
-          <div class="col-md-9">
-            <contact-adviser :campus="courseCampus" :type="'course'" />
+          <div class="col-md-4 col-12">
+            <SearchMini class="d-none d-md-block" />
+            <ConcurrentCourses :courseData="courseData" />
+            <ContactAdviser :campus="courseCampus" :type="'course'" />
           </div>
         </div>
-        <div v-else class="row order-2 justify-content-sm-center">
-          <div v-if="showError" class="col-md-9">
+      </template>
+      <template v-else>
+        <div class="row">
+          <div v-if="showError" class="col col-md-8">
             <div class="alert alert-purple border-0" role="alert">
               <p>
                 Data is not available for selected course. Here are some
@@ -46,108 +40,120 @@
               </ul>
             </div>
           </div>
-          <div v-else class="col-md-9 text-center">
+          <div v-else-if="loading" class="col col-md-8 text-center">
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
         </div>
-
-        <div class="order-1 row justify-content-center">
-          <div class="col-md-9">
-            <search />
-          </div>
-        </div>
-      </div>
+      </template>
     </template>
-  </layout>
+  </DefaultLayout>
 </template>
 
 <script>
-import Layout from "@/layout.vue";
-import Search from "@/components/search/search.vue";
-import GradeDistribution from "@/components/course/grade-distribution.vue";
-import CourseDetails from "@/components/course/course-details.vue";
-import ExploreCourse from "@/components/course/explore-course.vue";
-import OutcomeIndex from "@/components/course/outcome-index.vue";
-import PrereqMap from "@/components/course/prereq-map.vue";
-import ConcurrentCourses from "@/components/course/concurrent-courses.vue";
-import ContactAdviser from "@/components/common/contact-adviser.vue";
-import utils from "@/utils.js";
+  import { defineAsyncComponent } from "vue";
+  import DefaultLayout from "@/layouts/default.vue";
+  import CourseDetails from "@/components/course/course-details.vue";
+  import ExploreCourse from "@/components/course/explore-course.vue";
+  import ContactAdviser from "@/components/common/contact-adviser.vue";
+  import SearchMini from "@/components/search/search-mini.vue";
+  import utils from "@/utils.js";
+  import { useCustomFetch } from "@/composables/customFetch";
 
-export default {
-  name: "CourseComp",
-  components: {
-    layout: Layout,
-    "search": Search,
-    "course-details": CourseDetails,
-    "explore-course": ExploreCourse,
-    "grade-distribution": GradeDistribution,
-    "outcome-index": OutcomeIndex,
-    "contact-adviser": ContactAdviser,
-    "prereq-map": PrereqMap,
-    "concurrent-courses": ConcurrentCourses,
-  },
-  data() {
-    return {
-      courseData: undefined,
-      courseId: undefined,
-      courseTitle: undefined,
-      courseCampus: undefined,
-      showError: false,
-      appName: "DawgPath",
-    };
-  },
-  created() {
-    this.recentViewManager = utils.recentViewManager;
-  },
-  computed: {
-    pageTitle: function () {
-      let no_title = this.showError ? "Error" : "Course";
-      return this.courseTitle !== undefined
-        ? (document.title = this.courseTitle + " - " + this.appName)
-        : no_title;
-    },
-  },
-  mounted() {
-    this.courseId = this.$route.query.id;
-    this.courseCampus = this.$route.query.campus;
+  // Lazy-load heavy below-the-fold components so they are code-split into
+  // separate chunks and only downloaded/parsed after course data has loaded.
+  const GradeDistribution = defineAsyncComponent(
+    () => import("@/components/course/grade-distribution.vue"),
+  );
+  const OutcomeIndex = defineAsyncComponent(
+    () => import("@/components/course/outcome-index.vue"),
+  );
+  const PrereqMap = defineAsyncComponent(
+    () => import("@/components/course/prereq-map.vue"),
+  );
+  const ConcurrentCourses = defineAsyncComponent(
+    () => import("@/components/course/concurrent-courses.vue"),
+  );
 
-    if (this.courseId == undefined) {
-      this.showError = true;
-    }
+  export default {
+    name: "CourseComp",
+    components: {
+      DefaultLayout,
+      CourseDetails,
+      ExploreCourse,
+      GradeDistribution,
+      OutcomeIndex,
+      ContactAdviser,
+      PrereqMap,
+      ConcurrentCourses,
+      SearchMini,
+    },
+    data() {
+      return {
+        courseData: undefined,
+        courseId: undefined,
+        courseTitle: undefined,
+        courseCampus: undefined,
+        showError: false,
+        loading: false,
+      };
+    },
+    computed: {
+      pageTitle() {
+        if (this.courseTitle) return this.courseTitle;
+        return this.showError ? "Error" : "Course";
+      },
+    },
+    watch: {
+      // Side effect kept out of computed — update document title when courseTitle changes
+      courseTitle(val) {
+        if (val) document.title = val + " - DawgPath";
+      },
+      courseId(newValue) {
+        this.get_course_data(newValue);
+      },
+    },
+    mounted() {
+      this.courseId = this.$route.query.id;
+      this.courseCampus = this.$route.query.campus;
 
-    this.emitter.on("update:selected", (selectedKey) => {
-      this.courseId = selectedKey;
-    });
-  },
-  methods: {
-    switch_course(data) {
-      this.courseId = data.id;
-      this.courseCampus = data.campus;
+      if (!this.courseId) {
+        this.showError = true;
+      }
+
+      // Listen for course changes emitted by child components (e.g. prereq graph node clicks)
+      this.emitter.on("update:selected", (selectedKey) => {
+        this.courseId = selectedKey;
+      });
     },
-    get_course_data(course_id) {
-      const vue = this;
-      this.courseData = undefined;
-      this.axios
-        .get("/api/v1/courses/details/" + course_id)
-        .then((response) => {
-          vue.showError = false;
-          vue.courseData = response.data;
-          vue.courseCampus = response.data.course_campus;
-          //vue.courseTitle = this.courseId + ': ' + response.data.course_title + ' - Course ';
-          vue.courseTitle = this.courseId + ": " + response.data.course_title;
-          vue.recentViewManager(vue.courseId, "course?id=" + vue.courseId, vue.courseCampus);
-        })
-        .catch(function () {
-          vue.showError = true;
-        });
+    beforeUnmount() {
+      // Remove listener to prevent duplicate handlers if component remounts
+      this.emitter.off("update:selected");
     },
-  },
-  watch: {
-    courseId(newValue) {
-      this.get_course_data(newValue);
+    methods: {
+      async get_course_data(course_id) {
+        this.courseData = undefined;
+        this.showError = false;
+        this.loading = true;
+        try {
+          const data = await useCustomFetch(
+            "/api/v1/courses/details/" + course_id,
+          );
+          this.courseData = data;
+          this.courseCampus = data.course_campus;
+          this.courseTitle = this.courseId + ": " + data.course_title;
+          utils.recentViewManager(
+            this.courseId,
+            "course?id=" + this.courseId,
+            this.courseCampus,
+          );
+        } catch {
+          this.showError = true;
+        } finally {
+          this.loading = false;
+        }
+      },
     },
-  },
-};
+  };
 </script>

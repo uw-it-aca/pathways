@@ -7,41 +7,41 @@
 </template>
 
 <script>
-export default {
-  name: "ExploreCourse",
-  data() {
-    return {};
-  },
-  props: {
-    course: {
-      type: Object,
-      required: true,
+  export default {
+    name: "ExploreCourse",
+    data() {
+      return {};
     },
-  },
-  computed: {
-    myplanURL() {
-      let url = "";
-      if (this.course["course_id"] !== null) {
-        url =
-          "https://myplan.uw.edu/course/#/courses/" +
-          encodeURIComponent(this.course["course_id"]);
-      }
-      return url;
+    props: {
+      course: {
+        type: Object,
+        required: true,
+      },
     },
-  },
-  methods: {},
-};
+    computed: {
+      myplanURL() {
+        let url = "";
+        if (this.course["course_id"] !== null) {
+          url =
+            "https://myplan.uw.edu/course/#/courses/" +
+            encodeURIComponent(this.course["course_id"]);
+        }
+        return url;
+      },
+    },
+    methods: {},
+  };
 </script>
 
 <style lang="scss" scoped>
-.explore-course {
-  ul {
-    padding-left: 0;
-  }
+  .explore-course {
+    ul {
+      padding-left: 0;
+    }
 
-  li {
-    list-style-type: none;
-    padding-bottom: 0.5rem;
+    li {
+      list-style-type: none;
+      padding-bottom: 0.5rem;
+    }
   }
-}
 </style>

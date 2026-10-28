@@ -1,8 +1,11 @@
 <template>
+  <SHeading
+    level="1"
+    class="fw-bold ff-encode-sans mb-3"
+    data-clarity-unmask="true"
+    >{{ preventWidow(major.credential_title) }}</SHeading
+  >
   <div class="mb-5">
-    <h1 class="h2 axdd-font-encode-sans fw-bold">
-      {{ major["credential_title"] }}
-    </h1>
     <p class="text-uppercase mb-1">
       {{ major["major_school"] }} - {{ major["major_campus"] }}
     </p>
@@ -24,21 +27,27 @@
 </template>
 
 <script>
-import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
+  import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
+  import { SHeading } from "solstice-vue";
+  import { preventWidow } from "@/utils";
 
-export default {
-  name: "MajorDetails",
-  components: {
-    MajorCapacityDisplay,
-  },
-  props: {
-    major: {
-      type: Object,
-      required: true,
+  export default {
+    name: "MajorDetails",
+    components: {
+      SHeading,
+      MajorCapacityDisplay,
     },
-  },
-  data() {
-    return {};
-  },
-};
+    props: {
+      major: {
+        type: Object,
+        required: true,
+      },
+    },
+    data() {
+      return {};
+    },
+    methods: {
+      preventWidow,
+    },
+  };
 </script>

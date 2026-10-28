@@ -1,142 +1,288 @@
 // home.vue
 <template>
-  <layout :page-title="pageTitle">
+  <DefaultLayout :page-title="pageTitle">
     <!-- page content -->
     <template #content>
-      <div class="row justify-content-center">
-        <div class="col-md-9">
-          <h1 class="visually-hidden">{{ pageTitle }}</h1>
-
-          <search />
-          <div class="text-start w-75 mx-auto">
-            <p class="lead">
-              DawgPath helps you discover courses and majors, and enables you to
-              be strategic when making decisions about your schedule.
-            </p>
-            <p class="lead">
-              It also provides useful data when you're planning to apply to
-              capacity-constrained majors.
-            </p>
-
-            <p>A few things to keep in mind before getting started:</p>
-            <ul>
-              <li>
-                Grades are just one of the factors considered for
-                capacity-constrained major. Reach out to your adviser to learn
-                more.
-              </li>
-              <li>
-                The median course grade and GPA data are only included for those
-                who had declared for the major.
-              </li>
-
-              <li>
-                Discovering and applying for a major can be a challenging
-                experience. Look for the "Find your adviser” links to connect
-                with your adviser.
-              </li>
-              <li>
-                Check out the <a href="/faq">DawgPath FAQ</a> for more info.
-              </li>
-            </ul>
-          </div>
-
-          <!-- Modal
-          <div
-            class="modal fade"
-            role="dialog"
-            id="exampleModal"
-            tabindex="-1"
-            aria-modal="true"
-            aria-labelledby="welcome_modal"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-              <div class="modal-content">
-                <div class="modal-body">
-                  <h2 class="modal-title mb-2" id="welcome_modal">Welcome</h2>
-                  <div>
-
-                  </div>
-                  <div class="text-end">
-                    <button
-                      type="button"
-                      class="btn btn-purple"
-                      data-bs-dismiss="modal"
-                      aria-label="Ok, got it"
-                      @click="saveModalPref"
-                    >
-                      OK, got it
-                    </button>
-                  </div>
-                </div>
+      <div class="row mt-5">
+        <div class="col-md-8 col-12">
+          <SearchMini class="d-md-none" />
+          <SHeading level="1" class="fw-bold ff-encode-sans mb-5" data-clarity-mask="true"
+            >Welcome back,
+            <template
+              v-if="contextStore.context.personData.preferred_first_name"
+            >
+              {{ contextStore.context.personData.preferred_first_name }}
+            </template>
+            <template v-else>
+              {{ contextStore.context.personData.uwnetid }}
+            </template>
+          </SHeading>
+        </div>
+        <div class="col-md-4 col-12">
+          <SearchMini class="d-none d-md-block" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <BCard class="bg-body-tertiary rounded-3 mb-5" border-variant="0">
+            <div class="row">
+              <div class="col border-end px-4">
+                <p class="fw-bold text-body-secondary">Degree Information</p>
+                <ul class="list-unstyled p-0">
+                  <li class="d-flex justify-content-between">
+                    <div>{{ majorCount > 1 ? "Majors" : "Major" }}</div>
+                    <div class="fs-5 fw-bold text-end">
+                      <MajorTitle
+                        v-for="(major, index) in majors"
+                        :key="index"
+                        :major-abbr-code="major.major_abbr_code"
+                        :major-premaj="major.major_premaj"
+                        :major-name="major.major_name"
+                      />
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col border-end px-4">
+                <p class="fw-bold text-body-secondary">Progress</p>
+                <ul class="list-unstyled p-0">
+                  <li class="d-flex justify-content-between mb-2">
+                    <div>Class Standing</div>
+                    <div class="fs-5 fw-bold text-end">
+                      {{ contextStore.context.personData.class_desc }}
+                    </div>
+                  </li>
+                  <li class="d-flex justify-content-between">
+                    <div>Credits</div>
+                    <div>
+                      {{ totalCredits }} /
+                      {{ creditsRequired }}
+                    </div>
+                  </li>
+                  <li class="mb-2">
+                    <BProgress
+                      :value="creditsPercent"
+                      aria-label="Credits completed"
+                    />
+                  </li>
+                  <li class="d-flex justify-content-between">
+                    <div>Quarters Completed</div>
+                    <div>
+                      {{ contextStore.context.personData.quarters_completed }} /
+                      {{ quartersRequired }}
+                    </div>
+                  </li>
+                  <li class="mb-2">
+                    <BProgress
+                      :value="quartersPercent"
+                      aria-label="Quarters completed"
+                    />
+                  </li>
+                </ul>
+              </div>
+              <div class="col px-4">
+                <p class="fw-bold text-body-secondary">Academics</p>
+                <ul class="list-unstyled p-0">
+                  <li class="d-flex justify-content-between">
+                    <div>Cummulative GPA</div>
+                    <div class="fs-5 fw-bold text-end">
+                      {{ contextStore.context.personData.cumulative_gpa }}
+                    </div>
+                  </li>
+                </ul>
               </div>
             </div>
-          </div> -->
+          </BCard>
+          <template v-if="contextStore.context.debug_mode">
+            <div>
+              <pre>{{
+                JSON.stringify(contextStore.context.personData, null, 2)
+              }}</pre>
+            </div>
+          </template>
 
-          <!-- Button trigger modal
-          <button
-            type="button"
-            class="btn btn-link mt-2 btn-sm text-decoration-none"
-            aria-label="Open modal"
-            @click="showWelcomeModal"
-          >
-            About DawgPath <i class="bi bi-info-circle"></i>
-          </button>-->
+          <!-- show declared majors; however, if any declared major is a
+               pre-major, show the intended majors instead -->
+          <template v-if="!hasPremajor">
+            <SHeading level="2" class="mb-3">{{ majorsHeading }}</SHeading>
+            <div
+              v-if="hasMajors"
+              class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5"
+            >
+              <MajorMini
+                v-for="(major, index) in majors"
+                :key="index"
+                :major-abbr-code="major.major_abbr_code"
+              />
+            </div>
+            <p v-else class="mb-5">No majors found.</p>
+          </template>
+
+          <template v-else>
+            <div class="d-flex justify-content-between align-items-center">
+              <SHeading level="2" class="mb-3">{{
+                intendedMajorsHeading
+              }}</SHeading>
+              <a
+                href="https://sdb.admin.uw.edu/sisStudents/uwnetid/prefmajor.aspx"
+                target="_blank"
+                >Update your intended majors</a
+              >
+            </div>
+            <div
+              v-if="hasIntendedMajors"
+              class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5"
+            >
+              <MajorMini
+                v-for="(major, index) in intendedMajors"
+                :key="index"
+                :major-abbr-code="major.major_abbr_code"
+              />
+            </div>
+            <p v-else class="mb-5">No intended majors found.</p>
+          </template>
+
+          <template v-if="contextStore.context.debug_mode">
+            <SHeading level="2" class="mb-3">Test Display Majors</SHeading>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-5">
+              <MajorMini :major-abbr-code="'CSSE'" />
+              <MajorMini :major-abbr-code="'COMP E'" />
+              <MajorMini :major-abbr-code="'CMP E'" />
+              <MajorMini :major-abbr-code="'ACMS'" />
+              <MajorMini :major-abbr-code="'C SCI'" />
+              <MajorMini :major-abbr-code="'AMATH'" />
+              <MajorMini :major-abbr-code="'B CRS'" />
+              <MajorMini :major-abbr-code="'PSOCS'" />
+              <MajorMini :major-abbr-code="'PREARC'" />
+              <MajorMini :major-abbr-code="'PRESCI'" />
+              <MajorMini :major-abbr-code="'ENGRUD'" />
+            </div>
+          </template>
         </div>
       </div>
     </template>
-  </layout>
+  </DefaultLayout>
 </template>
 
 <script>
-import Layout from "@/layout.vue";
-import Search from "@/components/search/search.vue";
+  import DefaultLayout from "@/layouts/default.vue";
+  import SearchMini from "@/components/search/search-mini.vue";
+  import MajorMini from "@/components/common/major-mini.vue";
+  import MajorTitle from "@/components/common/major-title.vue";
+  import { useCustomFetch } from "@/composables/customFetch";
+  import { BCard, BProgress } from "bootstrap-vue-next";
+  import { SHeading } from "solstice-vue";
+  import { useContextStore } from "@/stores/context";
 
-import { Modal } from "bootstrap";
-
-export default {
-  name: "HomeComp",
-  components: {
-    layout: Layout,
-    search: Search,
-  },
-  data() {
-    return {
-      pageTitle: "Home",
-      welcomeModal: null,
-    };
-  },
-  mounted() {
-    // if (window.show_welcome) {
-    //   // show the welcome modal when the component is mounted
-    //   this.showWelcomeModal();
-    // }
-  },
-  methods: {
-    showWelcomeModal() {
-      this.welcomeModal = new Modal(
-        document.getElementById("exampleModal"),
-        {}
-      );
-      this.welcomeModal.show();
+  export default {
+    name: "HomeComp",
+    components: {
+      BCard,
+      BProgress,
+      DefaultLayout,
+      MajorMini,
+      MajorTitle,
+      SearchMini,
+      SHeading,
     },
-    saveModalPref() {
-      this.axios({
-        method: "post",
-        url: "/api/v1/user_pref/",
-        headers: { "X-CSRFToken": window.csrf_token },
-        data: {
-          viewed_welcome_display: true,
-        },
-      });
+    data() {
+      return {
+        welcomeModal: null,
+        // degree requirements used as the progress bar maximums
+        creditsRequired: 225,
+        quartersRequired: 16,
+      };
     },
-  },
-};
+    computed: {
+      contextStore() {
+        return useContextStore();
+      },
+      majors() {
+        return this.contextStore.context.personData.majors || [];
+      },
+      intendedMajors() {
+        return this.contextStore.context.personData.intended_majors || [];
+      },
+      hasMajors() {
+        return this.majors.length > 0;
+      },
+      hasIntendedMajors() {
+        return this.intendedMajors.length > 0;
+      },
+      hasPremajor() {
+        return this.majors.some((major) => major.major_premaj);
+      },
+      majorCount() {
+        return this.majors.length;
+      },
+      majorsHeading() {
+        return this.majorCount > 1 ? "My Majors" : "My Major";
+      },
+      intendedMajorsHeading() {
+        return this.intendedMajors.length > 1
+          ? "My Intended Majors"
+          : "My Intended Major";
+      },
+      creditsPercent() {
+        return this.toPercent(
+          this.contextStore.context.personData.total_credits,
+          this.creditsRequired,
+        );
+      },
+      quartersPercent() {
+        return this.toPercent(
+          this.contextStore.context.personData.quarters_completed,
+          this.quartersRequired,
+        );
+      },
+      pageTitle() {
+        return this.contextStore.context.personData.display_name;
+      },
+      totalCredits() {
+        return Math.trunc(
+          Number(this.contextStore.context.personData.total_credits),
+        );
+      },
+    },
+    mounted() {
+      const contextStore = useContextStore();
+      console.log("Context store data:", contextStore.context);
+    },
+    methods: {
+      // percentage of a maximum, clamped to 0-100 and safe for missing data
+      toPercent(value, max) {
+        const current = Number(value);
+        if (!max || !Number.isFinite(current)) return 0;
+        return Math.min(100, Math.max(0, (current / max) * 100));
+      },
+      showWelcomeModal() {
+        this.welcomeModal = new Modal(
+          document.getElementById("exampleModal"),
+          {},
+        );
+        this.welcomeModal.show();
+      },
+      async saveModalPref() {
+        try {
+          await useCustomFetch("/api/v1/user_pref/", {
+            method: "POST",
+            body: JSON.stringify({
+              viewed_welcome_display: true,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+        } catch (error) {
+          console.error("Failed to save welcome display preference:", error);
+        }
+      },
+    },
+  };
 </script>
 
 <style lang="scss">
-.modal-body li {
-  margin-bottom: 1em;
-}
+  .modal-body li {
+    margin-bottom: 1em;
+  }
 </style>

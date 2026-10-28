@@ -1,4 +1,4 @@
-# Copyright 2025 UW-IT, University of Washington
+# Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 import json
@@ -332,6 +332,14 @@ class ModelTest(TestCase):
         search_results = major.get_search_results_dict()
         self.assertEqual(search_results['id'], 'CHEM')
         self.assertEqual(search_results['url'], '/major?id=CHEM')
+
+    def test_find_by_bare_code(self):
+        matches = Major.find_by_bare_code(' other ')
+        self.assertEqual([m.credential_code for m in matches],
+                         ['OTHER-10-3-4', 'OTHER-10-4-4'])
+        self.assertEqual(Major.find_by_bare_code('NOPE'), [])
+        self.assertEqual([m.credential_code for m in
+                          Major.find_by_bare_code('chem')], ['CHEM-0-1-2'])
 
     def test_major_list(self):
         major_list = Major.get_major_list()

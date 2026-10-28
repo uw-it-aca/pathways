@@ -1,4 +1,4 @@
-# Copyright 2025 UW-IT, University of Washington
+# Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 import os
@@ -12,12 +12,12 @@ register = template.Library()
 
 
 def vite_manifest(entries_names):
-
     # path to the manifest.json (relative if localdev, /static if not)
+    # updated to support Vite 5 (.vite/manifest.json output)
     manifest_filepath = getattr(
         settings,
         "VITE_MANIFEST_PATH",
-        os.path.join(os.sep, "static", "manifest.json"),
+        os.path.join(os.sep, "static", ".vite", "manifest.json"),
     )
 
     with open(manifest_filepath) as fp:

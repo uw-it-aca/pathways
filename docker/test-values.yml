@@ -1,38 +1,10 @@
-ingress:
+gateway:
   enabled: true
-  tls:
-    dawgpath:
-      secretName: test.dawgpath.uw.edu-ingress-cert
-      hosts:
-        - test.dawgpath.uw.edu
-    pivot:
-      secretName: test.pivot.uw.edu-ingress-cert
-      hosts:
-        - test.pivot.uw.edu
-    prereqmap:
-      secretName: test.prereqmap.uw.edu-ingress-cert
-      hosts:
-        - test.prereqmap.uw.edu
-  hosts:
-    dawgpath:
-      host: test.dawgpath.uw.edu
-      paths:
-        - "/"
-    prereqmap:
-      host: test.prereqmap.uw.edu
-      paths:
-        - "/"
-    pivot:
-      host: test.pivot.uw.edu
-      paths:
-        - "/"
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/client-body-buffer-size: "16K"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      if ($host != 'test.dawgpath.uw.edu' ) {
-        return 301 $scheme://test.dawgpath.uw.edu;
-      }
+  hostnames:
+    - test.dawgpath.uw.edu
+    - test.pivot.uw.edu
+    - test.prereqmap.uw.edu
+  redirectToFirstHostname: true
 
 namespace:
   enabled: true
@@ -101,6 +73,8 @@ externalSecrets:
           property: django-secret
         - name: access-group-id
           property: access-group-id
+        - name: admin-group-id
+          property: admin-group-id
         - name: google-analytics-key
           property: google-analytics-key
     - name: test.dawgpath.uw.edu-sql-secrets
@@ -110,11 +84,6 @@ externalSecrets:
           property: username
         - name: password
           property: password
-    - name: test.dawgpath.uw.edu-ic-certs
-      externalKey: dawgpath/test/ic-certs
-      data:
-        - name: test.dawgpath.uw.edu-ic.cert
-          property: test.dawgpath.uw.edu-ic.cert
     - name: test.dawgpath.uw.edu-uw-idp-cert
       externalKey: idp-cert
       data:
@@ -130,6 +99,19 @@ externalSecrets:
       data:
         - name: blob-url
           property: blob-url
+    - name: test.dawgpath.uw.edu-shared-secrets
+      externalKey: dawgpath/shared/secrets
+      data:
+        - name: person-db-user
+          property: person-db-user
+        - name: person-db-pass
+          property: person-db-pass
+        - name: person-db-host
+          property: person-db-host
+        - name: person-db-port
+          property: person-db-port
+        - name: person-db-database
+          property: person-db-database
     - name: shared-proxy-secrets
       externalKey: shared/proxies/uw_ssh_tunnel
       data:
@@ -145,10 +127,6 @@ environmentVariablesSecrets:
     name: DJANGO_SECRET
     secretName: test.dawgpath.uw.edu-secrets
     secretKey: django-secret
-  samlSPCert:
-    name: SP_CERT
-    secretName: test.dawgpath.uw.edu-ic-certs
-    secretKey: test.dawgpath.uw.edu-ic.cert
   samlIDPCert:
     name: IDP_CERT
     secretName: test.dawgpath.uw.edu-uw-idp-cert
@@ -157,6 +135,10 @@ environmentVariablesSecrets:
     name: ACCESS_GROUP
     secretName: test.dawgpath.uw.edu-secrets
     secretKey: access-group-id
+  adminGroup:
+    name: ADMIN_GROUP
+    secretName: test.dawgpath.uw.edu-secrets
+    secretKey: admin-group-id
   googleAnalyticsKey:
     name: GOOGLE_ANALYTICS_KEY
     secretName: test.dawgpath.uw.edu-secrets
@@ -169,4 +151,23 @@ environmentVariablesSecrets:
     name: AZURE_BLOB_STORAGE_URL
     secretName: test.dawgpath.uw.edu-azure-storage-secrets
     secretKey: blob-url
-
+  personDBUser:
+    name: UW_PERSON_DB_USER
+    secretName: test.dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-user
+  personDBPass:
+    name: UW_PERSON_DB_PASSWORD
+    secretName: test.dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-pass
+  personDBHost:
+    name: UW_PERSON_DB_HOST
+    secretName: test.dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-host
+  personDBPort:
+    name: UW_PERSON_DB_PORT
+    secretName: test.dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-port
+  personDBDatabase:
+    name: UW_PERSON_DB_NAME
+    secretName: test.dawgpath.uw.edu-shared-secrets
+    secretKey: person-db-database

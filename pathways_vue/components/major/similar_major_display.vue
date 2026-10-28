@@ -1,14 +1,13 @@
 <template>
   <div class="my-2 py-2">
-    <h6 class="fw-bold ff-open-sans mb-1">
+    <span class="fw-bold ff-open-sans mb-1">
       <a
         :href="major_url"
         class="text-decoration-none"
-        style="color: #2f68cb"
         >{{ majorData.credential_title }}</a
       >
-    </h6>
-    <p class="text-uppercase small text-black-50 mb-0">
+    </span>
+    <p class="text-uppercase small text-body-secondary mb-0">
       {{ majorData.major_school }} - {{ majorData.campus }}
     </p>
     <!--
@@ -23,27 +22,29 @@
 </template>
 
 <script>
-import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
+  import MajorCapacityDisplay from "@/components/major/capacity-display.vue";
 
-export default {
-  name: "SimilarMajorDisplay",
-  components: {
-    MajorCapacityDisplay,
-  },
-  props: {
-    majorData: {
-      type: Object,
-      required: true,
+  export default {
+    name: "SimilarMajorDisplay",
+    components: {
+      MajorCapacityDisplay,
     },
-  },
-  data() {
-    return {};
-  },
-  methods: {},
-  computed: {
-    major_url() {
-      return "/major?id=" + encodeURIComponent(this.majorData.credential_code);
+    props: {
+      majorData: {
+        type: Object,
+        required: true,
+      },
     },
-  },
-};
+    data() {
+      return {};
+    },
+    methods: {},
+    computed: {
+      major_url() {
+        return (
+          "/major?id=" + encodeURIComponent(this.majorData.credential_code)
+        );
+      },
+    },
+  };
 </script>

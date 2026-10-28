@@ -1,8 +1,8 @@
 <template>
-  <layout :page-title="pageTitle">
+  <DefaultLayout :page-title="pageTitle">
     <template #content>
-      <div class="row justify-content-sm-center">
-        <div class="col-md-9">
+      <div class="row justify-content-center">
+        <div class="col col-md-9">
           <h1 class="fs-2 mt-4">{{ pageTitle }}</h1>
 
           <ul class="list-unstyled">
@@ -356,29 +356,29 @@
         </div>
       </div>
     </template>
-  </layout>
+  </DefaultLayout>
 </template>
 
 <style lang="scss">
-.fs-5.about {
-  color: #452a78;
-  font-weight: bold;
-}
+  .fs-5.about {
+    color: #452a78;
+    font-weight: bold;
+  }
 </style>
 
 <script>
-import Layout from "@/layout.vue";
+  import DefaultLayout from "@/layouts/default.vue";
 
-export default {
-  name: "App",
-  components: {
-    layout: Layout,
-  },
-  data() {
-    return {
-      pageTitle: "Frequently Asked Questions",
-    };
-  },
-  methods: {},
-};
+  export default {
+    name: "App",
+    components: {
+      DefaultLayout,
+    },
+    data() {
+      return {
+        pageTitle: "Frequently Asked Questions",
+      };
+    },
+    methods: {},
+  };
 </script>

@@ -1,4 +1,4 @@
-# Copyright 2025 UW-IT, University of Washington
+# Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from django.conf import settings
@@ -56,6 +56,6 @@ urlpatterns += [
         r'^api/v1/coi/curric/$',
         CurricCOI.as_view(), name='curric-coi'),
 
-    re_path(r'^(major|course|faq)$', DefaultPageView.as_view()),
+    re_path(r'^(major|course|faq|search)$', DefaultPageView.as_view()),
     re_path(r'^$', DefaultPageView.as_view()),
 ]
