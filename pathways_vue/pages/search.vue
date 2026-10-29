@@ -218,7 +218,19 @@
           );
         }
 
-        return results;
+        const seen = new Set();
+        return results.filter((result) => {
+          const key = JSON.stringify([
+            result.is_course ? "course" : "major",
+            result.id,
+            (result.campus || "").toLowerCase(),
+          ]);
+          if (seen.has(key)) {
+            return false;
+          }
+          seen.add(key);
+          return true;
+        });
       },
       show_results() {
         return this.search_results.length > 0 || this.has_searched;
