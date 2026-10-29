@@ -244,10 +244,6 @@
         );
       },
     },
-    mounted() {
-      const contextStore = useContextStore();
-      console.log("Context store data:", contextStore.context);
-    },
     methods: {
       // percentage of a maximum, clamped to 0-100 and safe for missing data
       toPercent(value, max) {
