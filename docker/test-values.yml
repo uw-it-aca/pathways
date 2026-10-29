@@ -102,6 +102,8 @@ externalSecrets:
     - name: test.dawgpath.uw.edu-shared-secrets
       externalKey: dawgpath/shared/secrets
       data:
+        - name: clarity-project-id
+          property: clarity-project-id
         - name: person-db-user
           property: person-db-user
         - name: person-db-pass
@@ -147,6 +149,10 @@ environmentVariablesSecrets:
     name: GOOGLE_FEEDBACK_FORM
     secretName: test.dawgpath.uw.edu-feedback-form-secrets
     secretKey: form-url
+  clarityProjectId:
+    name: CLARITY_PROJECT_ID
+    secretName: test.dawgpath.uw.edu-shared-secrets
+    secretKey: clarity-project-id
   azureStorageBlobUrl:
     name: AZURE_BLOB_STORAGE_URL
     secretName: test.dawgpath.uw.edu-azure-storage-secrets
