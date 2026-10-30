@@ -32,9 +32,12 @@ def import_major_data(data):
             program_verind_id=data[major]['program_verind_id'],
             major_home_url=data[major]['major_home_url'],
             common_course_decl=data[major]['common_course_decl'],
-            credential_code=data[major]['credential_code'],
-            credential_title=data[major]['credential_title'],
-            credential_description=data[major]['credential_description']
+            credential_code=data[major].get('credential_code') or major,
+            credential_title=(data[major].get('credential_title')
+                              or data[major]['major_title']
+                              or data[major]['major_code']),
+            credential_description=(data[major].get('credential_description')
+                                    or data[major]['major_description'] or '')
         ))
     Major.objects.bulk_create(major_objs)
 
