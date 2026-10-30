@@ -108,6 +108,30 @@ class PostgresSearchTests(TestCase):
         result = search("learn programming", types=["course"])
         self.assertEqual(result["text_matches"][0]["id"], "CSE 142")
 
+    def test_learn_ranks_majors_with_courses(self):
+        Major.objects.update(credential_title="Programming")
+        Course.objects.filter(course_id="CSE 142").update(
+            course_title="Introduction to Programming")
+        Course.objects.filter(course_id="B CSE 142").update(
+            course_title="Advanced Programming")
+        for query in ("learn programming", " LEARN   programming "):
+            with self.subTest(query=query):
+                result = search(query)
+                displayed = (result["major_matches"]
+                             + result["course_matches"]
+                             + result["text_matches"])
+                self.assertEqual(result["major_matches"], [])
+                self.assertEqual(displayed[0]["id"], "CSE 142")
+                self.assertTrue(any(row.get("is_major") for row in displayed))
+
+    def test_ordinary_search_keeps_major_title_promotion(self):
+        Major.objects.update(credential_title="Programming")
+        result = search("programming")
+        displayed = (result["major_matches"] + result["course_matches"]
+                     + result["text_matches"])
+        self.assertEqual(displayed[0]["id"], "CSE-0-1")
+        self.assertTrue(any(row.get("is_course") for row in displayed))
+
     def test_metadata_downweighted_but_preserved(self):
         Course.objects.filter(course_id="B CSE 142").update(
             course_title="Molecular Structures",
