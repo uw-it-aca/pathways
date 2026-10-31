@@ -43,6 +43,11 @@ Docker/Docker Compose is used to containerize your local build environment and d
 
 ### Search Index
 
+PostgreSQL search is available for a test-environment trial. The default remains
+Whoosh; test deployment values select PostgreSQL and production retains Whoosh.
+See [PostgreSQL Search Trial](docs/postgres-search-rollout.md) for database
+privileges, migration/deploy behavior, verification, and rollback.
+
 The search index in `indexdir/` is automatically built when the docker container starts (via `docker/app_start.sh`). 
 
 Note: `indexdir/` is ignored by Git. If Whoosh index files were previously tracked, they should be removed from the Git index using:

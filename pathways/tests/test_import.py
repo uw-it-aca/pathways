@@ -42,6 +42,33 @@ class ImportTest(TestCase):
         url = "www.washington.edu/students/gencat/academic/rail_stud.html"
         self.assertEqual(majors[0].major_home_url, url)
 
+    def test_major_search_fields_default_when_null_or_empty(self):
+        code = next(iter(self.test_file_data))
+        source = self.test_file_data[code]
+        for value in (None, ''):
+            with self.subTest(value=value):
+                for field in ('credential_code', 'credential_title',
+                              'credential_description'):
+                    source[field] = value
+                import_major_data(self.test_file_data)
+                self.assertEqual(Major.objects.count(), 3)
+                major = Major.objects.get(credential_code=code)
+                self.assertEqual(major.credential_title, source['major_title'])
+                self.assertEqual(major.credential_description,
+                                 source['major_description'])
+
+    def test_major_search_fields_default_when_missing(self):
+        code = next(iter(self.test_file_data))
+        source = self.test_file_data[code]
+        for field in ('credential_code', 'credential_title',
+                      'credential_description'):
+            del source[field]
+        source['major_description'] = None
+        import_major_data(self.test_file_data)
+        major = Major.objects.get(credential_code=code)
+        self.assertEqual(major.credential_title, source['major_title'])
+        self.assertEqual(major.credential_description, '')
+
     def test_import_level_coi(self):
         import_level_coi(self.coi_data)
         cl_1 = CourseLevel.objects.get(level=100)

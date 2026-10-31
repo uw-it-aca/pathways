@@ -1,15 +1,18 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+import re
 from logging import getLogger
-from whoosh.index import open_dir
-from whoosh import qparser
-from whoosh.query import *
 from urllib.parse import urlencode
+
+from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
+from whoosh import qparser
+from whoosh.index import open_dir
+from whoosh.query import *
+
 from pathways.models.course import Course
 from pathways.models.major import Major
-import re
-
 
 logger = getLogger(__name__)
 SEARCH_INDEX_DIR = "indexdir"
@@ -17,6 +20,22 @@ SEARCH_INDEX_DIR = "indexdir"
 
 def search(search_string, campus_values=None, types=None, is_bottleneck=None,
            is_gateway=None, min_coi_score=None, max_coi_score=None):
+    backend = getattr(settings, "PATHWAYS_SEARCH_BACKEND", "whoosh")
+    if backend == "postgres":
+        from pathways.postgres_search import search as postgres_search
+        return postgres_search(
+            search_string, campus_values, types, is_bottleneck, is_gateway,
+            min_coi_score, max_coi_score)
+    if backend != "whoosh":
+        raise ImproperlyConfigured(f"Unknown search backend: {backend}")
+    return whoosh_search(
+        search_string, campus_values, types, is_bottleneck, is_gateway,
+        min_coi_score, max_coi_score)
+
+
+def whoosh_search(search_string, campus_values=None, types=None,
+                  is_bottleneck=None, is_gateway=None, min_coi_score=None,
+                  max_coi_score=None):
     course_results = \
         course_id_direct_match(search_string.upper(),
                                campus_values) if "course" in types or \

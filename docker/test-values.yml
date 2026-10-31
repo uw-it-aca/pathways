@@ -56,6 +56,8 @@ daemon:
 environmentVariables:
   - name: ENV
     value: test
+  - name: PATHWAYS_SEARCH_BACKEND
+    value: postgres
   - name: AUTH
     value: SAML
   - name: SAML_ENTITY_ID
