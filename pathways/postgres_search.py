@@ -167,7 +167,7 @@ def search(search_string, campus_values=None, types=None, is_bottleneck=None,
         for result, exact, title_match in rows:
             if kind == "course" and exact:
                 response["course_matches"].append(result)
-            if kind == "major" and title_match:
+            if kind == "major" and title_match and not introductory:
                 response["major_matches"].append(result)
             text_results.append(result)
     response["major_matches"] = (
