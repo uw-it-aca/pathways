@@ -180,7 +180,7 @@ def text_search(search_string, campus_values=None, types=None,
         phrase_parser = qparser.MultifieldParser(["contents"],
                                                  ix.schema)
         phrase_parser.add_plugin(qparser.SequencePlugin())
-        phrase_quyery = phrase_parser.parse("\"%s\"" % search_string)
+        phrase_quyery = phrase_parser.parse(f'"{search_string}"')
         phrase_results = searcher.search(phrase_quyery,
                                          limit=2000)
         results.upgrade(phrase_results)

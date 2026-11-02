@@ -2,15 +2,19 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.test import TestCase
+
 from pathways.dao.person import (
-    get_person_by_uwnetid, valid_uwnetid, PersonNotFoundException)
+    PersonNotFoundException,
+    get_person_by_uwnetid,
+    valid_uwnetid,
+)
 
 
 class TestPerson(TestCase):
     databases = "__all__"
-    fixtures = ["person.json", "employee.json", "term.json", "major.json",
+    fixtures = ("person.json", "employee.json", "term.json", "major.json",
                 "student.json", "adviser.json", "transfer.json",
-                "transcript.json", "hold.json", "degree.json", "sport.json"]
+                "transcript.json", "hold.json", "degree.json", "sport.json")
 
     def test_get_person_by_uwnetid(self):
         person = get_person_by_uwnetid("javerage")

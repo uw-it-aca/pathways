@@ -2,12 +2,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import os
+from unittest.mock import patch
+
 from django.core.management import call_command
-from whoosh.index import open_dir
 from whoosh import qparser
+from whoosh.index import open_dir
+
 from pathways.search import _get_course_dict
 from pathways.tests import SearchIndexTest
-from unittest.mock import patch
 
 
 class BuildSearchIndexTest(SearchIndexTest):

@@ -4,7 +4,9 @@
 import json
 from importlib import import_module
 from io import StringIO
-from unittest.mock import patch
+from types import SimpleNamespace
+from unittest import skipUnless
+from unittest.mock import Mock, patch
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ImproperlyConfigured
@@ -27,6 +29,8 @@ from pathways.search import search as routed_search
 from pathways.views.api.search import Search
 
 
+@skipUnless(connection.vendor == "postgresql",
+            "PostgreSQL integration tests require PostgreSQL")
 class PostgresSearchTests(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -242,6 +246,8 @@ class SearchBackendTests(SimpleTestCase):
         self.assertFalse(migration.Migration.atomic)
 
 
+@skipUnless(connection.vendor == "postgresql",
+            "PostgreSQL migration tests require PostgreSQL")
 class SearchMigrationTests(TransactionTestCase):
     @override_settings(PATHWAYS_SEARCH_BACKEND="postgres")
     def test_rollback_and_retry_preserve_catalog(self):
@@ -276,3 +282,20 @@ class SearchMigrationTests(TransactionTestCase):
         self.assertEqual(Course.objects.count(), 2)
         self.assertEqual(search("cse142")["course_matches"][0]["id"],
                          "CSE 142")
+
+
+class NonPostgresMigrationTests(SimpleTestCase):
+    def test_postgres_ddl_is_skipped_for_sqlite_and_nondefault_aliases(self):
+        configuration = import_module(
+            "pathways.migrations.0027_postgres_search_configuration")
+        indexes = import_module(
+            "pathways.migrations.0028_postgres_search_indexes")
+        aliases = (("default", "sqlite"), ("uw_person", "postgresql"))
+        for alias, vendor in aliases:
+            schema_editor = SimpleNamespace(
+                connection=SimpleNamespace(alias=alias, vendor=vendor),
+                execute=Mock())
+            configuration.prepare_configuration(None, schema_editor)
+            indexes.create_indexes(None, schema_editor)
+            indexes.drop_indexes(None, schema_editor)
+            schema_editor.execute.assert_not_called()

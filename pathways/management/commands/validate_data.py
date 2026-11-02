@@ -1,10 +1,12 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.core.management.base import BaseCommand
-from pathways.models.major import Major, SimilarMajor
-from pathways.models.course import Course
 from multiprocessing import Pool, cpu_count
+
+from django.core.management.base import BaseCommand
+
+from pathways.models.course import Course
+from pathways.models.major import Major, SimilarMajor
 
 
 class Command(BaseCommand):

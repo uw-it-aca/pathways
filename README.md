@@ -41,6 +41,14 @@ Update any .env variables for local development purposes
 
 Docker/Docker Compose is used to containerize your local build environment and deploy it to an 'app' container which is exposed to your localhost so you can view your application. Docker Compose creates a 'devtools' container - which is used for local development. Changes made locally are automatically syncd to the 'app' container.
 
+Local development uses the Compose PostgreSQL service for the Pathways catalog
+and defaults `PATHWAYS_SEARCH_BACKEND` to `postgres`. Startup applies Django
+migrations, checks the selected search backend, imports the checked-in catalog,
+and still builds the Whoosh index for easy rollback. To compare against Whoosh,
+set `PATHWAYS_SEARCH_BACKEND=whoosh` in `.env` before starting the app. Django's
+SQLite test database skips PostgreSQL-specific migration SQL; CI also runs the
+PostgreSQL-specific search integration tests against PostgreSQL.
+
 ### Search Index
 
 PostgreSQL search is available for a test-environment trial. The default remains
@@ -48,7 +56,7 @@ Whoosh; test deployment values select PostgreSQL and production retains Whoosh.
 See [PostgreSQL Search Trial](docs/postgres-search-rollout.md) for database
 privileges, migration/deploy behavior, verification, and rollback.
 
-The search index in `indexdir/` is automatically built when the docker container starts (via `docker/app_start.sh`). 
+The search index in `indexdir/` is automatically built when the docker container starts (via `docker/app_start.sh`).
 
 Note: `indexdir/` is ignored by Git. If Whoosh index files were previously tracked, they should be removed from the Git index using:
 `git rm -r --cached indexdir`

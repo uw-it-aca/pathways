@@ -1,19 +1,27 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.core.management.base import BaseCommand
-import json
 import csv
-from pathways.data_import import import_major_data, import_course_data, \
-    import_curric_data, import_level_coi, import_coi_ranges, \
-    import_gateway_courses, import_bottleneck_courses, \
-    import_career_center_mapping, import_similar_majors, \
-    import_stem_from_similar_majors
-from logging import getLogger
-import time
 import hashlib
-from pathways.models.data_import import DataImport
+import json
+import time
+from logging import getLogger
 
+from django.core.management.base import BaseCommand
+
+from pathways.data_import import (
+    import_bottleneck_courses,
+    import_career_center_mapping,
+    import_coi_ranges,
+    import_course_data,
+    import_curric_data,
+    import_gateway_courses,
+    import_level_coi,
+    import_major_data,
+    import_similar_majors,
+    import_stem_from_similar_majors,
+)
+from pathways.models.data_import import DataImport
 
 logger = getLogger(__name__)
 COI_PATH = "pathways/data/coi_scores.csv"
@@ -64,14 +72,12 @@ class Command(BaseCommand):
                 csv_data = csv.reader(similar_major_file)
                 # skip headers
                 next(csv_data)
-                similar_major_data = []
-                for line in csv_data:
-                    similar_major_data.append(line)
+                similar_major_data = list(csv_data)
                 import_similar_majors(similar_major_data)
                 import_stem_from_similar_majors(similar_major_data)
 
         total_time = time.time() - start
-        logger.info("Imported data in: %s" % total_time)
+        logger.info("Imported data in: %s", total_time)
 
     def data_needs_update(self):
         needs_update = False

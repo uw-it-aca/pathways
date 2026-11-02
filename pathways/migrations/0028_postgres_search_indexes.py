@@ -33,7 +33,8 @@ INDEXES = (
 
 
 def create_indexes(apps, schema_editor):
-    if schema_editor.connection.alias != "default":
+    if (schema_editor.connection.alias != "default"
+            or schema_editor.connection.vendor != "postgresql"):
         return
     with schema_editor.connection.cursor() as cursor:
         for name, table, method, expression in INDEXES:
@@ -50,7 +51,8 @@ def create_indexes(apps, schema_editor):
 
 
 def drop_indexes(apps, schema_editor):
-    if schema_editor.connection.alias != "default":
+    if (schema_editor.connection.alias != "default"
+            or schema_editor.connection.vendor != "postgresql"):
         return
     with schema_editor.connection.cursor() as cursor:
         for name, table, method, expression in reversed(INDEXES):

@@ -1,16 +1,17 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from pathways.views.api import RESTDispatch
-from pathways.models.major import Major
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
+
+from pathways.models.major import Major
+from pathways.views.api import RESTDispatch
 
 
 @method_decorator(login_required, name="dispatch")
 class MajorList(RESTDispatch):
-    valid_campus = ['seattle', 'tacoma', 'bothell']
+    valid_campus = ('seattle', 'tacoma', 'bothell')
 
     def get(self, request, major_campus, *args, **kwargs):
         if major_campus in self.valid_campus:
@@ -43,4 +44,4 @@ class MajorDetails(RESTDispatch):
                                for major in majors]
                     return self.json_response({"matches": matches})
             return self.error_response(404,
-                                       "Major %s not found" % credential_abbr)
+                                       f"Major {credential_abbr} not found")

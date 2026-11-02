@@ -1,21 +1,29 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-import json
 import csv
+import json
+
 from django.test import TestCase
+
 from pathways.data_import import (
-    import_major_data, import_level_coi, import_coi_ranges, _get_course_coi,
-    _get_curric_coi, import_similar_majors, import_stem_from_similar_majors)
-from pathways.models.major import Major, SimilarMajor
-from pathways.models.course_level import CourseLevel
+    _get_course_coi,
+    _get_curric_coi,
+    import_coi_ranges,
+    import_level_coi,
+    import_major_data,
+    import_similar_majors,
+    import_stem_from_similar_majors,
+)
 from pathways.models.coi_range import COIRange
+from pathways.models.course_level import CourseLevel
+from pathways.models.major import Major, SimilarMajor
 
 
 class ImportTest(TestCase):
     test_file_data = None
 
-    coi_data = [{"course_id": "CHEM 101", "coi_score": 2.1},
+    coi_data = ({"course_id": "CHEM 101", "coi_score": 2.1},
                 {"course_id": "BIO 199", "coi_score": -1},
                 {"course_id": "CHEM 201", "coi_score": 3.0},
                 {"course_id": "A A 201", "coi_score": 1.1},
@@ -25,7 +33,7 @@ class ImportTest(TestCase):
                 {"course_id": "B BIO 301", "coi_score": 5.0},
                 {"course_id": "SPAN 301", "coi_score": 4.2},
                 {"course_id": "CSS 301", "coi_score": 1.9},
-                {"course_id": "CHEM 401", "coi_score": 2.1}]
+                {"course_id": "CHEM 401", "coi_score": 2.1})
 
     def setUp(self):
         with open('pathways/tests/sample_major_import.json') as json_file:
@@ -72,7 +80,7 @@ class ImportTest(TestCase):
 
 
 class SimilarMajorImportTest(TestCase):
-    similar_major_file = []
+    similar_major_file = ()
 
     def setUp(self):
         with open('pathways/tests/sample_similar_majors.csv') as csv_file:

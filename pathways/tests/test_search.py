@@ -1,22 +1,26 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from pathways.search import (format_course_id,
-                             _get_major_dict,
-                             _get_course_dict,
-                             _get_campus_filters,
-                             _get_type_filters,
-                             course_id_search,
-                             course_id_direct_match,
-                             major_name_direct_match,
-                             text_search, major_title_search
-                             )
-from pathways.tests import SearchIndexTest
 from unittest.mock import patch
-from whoosh.index import open_dir
-from whoosh import qparser
-from whoosh.query import Term
+
 from django.core.management import call_command
+from whoosh import qparser
+from whoosh.index import open_dir
+from whoosh.query import Term
+
+from pathways.search import (
+    _get_campus_filters,
+    _get_course_dict,
+    _get_major_dict,
+    _get_type_filters,
+    course_id_direct_match,
+    course_id_search,
+    format_course_id,
+    major_name_direct_match,
+    major_title_search,
+    text_search,
+)
+from pathways.tests import SearchIndexTest
 
 
 class TestSearch(SearchIndexTest):

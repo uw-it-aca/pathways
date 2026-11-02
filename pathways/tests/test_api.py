@@ -1,20 +1,21 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+import json
+
+from django.contrib.auth.models import User
+from django.test import RequestFactory
+from userservice.user import UserServiceMiddleware
+
+from pathways.models.curriculum import Curriculum
 from pathways.tests import ApiTest
 from pathways.views.api import RESTDispatch
-from pathways.views.api.major import MajorDetails, MajorList
-from pathways.views.api.coi import CurricCOI, CourseCOI
-from pathways.views.api.user import UserPreference
-from pathways.views.api.search import Search
+from pathways.views.api.coi import CourseCOI, CurricCOI
+from pathways.views.api.course import CourseDetails, CourseList
 from pathways.views.api.curric import CurricPrereq
-from pathways.views.api.course import CourseList, CourseDetails
-from pathways.models.curriculum import Curriculum
-from django.test import RequestFactory
-from django.contrib.auth.models import User
-from userservice.user import UserServiceMiddleware
-from unittest.mock import patch
-import json
+from pathways.views.api.major import MajorDetails, MajorList
+from pathways.views.api.search import Search
+from pathways.views.api.user import UserPreference
 
 
 class TestApi(ApiTest):

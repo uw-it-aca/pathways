@@ -5,10 +5,9 @@ from django.db import migrations
 
 
 def prepare_configuration(apps, schema_editor):
-    if schema_editor.connection.alias != "default":
+    if (schema_editor.connection.alias != "default"
+            or schema_editor.connection.vendor != "postgresql"):
         return
-    if schema_editor.connection.vendor != "postgresql":
-        raise RuntimeError("Pathways search migrations require PostgreSQL.")
     schema_editor.execute(
         "CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public")
     schema_editor.execute(

@@ -1,25 +1,24 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-import json
+from unittest.mock import mock_open, patch
+
 from django.core.management import call_command
 from django.test import TestCase
-from unittest.mock import patch, mock_open
 
 from pathways.management.commands.import_data import Command
-from pathways.models.data_import import DataImport
 from pathways.models.coi_range import COIRange
-from pathways.models.course_level import CourseLevel
-from pathways.models.major import Major
 from pathways.models.course import Course
+from pathways.models.course_level import CourseLevel
 from pathways.models.curriculum import Curriculum
+from pathways.models.data_import import DataImport
+from pathways.models.major import Major
 
 
 class ImportTest(TestCase):
     def test_get_hash(self):
-        file_data = "data".encode('utf-8')
-        with patch("builtins.open",
-                   mock_open(read_data=file_data)) as mock_file:
+        file_data = b"data"
+        with patch("builtins.open", mock_open(read_data=file_data)):
             hash = Command()._get_hash_by_path("/path/")
             self.assertEqual(hash, "8d777f385d3dfec8815d20f7496026dc")
 
