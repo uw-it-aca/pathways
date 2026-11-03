@@ -69,6 +69,12 @@ View your application using your specified port number in the .env file
 
 ## Testing
 
+### Search Load Testing
+
+See [Search Load Test](docs/search-load-test.md) for a local, authenticated k6
+workload weighted by logged search frequency. It defaults to test; production
+requires explicit opt-in and separate authentication headers.
+
 ### Front-end Testing (using Vitest)
 
 Run Vitest test scripts and generate coverage report

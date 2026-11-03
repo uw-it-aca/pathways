@@ -24,7 +24,7 @@ from django.test import (
 
 from pathways.models.course import Course
 from pathways.models.major import Major
-from pathways.postgres_search import COURSE_TEXT, MAJOR_TEXT, search
+from pathways.postgres_search import SEARCH_COLUMNS, SEARCH_INDEXES, search
 from pathways.search import search as routed_search
 from pathways.views.api.search import Search
 
@@ -180,6 +180,28 @@ class PostgresSearchTests(TestCase):
         result = search("progrmming", types=["course"])
         self.assertIn("CSE 142", [row["id"] for row in result["text_matches"]])
 
+    def test_bulk_loaded_rows_are_searchable_immediately(self):
+        Course.objects.bulk_create([Course(
+            course_id="ASTR 101", course_title="Astronomy",
+            course_description="Stars. Prerequisite: none.",
+            course_credits="5", course_campus="seattle")])
+        Major.objects.filter(major_abbr="CSE").update(
+            credential_title="Astrophysics")
+        result = search("astronomy")
+        self.assertEqual(result["text_matches"][0]["id"], "ASTR 101")
+        self.assertIn("CSE-0-1", [row["id"] for row in search(
+            "astrophysics", types=["major"])["text_matches"]])
+        migration = import_module(
+            "pathways.migrations.0029_postgres_search_columns")
+        with connection.cursor() as cursor:
+            for table, columns in migration.COLUMNS.items():
+                for name, expression in columns:
+                    with self.subTest(table=table, column=name):
+                        cursor.execute(
+                            f'SELECT count(*) FROM "{table}" '
+                            f'WHERE "{name}" IS DISTINCT FROM ({expression})')
+                        self.assertEqual(cursor.fetchone()[0], 0)
+
     def test_fuzzy_fallback_is_filter_scoped(self):
         Course.objects.filter(course_id="CSE 142").update(
             course_title="Microscopy", course_description="Imaging.")
@@ -263,11 +285,20 @@ class SearchBackendTests(SimpleTestCase):
             call_command("check_search_backend")
 
     def test_migration_expressions_match_runtime_lookup(self):
-        migration = import_module(
+        indexes = import_module(
             "pathways.migrations.0028_postgres_search_indexes")
-        self.assertEqual(migration.COURSE_TEXT, COURSE_TEXT)
-        self.assertEqual(migration.MAJOR_TEXT, MAJOR_TEXT)
-        self.assertFalse(migration.Migration.atomic)
+        columns = import_module(
+            "pathways.migrations.0029_postgres_search_columns")
+        self.assertEqual(columns.COURSE_TEXT, indexes.COURSE_TEXT)
+        self.assertEqual(columns.MAJOR_TEXT, indexes.MAJOR_TEXT)
+        self.assertEqual(
+            {table: tuple(name for name, _ in values)
+             for table, values in columns.COLUMNS.items()}, SEARCH_COLUMNS)
+        self.assertTrue(
+            {name for name, *_ in columns.COLUMN_INDEXES} <= set(
+                SEARCH_INDEXES))
+        self.assertFalse(indexes.Migration.atomic)
+        self.assertFalse(columns.Migration.atomic)
 
 
 @skipUnless(connection.vendor == "postgresql",
@@ -282,8 +313,8 @@ class SearchMigrationTests(TransactionTestCase):
             course_id="CSE 143", course_title="Programming II",
             course_credits="5", course_campus="seattle")
         prior = [("pathways", "0027_postgres_search_configuration")]
-        target = [("pathways", "0028_postgres_search_indexes")]
         executor = MigrationExecutor(connection)
+        target = executor.loader.graph.leaf_nodes("pathways")
         executor.migrate(prior)
         try:
             with self.assertRaises(CommandError):
@@ -314,6 +345,8 @@ class NonPostgresMigrationTests(SimpleTestCase):
             "pathways.migrations.0027_postgres_search_configuration")
         indexes = import_module(
             "pathways.migrations.0028_postgres_search_indexes")
+        columns = import_module(
+            "pathways.migrations.0029_postgres_search_columns")
         aliases = (("default", "sqlite"), ("uw_person", "postgresql"))
         for alias, vendor in aliases:
             schema_editor = SimpleNamespace(
@@ -322,4 +355,6 @@ class NonPostgresMigrationTests(SimpleTestCase):
             configuration.prepare_configuration(None, schema_editor)
             indexes.create_indexes(None, schema_editor)
             indexes.drop_indexes(None, schema_editor)
+            columns.add_columns(None, schema_editor)
+            columns.drop_columns(None, schema_editor)
             schema_editor.execute.assert_not_called()

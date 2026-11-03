@@ -37,13 +37,26 @@ Migrations extend the current develop graph after `0026_major_program_verind_id`
    with `CREATE INDEX CONCURRENTLY`. It skips valid existing named indexes and
    drops/rebuilds invalid indexes left by an interrupted build. Reverse migration
    drops only these application-owned indexes, also concurrently.
+3. `0029_postgres_search_columns` is non-atomic and adds stored generated
+   `tsvector` columns (`search_document`, `search_title_document`, and for
+   courses `search_rank_document`) to the Course and Major tables. It replaces
+   the two full-text expression indexes with GIN indexes on `search_document`.
+   PostgreSQL computes these columns on every insert and update, so searches no
+   longer rebuild text vectors per candidate row. The importer needs no changes.
+   Adding the columns rewrites each table under an `ACCESS EXCLUSIVE` lock. That
+   took about 3.5 seconds locally on the full catalog. Reads of these tables
+   block briefly, and this happens on every environment that deploys the
+   migration, including Whoosh-backed production. Reverse migration restores the
+   expression indexes before dropping the columns.
 
 All operations are limited to the `default` database, not the person datastore.
-No data rows or Django model fields are changed. Index expressions are frozen
-inside the migration and tested against the runtime matching expressions.
+No data rows or Django model fields are changed; the generated columns are
+database-only and invisible to the ORM. Expressions are frozen inside the
+migrations and tested against each other and against the stored column values.
 
 The deploy gate checks PostgreSQL 12+, both public extensions, the text-search
-configuration's usability, and the existence/validity/readiness of all six indexes.
+configuration's usability, the existence/validity/readiness of all six indexes,
+and the presence of the generated search columns.
 It does not issue sample user searches or change catalog rows. Whoosh selection
 skips the PostgreSQL gate so flag rollback does not depend on these indexes.
 
@@ -96,15 +109,17 @@ prose over partial matches. Majors require all meaningful title words to enter
 the promoted group. Trigram fallback is scoped to the selected type and filters.
 Labeled prerequisite/offering suffixes remain searchable but have lower weight
 and do not earn strong topic bonuses. Original descriptions are unchanged.
+Trigram fallback runs only when no full-text or ID-prefix match exists.
 
 The local judged pilot supported the lexical ranking changes, but is small.
 Some new results remain unjudged and the original holdout has already been used.
 Median latency was competitive locally; broad-query p95 remained worse than
 Whoosh. This is a develop trial, not a production cutover or a performance SLA.
 
-Indexes maintain themselves transactionally when the existing importer changes
-catalog rows. No new per-pod index watcher or background reindex task is needed
-for PostgreSQL search. The retained Whoosh workflow still runs for rollback.
+Generated columns and indexes maintain themselves transactionally when the
+existing importer changes catalog rows. No new per-pod index watcher or
+background reindex task is needed for PostgreSQL search. The retained Whoosh
+workflow still runs for rollback.
 
 ## Rollback
 
@@ -116,7 +131,8 @@ Leave the additive extensions/config/indexes installed for immediate rollback.
 Only remove indexes during a separately approved cleanup after no pods use the
 PostgreSQL backend. If reverting the migration, stop/select away from PostgreSQL
 search first, then migrate to `0027_postgres_search_configuration`. That removes
-the six search indexes, not catalog rows or shared extensions/configuration.
+the generated search columns and the search indexes, not catalog rows or shared
+extensions/configuration.
 Do not roll back schema underneath running PostgreSQL search pods.
 
 ## Validation

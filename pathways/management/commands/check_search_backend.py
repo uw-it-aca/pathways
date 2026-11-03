@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.db import DatabaseError, connection
 
-from pathways.postgres_search import CONFIG, SEARCH_INDEXES
+from pathways.postgres_search import CONFIG, SEARCH_COLUMNS, SEARCH_INDEXES
 
 
 class Command(BaseCommand):
@@ -48,6 +48,22 @@ class Command(BaseCommand):
                 if missing:
                     raise CommandError(
                         "Missing or invalid search indexes: "
+                        + ", ".join(sorted(missing)))
+                cursor.execute(
+                    "SELECT table_name || '.' || column_name "
+                    "FROM information_schema.columns "
+                    "WHERE table_schema = 'public' "
+                    "AND is_generated = 'ALWAYS' "
+                    "AND data_type = 'tsvector' "
+                    "AND table_name = ANY(%s)", [list(SEARCH_COLUMNS)])
+                missing = {
+                    f"{table}.{column}"
+                    for table, columns in SEARCH_COLUMNS.items()
+                    for column in columns} - {
+                    row[0] for row in cursor.fetchall()}
+                if missing:
+                    raise CommandError(
+                        "Missing generated search columns: "
                         + ", ".join(sorted(missing)))
         except DatabaseError as error:
             raise CommandError(
