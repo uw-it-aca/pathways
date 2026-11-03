@@ -62,6 +62,8 @@ daemon:
 environmentVariables:
   - name: ENV
     value: prod
+  - name: PATHWAYS_SEARCH_BACKEND
+    value: whoosh
   - name: AUTH
     value: SAML
   - name: SAML_ENTITY_ID

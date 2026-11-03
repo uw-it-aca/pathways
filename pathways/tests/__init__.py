@@ -1,17 +1,22 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.test import RequestFactory, TestCase
+import csv
+import json
+import shutil
+from unittest import mock
+from unittest.mock import patch
+
 from django.contrib.auth.models import User
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.core.management import call_command
+from django.test import RequestFactory, TestCase
+
 from pathways.data_import import (
-    import_major_data, import_course_data, import_curric_data)
-import mock
-import json
-import csv
-from unittest.mock import patch
-import shutil
+    import_course_data,
+    import_curric_data,
+    import_major_data,
+)
 
 
 class ApiTest(TestCase):
@@ -20,7 +25,7 @@ class ApiTest(TestCase):
         self.request.user = User()
         get_response = mock.MagicMock()
         middleware = SessionMiddleware(get_response)
-        response = middleware(self.request)
+        middleware(self.request)
         self.request.session.save()
         with open('pathways/tests/sample_coi_import.json') as coi_file:
             reader = csv.reader(coi_file)

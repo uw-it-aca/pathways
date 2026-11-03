@@ -1,11 +1,12 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from pathways.views.api import RESTDispatch
-from pathways.models.course import Course
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
+
+from pathways.models.course import Course
+from pathways.views.api import RESTDispatch
 
 
 @method_decorator(login_required, name="dispatch")
@@ -20,7 +21,7 @@ class CourseDetails(RESTDispatch):
     def get(self, request, course_abbr, *args, **kwargs):
         try:
             course = Course.get_course_data(course_abbr)
-        except ObjectDoesNotExist as ex:
+        except ObjectDoesNotExist:
             return self.error_response(404,
-                                       "Course %s not found" % course_abbr)
+                                       f"Course {course_abbr} not found")
         return self.json_response(course)

@@ -6,7 +6,8 @@ COPY --chown=acait:acait . /app/
 COPY --chown=acait:acait docker/ /app/project/
 
 COPY --chown=acait:acait docker/app_start.sh /scripts
-RUN chmod u+x /scripts/app_start.sh
+COPY --chown=acait:acait docker/app_deploy.sh /scripts
+RUN chmod u+x /scripts/app_start.sh /scripts/app_deploy.sh
 
 RUN /app/bin/pip install -r requirements.txt
 

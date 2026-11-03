@@ -4,13 +4,14 @@
 import json
 
 from django.test import TestCase
-from pathways.models.course import Course
-from pathways.models.major import Major, SimilarMajor
-from pathways.models.curriculum import Curriculum
-from pathways.models.course_level import CourseLevel
+
 from pathways.models.coi_range import COIRange
-from pathways.models.user import User
+from pathways.models.course import Course
+from pathways.models.course_level import CourseLevel
+from pathways.models.curriculum import Curriculum
 from pathways.models.data_import import DataImport
+from pathways.models.major import Major, SimilarMajor
+from pathways.models.user import User
 
 
 class ModelTest(TestCase):

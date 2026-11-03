@@ -1,11 +1,11 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+from unittest.mock import MagicMock, patch
+
 from django.core.management import call_command
 from django.test import TestCase
-from unittest.mock import patch, MagicMock
+
 from pathways.models.major import Major, SimilarMajor
 
 

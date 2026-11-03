@@ -1,13 +1,15 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.db import models
 import json
+from urllib.parse import urlencode
+
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import models
+
+from pathways.models.coi_range import COIRange
 from pathways.models.course_level import CourseLevel
 from pathways.models.curriculum import Curriculum
-from pathways.models.coi_range import COIRange
-from django.core.exceptions import ObjectDoesNotExist
-from urllib.parse import urlencode
 
 
 class Course(models.Model):
@@ -61,7 +63,7 @@ class Course(models.Model):
     def _get_course_list_json(course_list):
         course_json = []
         for course in course_list:
-            course_text = "%s: %s" % (course.course_id, course.course_title)
+            course_text = f"{course.course_id}: {course.course_title}"
             course_json.append({"key": course.course_id,
                                 "value": course_text})
         return course_json
@@ -104,7 +106,7 @@ class Course(models.Model):
 
     def get_coi_data(self):
         try:
-            curric, delim, num = self.course_id.rpartition(" ")
+            curric, _, num = self.course_id.rpartition(" ")
             curric_score = (Curriculum.objects.get(abbrev=curric)
                             .average_coi_score)
             course_level = int(num)//100*100

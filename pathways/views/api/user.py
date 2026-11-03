@@ -1,12 +1,14 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from pathways.views.api import RESTDispatch
-from pathways.models.user import User
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
-from userservice.user import UserService
 import json
+
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from userservice.user import UserService
+
+from pathways.models.user import User
+from pathways.views.api import RESTDispatch
 
 
 @method_decorator(login_required, name="dispatch")
@@ -18,25 +20,25 @@ class UserPreference(RESTDispatch):
         outcomes_display = request_params.get("viewed_outcomes_banner")
         coi_display = request_params.get("viewed_coi_banner")
 
-        user, created = \
+        user, _ = \
             User.objects.get_or_create(uwnetid=UserService().get_user())
         user_updated = False
-        if welcome_display is not None:
-            if welcome_display != user.has_viewed_welcome:
-                user_updated = True
-                user.has_viewed_welcome = welcome_display
-        if bottleneck_display is not None:
-            if bottleneck_display != user.has_viewed_bottleneck_banner:
-                user_updated = True
-                user.has_viewed_bottleneck_banner = bottleneck_display
-        if outcomes_display is not None:
-            if outcomes_display != user.has_viewed_outcomes_banner:
-                user_updated = True
-                user.has_viewed_outcomes_banner = outcomes_display
-        if coi_display is not None:
-            if coi_display != user.has_viewed_coi_banner:
-                user_updated = True
-                user.has_viewed_coi_banner = coi_display
+        if (welcome_display is not None
+                and welcome_display != user.has_viewed_welcome):
+            user_updated = True
+            user.has_viewed_welcome = welcome_display
+        if (bottleneck_display is not None
+                and bottleneck_display != user.has_viewed_bottleneck_banner):
+            user_updated = True
+            user.has_viewed_bottleneck_banner = bottleneck_display
+        if (outcomes_display is not None
+                and outcomes_display != user.has_viewed_outcomes_banner):
+            user_updated = True
+            user.has_viewed_outcomes_banner = outcomes_display
+        if (coi_display is not None
+                and coi_display != user.has_viewed_coi_banner):
+            user_updated = True
+            user.has_viewed_coi_banner = coi_display
         if user_updated:
             user.save()
             return self.json_response(status=200)

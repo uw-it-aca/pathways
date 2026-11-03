@@ -1,7 +1,6 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from re import T
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -39,10 +38,10 @@ class PageView(TemplateView):
         context["clarityProjectId"] = settings.CLARITY_PROJECT_ID
 
         # Dawgpath customization
-        context["show_welcome"] = True if "welcome" in banners else False
-        context["show_bottleneck"] = True if "bottleneck" in banners else False
-        context["show_outcomes"] = True if "outcomes" in banners else False
-        context["show_coi"] = True if "coi" in banners else False
+        context["show_welcome"] = "welcome" in banners
+        context["show_bottleneck"] = "bottleneck" in banners
+        context["show_outcomes"] = "outcomes" in banners
+        context["show_coi"] = "coi" in banners
 
         # User context
         context["user"] = user

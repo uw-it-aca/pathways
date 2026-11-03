@@ -4,13 +4,14 @@
 from django.conf import settings
 from django.urls import re_path
 from django.views.generic import TemplateView
-from pathways.views.pages import DefaultPageView
-from pathways.views.api.major import MajorDetails, MajorList
-from pathways.views.api.course import CourseList, CourseDetails
-from pathways.views.api.search import Search
-from pathways.views.api.curric import CurricPrereq
-from pathways.views.api.user import UserPreference
+
 from pathways.views.api.coi import CourseCOI, CurricCOI
+from pathways.views.api.course import CourseDetails, CourseList
+from pathways.views.api.curric import CurricPrereq
+from pathways.views.api.major import MajorDetails, MajorList
+from pathways.views.api.search import Search
+from pathways.views.api.user import UserPreference
+from pathways.views.pages import DefaultPageView
 
 # start with an empty url array
 urlpatterns = []

@@ -1,21 +1,29 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-import json
 import csv
+import json
+
 from django.test import TestCase
+
 from pathways.data_import import (
-    import_major_data, import_level_coi, import_coi_ranges, _get_course_coi,
-    _get_curric_coi, import_similar_majors, import_stem_from_similar_majors)
-from pathways.models.major import Major, SimilarMajor
-from pathways.models.course_level import CourseLevel
+    _get_course_coi,
+    _get_curric_coi,
+    import_coi_ranges,
+    import_level_coi,
+    import_major_data,
+    import_similar_majors,
+    import_stem_from_similar_majors,
+)
 from pathways.models.coi_range import COIRange
+from pathways.models.course_level import CourseLevel
+from pathways.models.major import Major, SimilarMajor
 
 
 class ImportTest(TestCase):
     test_file_data = None
 
-    coi_data = [{"course_id": "CHEM 101", "coi_score": 2.1},
+    coi_data = ({"course_id": "CHEM 101", "coi_score": 2.1},
                 {"course_id": "BIO 199", "coi_score": -1},
                 {"course_id": "CHEM 201", "coi_score": 3.0},
                 {"course_id": "A A 201", "coi_score": 1.1},
@@ -25,7 +33,7 @@ class ImportTest(TestCase):
                 {"course_id": "B BIO 301", "coi_score": 5.0},
                 {"course_id": "SPAN 301", "coi_score": 4.2},
                 {"course_id": "CSS 301", "coi_score": 1.9},
-                {"course_id": "CHEM 401", "coi_score": 2.1}]
+                {"course_id": "CHEM 401", "coi_score": 2.1})
 
     def setUp(self):
         with open('pathways/tests/sample_major_import.json') as json_file:
@@ -41,6 +49,33 @@ class ImportTest(TestCase):
         self.assertEqual(majors[0].major_abbr, "TRAIN")
         url = "www.washington.edu/students/gencat/academic/rail_stud.html"
         self.assertEqual(majors[0].major_home_url, url)
+
+    def test_major_search_fields_default_when_null_or_empty(self):
+        code = next(iter(self.test_file_data))
+        source = self.test_file_data[code]
+        for value in (None, ''):
+            with self.subTest(value=value):
+                for field in ('credential_code', 'credential_title',
+                              'credential_description'):
+                    source[field] = value
+                import_major_data(self.test_file_data)
+                self.assertEqual(Major.objects.count(), 3)
+                major = Major.objects.get(credential_code=code)
+                self.assertEqual(major.credential_title, source['major_title'])
+                self.assertEqual(major.credential_description,
+                                 source['major_description'])
+
+    def test_major_search_fields_default_when_missing(self):
+        code = next(iter(self.test_file_data))
+        source = self.test_file_data[code]
+        for field in ('credential_code', 'credential_title',
+                      'credential_description'):
+            del source[field]
+        source['major_description'] = None
+        import_major_data(self.test_file_data)
+        major = Major.objects.get(credential_code=code)
+        self.assertEqual(major.credential_title, source['major_title'])
+        self.assertEqual(major.credential_description, '')
 
     def test_import_level_coi(self):
         import_level_coi(self.coi_data)
@@ -72,7 +107,7 @@ class ImportTest(TestCase):
 
 
 class SimilarMajorImportTest(TestCase):
-    similar_major_file = []
+    similar_major_file = ()
 
     def setUp(self):
         with open('pathways/tests/sample_similar_majors.csv') as csv_file:

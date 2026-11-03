@@ -1,15 +1,16 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+import os
+from logging import getLogger
+
 from django.core.management.base import BaseCommand
+from whoosh.analysis import StemmingAnalyzer
+from whoosh.fields import *
+from whoosh.index import create_in
+
 from pathways.models.course import Course
 from pathways.models.major import Major
-from logging import getLogger
-from whoosh.index import create_in
-from whoosh.fields import *
-from whoosh.analysis import StemmingAnalyzer
-import os
-
 
 logger = getLogger(__name__)
 INDEXDIR = "indexdir"

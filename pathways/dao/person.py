@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.db.models.functions import JSONObject
-from uw_person_client.models import Person, Major
 from uw_person_client.exceptions import PersonNotFoundException
+from uw_person_client.models import Major, Person
 
 
 def get_major_name_by_code(code):
@@ -83,7 +83,7 @@ def valid_uwnetid(username):
                 error_msg = (
                     f"Current UWNetID: {person.uwnetid}, Prior UWNetID: ")
         except PersonNotFoundException:
-            error_msg = f"Not a valid UWNetID: "
+            error_msg = "Not a valid UWNetID: "
     else:
         error_msg = "No override user supplied, please enter a UWNetID"
     return error_msg
