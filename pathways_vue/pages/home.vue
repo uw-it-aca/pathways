@@ -193,6 +193,19 @@
         quartersRequired: 16,
       };
     },
+    created() {
+      // mask the page title (contains the user's name) for Microsoft Clarity
+      let titleEl = document.querySelector("title");
+      if (!titleEl) {
+        titleEl = document.createElement("title");
+        document.head.appendChild(titleEl);
+      }
+      titleEl.setAttribute("data-clarity-mask", "true");
+    },
+    beforeUnmount() {
+      // remove the mask so other pages' titles aren't masked
+      document.querySelector("title")?.removeAttribute("data-clarity-mask");
+    },
     computed: {
       contextStore() {
         return useContextStore();
