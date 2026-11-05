@@ -167,7 +167,7 @@ jobs:
           -e "UW_PERSON_DB_USER=postgres"
           -e "UW_PERSON_DB_PASSWORD=postgres"
           app-test-container
-          bash -c ". ./bin/activate && python manage.py migrate --noinput && python manage.py check_search_backend && python -Wd manage.py test pathways.tests.test_postgres_search pathways.tests.test_api.TestSearchApi pathways.tests.commands.test_prepare_search_release pathways.tests.commands.test_data_release --noinput"
+          bash -c ". ./bin/activate && python manage.py migrate --noinput && python manage.py check_search_backend && python -Wd manage.py test pathways.tests.test_postgres_search pathways.tests.test_api.TestSearchApi pathways.tests.commands.test_data_release_verification pathways.tests.commands.test_data_release pathways.tests.commands.test_release_sync pathways.tests.commands.test_release_migrations --noinput"
 
       # Run Python Coverage and Upload to Coveralls
       - name: Run Python Coverage and Upload to Coveralls

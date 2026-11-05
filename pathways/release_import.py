@@ -13,9 +13,10 @@ import re
 from django.db import transaction
 
 from pathways import data_import
+from pathways.data_release import ReleaseValidationError, verify_release
 from pathways.models.data_import import DataImport
 from pathways.models.data_release_import import DataReleaseImport
-from pathways.search_release import ReleaseValidationError, verify_release
+from pathways.models.data_release_sync import DataReleaseState
 
 IMPORT_FILES = {
     "coi": "coi_scores.csv", "major": "major_data.json",
@@ -128,6 +129,8 @@ def import_release(release_dir, *, release_id):
         if (previous and marker.hash == marker_hash and all(
                 DataImport.objects.filter(type=kind, hash=value).exists()
                 for kind, value in hashes.items())):
+            DataReleaseState.objects.update_or_create(
+                pk=1, defaults={"current_release": previous})
             return False
         data_import.import_level_coi(coi)
         data_import.import_coi_ranges(coi)
@@ -141,8 +144,10 @@ def import_release(release_dir, *, release_id):
         data_import.import_stem_from_similar_majors(similar)
         for kind, value in hashes.items():
             DataImport.objects.update_or_create(type=kind, defaults={"hash": value})
-        DataReleaseImport.objects.update_or_create(
+        imported, _ = DataReleaseImport.objects.update_or_create(
             release_id=release_id, defaults={"manifest_sha256": manifest_hash})
+        DataReleaseState.objects.update_or_create(
+            pk=1, defaults={"current_release": imported})
         marker.hash = marker_hash
         marker.save()
     return True

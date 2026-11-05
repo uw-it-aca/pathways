@@ -134,6 +134,61 @@ or activating an external index. Multi-request workflows and operational
 scheduling still need normal maintenance coordination; do not run legacy
 imports concurrently with a release import.
 
+### Tracked explicit release sync
+
+Apply migrations before using the combined operator command:
+
+```bash
+python manage.py migrate
+python manage.py sync_data_release \
+        --bucket <trusted-release-bucket> \
+        --release-id <completed-release-id> \
+        --requested-by <operator-identifier> \
+        --confirm-replace-data
+python manage.py data_release_status --limit 10
+```
+
+`sync_data_release` downloads and verifies the exact release in a temporary
+directory, imports it, and removes the temporary files. Optional `--prefix`
+selects a bucket object prefix; `--temporary-root` selects an existing writable
+parent directory with sufficient space. It uses the same ADC credentials and
+object-get permissions as `download_data_release`. Bucket and release selection
+must come from a trusted operator; there is no discovery, latest pointer,
+promotion, schedule, queue, or HTTP trigger. The command runs synchronously.
+Use an isolated database or a coordinated maintenance window and do not run
+legacy imports concurrently.
+
+Each accepted invocation creates a `DataReleaseSyncAttempt`: `downloading`,
+`importing`, then `succeeded`, `unchanged`, or `failed`. Records include the
+source, optional operator identifier, timestamps and sanitized failure metadata.
+`--requested-by` is audit metadata, not authentication. Failures report an
+attempt ID without storing raw exception messages that might contain credentials.
+Failed attempts remain recorded even when the catalog transaction rolls back.
+Catalog changes, the tracked current release, and a successful attempt outcome
+commit together. Downloads may overlap; PostgreSQL serializes imports using the
+existing release-marker row lock. Different releases are applied in lock order,
+not release creation order.
+
+The read-only `data_release_status` command returns JSON with the tracked current
+release and recent attempts (`--limit` accepts 1–100). Current release tracking
+also updates for direct `import_data_release` calls. Existing installations show
+an unknown current release until the next successful import or verified no-op;
+the migration does not infer it from historical timestamps. Legacy imports can
+invalidate that tracking and must be coordinated separately.
+
+To restore a prior compatible release, explicitly sync its original release ID
+again during a maintenance window. Retain its immutable objects and credentials
+needed to read them. This replaces the catalog using existing importer semantics;
+it is not a general database backup restore. A previously used ID with changed
+manifest bytes is rejected.
+
+An abruptly killed process can leave an attempt in `downloading` or `importing`
+and temporary files behind. There is no heartbeat or automatic stale-attempt
+recovery yet; inspect the job/process before retrying or cleaning up. If cleanup
+alone fails after commit, the attempt remains successful and a sanitized warning
+is logged. The reusable `sync_release` service must run outside an enclosing
+transaction so progress and failures can persist independently.
+
 ## Testing
 
 ### Search Load Testing
@@ -178,3 +233,4 @@ Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 <http://www.apache.org/licenses/LICENSE-2.0>
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+

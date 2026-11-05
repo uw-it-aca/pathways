@@ -139,6 +139,14 @@ indexdir/
 /new-data/
 /testdir
 /pathways/testdir
+/.local/
+/certs/
+/data-build/
+
+# Downloaded development tools and native-library builds
+/act
+/libxml2-*/
+/libxml2-*.tar.gz
 
 # coverage
 coverage/

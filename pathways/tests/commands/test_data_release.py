@@ -16,6 +16,11 @@ from django.db import IntegrityError, connection
 from django.test import SimpleTestCase, TestCase
 from google.api_core.exceptions import Forbidden, PreconditionFailed
 
+from pathways.data_release import (
+    RELEASE_FILES_BY_VERSION,
+    ReleaseValidationError,
+    verify_release,
+)
 from pathways.models.course import Course
 from pathways.models.data_import import DataImport
 from pathways.models.data_release_import import DataReleaseImport
@@ -23,11 +28,6 @@ from pathways.models.major import Major, SimilarMajor
 from pathways.release_download import download_release
 from pathways.release_import import import_release
 from pathways.search import search
-from pathways.search_release import (
-    RELEASE_FILES_BY_VERSION,
-    ReleaseValidationError,
-    verify_release,
-)
 
 
 def write_release(root, version="2.0"):

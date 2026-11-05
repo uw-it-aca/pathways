@@ -10,7 +10,7 @@ from pathlib import Path
 
 from google.cloud import storage
 
-from pathways.search_release import (
+from pathways.data_release import (
     ReleaseValidationError,
     _json,
     _verify,
