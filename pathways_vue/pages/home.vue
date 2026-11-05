@@ -193,6 +193,19 @@
         quartersRequired: 16,
       };
     },
+    created() {
+      // mask the page title (contains the user's name) for Microsoft Clarity
+      let titleEl = document.querySelector("title");
+      if (!titleEl) {
+        titleEl = document.createElement("title");
+        document.head.appendChild(titleEl);
+      }
+      titleEl.setAttribute("data-clarity-mask", "true");
+    },
+    beforeUnmount() {
+      // remove the mask so other pages' titles aren't masked
+      document.querySelector("title")?.removeAttribute("data-clarity-mask");
+    },
     computed: {
       contextStore() {
         return useContextStore();
@@ -243,10 +256,6 @@
           Number(this.contextStore.context.personData.total_credits),
         );
       },
-    },
-    mounted() {
-      const contextStore = useContextStore();
-      console.log("Context store data:", contextStore.context);
     },
     methods: {
       // percentage of a maximum, clamped to 0-100 and safe for missing data

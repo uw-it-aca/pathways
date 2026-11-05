@@ -235,3 +235,66 @@ describe("Home page welcome modal and preference saving", () => {
     );
   });
 });
+
+describe("Home page Clarity title masking", () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    document.querySelectorAll("title").forEach((el) => el.remove());
+  });
+
+  afterEach(() => {
+    document.getElementById("django-context-data")?.remove();
+    document.querySelectorAll("title").forEach((el) => el.remove());
+  });
+
+  it("creates a masked title element when none exists", async () => {
+    setContext({ majors: [], intended_majors: [] });
+    expect(document.querySelector("title")).toBeNull();
+    await mountHome();
+    const titleEl = document.querySelector("title");
+    expect(titleEl).not.toBeNull();
+    expect(titleEl.parentElement).toBe(document.head);
+    expect(titleEl.getAttribute("data-clarity-mask")).toBe("true");
+  });
+
+  it("masks an existing title element without creating another", async () => {
+    setContext({ majors: [], intended_majors: [] });
+    const existing = document.createElement("title");
+    existing.textContent = "Existing";
+    document.head.appendChild(existing);
+    await mountHome();
+    expect(document.querySelectorAll("title")).toHaveLength(1);
+    expect(existing.getAttribute("data-clarity-mask")).toBe("true");
+  });
+
+  it("keeps the mask when the title text changes", async () => {
+    setContext({ majors: [], intended_majors: [] });
+    await mountHome();
+    document.title = "Jamie Doe - DawgPath";
+    expect(
+      document.querySelector("title").getAttribute("data-clarity-mask"),
+    ).toBe("true");
+  });
+
+  it("removes the mask when the page is unmounted", async () => {
+    setContext({ majors: [], intended_majors: [] });
+    const wrapper = await mountHome();
+    wrapper.unmount();
+    const titleEl = document.querySelector("title");
+    expect(titleEl).not.toBeNull();
+    expect(titleEl.hasAttribute("data-clarity-mask")).toBe(false);
+  });
+
+  it("unmounts safely when the title element was removed", async () => {
+    setContext({ majors: [], intended_majors: [] });
+    const wrapper = await mountHome();
+    document.querySelector("title").remove();
+    expect(() => wrapper.unmount()).not.toThrow();
+  });
+
+  it("uses the person's display name as the page title", async () => {
+    setContext({ majors: [], intended_majors: [], display_name: "Jamie Doe" });
+    const wrapper = await mountHome();
+    expect(wrapper.vm.pageTitle).toBe("Jamie Doe");
+  });
+});
