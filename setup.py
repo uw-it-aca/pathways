@@ -30,10 +30,6 @@ setup(
         "django-userservice~=3.2",
         "django-supporttools~=3.6",
         "django-persistent-message~=1.3",
-        (
-            "dawgpath-search @ git+https://github.com/uw-it-aca/dawgpath-search.git"
-            "@46bdcb94b5252a61856b2e45a1f00da6c51a17f2"
-        ),
         "azure-storage-blob~=12.25",
         "google-cloud-storage>=2.0.0",
         "psycopg[c]",

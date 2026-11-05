@@ -1,23 +1,25 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+import sys
+from importlib import reload
+from unittest import mock
+
 from django.contrib.auth.models import User
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import RequestFactory, TestCase
 from django.urls import clear_url_caches, reverse
 from django.urls.exceptions import NoReverseMatch
-from pathways.views.pages import DefaultPageView
 from userservice.user import UserService, UserServiceMiddleware
-from importlib import reload
-import mock
-import sys
+
+from pathways.views.pages import DefaultPageView
 
 
 class PagesViewTest(TestCase):
     databases = "__all__"
-    fixtures = ["person.json", "employee.json", "term.json", "major.json",
+    fixtures = ("person.json", "employee.json", "term.json", "major.json",
                 "student.json", "adviser.json", "transfer.json",
-                "transcript.json", "hold.json", "degree.json", "sport.json"]
+                "transcript.json", "hold.json", "degree.json", "sport.json")
 
     def setUp(self):
         self.request = RequestFactory().get("/")
@@ -26,7 +28,7 @@ class PagesViewTest(TestCase):
         UserServiceMiddleware().process_request(self.request)
         get_response = mock.MagicMock()
         middleware = SessionMiddleware(get_response)
-        response = middleware(self.request)
+        middleware(self.request)
         self.request.session.save()
 
     @mock.patch.object(UserService, "get_user", return_value="javerage")

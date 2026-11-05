@@ -1,10 +1,12 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.db import models
-from pathways.models.course import Course
-from django.core.exceptions import ObjectDoesNotExist
 from urllib.parse import urlencode
+
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import models
+
+from pathways.models.course import Course
 
 
 class Major(models.Model):
@@ -122,7 +124,7 @@ class Major(models.Model):
     @staticmethod
     def get_major_url(url):
         if url is not None:
-            return "http:\\\\%s" % url
+            return f"http:\\\\{url}"
 
     def get_common_with_coi_and_flags(self):
         common_with_coi = {}
@@ -180,18 +182,18 @@ class SimilarMajor(models.Model):
              .append(sm.similar_major))
 
         major_data = []
-        for pc, majors in majors_by_program.items():
+        for majors in majors_by_program.values():
             # If multiple majors in program group by parent
             if len(majors) > 1:
                 program_majors = []
                 is_stem = False
                 major_admission = ''
-                for major in majors:
-                    major_json = major.similar_major_json()
+                for similar_major in majors:
+                    major_json = similar_major.similar_major_json()
                     program_majors.append(major_json)
-                    if major.is_stem:
+                    if similar_major.is_stem:
                         is_stem = True
-                    major_admission = major.major_admission
+                    major_admission = similar_major.major_admission
                 program_json = {
                     'program_code': majors[0].program_code,
                     'program_verind_id': majors[0].program_verind_id,

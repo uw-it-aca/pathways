@@ -9,7 +9,7 @@ from pathways.release_download import download_release
 
 
 class Command(BaseCommand):
-    help = "Download and verify one explicit GCS release. Does not import or activate."
+    help = "Download and verify one explicit GCS data release. Does not import data."
 
     def add_arguments(self, parser):
         parser.add_argument("--bucket", required=True)
@@ -27,4 +27,4 @@ class Command(BaseCommand):
             raise CommandError(str(exc)) from exc
         self.stdout.write(self.style.SUCCESS(
             f"Downloaded verified release {manifest['release_id']}. "
-            "No database or active index was changed."))
+            "No database data was changed."))

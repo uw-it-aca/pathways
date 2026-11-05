@@ -7,12 +7,12 @@ import json
 import socket
 import tempfile
 from pathlib import Path
+from unittest import skipUnless
 from unittest.mock import MagicMock, patch
 
-from dawgpath_search import IndexValidationError, build_index, create_bundle
 from django.core.management import call_command
 from django.core.management.base import CommandError
-from django.db import IntegrityError
+from django.db import IntegrityError, connection
 from django.test import SimpleTestCase, TestCase
 from google.api_core.exceptions import Forbidden, PreconditionFailed
 
@@ -22,16 +22,23 @@ from pathways.models.data_release_import import DataReleaseImport
 from pathways.models.major import Major, SimilarMajor
 from pathways.release_download import download_release
 from pathways.release_import import import_release
-from pathways.search_release import RELEASE_FILES_BY_VERSION, prepare_release
+from pathways.search import search
+from pathways.search_release import (
+    RELEASE_FILES_BY_VERSION,
+    ReleaseValidationError,
+    verify_release,
+)
 
 
-def write_release(root):
+def write_release(root, version="2.0"):
     release = root / "release"
     release.mkdir()
     fixtures = Path("pathways/tests/commands/mock_import_files")
-    for name in RELEASE_FILES_BY_VERSION["1.1"] - {"search-index.tar.gz"}:
+    for name in RELEASE_FILES_BY_VERSION[version]:
         if name.endswith(".pkl"):
             content = b"never unpickle"
+        elif name == "search-index.tar.gz":
+            content = b"legacy archive bytes are never opened"
         elif name == "similar_majors.csv":
             content = (
                 b"credential_code,STEM_ind,similar_credential_code,similar_STEM_ind,"
@@ -40,13 +47,8 @@ def write_release(root):
         else:
             content = (fixtures / name).read_bytes()
         (release / name).write_bytes(content)
-    index = root / "index"
-    metadata = build_index(release, index, release_id="test-release")
-    (release / "search-index.tar.gz").write_bytes(
-        create_bundle(index, release_id="test-release"))
     manifest = {
-        "schema_version": "1.1", "release_id": "test-release",
-        "search_index": metadata, "artifacts": {},
+        "schema_version": version, "release_id": "test-release", "artifacts": {},
     }
     for path in release.iterdir():
         content = path.read_bytes()
@@ -83,15 +85,16 @@ class DownloadReleaseTest(SimpleTestCase):
         self.assertFalse(self.output.exists())
         self.assertFalse(list(self.root.glob(".download-release-*")))
 
-    def test_generation_pinned_download_verifies_every_file_and_bundle(self):
+    def test_generation_pinned_download_verifies_every_file(self):
         self.assertEqual(self.download(), self.manifest)
         self.assertEqual(
             {path.name for path in self.output.iterdir()},
-            {*RELEASE_FILES_BY_VERSION["1.1"], "manifest.json"})
+            {*RELEASE_FILES_BY_VERSION["2.0"], "manifest.json"})
         for key, blob in self.blobs.items():
             with self.subTest(key=key):
                 blob.download_as_bytes.assert_called_once_with(if_generation_match=123)
-        prepare_release(self.output, self.root / "prepared", release_id="test-release")
+        self.assertEqual(
+            verify_release(self.output, release_id="test-release")[0], self.manifest)
 
     def test_prefix_and_command(self):
         self.bucket.get_blob.side_effect = lambda key: self.blobs.get(key.removeprefix("app/"))
@@ -113,23 +116,23 @@ class DownloadReleaseTest(SimpleTestCase):
             self.download()
         self.assert_clean()
 
-    def test_corrupt_object_and_archive_fail_even_with_valid_outer_metadata(self):
-        blob = self.blobs["releases/test-release/coi_scores.csv"]
-        blob.download_as_bytes.return_value = b"x" * blob.size
-        with self.assertRaisesRegex(IndexValidationError, "checksum"):
+    def test_missing_generation_and_oversized_download_are_rejected(self):
+        blob = self.blobs["releases/test-release/course_data.json"]
+        blob.generation = None
+        with self.assertRaisesRegex(ReleaseValidationError, "no generation"):
+            self.download()
+        blob.download_as_bytes.assert_not_called()
+        self.assert_clean()
+        blob.generation = 123
+        blob.download_as_bytes.return_value = b"x" * (blob.size + 1)
+        with self.assertRaisesRegex(ReleaseValidationError, "size limit"):
             self.download()
         self.assert_clean()
-        blob.download_as_bytes.return_value = (self.release / "coi_scores.csv").read_bytes()
-        bundle = self.blobs["releases/test-release/search-index.tar.gz"]
-        data = b"not a gzip archive"
-        bundle.size = len(data)
-        bundle.download_as_bytes.return_value = data
-        info = self.manifest["artifacts"]["search-index.tar.gz"]
-        info.update(size_bytes=len(data), checksum_sha256=hashlib.sha256(data).hexdigest())
-        manifest_blob = self.blobs["releases/test-release/manifest.json"]
-        manifest_blob.download_as_bytes.return_value = json.dumps(self.manifest).encode()
-        manifest_blob.size = len(manifest_blob.download_as_bytes.return_value)
-        with self.assertRaises(IndexValidationError):
+
+    def test_corrupt_object_fails_even_with_valid_outer_metadata(self):
+        blob = self.blobs["releases/test-release/coi_scores.csv"]
+        blob.download_as_bytes.return_value = b"x" * blob.size
+        with self.assertRaisesRegex(ReleaseValidationError, "checksum"):
             self.download()
         self.assert_clean()
 
@@ -142,13 +145,13 @@ class DownloadReleaseTest(SimpleTestCase):
             elif kind == "path":
                 manifest["artifacts"]["coi_scores.csv"]["version_path"] = "../escape"
             elif kind == "version":
-                manifest["schema_version"] = "2.0"
+                manifest["schema_version"] = "3.0"
             else:
                 manifest["artifacts"].pop("similar_majors.csv")
             manifest_blob.download_as_bytes.return_value = json.dumps(manifest).encode()
             manifest_blob.size = len(manifest_blob.download_as_bytes.return_value)
             self.bucket.get_blob.reset_mock()
-            with self.subTest(kind=kind), self.assertRaises(IndexValidationError):
+            with self.subTest(kind=kind), self.assertRaises(ReleaseValidationError):
                 self.download()
             self.assertEqual(self.bucket.get_blob.call_count, 1)
             self.assert_clean()
@@ -156,7 +159,7 @@ class DownloadReleaseTest(SimpleTestCase):
     def test_size_limits_and_existing_output(self):
         manifest = self.blobs["releases/test-release/manifest.json"]
         manifest.size = 1024 * 1024 + 1
-        with self.assertRaisesRegex(IndexValidationError, "size limit"):
+        with self.assertRaisesRegex(ReleaseValidationError, "size limit"):
             self.download()
         manifest.download_as_bytes.assert_not_called()
         self.assert_clean()
@@ -179,14 +182,35 @@ class DownloadReleaseTest(SimpleTestCase):
                 release_id="test-release", output_dir=str(self.output))
         self.assert_clean()
 
-    def test_legacy_download_still_verifies_but_has_no_similar_majors_requirement(self):
-        self.manifest["schema_version"] = "1.0"
-        self.manifest["artifacts"].pop("similar_majors.csv")
-        self.blobs.pop("releases/test-release/similar_majors.csv")
-        blob = self.blobs["releases/test-release/manifest.json"]
-        blob.download_as_bytes.return_value = json.dumps(self.manifest).encode()
-        blob.size = len(blob.download_as_bytes.return_value)
-        self.assertEqual(self.download(), self.manifest)
+    def test_legacy_downloads_verify_archive_bytes_without_opening_them(self):
+        content = b"opaque legacy archive"
+        self.manifest["artifacts"]["search-index.tar.gz"] = {
+            "version_path": "releases/test-release/search-index.tar.gz",
+            "size_bytes": len(content),
+            "checksum_sha256": hashlib.sha256(content).hexdigest(),
+        }
+        archive = MagicMock(size=len(content), generation=123)
+        archive.download_as_bytes.return_value = content
+        self.blobs["releases/test-release/search-index.tar.gz"] = archive
+        for version in ("1.1", "1.0"):
+            with self.subTest(version=version):
+                self.output = self.root / version
+                self.manifest["schema_version"] = version
+                self.manifest["search_index"] = {"ignored": True}
+                if version == "1.0":
+                    self.manifest["artifacts"].pop("similar_majors.csv")
+                    self.blobs.pop("releases/test-release/similar_majors.csv")
+                blob = self.blobs["releases/test-release/manifest.json"]
+                blob.download_as_bytes.return_value = json.dumps(self.manifest).encode()
+                blob.size = len(blob.download_as_bytes.return_value)
+                with patch("tarfile.open", side_effect=AssertionError("no extraction")):
+                    self.assertEqual(self.download(), self.manifest)
+                self.output = self.root / f"{version}-corrupt"
+                archive.download_as_bytes.return_value = b"x" * len(content)
+                with self.assertRaisesRegex(ReleaseValidationError, "checksum"):
+                    self.download()
+                self.assert_clean()
+                archive.download_as_bytes.return_value = content
 
 
 class ImportReleaseTest(TestCase):
@@ -198,6 +222,53 @@ class ImportReleaseTest(TestCase):
 
     def import_release(self):
         return import_release(self.release, release_id="test-release")
+
+    @skipUnless(connection.vendor == "postgresql", "PostgreSQL search required")
+    def test_imported_release_is_searchable_without_an_index_build(self):
+        self.assertTrue(self.import_release())
+        course = search("info201", types=["course"])
+        self.assertEqual(course["course_matches"][0]["id"], "INFO 201")
+        self.assertTrue(course["course_matches"][0]["is_course"])
+        self.assertEqual(search("data science", types=["course"])[
+            "text_matches"][0]["id"],
+                         "INFO 201")
+        majors = search("informatics", types=["major"])
+        self.assertEqual(majors["major_matches"][0]["id"], "INFO-40-1-6")
+
+    def test_legacy_1_1_import_uses_data_without_opening_archive_or_pickles(self):
+        legacy = self.root / "legacy"
+        legacy.mkdir()
+        self.release, self.manifest = write_release(legacy, version="1.1")
+        with patch("tarfile.open", side_effect=AssertionError("no extraction")), patch(
+                "pickle.loads", side_effect=AssertionError("no unpickling")):
+            self.assertTrue(self.import_release())
+        self.assertEqual(Course.objects.count(), 2)
+        self.assertEqual(DataReleaseImport.objects.count(), 1)
+
+    def test_legacy_archive_corruption_is_rejected_before_database_access(self):
+        legacy = self.root / "legacy"
+        legacy.mkdir()
+        self.release, self.manifest = write_release(legacy, version="1.1")
+        (self.release / "search-index.tar.gz").write_bytes(b"corrupt")
+        with self.assertNumQueries(0), self.assertRaisesRegex(
+                ReleaseValidationError, "checksum"):
+            self.import_release()
+        self.assertFalse(DataReleaseImport.objects.exists())
+
+    def test_import_uses_verified_snapshot_not_reread_files(self):
+        def verify_then_change_source(*args, **kwargs):
+            verified = verify_release(*args, **kwargs)
+            (self.release / "course_data.json").write_bytes(b"corrupt after verification")
+            (self.release / "manifest.json").write_bytes(b"corrupt after verification")
+            return verified
+
+        with patch("pathways.release_import.verify_release",
+                   side_effect=verify_then_change_source):
+            self.assertTrue(self.import_release())
+        self.assertEqual(Course.objects.count(), 2)
+        expected = hashlib.sha256(json.dumps(
+            self.manifest, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        self.assertEqual(DataReleaseImport.objects.get().manifest_sha256, expected)
 
     def test_import_is_offline_idempotent_and_preserves_existing_semantics(self):
         with patch.object(socket, "socket", side_effect=AssertionError("network")):
@@ -256,14 +327,21 @@ class ImportReleaseTest(TestCase):
     def test_corruption_or_legacy_release_fails_without_database_changes(self):
         data = (self.release / "curric_data.json").read_bytes()
         (self.release / "curric_data.json").write_bytes(b"corrupt")
-        with self.assertRaises(IndexValidationError):
+        with self.assertRaises(ReleaseValidationError):
             self.import_release()
         self.assertFalse(DataImport.objects.exists())
         (self.release / "curric_data.json").write_bytes(data)
         self.manifest["schema_version"] = "1.0"
         self.manifest["artifacts"].pop("similar_majors.csv")
+        content = b"opaque legacy archive"
+        (self.release / "search-index.tar.gz").write_bytes(content)
+        self.manifest["artifacts"]["search-index.tar.gz"] = {
+            "version_path": "releases/test-release/search-index.tar.gz",
+            "size_bytes": len(content),
+            "checksum_sha256": hashlib.sha256(content).hexdigest(),
+        }
         (self.release / "manifest.json").write_text(json.dumps(self.manifest))
-        with self.assertRaisesRegex(IndexValidationError, "1.1"):
+        with self.assertRaisesRegex(ReleaseValidationError, "1.1 or 2.0"):
             self.import_release()
         self.assertFalse(DataImport.objects.exists())
 
@@ -271,24 +349,26 @@ class ImportReleaseTest(TestCase):
         self.import_release()
         self.manifest["unexpected_change"] = True
         (self.release / "manifest.json").write_text(json.dumps(self.manifest))
-        with self.assertRaisesRegex(IndexValidationError, "identity changed"):
+        with self.assertRaisesRegex(ReleaseValidationError, "identity changed"):
             self.import_release()
         self.assertEqual(Course.objects.count(), 2)
 
-    def test_confirmation_required_and_command_never_builds_or_activates(self):
+    def test_confirmation_required_and_command_reports_committed_catalog(self):
         with self.assertRaisesRegex(CommandError, "confirm-replace-data"):
             call_command(
                 "import_data_release", release_dir=str(self.release),
                 release_id="test-release")
         self.assertFalse(DataImport.objects.exists())
-        marker = self.root / "serving-index"
-        marker.write_text("unchanged")
-        with patch("pathways.search.SEARCH_INDEX_DIR", str(marker)):
+        before_paths = set(self.root.rglob("*"))
+        output = io.StringIO()
+        with patch("tarfile.open", side_effect=AssertionError("no archive access")), patch(
+            "pickle.loads", side_effect=AssertionError("no unpickling")):
             call_command(
                 "import_data_release", release_dir=str(self.release),
                 release_id="test-release", confirm_replace_data=True,
-                stdout=io.StringIO())
-        self.assertEqual(marker.read_text(), "unchanged")
+            stdout=output)
+        self.assertEqual(set(self.root.rglob("*")), before_paths)
+        self.assertIn("no index activation is needed", output.getvalue())
 
     def test_malformed_csvs_are_reported_before_table_replacement(self):
         for name, content in (

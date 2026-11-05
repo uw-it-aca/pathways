@@ -1,12 +1,11 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from pathways.views.api import RESTDispatch
-from pathways.models.course import Course
-from pathways.models.course import Curriculum
-from django.core.exceptions import ObjectDoesNotExist
-from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
+from pathways.models.course import Course, Curriculum
+from pathways.views.api import RESTDispatch
 
 
 @method_decorator(login_required, name="dispatch")

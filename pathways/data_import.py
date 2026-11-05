@@ -1,16 +1,17 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from pathways.models.major import Major, SimilarMajor
-from pathways.models.course import Course
-from pathways.models.curriculum import Curriculum
-from pathways.models.course_level import CourseLevel
-from pathways.models.coi_range import COIRange
-from django.core.exceptions import ObjectDoesNotExist
-import statistics
 import json
+import statistics
 from logging import getLogger
 
+from django.core.exceptions import ObjectDoesNotExist
+
+from pathways.models.coi_range import COIRange
+from pathways.models.course import Course
+from pathways.models.course_level import CourseLevel
+from pathways.models.curriculum import Curriculum
+from pathways.models.major import Major, SimilarMajor
 
 logger = getLogger(__name__)
 
@@ -32,9 +33,12 @@ def import_major_data(data):
             program_verind_id=data[major]['program_verind_id'],
             major_home_url=data[major]['major_home_url'],
             common_course_decl=data[major]['common_course_decl'],
-            credential_code=data[major]['credential_code'],
-            credential_title=data[major]['credential_title'],
-            credential_description=data[major]['credential_description']
+            credential_code=data[major].get('credential_code') or major,
+            credential_title=(data[major].get('credential_title')
+                              or data[major]['major_title']
+                              or data[major]['major_code']),
+            credential_description=(data[major].get('credential_description')
+                                    or data[major]['major_description'] or '')
         ))
     Major.objects.bulk_create(major_objs)
 
@@ -90,7 +94,7 @@ def import_level_coi(coi_data):
     level_300 = []
     level_400 = []
     for course in coi_data:
-        curric, num = _split_course_id(course['course_id'])
+        _, num = _split_course_id(course['course_id'])
         if course['coi_score'] == -1:
             continue
         if 400 <= num < 500:
@@ -151,7 +155,7 @@ def import_coi_ranges(coi_data):
 def _get_curric_coi(coi_data):
     currics = {}
     for course in coi_data:
-        curric, num = _split_course_id(course['course_id'])
+        curric, _ = _split_course_id(course['course_id'])
         if course['coi_score'] == -1:
             continue
         if curric in currics:
@@ -168,7 +172,7 @@ def _get_course_coi(course, coi_data):
 
 
 def _split_course_id(course_id):
-    curric, delim, num = course_id.rpartition(" ")
+    curric, _, num = course_id.rpartition(" ")
     return curric, int(num)
 
 
@@ -239,12 +243,11 @@ def import_similar_majors(similar_major_data):
                              similarity_score=row[4],
                              similarity_description=desc)
             )
-        except ObjectDoesNotExist as ex:
+        except ObjectDoesNotExist:
             if found_major:
                 missing_majors.append(row[2])
             else:
                 missing_majors.append(row[0])
-            pass
     SimilarMajor.objects.bulk_create(similar_majors_to_create, batch_size=1000)
     logger.info("Imported %d similar majors", len(similar_majors_to_create))
     if len(missing_majors) > 0:

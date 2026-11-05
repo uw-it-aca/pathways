@@ -148,3 +148,8 @@ coverage/
 
 # ruff
 .ruff_cache/
+
+# Local search load-test inputs and results
+load-tests/*.local.json
+load-tests/results/
+sample-searches

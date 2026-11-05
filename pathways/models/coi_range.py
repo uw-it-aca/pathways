@@ -5,13 +5,13 @@ from django.db import models
 
 
 class COIRange(models.Model):
-    RANGES = [
+    RANGES = (
         (0, '0-1'),
         (1, '1-2'),
         (2, '2-3'),
         (3, '3-4'),
         (4, '4-5')
-    ]
+    )
     coi_range = models.IntegerField(choices=RANGES)
     percent_in_range = models.FloatField(null=True)
 

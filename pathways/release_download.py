@@ -8,15 +8,14 @@ import re
 import tempfile
 from pathlib import Path
 
-from dawgpath_search import IndexValidationError
 from google.cloud import storage
 
 from pathways.search_release import (
+    ReleaseValidationError,
     _json,
     _verify,
     release_artifacts,
     verify_release,
-    verify_release_index,
 )
 
 MAX_MANIFEST_BYTES = 1024 * 1024
@@ -42,12 +41,12 @@ def download_release(bucket_name, release_id, output_dir, *, prefix=""):
         if blob is None:
             raise FileNotFoundError(f"Missing GCS release object: {key}")
         if blob.generation is None:
-            raise IndexValidationError(f"GCS object has no generation: {key}")
+            raise ReleaseValidationError(f"GCS object has no generation: {key}")
         if blob.size is None or blob.size > expected_size:
-            raise IndexValidationError(f"GCS release object exceeds size limit: {key}")
+            raise ReleaseValidationError(f"GCS release object exceeds size limit: {key}")
         content = blob.download_as_bytes(if_generation_match=blob.generation)
         if len(content) > expected_size:
-            raise IndexValidationError(f"GCS release object exceeds size limit: {key}")
+            raise ReleaseValidationError(f"GCS release object exceeds size limit: {key}")
         return content
 
     manifest_bytes = fetch(f"releases/{release_id}/manifest.json", MAX_MANIFEST_BYTES)
@@ -63,8 +62,7 @@ def download_release(bucket_name, release_id, output_dir, *, prefix=""):
             _verify(content, info, name)
             (staging / name).write_bytes(content)
         (staging / "manifest.json").write_bytes(manifest_bytes)
-        verified, contents = verify_release(staging, release_id=release_id)
-        verify_release_index(verified, contents)
+        verify_release(staging, release_id=release_id)
         output.mkdir()
         try:
             os.replace(staging, output)

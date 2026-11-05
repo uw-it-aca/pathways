@@ -149,6 +149,26 @@ jobs:
           app-test-container
           bash -c ". ./docker/test.sh"
 
+      # Exercise PostgreSQL-only search migrations and SQL separately from
+      # the full SQLite suite. The PostgreSQL service is shared on this network.
+      - name: Run PostgreSQL Search Tests in Image
+        shell: bash
+        run: >-
+          docker run -u root -t --network ${{ job.container.network }}
+          -e "ENV=localdev" -e "AUTH=SAML_MOCK"
+          -e "DB=postgres"
+          -e "DATABASE_HOSTNAME=postgres"
+          -e "DATABASE_DB_NAME=postgres"
+          -e "DATABASE_USERNAME=postgres"
+          -e "DATABASE_PASSWORD=postgres"
+          -e "UW_PERSON_DB_HOST=postgres"
+          -e "UW_PERSON_DB_PORT=5432"
+          -e "UW_PERSON_DB_NAME=postgres"
+          -e "UW_PERSON_DB_USER=postgres"
+          -e "UW_PERSON_DB_PASSWORD=postgres"
+          app-test-container
+          bash -c ". ./bin/activate && python manage.py migrate --noinput && python manage.py check_search_backend && python -Wd manage.py test pathways.tests.test_postgres_search pathways.tests.test_api.TestSearchApi pathways.tests.commands.test_prepare_search_release pathways.tests.commands.test_data_release --noinput"
+
       # Run Python Coverage and Upload to Coveralls
       - name: Run Python Coverage and Upload to Coveralls
         env:
@@ -191,19 +211,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
         continue-on-error: true
-
-      # Build Search Index
-      - name: Build Search Index
-        if: github.event_name == 'push'
-        id: search
-        shell: bash
-        run: >-
-          docker run -u root -t
-          -v ${PWD}:/coverage
-          -e DJANGO_APP="$DJANGO_APP"
-          -e "ENV=localdev" -e "AUTH=SAML_MOCK"
-          ${{ needs.context.outputs.image_tag }}
-          bash -c ". ./docker/build_index.sh"
 
       - name: Run vulnerability scan
         id: vuln-scan

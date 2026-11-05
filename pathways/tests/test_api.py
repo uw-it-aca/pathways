@@ -1,20 +1,23 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+import json
+from unittest import skipUnless
+
+from django.contrib.auth.models import User
+from django.db import connection
+from django.test import RequestFactory
+from userservice.user import UserServiceMiddleware
+
+from pathways.models.curriculum import Curriculum
 from pathways.tests import ApiTest
 from pathways.views.api import RESTDispatch
-from pathways.views.api.major import MajorDetails, MajorList
-from pathways.views.api.coi import CurricCOI, CourseCOI
-from pathways.views.api.user import UserPreference
-from pathways.views.api.search import Search
+from pathways.views.api.coi import CourseCOI, CurricCOI
+from pathways.views.api.course import CourseDetails, CourseList
 from pathways.views.api.curric import CurricPrereq
-from pathways.views.api.course import CourseList, CourseDetails
-from pathways.models.curriculum import Curriculum
-from django.test import RequestFactory
-from django.contrib.auth.models import User
-from userservice.user import UserServiceMiddleware
-from unittest.mock import patch
-import json
+from pathways.views.api.major import MajorDetails, MajorList
+from pathways.views.api.search import Search
+from pathways.views.api.user import UserPreference
 
 
 class TestApi(ApiTest):
@@ -105,6 +108,7 @@ class TestUserPreferenceApi(ApiTest):
         self.assertEqual(response.status_code, 304)
 
 
+@skipUnless(connection.vendor == "postgresql", "PostgreSQL search required")
 class TestSearchApi(ApiTest):
     def _get_response(self, request_data):
         request = RequestFactory().get('/', data=request_data)
@@ -113,10 +117,12 @@ class TestSearchApi(ApiTest):
 
     def test_search(self):
         request_data = {
-            'search_string': 'transgenic bacterial',
+            'search_string': 'Southwestern Pottery',
         }
         search = self._get_response(request_data)
-        self.assertEqual(len(search['text_matches']), 8)
+        self.assertEqual(search['text_matches'][0]['id'], 'TRAIN 9')
+        self.assertEqual(search['text_matches'][0]['title'],
+                         'Southwestern Pottery')
 
     def test_no_results(self):
         request_data = {

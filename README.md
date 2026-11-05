@@ -41,12 +41,11 @@ Update any .env variables for local development purposes
 
 Docker/Docker Compose is used to containerize your local build environment and deploy it to an 'app' container which is exposed to your localhost so you can view your application. Docker Compose creates a 'devtools' container - which is used for local development. Changes made locally are automatically syncd to the 'app' container.
 
-### Search Index
-
-The search index in `indexdir/` is automatically built when the docker container starts (via `docker/app_start.sh`). 
-
-Note: `indexdir/` is ignored by Git. If Whoosh index files were previously tracked, they should be removed from the Git index using:
-`git rm -r --cached indexdir`
+Local development uses the Compose PostgreSQL service for the Pathways catalog
+and search. Startup applies Django migrations, checks PostgreSQL search
+readiness, and imports the checked-in catalog without contacting GCS.
+Search queries live PostgreSQL catalog tables; there is no Whoosh dependency,
+filesystem search index, bundle preparation, or index activation step.
 
         $ docker-compose up --build
 
@@ -54,67 +53,32 @@ View your application using your specified port number in the .env file
 
         Demo: http://localhost:800?/
 
-#### Offline snapshot builds and downloaded-release verification
+### Data Release Contract
 
-The shared `dawgpath-search` dependency is pinned to the same exact Git commit as
-the pipeline. It pins Whoosh 2.7.4. Installing dependencies during the image build
-needs GitHub access (and Git); building or preparing indexes does not use GCS,
-credentials, or network access.
+New pipeline releases use **manifest schema 2.0** with exactly ten artifacts:
+`course_data.json`, `curric_data.json`, `major_data.json`,
+`course_prereq_data.pkl`, `prereq_data.pkl`, `bottleneck_courses.csv`,
+`gateway_courses.csv`, `coi_scores.csv`, `admit_major_mapping.csv`, and
+`similar_majors.csv`. There is no `search_index` metadata or search bundle.
 
-The existing no-argument `build_search_index` command and startup flow still
-build from the local database, using the shared schema. Neither production
-startup nor automatic refresh/activation changes in this increment.
+The app validates release identity, exact artifact inventory, immutable
+`releases/<release-id>/<filename>` references, file sizes, and SHA-256 checksums.
+Local manifest/artifact symlinks are rejected. Only verified in-memory bytes are
+used for import. Obtain releases from a trusted source: checksums detect
+corruption but do not authenticate a manifest.
 
-To build directly from the checked-in offline snapshot without reading a
-database, run inside the application environment:
-
-```bash
-python manage.py build_search_index \
-  --input-root pathways/data \
-  --output-dir indexdir/offline-check \
-  --release-id local-snapshot
-```
-
-This uses the shared builder and the five local files `course_data.json`,
-`major_data.json`, `coi_scores.csv`, `gateway_courses.csv`, and
-`bottleneck_courses.csv`. It writes index metadata and never downloads data.
-The output directory must be new; it does not overwrite the active index.
-
-To test a complete, manually downloaded pipeline release:
-
-```bash
-python manage.py prepare_search_release \
-  --release-dir /path/to/downloaded-release \
-  --output-dir /path/to/new-prepared-index \
-  --release-id <expected-release-id>
-```
-
-Use the directory containing `manifest.json` and all release artifacts
-(ten for schema 1.0, eleven for schema 1.1),
-not its parent download directory. Obtain it from a trusted source: manifest
-checksums detect corruption but do not authenticate Whoosh's serialized schema.
-The command verifies manifest version, release identity, all artifact hashes,
-index source hashes, and the bundle's exact regular-file inventory. It rejects
-symlinks, traversal paths, duplicate/missing archive members, metadata mismatches,
-unsupported index contracts, and incompatible Whoosh versions. Legacy pickle
-exports are only hashed, never deserialized. Pathways owns the full release
-manifest and source-data consistency checks; `dawgpath-search` owns archive
-validation, staged extraction, and index verification. The fresh output is
-exposed only on success.
-
-Preparation does not import JSON/CSV data into the database, change query/result
-shapes, or select the new index for serving. Keep the downloaded release outside
-the checked-in snapshot; local development does not need to pull from GCS.
-Future production cutover/refresh must coordinate the database data and index
-from the same release. That activation work is separate from these explicit,
-offline preparation commands.
+Legacy schemas **1.0 and 1.1 remain supported for read-only download and
+verification** with their original exact inventories (ten and eleven artifacts,
+respectively). Their `search-index.tar.gz` bytes are size/checksum verified but
+never opened, extracted, validated as an index, built, or activated. Legacy
+`search_index` metadata is not interpreted. Pickle exports are only hashed,
+never deserialized. No `dawgpath_search` dependency is needed.
 
 ### Explicit GCS download and database import
 
-These are operator commands, **not startup hooks or a live refresh workflow**.
+These are explicit operator commands, **not automatic refresh hooks**.
 Localdev still imports checked-in data at startup without contacting GCS.
-Schedules, admin triggers, multi-pod readiness, and serving-index activation
-are not implemented in this increment.
+Schedules and admin triggers are not provided by these commands.
 
 Download one completed, trusted release by its exact ID:
 
@@ -129,13 +93,14 @@ Use `--prefix <object-prefix>` if releases are under a bucket prefix.
 The command uses Google Application Default Credentials (workload identity in
 GKE, or locally configured ADC), needs object **get** permission, and never
 lists releases or follows `latest/`. It pins each read to its GCS generation,
-checks every artifact's size/hash and the complete index, then exposes a fresh
+checks every artifact's size/hash, then exposes a fresh
 local directory. Missing objects, authentication failures, generation changes,
 or corruption fail without leaving a partial output or falling back to the
 checked-in snapshot. Keep downloads outside the repository.
 
-For an **isolated integration-test database or a database with serving traffic
-stopped**, apply migrations and import the verified local release:
+For an **isolated integration-test database or an operator-controlled maintenance
+window**, apply migrations and import the verified local release. Use the
+directory containing `manifest.json` and its artifacts, not its parent:
 
 ```bash
 python manage.py migrate
@@ -145,18 +110,13 @@ python manage.py import_data_release \
   --confirm-replace-data
 ```
 
-**Do not run this against a serving test/prod database yet.** Import replaces
-catalog data, but deliberately does not change the active search index; serving
-traffic could otherwise see a mismatched database and index. A coordinated
-activation workflow is still required before resuming traffic.
-
-Database imports require **schema 1.1** from the updated pipeline, including
+Database imports accept **schema 2.0 and legacy schema 1.1**, including
 `similar_majors.csv` fetched and frozen from Azure by the pipeline. There is no
 supplemental CSV fallback and no Azure fetch during import. Existing schema-1.0
-downloads can still be verified/prepared, but cannot be database-imported by
+downloads can still be verified, but cannot be database-imported by
 this command.
 
-The importer verifies all files and the Whoosh bundle before mutation, uses
+The importer verifies all artifact bytes before mutation, uses
 only those verified bytes, and reuses existing catalog/COI/flag/career/similar-
 major/STEM import semantics. Pickle artifacts are only hashed, not unpickled.
 Missing majors in similarity data retain the existing importer behavior:
@@ -168,11 +128,19 @@ PostgreSQL; do not run legacy import commands concurrently.
 
 Repeating the currently imported release is a no-op when its manifest and
 import markers still match. Reusing a previously imported release ID with a
-different manifest is rejected. Import records describe database data only,
-not which index is serving. The existing `import_data`, `build_search_index`,
-startup script, and query code remain unchanged.
+different manifest is rejected. PostgreSQL search queries the committed catalog
+directly, so imported data becomes searchable transactionally without preparing
+or activating an external index. Multi-request workflows and operational
+scheduling still need normal maintenance coordination; do not run legacy
+imports concurrently with a release import.
 
 ## Testing
+
+### Search Load Testing
+
+See [Search Load Test](docs/search-load-test.md) for a local, authenticated k6
+workload weighted by logged search frequency. It defaults to test; production
+requires explicit opt-in and separate authentication headers.
 
 ### Front-end Testing (using Vitest)
 

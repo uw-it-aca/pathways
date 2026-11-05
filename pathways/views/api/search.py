@@ -1,10 +1,11 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from pathways.views.api import RESTDispatch
-from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
 from pathways.search import search
+from pathways.views.api import RESTDispatch
 
 
 @method_decorator(login_required, name="dispatch")
@@ -24,8 +25,8 @@ class Search(RESTDispatch):
         types = request.GET.getlist("type[]")
 
         courses = search(search_string, campus_values, types,
-                         is_gateway=is_bottleneck,
-                         is_bottleneck=is_gateway,
+                         is_gateway=is_gateway,
+                         is_bottleneck=is_bottleneck,
                          min_coi_score=min_coi_score,
                          max_coi_score=max_coi_score)
         return self.json_response(courses)

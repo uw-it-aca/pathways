@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ "$ENV"  = "localdev" ]
 then
 
@@ -16,7 +18,7 @@ then
   cd /app
   python3 manage.py initialize_person_db
   python3 manage.py migrate
+  python3 manage.py check_search_backend
   python3 manage.py import_data
-  python3 manage.py build_search_index
 
 fi

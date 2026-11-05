@@ -25,6 +25,7 @@ node_modules
 build/
 develop-eggs/
 dist/
+indexdir/
 downloads/
 eggs/
 .eggs/
@@ -47,3 +48,7 @@ db.sqlite3
 [Ss]cripts
 
 docker/*-values.yml
+
+# Keep authentication headers and search logs out of application images
+load-tests/
+sample-searches

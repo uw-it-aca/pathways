@@ -9,8 +9,8 @@ from pathways.release_import import import_release
 
 class Command(BaseCommand):
     help = (
-        "Replace database data from a verified local schema-1.1 release. "
-        "Does not activate its index. Stop serving traffic before use."
+        "Transactionally replace catalog data from a verified local schema-1.1 or "
+        "schema-2.0 release. PostgreSQL search uses the imported data directly."
     )
 
     def add_arguments(self, parser):
@@ -21,8 +21,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if not options["confirm_replace_data"]:
             raise CommandError(
-                "This replaces catalog data without switching the serving index. "
-                "Use only on an isolated database or with traffic stopped. "
+                "This transactionally replaces catalog data and relationships. "
+                "Use an isolated database or an operator-controlled maintenance window. "
                 "Pass --confirm-replace-data to proceed.")
         try:
             changed = import_release(
@@ -32,5 +32,5 @@ class Command(BaseCommand):
             raise CommandError(f"Release import failed; database changes rolled back: {exc}") from exc
         self.stdout.write(self.style.SUCCESS(
             f"{'Imported' if changed else 'Already imported'} release "
-            f"{options['release_id']}. Active search index unchanged; "
-            "do not resume traffic until a coordinated activation is completed."))
+            f"{options['release_id']}. "
+            "PostgreSQL search queries the committed catalog; no index activation is needed."))
