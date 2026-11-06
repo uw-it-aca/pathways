@@ -70,6 +70,25 @@ RELEASE_SYNC_PREFIX = os.getenv("RELEASE_SYNC_PREFIX", "")
 SUPPORTTOOLS_PARENT_APP = "DawgPath"
 SUPPORTTOOLS_PARENT_APP_URL = "/"
 
+# Enable Vue-powered supporttools navigation (required for SPA tools)
+SUPPORTTOOLS_VUE_ENABLED = True
+
+# Data release promotion SPA tool configuration
+SUPPORTTOOLS_DEFAULT_SPA_VIEW = "pathways.views.support.DataReleaseSpaToolView"
+SUPPORTTOOLS_VIEW_REGISTRY = [
+    {
+        "id": "data-release-promotion",
+        "section": "application",
+        "order": 10,
+        "label": "Release Promotion",
+        "url_name": "data_release_promotion",
+        "mode": "spa",
+        "route": "/support/data_release_promotion/",
+        "component_key": "data_release_promotion",
+        "vite_entry": "pathways_vue/support/data-release-promotion.js",
+    }
+]
+
 USERSERVICE_VALIDATION_MODULE = "pathways.dao.person.valid_uwnetid"
 USERSERVICE_OVERRIDE_AUTH_MODULE = "pathways.views.can_override_user"
 PERSISTENT_MESSAGE_AUTH_MODULE = "pathways.views.can_manage_persistent_message"

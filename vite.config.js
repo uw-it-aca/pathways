@@ -1,6 +1,12 @@
 import { fileURLToPath, URL } from "node:url";
 import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
+import { readdirSync } from "fs";
+
+// Auto-discover SPA support tool entries
+const supportEntries = readdirSync("./pathways_vue/support")
+  .filter((f) => f.endsWith(".js"))
+  .map((f) => `./pathways_vue/support/${f}`);
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,6 +26,7 @@ export default defineConfig({
       input: [
         // list all entry points
         "./pathways_vue/main.js",
+        ...supportEntries,
       ],
       output: {
         // optimize css asset file names (remove hash) for better Clarity caching

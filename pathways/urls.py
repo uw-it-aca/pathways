@@ -4,11 +4,17 @@
 from django.conf import settings
 from django.urls import re_path
 from django.views.generic import TemplateView
+from supporttools.urls import get_registry_urlpatterns
 
 from pathways.views.api.coi import CourseCOI, CurricCOI
 from pathways.views.api.course import CourseDetails, CourseList
 from pathways.views.api.curric import CurricPrereq
 from pathways.views.api.major import MajorDetails, MajorList
+from pathways.views.api.release_promotion import (
+    get_release_manifest,
+    list_releases,
+    promote_release,
+)
 from pathways.views.api.search import Search
 from pathways.views.api.user import UserPreference
 from pathways.views.pages import DefaultPageView
@@ -56,6 +62,18 @@ urlpatterns += [
     re_path(
         r'^api/v1/coi/curric/$',
         CurricCOI.as_view(), name='curric-coi'),
+    re_path(
+        r'^api/v1/admin/releases/$',
+        list_releases, name='list-releases'),
+    re_path(
+        r'^api/v1/admin/releases/(?P<release_id>[A-Za-z0-9_-]+)/manifest/$',
+        get_release_manifest, name='get-release-manifest'),
+    re_path(
+        r'^api/v1/admin/releases/promote/$',
+        promote_release, name='promote-release'),
+
+    # Include supporttools SPA registry URLs (must precede the catch-all)
+    *get_registry_urlpatterns(),
 
     re_path(r'^(major|course|faq|search)$', DefaultPageView.as_view()),
     re_path(r'^$', DefaultPageView.as_view()),

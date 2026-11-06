@@ -28,7 +28,9 @@ setup(
         "uw-django-saml2~=1.8",
         "django-person-client~=2.1",
         "django-userservice~=3.2",
-        "django-supporttools~=3.6",
+        # Temporary: Using 4.0dev4 pre-release to enable Vue SPA support
+        # TODO: Replace with "django-supporttools~=4.0" once 4.0 is released
+        "django-supporttools @ https://github.com/uw-it-aca/django-supporttools/releases/download/4.0dev4/django_supporttools-4.0.dev4-py3-none-any.whl",
         "django-persistent-message~=1.3",
         "azure-storage-blob~=12.25",
         "google-cloud-storage>=2.0.0",
