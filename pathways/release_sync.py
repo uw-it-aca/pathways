@@ -21,7 +21,7 @@ class ReleaseSyncError(Exception):
             "No catalog changes were committed by this attempt.")
 
 
-def sync_release(bucket, release_id, *, prefix="", requested_by="", temporary_root=None):
+def validate_sync_source(bucket, release_id, prefix, requested_by):
     if connection.in_atomic_block or not connection.get_autocommit():
         raise ValueError("Release sync must run outside an existing transaction.")
     if not isinstance(release_id, str) or not re.fullmatch(
@@ -36,18 +36,32 @@ def sync_release(bucket, release_id, *, prefix="", requested_by="", temporary_ro
     prefix = prefix.strip("/")
     if prefix and any(part in {"", ".", ".."} for part in prefix.split("/")):
         raise ValueError("Invalid GCS prefix.")
+    return prefix
+
+
+def sync_release(bucket, release_id, *, prefix="", requested_by="", temporary_root=None):
+    prefix = validate_sync_source(bucket, release_id, prefix, requested_by)
     attempt = DataReleaseSyncAttempt.objects.create(
         release_id=release_id, bucket=bucket, prefix=prefix,
         requested_by=requested_by, status=DataReleaseSyncAttempt.Status.DOWNLOADING)
+    return execute_sync_attempt(attempt, temporary_root=temporary_root)
+
+
+def execute_sync_attempt(attempt, *, temporary_root=None, check_owner=None):
     try:
         with tempfile.TemporaryDirectory(
                 prefix="pathways-release-sync-", dir=temporary_root) as temporary:
             release_dir = Path(temporary) / "release"
-            download_release(bucket, release_id, release_dir, prefix=prefix)
+            download_release(attempt.bucket, attempt.release_id, release_dir,
+                             prefix=attempt.prefix)
+            if check_owner:
+                check_owner()
             attempt.status = DataReleaseSyncAttempt.Status.IMPORTING
             attempt.save(update_fields=["status"])
             with transaction.atomic():
-                changed = import_release(release_dir, release_id=release_id)
+                if check_owner:
+                    check_owner()
+                changed = import_release(release_dir, release_id=attempt.release_id)
                 attempt.status = (DataReleaseSyncAttempt.Status.SUCCEEDED if changed
                                   else DataReleaseSyncAttempt.Status.UNCHANGED)
                 attempt.completed_on = timezone.now()

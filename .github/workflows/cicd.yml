@@ -151,7 +151,7 @@ jobs:
 
       # Exercise PostgreSQL-only search migrations and SQL separately from
       # the full SQLite suite. The PostgreSQL service is shared on this network.
-      - name: Run PostgreSQL Search Tests in Image
+      - name: Run PostgreSQL Tests in Image
         shell: bash
         run: >-
           docker run -u root -t --network ${{ job.container.network }}
@@ -167,7 +167,7 @@ jobs:
           -e "UW_PERSON_DB_USER=postgres"
           -e "UW_PERSON_DB_PASSWORD=postgres"
           app-test-container
-          bash -c ". ./bin/activate && python manage.py migrate --noinput && python manage.py check_search_backend && python -Wd manage.py test pathways.tests.test_postgres_search pathways.tests.test_api.TestSearchApi pathways.tests.commands.test_data_release_verification pathways.tests.commands.test_data_release pathways.tests.commands.test_release_sync pathways.tests.commands.test_release_migrations --noinput"
+          bash ./docker/test_postgres.sh
 
       # Run Python Coverage and Upload to Coveralls
       - name: Run Python Coverage and Upload to Coveralls

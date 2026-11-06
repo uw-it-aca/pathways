@@ -154,7 +154,8 @@ selects a bucket object prefix; `--temporary-root` selects an existing writable
 parent directory with sufficient space. It uses the same ADC credentials and
 object-get permissions as `download_data_release`. Bucket and release selection
 must come from a trusted operator; there is no discovery, latest pointer,
-promotion, schedule, queue, or HTTP trigger. The command runs synchronously.
+promotion, or HTTP trigger. The command runs synchronously and bypasses the
+optional daemon queue below.
 Use an isolated database or a coordinated maintenance window and do not run
 legacy imports concurrently.
 
@@ -182,12 +183,62 @@ needed to read them. This replaces the catalog using existing importer semantics
 it is not a general database backup restore. A previously used ID with changed
 manifest bytes is rejected.
 
-An abruptly killed process can leave an attempt in `downloading` or `importing`
+An abruptly killed direct-sync process can leave an attempt in `downloading` or `importing`
 and temporary files behind. There is no heartbeat or automatic stale-attempt
 recovery yet; inspect the job/process before retrying or cleaning up. If cleanup
 alone fails after commit, the attempt remains successful and a sanitized warning
 is logged. The reusable `sync_release` service must run outside an enclosing
 transaction so progress and failures can persist independently.
+
+### Daemon release queue
+
+Queue submission and processing are disabled by default. Apply migration `0032`,
+configure `RELEASE_SYNC_ENABLED=true`, `RELEASE_SYNC_BUCKET` to a trusted bucket,
+and optionally `RELEASE_SYNC_PREFIX`. These environment variables map to Django
+settings in the image. Provide ADC object-get access and coordinate maintenance
+before enabling; the worker imports without another interactive confirmation.
+
+```bash
+python manage.py queue_data_release \
+        --release-id <completed-release-id> \
+        --requested-by <operator-identifier> \
+        --confirm-replace-data
+python manage.py process_release_sync_queue --limit 1
+python manage.py data_release_status
+```
+
+`enqueue_release_sync` is the reusable submission service for the future
+operator-authorized API. It accepts no bucket/prefix override. A queued request
+freezes the configured source; changing that configuration causes the worker to
+fail old requests rather than download from another location. Repeated submission
+of the same still-queued release returns the existing attempt and preserves its
+original requester. Submitting after a claim creates another attempt, which can
+finish as an unchanged import. Requests are processed oldest first.
+
+The worker handles a bounded batch (`--limit` 1–100, default 1), then exits.
+Test/prod values contain a commented-out daemon entry using the existing wrapper:
+`/scripts/management_daemon.sh --delay 15 process_release_sync_queue --limit 1`.
+Uncomment that entry when ready and set the enable/source variables. Do not use
+`replicaCount: 0` to disable it: the chart defaults that value back to one.
+Remove or separately coordinate `import-similar-majors` before release imports
+become authoritative. No daemon has been enabled by this change.
+
+A PostgreSQL session advisory lock serializes queue workers across download and
+import, including overlapping rollout pods. A competing worker exits without
+claiming or recovering anything. The owner records a worker UUID and claim time,
+and checks that its database session is unchanged before importing. This requires
+a direct PostgreSQL connection or session-mode pooler, not transaction pooling.
+Direct sync commands still use the catalog row lock and may run between queued
+imports; avoid mixing these workflows during maintenance.
+
+Once a new worker acquires the lock, unfinished claims from previous queue workers
+are marked `failed` with `WorkerInterrupted`. There is no age-based takeover of a
+live worker and no automatic retry of interrupted requests. Inspect the outcome,
+then submit the release again if appropriate. Successful catalog/current-state/
+attempt changes commit together. A normal failed request does not block later
+queued requests. Abrupt termination can still leave temporary files behind; a
+hung worker holding its database session must be stopped before recovery occurs.
+The status command includes queue state, worker identity, and claim timestamp.
 
 ## Testing
 

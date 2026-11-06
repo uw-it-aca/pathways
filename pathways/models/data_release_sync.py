@@ -6,6 +6,7 @@ from django.db import models
 
 class DataReleaseSyncAttempt(models.Model):
     class Status(models.TextChoices):
+        QUEUED = "queued"
         DOWNLOADING = "downloading"
         IMPORTING = "importing"
         SUCCEEDED = "succeeded"
@@ -20,11 +21,16 @@ class DataReleaseSyncAttempt(models.Model):
     status = models.CharField(max_length=16, choices=Status.choices)
     started_on = models.DateTimeField(auto_now_add=True)
     completed_on = models.DateTimeField(null=True, blank=True)
+    claimed_on = models.DateTimeField(null=True, blank=True)
+    worker_id = models.UUIDField(null=True, blank=True)
     error_code = models.CharField(max_length=128, blank=True)
     error_message = models.CharField(max_length=255, blank=True)
 
     class Meta:
         ordering: ClassVar[list[str]] = ["-started_on"]
+        constraints: ClassVar[list[models.UniqueConstraint]] = [models.UniqueConstraint(
+            fields=["release_id"], condition=models.Q(status="queued"),
+            name="unique_queued_release_sync")]
 
 
 class DataReleaseState(models.Model):

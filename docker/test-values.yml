@@ -52,8 +52,26 @@ daemon:
         requests:
           cpu: 100m
           memory: 256Mi
+    # Enable only after trusted GCS access and maintenance coordination are ready.
+    # - name: release-sync
+    #   replicaCount: 1
+    #   command: ["/scripts/management_daemon.sh"]
+    #   args: ["--delay", "15", "process_release_sync_queue", "--limit", "1"]
+    #   resources:
+    #     limits:
+    #       cpu: 500m
+    #       memory: 1024Mi
+    #     requests:
+    #       cpu: 100m
+    #       memory: 256Mi
 
 environmentVariables:
+  - name: RELEASE_SYNC_ENABLED
+    value: "false"
+  - name: RELEASE_SYNC_BUCKET
+    value: ""
+  - name: RELEASE_SYNC_PREFIX
+    value: ""
   - name: ENV
     value: test
   - name: AUTH
