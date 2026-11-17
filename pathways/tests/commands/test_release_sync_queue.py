@@ -19,10 +19,15 @@ from pathways.release_sync_queue import enqueue_release_sync, process_release_sy
 from pathways.tests.commands.test_data_release import write_release
 
 
-@skipUnless(connection.vendor == "postgresql",
-"PostgreSQL queue locking required")
-@override_settings(RELEASE_SYNC_ENABLED=True, RELEASE_SYNC_BUCKET="trusted",
-                   RELEASE_SYNC_PREFIX="app")
+@skipUnless(
+    connection.vendor == "postgresql",
+    "PostgreSQL queue locking required"
+)
+@override_settings(
+    RELEASE_SYNC_ENABLED=True,
+    RELEASE_SYNC_BUCKET="trusted",
+    RELEASE_SYNC_PREFIX="app"
+)
 class ReleaseSyncQueueTest(TransactionTestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
@@ -43,8 +48,10 @@ class ReleaseSyncQueueTest(TransactionTestCase):
         manifest_path.write_text(json.dumps(manifest))
 
     def test_queue_deduplicates_and_worker_reuses_attempt(self):
-        attempt, created = enqueue_release_sync("test-release",
-        requested_by="operator")
+        attempt, created = enqueue_release_sync(
+            "test-release",
+            requested_by="operator"
+        )
         duplicate, repeated = enqueue_release_sync("test-release")
         self.assertTrue(created)
         self.assertFalse(repeated)
@@ -55,8 +62,10 @@ class ReleaseSyncQueueTest(TransactionTestCase):
         self.assertEqual(processed[0].status, "succeeded")
         self.assertIsNotNone(processed[0].claimed_on)
         self.assertIsNotNone(processed[0].worker_id)
-        self.assertEqual(DataReleaseState.objects.get().current_release_id,
-        "test-release")
+        self.assertEqual(
+            DataReleaseState.objects.get().current_release_id,
+            "test-release"
+        )
         self.assertEqual(process_release_sync_queue(), [])
 
     def test_disabled_and_changed_configuration_fail_closed(self):
@@ -95,8 +104,10 @@ class ReleaseSyncQueueTest(TransactionTestCase):
 
         self.download.side_effect = download
         processed = process_release_sync_queue(limit=2)
-        self.assertEqual([attempt.status for attempt in processed], ["failed",
-        "succeeded"])
+        self.assertEqual(
+            [attempt.status for attempt in processed],
+            ["failed", "succeeded"]
+        )
 
     def test_worker_session_loss_prevents_import(self):
         enqueue_release_sync("test-release")
@@ -149,8 +160,10 @@ class ReleaseSyncQueueTest(TransactionTestCase):
             try:
                 self.assertTrue(entered.wait(timeout=10))
                 self.assertEqual(process_release_sync_queue(), [])
-                self.assertEqual(DataReleaseSyncAttempt.objects.get().status,
-                "downloading")
+                self.assertEqual(
+                    DataReleaseSyncAttempt.objects.get().status,
+                    "downloading"
+                )
             finally:
                 release_worker.set()
             self.assertEqual(running.result()[0].status, "succeeded")
