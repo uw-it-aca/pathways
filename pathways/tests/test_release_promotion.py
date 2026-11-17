@@ -10,6 +10,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import RequestFactory, TestCase, override_settings
 
+from pathways.data_release import RELEASE_FILES, release_artifacts
+from pathways.models import DataReleaseImport, DataReleaseState
 from pathways.release_promotion_api import (
     ReleaseLister,
     queue_release_for_promotion,
@@ -64,11 +66,27 @@ class ReleaseListerTestCase(TestCase):
         releases = lister.list_available_releases()
 
         # Verify
+        mock_bucket.list_blobs.assert_called_once_with(prefix="releases/", delimiter="/")
         self.assertEqual(len(releases), 2)
         self.assertEqual(releases[0]["release_id"], "release-001")
         self.assertEqual(releases[0]["manifest_size"], 1024)
         # Most recent first
         self.assertEqual(releases[0]["updated"], "2026-11-06T10:00:00")
+
+    @override_settings(RELEASE_SYNC_BUCKET="test-bucket", RELEASE_SYNC_PREFIX="catalog")
+    @patch("pathways.release_promotion_api.storage.Client")
+    def test_configured_prefix_is_used_for_listing_and_manifest(self, mock_client_class):
+        bucket = mock_client_class.return_value.bucket.return_value
+        bucket.list_blobs.return_value.pages = []
+        blob = bucket.get_blob.return_value
+        blob.exists.return_value = True
+        blob.download_as_text.return_value = '{"release_id": "release-001"}'
+
+        lister = ReleaseLister()
+        self.assertEqual(lister.list_available_releases(), [])
+        self.assertEqual(lister.get_release_manifest("release-001")["release_id"], "release-001")
+        bucket.list_blobs.assert_called_once_with(prefix="catalog/releases/", delimiter="/")
+        bucket.get_blob.assert_called_once_with("catalog/releases/release-001/manifest.json")
 
     @override_settings(RELEASE_SYNC_BUCKET="test-bucket")
     @patch("pathways.release_promotion_api.storage.Client")
@@ -129,6 +147,7 @@ class ReleaseListerTestCase(TestCase):
             self.assertIn("Invalid release ID", str(cm.exception))
 
 
+@override_settings(RELEASE_PROMOTION_MOCK=False)
 class ReleasePromotionAPITestCase(TestCase):
     """Test release promotion API endpoints."""
 
@@ -157,6 +176,19 @@ class ReleasePromotionAPITestCase(TestCase):
             data=json.dumps({"release_id": "release-001"}),
             content_type="application/json")
         self.assertEqual(response.status_code, 401)
+
+    @patch("pathways.views.api.release_promotion.queue_release_for_promotion")
+    def test_promote_release_uses_real_queue_when_mock_disabled(self, mock_queue):
+        mock_queue.return_value = {"success": True, "queue_attempt_id": 42}
+        self.client.force_login(get_user_model().objects.create_user(username="admin"))
+        response = self.client.post(
+            "/api/v1/admin/releases/promote/",
+            data=json.dumps({"release_id": "release-001"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        mock_queue.assert_called_once_with("release-001", requested_by="admin")
+        self.assertEqual(response.json()["data"]["queue_attempt_id"], 42)
 
     @override_settings(RELEASE_SYNC_BUCKET="test-bucket")
     @patch("pathways.views.api.release_promotion.ReleaseLister")
@@ -193,6 +225,20 @@ class ReleasePromotionAPITestCase(TestCase):
         self.assertTrue(response_data["success"])
         self.assertEqual(len(response_data["releases"]), 2)
         self.assertEqual(response_data["count"], 2)
+        self.assertIsNone(response_data["current_release_id"])
+
+    @patch("pathways.views.api.release_promotion.ReleaseLister")
+    def test_list_releases_returns_tracked_current_release(self, mock_lister):
+        mock_lister.return_value.list_available_releases.return_value = []
+        release = DataReleaseImport.objects.create(
+            release_id="current-release", manifest_sha256="a" * 64)
+        DataReleaseState.objects.create(current_release=release)
+        self.client.force_login(get_user_model().objects.create_user(username="admin"))
+
+        response = self.client.get("/api/v1/admin/releases/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["current_release_id"], "current-release")
 
     @override_settings(RELEASE_SYNC_BUCKET=None)
     def test_list_releases_missing_bucket_config(self):
@@ -241,6 +287,70 @@ class ReleasePromotionAPITestCase(TestCase):
         self.assertEqual(response_data["manifest"]["release_id"], "test-release")
 
 
+@override_settings(RELEASE_PROMOTION_MOCK=True)
+class MockReleasePromotionAPITestCase(TestCase):
+    def setUp(self):
+        self.client.force_login(get_user_model().objects.create_user(username="admin"))
+        group_patcher = patch("pathways.views.is_member_of_group", return_value=True)
+        group_patcher.start()
+        self.addCleanup(group_patcher.stop)
+
+    @patch("pathways.release_promotion_api.storage.Client")
+    @patch("pathways.views.api.release_promotion.queue_release_for_promotion")
+    def test_local_release_workflow_never_contacts_storage_or_queues(
+        self, mock_queue, mock_storage
+    ):
+        response = self.client.get("/api/v1/admin/releases/")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["mock"])
+        releases = response.json()["releases"]
+        self.assertGreaterEqual(len(releases), 2)
+        self.assertEqual(response.json()["current_release_id"], releases[1]["release_id"])
+        release_id = releases[0]["release_id"]
+
+        response = self.client.get(f"/api/v1/admin/releases/{release_id}/manifest/")
+        self.assertEqual(response.status_code, 200)
+        manifest = response.json()["manifest"]
+        self.assertEqual(manifest["release_id"], release_id)
+        self.assertEqual(set(manifest["artifacts"]), RELEASE_FILES)
+        self.assertEqual(release_artifacts(manifest, release_id), manifest["artifacts"])
+
+        response = self.client.post(
+            "/api/v1/admin/releases/promote/",
+            data=json.dumps({"release_id": release_id}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["data"]["mock"])
+        response = self.client.get("/api/v1/admin/releases/")
+        self.assertEqual(response.json()["current_release_id"], releases[1]["release_id"])
+        mock_storage.assert_not_called()
+        mock_queue.assert_not_called()
+
+    @patch("pathways.views.api.release_promotion.queue_release_for_promotion")
+    def test_unknown_release_cannot_be_simulated(self, mock_queue):
+        response = self.client.post(
+            "/api/v1/admin/releases/promote/",
+            data=json.dumps({"release_id": "unknown"}),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+        mock_queue.assert_not_called()
+
+    @patch("pathways.views.is_member_of_group", return_value=False)
+    def test_mock_endpoints_still_require_admin_access(self, mock_is_member):
+        self.assertEqual(self.client.get("/api/v1/admin/releases/").status_code, 401)
+        self.assertEqual(
+            self.client.post(
+                "/api/v1/admin/releases/promote/",
+                data=json.dumps({"release_id": "local-sample-20261116"}),
+                content_type="application/json",
+            ).status_code,
+            401,
+        )
+        self.assertEqual(mock_is_member.call_args.args[1], settings.ADMIN_USERS_GROUP)
+
+
 class QueueReleaseTestCase(TestCase):
     """Test queuing releases for promotion."""
 
@@ -284,6 +394,39 @@ class QueueReleaseTestCase(TestCase):
 
 class DataReleaseSpaToolViewTestCase(TestCase):
     """Test the SPA tool view."""
+
+    @patch("pathways.views.is_member_of_group", return_value=True)
+    @patch("supporttools.templatetags.vite._load_manifest")
+    def test_registered_spa_page(self, mock_manifest, mock_is_member):
+        mock_manifest.return_value = {
+            "pathways_vue/support/data-release-promotion.js": {
+                "file": "pathways/assets/release.js",
+                "css": ["pathways/assets/release.css"],
+            },
+        }
+        user = get_user_model().objects.create_user(username="testuser")
+        self.client.force_login(user)
+
+        response = self.client.get("/support/data_release_promotion/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="supporttools-vue-nav"')
+        self.assertContains(response, 'id="spa-tool-app"')
+        self.assertContains(response, "/static/supporttools/js/main.js")
+        self.assertContains(response, "/static/pathways/assets/release.js")
+        self.assertContains(response, "/static/pathways/assets/release.css")
+        self.assertContains(response, '"username": "testuser"')
+        self.assertEqual(mock_is_member.call_args.args[1], settings.ADMIN_USERS_GROUP)
+
+    @patch("pathways.views.is_member_of_group", return_value=False)
+    def test_registered_spa_page_denied_for_non_member(self, mock_is_member):
+        user = get_user_model().objects.create_user(username="nonmember")
+        self.client.force_login(user)
+
+        response = self.client.get("/support/data_release_promotion/")
+
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(mock_is_member.call_args.args[1], settings.ADMIN_USERS_GROUP)
 
     def test_spa_tool_view_get_page_data(self):
         """Test SPA tool view returns proper page data."""

@@ -17,11 +17,13 @@ logger = logging.getLogger(__name__)
 class ReleaseLister:
     """Discover finalized data releases from GCS bucket."""
 
-    def __init__(self, bucket_name: str | None = None, prefix: str = ""):
+    def __init__(self, bucket_name: str | None = None, prefix: str | None = None):
         self.bucket_name = bucket_name or getattr(settings, "RELEASE_SYNC_BUCKET", None)
         if not self.bucket_name:
             raise ValueError("RELEASE_SYNC_BUCKET must be configured")
-        self.prefix = prefix.strip("/")
+        self.prefix = (
+            getattr(settings, "RELEASE_SYNC_PREFIX", "") if prefix is None else prefix
+        ).strip("/")
         self.client = storage.Client()
         self.bucket = self.client.bucket(self.bucket_name)
 
@@ -39,8 +41,7 @@ class ReleaseLister:
         releases = []
         try:
             # List all manifest.json files in the releases/ prefix
-            prefix = f"{self.prefix}/releases" if self.prefix else "releases"
-            prefix = prefix.strip("/")
+            prefix = f"{self.prefix}/releases/" if self.prefix else "releases/"
 
             iterator = self.bucket.list_blobs(prefix=prefix, delimiter="/")
             # Get the sub-prefixes (release IDs)

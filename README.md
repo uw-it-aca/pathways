@@ -53,6 +53,11 @@ View your application using your specified port number in the .env file
 
         Demo: http://localhost:800?/
 
+In `ENV=localdev`, the release-promotion admin tool displays sample releases
+without connecting to Google Cloud Storage. Promotion is simulated: it does not
+queue a sync or import data. Other environments use the configured storage and
+sync queue.
+
 ### Data Release Contract
 
 New pipeline releases use **manifest schema 2.0** with exactly ten artifacts:
@@ -198,6 +203,31 @@ and optionally `RELEASE_SYNC_PREFIX`. These environment variables map to Django
 settings in the image. Provide ADC object-get access and coordinate maintenance
 before enabling; the worker imports without another interactive confirmation.
 
+For the test environment, the pipeline publishes releases to
+`uw-dawgpath-pipeline-artifacts-test` at the bucket root, so set
+`RELEASE_SYNC_BUCKET` to that bucket and leave `RELEASE_SYNC_PREFIX` empty.
+The admin release list needs GCS `storage.objects.list` and
+`storage.objects.get`; the worker needs `storage.objects.get`. Use a dedicated
+read-only identity with access limited to the intended bucket. The pipeline's
+publisher credentials may have write access and should not be reused by the
+Pathways web app. Configure ADC for both the app and worker before enabling the
+queue; the chart's `gcsCredentials` mount is one available mechanism.
+
+Before enabling test promotion:
+
+1. Provision and verify the read-only identity and its credential delivery in
+        the Pathways test namespace; confirm the app and worker can read the mount.
+2. Apply migrations through `0032` and verify the test database and existing
+        catalog. Stop or coordinate the `import-similar-majors` daemon so it cannot
+        overwrite release-managed data or race the release import.
+3. Configure the bucket and credentials, set `RELEASE_SYNC_ENABLED=true`, and
+        enable the `release-sync` daemon in test. Keep production disabled until the
+        test workflow has been verified.
+4. Confirm the admin page can list releases and fetch a manifest. During a
+        coordinated maintenance window, promote a trusted test release, then check
+        `data_release_status` for a successful attempt and the new current release.
+        A queued request alone does not mean that the catalog has been imported.
+
 ```bash
 python manage.py queue_data_release \
         --release-id <completed-release-id> \
@@ -207,7 +237,7 @@ python manage.py process_release_sync_queue --limit 1
 python manage.py data_release_status
 ```
 
-`enqueue_release_sync` is the reusable submission service for the future
+`enqueue_release_sync` is the reusable submission service for the
 operator-authorized API. It accepts no bucket/prefix override. A queued request
 freezes the configured source; changing that configuration causes the worker to
 fail old requests rather than download from another location. Repeated submission

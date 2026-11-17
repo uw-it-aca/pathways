@@ -3,6 +3,10 @@
     <div class="container-fluid py-4">
       <h1 class="mb-4">Data Release Promotion</h1>
 
+      <div v-if="mockMode" class="alert alert-info" role="status">
+        Local sample data. Promotions are simulated and do not import data.
+      </div>
+
       <!-- Error Alert -->
       <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Error:</strong> {{ error }}
@@ -27,6 +31,16 @@
       <div v-else class="row">
         <!-- Releases List -->
         <div class="col-lg-8">
+          <div v-if="!error" class="d-flex align-items-center justify-content-between gap-3 mb-3">
+            <div>
+              <strong>Current imported release:</strong>
+              <code v-if="currentReleaseId" class="ms-2">{{ currentReleaseId }}</code>
+              <span v-else class="ms-2">Unknown</span>
+            </div>
+            <button type="button" class="btn btn-outline-secondary" @click="loadReleases">
+              <i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Refresh
+            </button>
+          </div>
           <div class="card mb-4">
             <div class="card-header">
               <h5 class="card-title mb-0">Available Releases</h5>
@@ -45,7 +59,10 @@
                   @click="selectRelease(release)"
                 >
                   <div class="d-flex w-100 justify-content-between">
-                    <h6 class="mb-1">{{ release.release_id }}</h6>
+                    <h6 class="mb-1">
+                      {{ release.release_id }}
+                      <span v-if="release.release_id === currentReleaseId" class="badge bg-success ms-2">Current</span>
+                    </h6>
                     <small class="text-muted">
                       {{ formatDate(release.updated) }}
                     </small>
@@ -115,7 +132,7 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  :disabled="promoting || !selectedRelease"
+                  :disabled="promoting || !selectedRelease || selectedRelease.release_id === currentReleaseId"
                   @click="promoteRelease"
                 >
                   <span v-if="promoting" class="spinner-border spinner-border-sm me-2" role="status">
@@ -163,6 +180,7 @@ export default {
   data() {
     return {
       releases: [],
+      currentReleaseId: null,
       selectedRelease: null,
       manifestDetails: null,
       loading: true,
@@ -171,6 +189,7 @@ export default {
       error: null,
       successMessage: null,
       displayArtifacts: true,
+      mockMode: false,
     };
   },
   computed: {
@@ -193,6 +212,8 @@ export default {
         const data = await response.json();
         if (data.success) {
           this.releases = data.releases || [];
+          this.currentReleaseId = data.current_release_id || null;
+          this.mockMode = data.mock === true;
         } else {
           this.error = data.error || "Failed to load releases";
         }
@@ -247,7 +268,9 @@ export default {
 
       if (!window.confirm(
         `Promote release "${this.selectedRelease.release_id}" for import? ` +
-        "This will queue the data for import into the database."
+        (this.mockMode
+          ? "This is a local simulation; no data will be imported."
+          : "This will queue the data for import into the database.")
       )) {
         return;
       }
@@ -273,9 +296,10 @@ export default {
 
         const data = await response.json();
         if (data.success) {
-          this.successMessage =
-            `Release "${this.selectedRelease.release_id}" has been queued for import. ` +
-            `Queue attempt: ${data.data.queue_attempt_id}`;
+          this.successMessage = data.data.mock
+            ? data.data.message
+            : `Release "${this.selectedRelease.release_id}" has been queued for import. ` +
+              `Queue attempt: ${data.data.queue_attempt_id}`;
           // Refresh the releases list to show updated status
           setTimeout(() => this.loadReleases(), 1500);
         } else {

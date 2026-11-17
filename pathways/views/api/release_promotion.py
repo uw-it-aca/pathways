@@ -10,13 +10,21 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
+from pathways.models import DataReleaseState
 from pathways.release_promotion_api import (
     ReleaseLister,
     queue_release_for_promotion,
 )
+from pathways.release_promotion_mock import CURRENT_RELEASE_ID, MockReleaseLister
 from pathways.views import support_group_required
 
 logger = logging.getLogger(__name__)
+
+
+def get_release_lister():
+    if getattr(settings, "RELEASE_PROMOTION_MOCK", False):
+        return MockReleaseLister()
+    return ReleaseLister()
 
 
 @support_group_required(settings.ADMIN_USERS_GROUP)
@@ -28,12 +36,20 @@ def list_releases(request):
     Returns JSON with list of available releases.
     """
     try:
-        lister = ReleaseLister()
+        lister = get_release_lister()
         releases = lister.list_available_releases()
+        mock_mode = getattr(settings, "RELEASE_PROMOTION_MOCK", False)
+        current_release_id = (
+            CURRENT_RELEASE_ID if mock_mode else
+            DataReleaseState.objects.filter(pk=1).values_list(
+                "current_release_id", flat=True).first()
+        )
         return JsonResponse({
             "success": True,
             "releases": releases,
             "count": len(releases),
+            "mock": mock_mode,
+            "current_release_id": current_release_id,
         })
     except ValueError as e:
         logger.error("Error listing releases: %s", e)
@@ -61,7 +77,7 @@ def get_release_manifest(request, release_id: str):
     Returns JSON with the release manifest.
     """
     try:
-        lister = ReleaseLister()
+        lister = get_release_lister()
         manifest = lister.get_release_manifest(release_id)
         return JsonResponse({
             "success": True,
@@ -110,7 +126,16 @@ def promote_release(request):
 
     try:
         requested_by = request.user.get_username() if request.user else ""
-        result = queue_release_for_promotion(release_id, requested_by=requested_by)
+        if getattr(settings, "RELEASE_PROMOTION_MOCK", False):
+            get_release_lister().get_release_manifest(release_id)
+            result = {
+                "success": True,
+                "message": "Local simulation only; no release was queued or imported.",
+                "release_id": release_id,
+                "mock": True,
+            }
+        else:
+            result = queue_release_for_promotion(release_id, requested_by=requested_by)
         return JsonResponse({
             "success": True,
             "data": result,
