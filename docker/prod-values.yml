@@ -43,41 +43,11 @@ instance: prod
 memcached:
   enabled: false
 
-daemon:
-  enabled: true
-  daemons:
-    - name: import-similar-majors # At 20:05 on Sunday
-      replicaCount: 1
-      command: ["/scripts/management_daemon.sh"]
-      args: ["--cron", "5 20 * * 0", "import_similar_majors"]
-      resources:
-        limits:
-          cpu: 500
-          memory: 1024Mi
-        requests:
-          cpu: 100m
-          memory: 256Mi
-    # Enable only after trusted GCS access and maintenance coordination are ready.
-    # - name: release-sync
-    #   replicaCount: 1
-    #   command: ["/scripts/management_daemon.sh"]
-    #   args: ["--delay", "15", "process_release_sync_queue", "--limit", "1"]
-    #   resources:
-    #     limits:
-    #       cpu: 500m
-    #       memory: 1024Mi
-    #     requests:
-    #       cpu: 100m
-    #       memory: 256Mi
-
+gcsCredentials:
+  mounted: true
+  secretName: pathways-release-sync-gcs
 
 environmentVariables:
-  - name: RELEASE_SYNC_ENABLED
-    value: "false"
-  - name: RELEASE_SYNC_BUCKET
-    value: ""
-  - name: RELEASE_SYNC_PREFIX
-    value: ""
   - name: ENV
     value: prod
   - name: AUTH
@@ -147,6 +117,11 @@ externalSecrets:
           property: username
         - name: proxy-hostname
           property: hostname
+    - name: pathways-release-sync-gcs
+      externalKey: dawgpath/prod/gcs-credentials
+      data:
+        - name: credentials.json
+          property: credentials.json
 
 environmentVariablesSecrets:
   djangoSecret:
@@ -201,3 +176,14 @@ environmentVariablesSecrets:
     name: UW_PERSON_DB_NAME
     secretName: dawgpath.uw.edu-shared-secrets
     secretKey: person-db-database
+
+cronjob:
+  enabled: true
+  jobs:
+    - name: release-sync-queue-poller
+      schedule: "*/1 * * * *"  # Every 1 minute
+      command: ["/scripts/management_command.sh"]
+      args: ["process_release_sync_queue", "--limit", "1"]
+      environmentVariables:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/gcs/credentials.json"

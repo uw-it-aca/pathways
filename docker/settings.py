@@ -23,7 +23,8 @@ TEMPLATES[0]["OPTIONS"]["context_processors"] += [
     "pathways.context_processors.persistent_messages",
 ]
 
-if os.getenv("ENV") == "localdev":
+ENV = os.getenv("ENV", "localdev")
+if ENV == "localdev":
     DEBUG = True
     VITE_MANIFEST_PATH = os.path.join(
         BASE_DIR, "pathways", "static", ".vite", "manifest.json"
@@ -35,13 +36,20 @@ if os.getenv("ENV") == "localdev":
     LIMIT_USER_ACCESS = False
     ALLOWED_USERS_GROUP = "u_test_group"
     ADMIN_USERS_GROUP = "u_test_group"
-
+    RELEASE_SYNC_ENABLED = False
+    RELEASE_SYNC_BUCKET = ""
+    RELEASE_SYNC_PREFIX = ""
+    RELEASE_PROMOTION_MOCK = True
 else:
     CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv("CLUSTER_CNAME")]
     VITE_MANIFEST_PATH = os.path.join(os.sep, "static", ".vite", "manifest.json")
     LIMIT_USER_ACCESS = os.getenv("ENV") == "eval"
     ALLOWED_USERS_GROUP = os.getenv("ACCESS_GROUP")
     ADMIN_USERS_GROUP = os.getenv("ADMIN_GROUP")
+    RELEASE_SYNC_ENABLED = True
+    RELEASE_SYNC_BUCKET = f"uw-dawgpath-pipeline-artifacts-{ENV}"
+    RELEASE_SYNC_PREFIX = "releases"
+    RELEASE_PROMOTION_MOCK = False
 
 # PDS config, default values are for localdev
 DATABASES["uw_person"] = {
@@ -62,11 +70,6 @@ DATA_ROOT = os.path.join(BASE_DIR, "pathways/data")
 GOOGLE_ANALYTICS_KEY = os.getenv("GOOGLE_ANALYTICS_KEY", "")
 GOOGLE_FEEDBACK_FORM = os.getenv("GOOGLE_FEEDBACK_FORM", "")
 CLARITY_PROJECT_ID = os.getenv("CLARITY_PROJECT_ID", "")
-
-RELEASE_SYNC_ENABLED = os.getenv("RELEASE_SYNC_ENABLED", "false").lower() == "true"
-RELEASE_SYNC_BUCKET = os.getenv("RELEASE_SYNC_BUCKET", "")
-RELEASE_SYNC_PREFIX = os.getenv("RELEASE_SYNC_PREFIX", "")
-RELEASE_PROMOTION_MOCK = os.getenv("ENV") == "localdev"
 
 SUPPORTTOOLS_PARENT_APP = "DawgPath"
 SUPPORTTOOLS_PARENT_APP_URL = "/"
