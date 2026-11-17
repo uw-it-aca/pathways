@@ -48,16 +48,19 @@ class ReleaseVerificationTest(TestCase):
     def test_data_only_inventory_and_offline_verified_snapshot(self):
         self.assertEqual(RELEASE_FILES, {
             "course_data.json", "curric_data.json", "major_data.json",
-            "course_prereq_data.pkl", "prereq_data.pkl", "bottleneck_courses.csv",
+            "course_prereq_data.pkl", "prereq_data.pkl",
+            "bottleneck_courses.csv",
             "gateway_courses.csv", "coi_scores.csv", "admit_major_mapping.csv",
             "similar_majors.csv",
         })
-        with patch.object(socket, "socket", side_effect=AssertionError("network")):
+        with patch.object(socket, "socket",
+        side_effect=AssertionError("network")):
             manifest, contents = self.verify()
         self.assertEqual(manifest, self.manifest)
         self.assertEqual(set(contents), RELEASE_FILES)
         (self.root / "course_data.json").write_bytes(b"changed")
-        self.assertEqual(contents["course_data.json"], b"opaque verified bytes")
+        self.assertEqual(contents["course_data.json"],
+        b"opaque verified bytes")
 
     def test_legacy_archive_is_opaque_but_checksum_verified(self):
         for version in ("1.0", "1.1"):
@@ -65,10 +68,12 @@ class ReleaseVerificationTest(TestCase):
                 self.make_release(version)
                 self.manifest["search_index"] = {"legacy": "not inspected"}
                 self.save_manifest()
-                with patch("tarfile.open", side_effect=AssertionError("no extraction")):
+                with patch("tarfile.open",
+                side_effect=AssertionError("no extraction")):
                     self.assertEqual(self.verify()[0], self.manifest)
                 (self.root / "search-index.tar.gz").write_bytes(b"tampered")
-                with self.assertRaisesRegex(ReleaseValidationError, "checksum"):
+                with self.assertRaisesRegex(ReleaseValidationError,
+                "checksum"):
                     self.verify()
 
     def test_missing_corrupt_and_symlinked_artifacts_are_rejected(self):

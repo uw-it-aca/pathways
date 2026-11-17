@@ -29,15 +29,18 @@ class ReleaseSyncTest(TransactionTestCase):
         self.staging = self.root / "staging"
         self.staging.mkdir()
         self.download = self.enterContext(patch(
-            "pathways.release_sync.download_release", side_effect=self.copy_release))
+            "pathways.release_sync.download_release",
+            side_effect=self.copy_release))
 
     def copy_release(self, bucket, release_id, output, **kwargs):
-        self.assertEqual(DataReleaseSyncAttempt.objects.first().status, "downloading")
+        self.assertEqual(DataReleaseSyncAttempt.objects.first().status,
+        "downloading")
         shutil.copytree(self.release, output)
 
     def sync(self):
         return sync_release("trusted-bucket", "test-release", prefix="app/",
-                            requested_by="operator", temporary_root=self.staging)
+                            requested_by="operator",
+                            temporary_root=self.staging)
 
     def test_success_repeat_and_cleanup(self):
         attempt = self.sync()
@@ -45,7 +48,8 @@ class ReleaseSyncTest(TransactionTestCase):
         self.assertEqual(attempt.requested_by, "operator")
         self.assertEqual(attempt.prefix, "app")
         self.assertIsNotNone(attempt.completed_on)
-        self.assertEqual(DataReleaseState.objects.get().current_release_id, "test-release")
+        self.assertEqual(DataReleaseState.objects.get().current_release_id,
+        "test-release")
         self.assertEqual(Course.objects.count(), 2)
         self.assertEqual(list(self.staging.iterdir()), [])
         repeat = self.sync()
@@ -78,7 +82,8 @@ class ReleaseSyncTest(TransactionTestCase):
         self.assertEqual(raised.exception.attempt.status, "failed")
         self.assertIn("importing", raised.exception.attempt.error_message)
         self.assertEqual(list(Course.objects.values()), before)
-        self.assertEqual(DataReleaseState.objects.get().current_release_id, "test-release")
+        self.assertEqual(DataReleaseState.objects.get().current_release_id,
+        "test-release")
         self.assertEqual(list(self.staging.iterdir()), [])
 
     def copy_with_identity(self, bucket, release_id, output, **kwargs):
@@ -96,10 +101,12 @@ class ReleaseSyncTest(TransactionTestCase):
         attempt = sync_release("trusted-bucket", "second-release",
                                temporary_root=self.staging)
         self.assertEqual(attempt.status, "succeeded")
-        self.assertEqual(DataReleaseState.objects.get().current_release_id, "second-release")
+        self.assertEqual(DataReleaseState.objects.get().current_release_id,
+        "second-release")
         restored = self.sync()
         self.assertEqual(restored.status, "succeeded")
-        self.assertEqual(DataReleaseState.objects.get().current_release_id, "test-release")
+        self.assertEqual(DataReleaseState.objects.get().current_release_id,
+        "test-release")
         self.assertEqual(list(self.staging.iterdir()), [])
 
     def test_success_record_failure_rolls_back_import_and_current_state(self):
@@ -117,7 +124,8 @@ class ReleaseSyncTest(TransactionTestCase):
         self.assertFalse(Course.objects.exists())
         self.assertFalse(DataReleaseState.objects.exists())
 
-    @skipUnless(connection.vendor == "postgresql", "PostgreSQL row locking required")
+    @skipUnless(connection.vendor == "postgresql",
+    "PostgreSQL row locking required")
     def test_concurrent_syncs_serialize_import_and_record_both_outcomes(self):
         barrier = Barrier(2)
 
@@ -134,10 +142,13 @@ class ReleaseSyncTest(TransactionTestCase):
 
         self.download.side_effect = concurrent_download
         with ThreadPoolExecutor(max_workers=2) as executor:
-            attempts = list(executor.map(run_sync, ["first-release", "second-release"]))
-        self.assertEqual([attempt.status for attempt in attempts], ["succeeded"] * 2)
+            attempts = list(executor.map(run_sync, ["first-release",
+            "second-release"]))
+        self.assertEqual([attempt.status for attempt in attempts],
+        ["succeeded"] * 2)
         last = DataReleaseSyncAttempt.objects.latest("completed_on")
-        self.assertEqual(DataReleaseState.objects.get().current_release_id, last.release_id)
+        self.assertEqual(DataReleaseState.objects.get().current_release_id,
+        last.release_id)
         self.assertEqual(Course.objects.count(), 2)
         self.assertEqual(list(self.staging.iterdir()), [])
 
@@ -161,7 +172,8 @@ class ReleaseSyncTest(TransactionTestCase):
         call_command("sync_data_release", confirm_replace_data=True,
                      stdout=output, **options)
         self.assertIn("succeeded", output.getvalue())
-        self.assertIn(str(DataReleaseSyncAttempt.objects.get().pk), output.getvalue())
+        self.assertIn(str(DataReleaseSyncAttempt.objects.get().pk),
+        output.getvalue())
 
     def test_status_command_reports_unknown_current_and_recent_attempts(self):
         output = io.StringIO()
@@ -173,7 +185,8 @@ class ReleaseSyncTest(TransactionTestCase):
         output = io.StringIO()
         call_command("data_release_status", limit=1, stdout=output)
         result = json.loads(output.getvalue())
-        self.assertEqual(result["current_release"]["release_id"], "test-release")
+        self.assertEqual(result["current_release"]["release_id"],
+        "test-release")
         self.assertEqual(len(result["attempts"]), 1)
         self.assertEqual(result["attempts"][0]["status"], "unchanged")
         for limit in (0, 101):

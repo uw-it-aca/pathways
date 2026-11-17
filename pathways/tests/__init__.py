@@ -30,7 +30,10 @@ class ApiTest(TestCase):
             next(reader)
             coi_data = []
             for row in reader:
-                coi_data.append({"course_id": row[0], "coi_score": float(row[1])})
+                coi_data.append({
+                    "course_id": row[0],
+                    "coi_score": float(row[1])
+                })
             with open("pathways/tests/sample_major_import.json") as json_file:
                 test_file_data = json.load(json_file)
                 import_major_data(test_file_data)

@@ -11,9 +11,11 @@ class ReleaseMigrationUpgradeTest(TransactionTestCase):
         self.addCleanup(lambda: MigrationExecutor(connection).migrate(current))
         executor.migrate(previous)
         historical_apps = executor.loader.project_state(previous).apps
-        attempt_model = historical_apps.get_model("pathways", "DataReleaseSyncAttempt")
+        attempt_model = historical_apps.get_model("pathways",
+        "DataReleaseSyncAttempt")
         attempt = attempt_model.objects.create(
-            release_id="previous-release", bucket="trusted", status="succeeded",
+            release_id="previous-release", bucket="trusted",
+            status="succeeded",
             requested_by="operator")
         executor = MigrationExecutor(connection)
         executor.migrate(current)
@@ -38,19 +40,27 @@ class ReleaseMigrationUpgradeTest(TransactionTestCase):
             course_credits="5", course_campus="Seattle")
         marker_model = historical_apps.get_model("pathways", "DataImport")
         marker_model.objects.create(type="course", hash="deployed-hash")
-        self.assertNotIn("pathways_datareleaseimport", connection.introspection.table_names())
+        self.assertNotIn("pathways_datareleaseimport",
+        connection.introspection.table_names())
 
         executor = MigrationExecutor(connection)
         plan = executor.migration_plan(current)
-        self.assertEqual([(migration.name, backwards) for migration, backwards in plan], [
-            ("0030_datareleaseimport", False), ("0031_data_release_sync", False),
+        self.assertEqual([(migration.name, backwards) for migration,
+        backwards in plan], [
+            ("0030_datareleaseimport", False), ("0031_data_release_sync",
+            False),
             ("0032_release_sync_queue", False)])
         executor.migrate(current)
         upgraded_apps = executor.loader.project_state(current).apps
-        self.assertEqual(upgraded_apps.get_model("pathways", "Course").objects.get(
+        self.assertEqual(upgraded_apps.get_model("pathways",
+        "Course").objects.get(
             pk=course.pk).course_title, "Existing deployed catalog")
-        self.assertEqual(upgraded_apps.get_model("pathways", "DataImport").objects.get(
+        self.assertEqual(upgraded_apps.get_model("pathways",
+        "DataImport").objects.get(
             type="course").hash, "deployed-hash")
-        for model_name in ("DataReleaseImport", "DataReleaseState", "DataReleaseSyncAttempt"):
-            self.assertFalse(upgraded_apps.get_model("pathways", model_name).objects.exists())
-        self.assertEqual(MigrationExecutor(connection).migration_plan(current), [])
+        for model_name in ("DataReleaseImport", "DataReleaseState",
+        "DataReleaseSyncAttempt"):
+            self.assertFalse(upgraded_apps.get_model("pathways",
+            model_name).objects.exists())
+        self.assertEqual(MigrationExecutor(connection).migration_plan(current),
+        [])

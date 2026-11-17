@@ -261,7 +261,8 @@ class SearchBackendTests(SimpleTestCase):
     @patch("pathways.postgres_search.search", return_value={"postgres": True})
     def test_postgres_is_the_search_backend(self, backend):
         self.assertEqual(routed_search("CSE142", [], []), {"postgres": True})
-        backend.assert_called_once_with("CSE142", [], [], None, None, None, None)
+        backend.assert_called_once_with(
+            "CSE142", [], [], None, None, None, None)
 
     @patch("pathways.management.commands.check_search_backend.connection")
     def test_non_postgres_database_fails_explicitly(self, database):
