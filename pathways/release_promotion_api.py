@@ -168,10 +168,13 @@ def queue_release_for_promotion(release_id: str,
         lister = ReleaseLister()
         manifest = lister.get_release_manifest(release_id)
 
-        # Verify manifest has required fields
+        # Verify manifest identity and import compatibility before queueing.
         if ("release_id" not in manifest or
                 manifest["release_id"] != release_id):
             raise ValueError("Release ID mismatch in manifest")
+        if manifest.get("schema_version") not in ("1.1", "2.0"):
+            raise ValueError(
+                "Database import requires release schema 1.1 or 2.0")
 
         # Queue the release for sync/import
         # The bucket and prefix are managed by the

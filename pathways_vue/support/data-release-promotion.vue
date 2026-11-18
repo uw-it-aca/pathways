@@ -10,13 +10,13 @@
       <!-- Error Alert -->
       <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Error:</strong> {{ error }}
-        <button type="button" class="btn-close" @click="error = null"></button>
+        <button type="button" class="btn-close" aria-label="Dismiss error" @click="error = null"></button>
       </div>
 
       <!-- Success Alert -->
       <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
         {{ successMessage }}
-        <button type="button" class="btn-close" @click="successMessage = null"></button>
+        <button type="button" class="btn-close" aria-label="Dismiss success message" @click="successMessage = null"></button>
       </div>
 
       <!-- Loading State -->

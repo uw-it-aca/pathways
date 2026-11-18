@@ -248,12 +248,12 @@ original requester. Submitting after a claim creates another attempt, which can
 finish as an unchanged import. Requests are processed oldest first.
 
 The worker handles a bounded batch (`--limit` 1–100, default 1), then exits.
-Test/prod values contain a commented-out daemon entry using the existing wrapper:
-`/scripts/management_daemon.sh --delay 15 process_release_sync_queue --limit 1`.
-Uncomment that entry when ready and set the enable/source variables. Do not use
-`replicaCount: 0` to disable it: the chart defaults that value back to one.
-Remove or separately coordinate `import-similar-majors` before release imports
-become authoritative. No daemon has been enabled by this change.
+Test/prod values enable the `release-sync-queue-poller` CronJob every minute,
+using `/scripts/management_command.sh process_release_sync_queue --limit 1`.
+Queued requests are processed automatically after deployment, with no separate
+activation step. Both values files remove the legacy `import-similar-majors`
+daemon. To pause processing, suspend the CronJob and coordinate any already-running
+job separately; keep the suspension in place across deployments.
 
 A PostgreSQL session advisory lock serializes queue workers across download and
 import, including overlapping rollout pods. A competing worker exits without
