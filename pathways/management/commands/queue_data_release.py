@@ -13,12 +13,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if not options["confirm_replace_data"]:
-            raise CommandError("Pass --confirm-replace-data to authorize catalog replacement.")
+            msg = ("Pass --confirm-replace-data to authorize "
+                   "catalog replacement.")
+            raise CommandError(msg)
         try:
             attempt, created = enqueue_release_sync(
-                options["release_id"], requested_by=options["requested_by"])
+                options["release_id"],
+                requested_by=options["requested_by"])
         except ValueError as exc:
             raise CommandError(str(exc)) from exc
+        status = 'Queued' if created else 'Already queued'
         self.stdout.write(
-            f"{'Queued' if created else 'Already queued'} release {attempt.release_id}. "
+            f"{status} release {attempt.release_id}. "
             f"Attempt {attempt.pk}.")

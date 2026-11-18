@@ -10,14 +10,17 @@ from supporttools.views import SpaToolView
 from pathways.views import support_group_required
 
 
-@method_decorator(support_group_required(settings.ADMIN_USERS_GROUP), name="dispatch")
+@method_decorator(
+    support_group_required(settings.ADMIN_USERS_GROUP),
+    name="dispatch")
 class DataReleaseSpaToolView(SpaToolView):
-    """SPA view for data release promotion tool with same auth as supporttools."""
+    """SPA view for data release promotion tool with same auth as
+    supporttools."""
 
     def get_page_data(self):
         """Return bootstrap data for direct URL navigation."""
         return {
-            "can_promote": True,  # Auth is enforced by decorator
+            "can_promote": True,
             "username": self.request.user.get_username()
             if self.request.user.is_authenticated
             else None,

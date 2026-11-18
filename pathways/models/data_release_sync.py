@@ -13,7 +13,8 @@ class DataReleaseSyncAttempt(models.Model):
         UNCHANGED = "unchanged"
         FAILED = "failed"
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
+                          editable=False)
     release_id = models.CharField(max_length=128)
     bucket = models.CharField(max_length=222)
     prefix = models.CharField(max_length=512, blank=True)
@@ -28,17 +29,22 @@ class DataReleaseSyncAttempt(models.Model):
 
     class Meta:
         ordering: ClassVar[list[str]] = ["-started_on"]
-        constraints: ClassVar[list[models.UniqueConstraint]] = [models.UniqueConstraint(
-            fields=["release_id"], condition=models.Q(status="queued"),
-            name="unique_queued_release_sync")]
+        constraints: ClassVar[list[models.UniqueConstraint]] = [
+            models.UniqueConstraint(
+                fields=["release_id"],
+                condition=models.Q(status="queued"),
+                name="unique_queued_release_sync")]
 
 
 class DataReleaseState(models.Model):
-    id = models.PositiveSmallIntegerField(primary_key=True, default=1, editable=False)
+    id = models.PositiveSmallIntegerField(primary_key=True, default=1,
+                                          editable=False)
     current_release = models.ForeignKey(
         "DataReleaseImport", on_delete=models.PROTECT)
     updated_on = models.DateTimeField(auto_now=True)
 
     class Meta:
-        constraints: ClassVar[list[models.CheckConstraint]] = [models.CheckConstraint(
-            condition=models.Q(id=1), name="data_release_state_singleton")]
+        constraints: ClassVar[list[models.CheckConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(id=1),
+                name="data_release_state_singleton")]

@@ -9,7 +9,8 @@ from pathways.release_download import download_release
 
 
 class Command(BaseCommand):
-    help = "Download and verify one explicit GCS data release. Does not import data."
+    help = ("Download and verify one explicit GCS data release. "
+            "Does not import data.")
 
     def add_arguments(self, parser):
         parser.add_argument("--bucket", required=True)
@@ -20,11 +21,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             manifest = download_release(
-                options["bucket"], options["release_id"], options["output_dir"],
+                options["bucket"], options["release_id"],
+                options["output_dir"],
                 prefix=options["prefix"])
-        except (ValueError, OSError,
-                GoogleAPIError, GoogleAuthError) as exc:
+        except (ValueError, OSError, GoogleAPIError,
+                GoogleAuthError) as exc:
             raise CommandError(str(exc)) from exc
         self.stdout.write(self.style.SUCCESS(
-            f"Downloaded verified release {manifest['release_id']}. "
+            f"Downloaded verified release "
+            f"{manifest['release_id']}. "
             "No database data was changed."))

@@ -87,26 +87,39 @@ def _rows(kind, query, campuses, is_bottleneck, is_gateway, minimum, maximum,
                 AND (lower({title}) %% raw_query
                      OR raw_query <%% lower({title}))
         )
-        SELECT result_id, result_title, result_description, result_campus,
-               result_abbr, exact_id,
+        SELECT result_id, result_title, result_description,
+               result_campus, result_abbr, exact_id,
                (title_document @@ all_terms) AS title_match,
                CASE WHEN exact_id THEN 100.0 ELSE 0 END
-                   + CASE WHEN introductory AND title_document @@ all_terms
-                       AND (lower(result_title) ~
-                            '(introduction|introductory|beginning|fundamentals|basic)'
-                            OR lower(coalesce(result_description, '')) ~
-                            '(no prior|without prior|no previous)')
+                   + CASE WHEN introductory AND
+                       title_document @@ all_terms
+                       AND (lower(result_title) ~ '(introduction'
+                            '|introductory|beginning'
+                            '|fundamentals|basic)'
+                            OR lower(coalesce(
+                               result_description, '')) ~ '(no prior'
+                                '|without prior'
+                                '|no previous)')
                        THEN 30.0 ELSE 0 END
-                   + CASE WHEN title_document @@ phrase THEN 50.0 ELSE 0 END
-                   + CASE WHEN title_document @@ all_terms THEN 20.0 ELSE 0 END
-                   + CASE WHEN ts_filter(document, '{{A,B}}'::"char"[])
+                   + CASE WHEN title_document @@ phrase
+                       THEN 50.0 ELSE 0 END
+                   + CASE WHEN title_document @@ all_terms
+                       THEN 20.0 ELSE 0 END
+                   + CASE WHEN ts_filter(
+                       document,
+                       '{{A,B}}'::"char"[])
                        @@ phrase THEN 5.0 ELSE 0 END
-                   + CASE WHEN ts_filter(document, '{{A,B}}'::"char"[])
+                   + CASE WHEN ts_filter(
+                       document,
+                       '{{A,B}}'::"char"[])
                        @@ all_terms THEN 3.0 ELSE 0 END
                    + ts_rank_cd(document, terms, 32)
-                   + word_similarity(raw_query, lower(result_title)) AS score
+                   + word_similarity(raw_query,
+                                     lower(result_title))
+                   AS score
         FROM candidates CROSS JOIN query
-        ORDER BY exact_id DESC, score DESC, result_id, result_campus
+        ORDER BY exact_id DESC, score DESC, result_id,
+                 result_campus
         LIMIT 2000
     """
     with connection.cursor() as cursor:

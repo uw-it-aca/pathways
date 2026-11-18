@@ -15,7 +15,10 @@ from pathways.release_promotion_api import (
     ReleaseLister,
     queue_release_for_promotion,
 )
-from pathways.release_promotion_mock import CURRENT_RELEASE_ID, MockReleaseLister
+from pathways.release_promotion_mock import (
+    CURRENT_RELEASE_ID,
+    MockReleaseLister,
+)
 from pathways.views import support_group_required
 
 logger = logging.getLogger(__name__)
@@ -30,8 +33,7 @@ def get_release_lister():
 @support_group_required(settings.ADMIN_USERS_GROUP)
 @require_http_methods(["GET"])
 def list_releases(request):
-    """
-    List all available data releases from GCS.
+    """List all available data releases from GCS.
 
     Returns JSON with list of available releases.
     """
@@ -68,8 +70,7 @@ def list_releases(request):
 @support_group_required(settings.ADMIN_USERS_GROUP)
 @require_http_methods(["GET"])
 def get_release_manifest(request, release_id: str):
-    """
-    Fetch the manifest for a specific release.
+    """Fetch the manifest for a specific release.
 
     Args:
         release_id: The release ID
@@ -85,13 +86,17 @@ def get_release_manifest(request, release_id: str):
             "manifest": manifest,
         })
     except ValueError as e:
-        logger.warning("Error fetching manifest for release %s: %s", release_id, e)
+        logger.warning(
+            "Error fetching manifest for release %s: %s",
+            release_id, e)
         return JsonResponse({
             "error": str(e),
             "error_code": "not_found"
         }, status=404)
     except Exception:
-        logger.exception("Unexpected error fetching manifest for release %s", release_id)
+        logger.exception(
+            "Unexpected error fetching manifest for release %s",
+            release_id)
         return JsonResponse({
             "error": "An unexpected error occurred",
             "error_code": "internal_error"
@@ -101,8 +106,7 @@ def get_release_manifest(request, release_id: str):
 @support_group_required(settings.ADMIN_USERS_GROUP)
 @require_http_methods(["POST"])
 def promote_release(request):
-    """
-    Queue a release for promotion (import) into pathways.
+    """Queue a release for promotion (import) into pathways.
 
     Expects JSON body with:
     - release_id: str (required)
@@ -125,29 +129,34 @@ def promote_release(request):
         }, status=400)
 
     try:
-        requested_by = request.user.get_username() if request.user else ""
+        requested_by = (request.user.get_username()
+                        if request.user else "")
         if getattr(settings, "RELEASE_PROMOTION_MOCK", False):
             get_release_lister().get_release_manifest(release_id)
             result = {
                 "success": True,
-                "message": "Local simulation only; no release was queued or imported.",
+                "message": ("Local simulation only; no release was "
+                            "queued or imported."),
                 "release_id": release_id,
                 "mock": True,
             }
         else:
-            result = queue_release_for_promotion(release_id, requested_by=requested_by)
+            result = queue_release_for_promotion(
+                release_id, requested_by=requested_by)
         return JsonResponse({
             "success": True,
             "data": result,
         })
     except ValueError as e:
-        logger.warning("Error queuing release %s: %s", release_id, e)
+        logger.warning(
+            "Error queuing release %s: %s", release_id, e)
         return JsonResponse({
             "error": str(e),
             "error_code": "queue_error"
         }, status=400)
     except Exception:
-        logger.exception("Unexpected error queuing release %s", release_id)
+        logger.exception(
+            "Unexpected error queuing release %s", release_id)
         return JsonResponse({
             "error": "An unexpected error occurred",
             "error_code": "internal_error"

@@ -123,8 +123,7 @@ class ReleaseLister:
 
             # Validate manifest structure
             if not isinstance(manifest, dict):
-                # noqa: TRY004
-                raise ValueError("Invalid manifest format")
+                raise TypeError("Invalid manifest format")
 
             return manifest
 
@@ -142,9 +141,9 @@ class ReleaseLister:
             raise ValueError(msg) from e
 
 
-def queue_release_for_promotion(release_id: str, requested_by: str = "") -> dict:
-    """
-    Queue a release for import into the pathways database.
+def queue_release_for_promotion(release_id: str,
+                                requested_by: str = "") -> dict:
+    """Queue a release for import into the pathways database.
 
     Args:
         release_id: The release to promote
@@ -170,20 +169,24 @@ def queue_release_for_promotion(release_id: str, requested_by: str = "") -> dict
         manifest = lister.get_release_manifest(release_id)
 
         # Verify manifest has required fields
-        if "release_id" not in manifest or manifest["release_id"] != release_id:
+        if ("release_id" not in manifest or
+                manifest["release_id"] != release_id):
             raise ValueError("Release ID mismatch in manifest")
 
         # Queue the release for sync/import
-        # The bucket and prefix are managed by the release_sync_queue module
+        # The bucket and prefix are managed by the
+        # release_sync_queue module
         attempt, created = enqueue_release_sync(
             release_id, requested_by=requested_by)
 
         return {
             "success": True,
             "message": (
-                f"Release {release_id} queued for import (attempt {attempt.pk})"
+                f"Release {release_id} queued for import "
+                f"(attempt {attempt.pk})"
                 if created
-                else f"Release {release_id} already queued (attempt {attempt.pk})"
+                else f"Release {release_id} already queued "
+                f"(attempt {attempt.pk})"
             ),
             "queue_attempt_id": attempt.pk,
             "release_id": release_id,
