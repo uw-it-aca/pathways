@@ -37,37 +37,36 @@ class ReleaseListerTestCase(TestCase):
         mock_bucket = MagicMock()
         mock_client.bucket.return_value = mock_bucket
 
-        # Mock list_blobs to return paginated results
+        # Mock list_blobs to return manifests alongside release artifacts.
         mock_blob1 = MagicMock()
+        mock_blob1.name = "releases/release-001/manifest.json"
         mock_blob1.size = 1024
         mock_blob1.md5_hash = "abc123"
         mock_blob1.updated.isoformat.return_value = "2026-11-06T10:00:00"
 
+        mock_artifact = MagicMock()
+        mock_artifact.name = "releases/release-001/course_data.json"
+
+        mock_nested_manifest = MagicMock()
+        mock_nested_manifest.name = (
+            "releases/release-001/archive/manifest.json")
+
         mock_blob2 = MagicMock()
+        mock_blob2.name = "releases/release-002/manifest.json"
         mock_blob2.size = 2048
         mock_blob2.md5_hash = "def456"
         mock_blob2.updated.isoformat.return_value = "2026-11-05T10:00:00"
 
-        mock_bucket.get_blob.side_effect = lambda path: (
-            mock_blob1 if "release-001" in path else
-            mock_blob2 if "release-002" in path else
-            None
-        )
-
-        # Mock iterator pages
-        mock_page = MagicMock()
-        mock_page.prefixes = ["releases/release-001/", "releases/release-002/"]
-        mock_iterator = MagicMock()
-        mock_iterator.pages = [mock_page]
-        mock_bucket.list_blobs.return_value = mock_iterator
+        mock_bucket.list_blobs.return_value = [
+            mock_blob1, mock_artifact, mock_nested_manifest, mock_blob2]
 
         # Test
         lister = ReleaseLister()
         releases = lister.list_available_releases()
 
         # Verify
-        mock_bucket.list_blobs.assert_called_once_with(prefix="releases/",
-        delimiter="/")
+        mock_bucket.list_blobs.assert_called_once_with(prefix="releases/")
+        mock_bucket.get_blob.assert_not_called()
         self.assertEqual(len(releases), 2)
         self.assertEqual(releases[0]["release_id"], "release-001")
         self.assertEqual(releases[0]["manifest_size"], 1024)
@@ -80,7 +79,7 @@ class ReleaseListerTestCase(TestCase):
     def test_configured_prefix_is_used_for_listing_and_manifest(self,
     mock_client_class):
         bucket = mock_client_class.return_value.bucket.return_value
-        bucket.list_blobs.return_value.pages = []
+        bucket.list_blobs.return_value = []
         blob = bucket.get_blob.return_value
         blob.exists.return_value = True
         blob.download_as_text.return_value = '{"release_id": "release-001"}'
@@ -91,7 +90,7 @@ class ReleaseListerTestCase(TestCase):
             lister.get_release_manifest("release-001")["release_id"],
             "release-001")
         bucket.list_blobs.assert_called_once_with(
-            prefix="catalog/releases/", delimiter="/")
+            prefix="catalog/releases/")
         bucket.get_blob.assert_called_once_with(
             "catalog/releases/release-001/manifest.json")
 
@@ -407,6 +406,7 @@ class QueueReleaseTestCase(TestCase):
 
         manifest_data = {
             "release_id": "test-release",
+            "schema_version": "2.0",
             "version": "1.0",
         }
         mock_lister.get_release_manifest.return_value = manifest_data

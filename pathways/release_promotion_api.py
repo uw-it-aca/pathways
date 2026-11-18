@@ -44,40 +44,22 @@ class ReleaseLister:
         """
         releases = []
         try:
-            # List all manifest.json files in the releases/ prefix
             prefix = f"{self.prefix}/releases/" if self.prefix else "releases/"
 
-            iterator = self.bucket.list_blobs(prefix=prefix, delimiter="/")
-            # Get the sub-prefixes (release IDs)
-            for page in iterator.pages:
-                for prefix_item in page.prefixes:
-                    # Extract release ID from path like "releases/release-id/"
-                    parts = prefix_item.rstrip("/").split("/")
-                    if len(parts) >= 2:
-                        release_id = parts[-1]
-                        manifest_blob_path = f"{prefix_item}manifest.json"
-                        try:
-                            manifest_blob = self.bucket.get_blob(
-                                manifest_blob_path)
-                            if manifest_blob and manifest_blob.exists():
-                                updated = (
-                                    manifest_blob.updated.isoformat()
-                                    if manifest_blob.updated else None)
-                                releases.append({
-                                    "release_id": release_id,
-                                    "manifest_path":
-                                        manifest_blob_path,
-                                    "manifest_size":
-                                        manifest_blob.size,
-                                    "manifest_checksum":
-                                        manifest_blob.md5_hash,
-                                    "updated": updated,
-                                })
-                        except GoogleAPIError as e:
-                            logger.warning(
-                                "Error checking manifest for "
-                                "release %s: %s",
-                                release_id, e)
+            for blob in self.bucket.list_blobs(prefix=prefix):
+                parts = blob.name[len(prefix):].split("/")
+                if (len(parts) != 2 or not parts[0] or
+                        parts[1] != "manifest.json"):
+                    continue
+
+                updated = blob.updated.isoformat() if blob.updated else None
+                releases.append({
+                    "release_id": parts[0],
+                    "manifest_path": blob.name,
+                    "manifest_size": blob.size,
+                    "manifest_checksum": blob.md5_hash,
+                    "updated": updated,
+                })
 
             # Sort by most recent first
             releases.sort(key=lambda r: r.get("updated") or "", reverse=True)
