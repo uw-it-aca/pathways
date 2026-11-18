@@ -142,13 +142,18 @@ class ReleaseSyncTest(TransactionTestCase):
 
         self.download.side_effect = concurrent_download
         with ThreadPoolExecutor(max_workers=2) as executor:
-            attempts = list(executor.map(run_sync, ["first-release",
-            "second-release"]))
-        self.assertEqual([attempt.status for attempt in attempts],
-        ["succeeded"] * 2)
+            attempts = list(
+                executor.map(run_sync, ["first-release", "second-release"])
+            )
+        self.assertEqual(
+            [attempt.status for attempt in attempts],
+            ["succeeded"] * 2
+        )
         last = DataReleaseSyncAttempt.objects.latest("completed_on")
-        self.assertEqual(DataReleaseState.objects.get().current_release_id,
-        last.release_id)
+        self.assertEqual(
+            DataReleaseState.objects.get().current_release_id,
+            last.release_id
+        )
         self.assertEqual(Course.objects.count(), 2)
         self.assertEqual(list(self.staging.iterdir()), [])
 
@@ -169,11 +174,17 @@ class ReleaseSyncTest(TransactionTestCase):
             call_command("sync_data_release", **options)
         self.assertFalse(DataReleaseSyncAttempt.objects.exists())
         output = io.StringIO()
-        call_command("sync_data_release", confirm_replace_data=True,
-                     stdout=output, **options)
+        call_command(
+            "sync_data_release",
+            confirm_replace_data=True,
+            stdout=output,
+            **options
+        )
         self.assertIn("succeeded", output.getvalue())
-        self.assertIn(str(DataReleaseSyncAttempt.objects.get().pk),
-        output.getvalue())
+        self.assertIn(
+            str(DataReleaseSyncAttempt.objects.get().pk),
+            output.getvalue()
+        )
 
     def test_status_command_reports_unknown_current_and_recent_attempts(self):
         output = io.StringIO()
@@ -185,8 +196,10 @@ class ReleaseSyncTest(TransactionTestCase):
         output = io.StringIO()
         call_command("data_release_status", limit=1, stdout=output)
         result = json.loads(output.getvalue())
-        self.assertEqual(result["current_release"]["release_id"],
-        "test-release")
+        self.assertEqual(
+            result["current_release"]["release_id"],
+            "test-release"
+        )
         self.assertEqual(len(result["attempts"]), 1)
         self.assertEqual(result["attempts"][0]["status"], "unchanged")
         for limit in (0, 101):

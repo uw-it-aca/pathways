@@ -15,7 +15,10 @@ from django.db import connection, connections
 from django.test import TransactionTestCase, override_settings
 
 from pathways.models import DataReleaseState, DataReleaseSyncAttempt
-from pathways.release_sync_queue import enqueue_release_sync, process_release_sync_queue
+from pathways.release_sync_queue import (
+    enqueue_release_sync,
+    process_release_sync_queue,
+)
 from pathways.tests.commands.test_data_release import write_release
 
 
