@@ -199,6 +199,26 @@ class ReleasePromotionAPITestCase(TestCase):
         mock_queue.assert_called_once_with("release-001", requested_by="admin")
         self.assertEqual(response.json()["data"]["queue_attempt_id"], 42)
 
+    @patch("pathways.views.api.release_promotion.queue_release_for_promotion")
+    def test_promote_release_rejects_malformed_body(self, mock_queue):
+        admin_user = get_user_model().objects.create_user(username="admin")
+        self.client.force_login(admin_user)
+        cases = (
+            (b"\xff", "invalid_json"),
+            (b"[]", "invalid_body"),
+            (b"null", "invalid_body"),
+            (b'{"release_id": 42}', "invalid_field"),
+            (b'{"release_id": null}', "invalid_field"),
+        )
+        for body, error_code in cases:
+            with self.subTest(body=body):
+                response = self.client.post(
+                    "/api/v1/admin/releases/promote/",
+                    data=body, content_type="application/json")
+                self.assertEqual(response.status_code, 400)
+                self.assertEqual(response.json()["error_code"], error_code)
+        mock_queue.assert_not_called()
+
     @override_settings(RELEASE_SYNC_BUCKET="test-bucket")
     @patch("pathways.views.api.release_promotion.ReleaseLister")
     def test_list_releases_endpoint(self, mock_lister_class):

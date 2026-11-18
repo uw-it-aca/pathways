@@ -115,13 +115,26 @@ def promote_release(request):
     """
     try:
         body = json.loads(request.body)
-    except json.JSONDecodeError:
+    except ValueError:
         return JsonResponse({
             "error": "Invalid JSON",
             "error_code": "invalid_json"
         }, status=400)
 
-    release_id = body.get("release_id", "").strip()
+    if not isinstance(body, dict):
+        return JsonResponse({
+            "error": "Request body must be a JSON object",
+            "error_code": "invalid_body"
+        }, status=400)
+
+    release_id = body.get("release_id", "")
+    if not isinstance(release_id, str):
+        return JsonResponse({
+            "error": "release_id must be a string",
+            "error_code": "invalid_field"
+        }, status=400)
+
+    release_id = release_id.strip()
     if not release_id:
         return JsonResponse({
             "error": "release_id is required",
