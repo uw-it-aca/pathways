@@ -185,6 +185,7 @@ export default {
       manifestDetails: null,
       loading: true,
       loadingManifest: false,
+      manifestRequestId: 0,
       promoting: false,
       error: null,
       successMessage: null,
@@ -231,7 +232,12 @@ export default {
     },
 
     async loadManifest(releaseId) {
+      // Only the most recent request may update state, so a slow response
+      // for an earlier selection cannot overwrite the current one.
+      const requestId = ++this.manifestRequestId;
+      const isCurrent = () => requestId === this.manifestRequestId;
       this.loadingManifest = true;
+      this.manifestDetails = null;
       this.error = null;
       try {
         const response = await fetch(`${this.apiBaseUrl}/releases/${releaseId}/manifest/`);
@@ -239,18 +245,24 @@ export default {
           throw new Error(`HTTP ${response.status}`);
         }
         const data = await response.json();
+        if (!isCurrent()) {
+          return;
+        }
         if (data.success) {
           this.manifestDetails = data.manifest;
         } else {
           this.error = data.error || "Failed to load manifest";
-          this.manifestDetails = null;
         }
       } catch (err) {
+        if (!isCurrent()) {
+          return;
+        }
         this.error = `Failed to load manifest: ${err.message}`;
-        this.manifestDetails = null;
         console.error("Error loading manifest:", err);
       } finally {
-        this.loadingManifest = false;
+        if (isCurrent()) {
+          this.loadingManifest = false;
+        }
       }
     },
 
@@ -266,8 +278,9 @@ export default {
         return;
       }
 
+      const releaseId = this.selectedRelease.release_id;
       if (!window.confirm(
-        `Promote release "${this.selectedRelease.release_id}" for import? ` +
+        `Promote release "${releaseId}" for import? ` +
         (this.mockMode
           ? "This is a local simulation; no data will be imported."
           : "This will queue the data for import into the database.")
@@ -285,7 +298,7 @@ export default {
             "X-CSRFToken": this.getCsrfToken(),
           },
           body: JSON.stringify({
-            release_id: this.selectedRelease.release_id,
+            release_id: releaseId,
           }),
         });
 
@@ -298,7 +311,7 @@ export default {
         if (data.success) {
           this.successMessage = data.data.mock
             ? data.data.message
-            : `Release "${this.selectedRelease.release_id}" has been queued for import. ` +
+            : `Release "${data.data.release_id || releaseId}" has been queued for import. ` +
               `Queue attempt: ${data.data.queue_attempt_id}`;
           // Refresh the releases list to show updated status
           setTimeout(() => this.loadReleases(), 1500);

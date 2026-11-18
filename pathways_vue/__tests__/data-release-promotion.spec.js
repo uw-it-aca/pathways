@@ -71,6 +71,83 @@ describe("DataReleasePromotion", () => {
     wrapper.unmount();
   });
 
+  it("ignores a stale manifest response after the selection changes", async () => {
+    const releases = [
+      { release_id: "first", manifest_size: 100 },
+      { release_id: "second", manifest_size: 100 },
+    ];
+    const pending = {};
+    vi.stubGlobal("fetch", vi.fn().mockImplementation((url) => {
+      const match = url.match(/releases\/([^/]+)\/manifest\/$/);
+      if (!match) {
+        return Promise.resolve({ ok: true, json: async () => ({ success: true, releases }) });
+      }
+      return new Promise((resolve) => {
+        pending[match[1]] = (artifact) => resolve({
+          ok: true,
+          json: async () => ({
+            success: true,
+            manifest: { artifacts: { [artifact]: { size_bytes: 1, checksum_sha256: "abcdef0123" } } },
+          }),
+        });
+      });
+    }));
+    const wrapper = mount(DataReleasePromotion);
+    await flushPromises();
+    await wrapper.findAll(".list-group-item")[0].trigger("click");
+    await wrapper.findAll(".list-group-item")[1].trigger("click");
+    pending.second("second-artifact");
+    await flushPromises();
+    pending.first("first-artifact");
+    await flushPromises();
+
+    expect(wrapper.text()).toContain("second-artifact");
+    expect(wrapper.text()).not.toContain("first-artifact");
+    expect(wrapper.text()).not.toContain("Loading...");
+    wrapper.unmount();
+  });
+
+  it("acknowledges the promoted release even if the selection changes", async () => {
+    const releases = [
+      { release_id: "first", manifest_size: 100 },
+      { release_id: "second", manifest_size: 100 },
+    ];
+    let resolvePromote;
+    const fetch = vi.fn().mockImplementation((url) => {
+      if (url.endsWith("/promote/")) {
+        return new Promise((resolve) => { resolvePromote = resolve; });
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => url.endsWith("/manifest/")
+          ? { success: true, manifest: { artifacts: {} } }
+          : { success: true, releases },
+      });
+    });
+    vi.stubGlobal("fetch", fetch);
+    vi.spyOn(window, "confirm").mockReturnValue(true);
+    vi.spyOn(window, "setTimeout").mockImplementation(() => 0);
+
+    const wrapper = mount(DataReleasePromotion);
+    await flushPromises();
+    await wrapper.findAll(".list-group-item")[0].trigger("click");
+    await flushPromises();
+    await wrapper.findAll("button").find((button) => button.text() === "Promote Release").trigger("click");
+    await wrapper.findAll(".list-group-item")[1].trigger("click");
+    await flushPromises();
+    resolvePromote({
+      ok: true,
+      json: async () => ({ success: true, data: { release_id: "first", queue_attempt_id: 7 } }),
+    });
+    await flushPromises();
+
+    const promoteCall = fetch.mock.calls.find(([url]) => url.endsWith("/promote/"));
+    expect(JSON.parse(promoteCall[1].body).release_id).toBe("first");
+    expect(wrapper.text()).toContain('Release "first" has been queued for import.');
+    expect(wrapper.text()).not.toContain('Release "second" has been queued');
+    wrapper.unmount();
+  });
+
   it.each([true, false])("displays the correct promotion result with mock=%s", async (mock) => {
     const release = { release_id: "release-001", manifest_size: 100, updated: null };
     const response = (data) => Promise.resolve({ ok: true, json: async () => data });
