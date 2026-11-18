@@ -18,8 +18,6 @@ QUEUE_LOCK = 742193620
 
 
 def configured_source():
-    if not getattr(settings, "RELEASE_SYNC_ENABLED", False):
-        raise ValueError("Release sync queue is disabled.")
     bucket = getattr(settings, "RELEASE_SYNC_BUCKET", "")
     prefix = getattr(settings, "RELEASE_SYNC_PREFIX", "")
     return bucket, prefix

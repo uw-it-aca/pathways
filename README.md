@@ -197,15 +197,17 @@ transaction so progress and failures can persist independently.
 
 ### Daemon release queue
 
-Queue submission and processing are disabled by default. Apply migration `0032`,
-configure `RELEASE_SYNC_ENABLED=true`, `RELEASE_SYNC_BUCKET` to a trusted bucket,
-and optionally `RELEASE_SYNC_PREFIX`. These environment variables map to Django
-settings in the image. Provide ADC object-get access and coordinate maintenance
-before enabling; the worker imports without another interactive confirmation.
+The queue is active wherever this code is deployed; rollout is controlled by
+merging to `develop` (test) and `main` (production). The `RELEASE_SYNC_BUCKET`
+and `RELEASE_SYNC_PREFIX` Django settings in `docker/settings.py` select the
+source. Outside local development they point at
+`uw-dawgpath-pipeline-artifacts-<ENV>` with an empty prefix, because the
+pipeline publishes `releases/<release-id>/` at the bucket root. Local
+development leaves the bucket empty, so queue submission and processing fail
+closed. Apply migration `0032`, provide ADC object-get access, and coordinate
+maintenance before deploying; the worker imports without another interactive
+confirmation.
 
-For the test environment, the pipeline publishes releases to
-`uw-dawgpath-pipeline-artifacts-test` at the bucket root, so set
-`RELEASE_SYNC_BUCKET` to that bucket and leave `RELEASE_SYNC_PREFIX` empty.
 The admin release list needs GCS `storage.objects.list` and
 `storage.objects.get`; the worker needs `storage.objects.get`. Use a dedicated
 read-only identity with access limited to the intended bucket. The pipeline's
@@ -220,9 +222,9 @@ Before enabling test promotion:
 2. Apply migrations through `0032` and verify the test database and existing
         catalog. Stop or coordinate the `import-similar-majors` daemon so it cannot
         overwrite release-managed data or race the release import.
-3. Configure the bucket and credentials, set `RELEASE_SYNC_ENABLED=true`, and
-        enable the `release-sync` daemon in test. Keep production disabled until the
-        test workflow has been verified.
+3. Deploy to test by merging to `develop`, which configures the bucket,
+        credentials, and `release-sync-queue-poller` CronJob. Do not merge to
+        `main` until the test workflow has been verified.
 4. Confirm the admin page can list releases and fetch a manifest. During a
         coordinated maintenance window, promote a trusted test release, then check
         `data_release_status` for a successful attempt and the new current release.

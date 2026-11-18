@@ -30,7 +30,6 @@ from pathways.tests.commands.test_data_release import write_release
     "PostgreSQL queue locking required"
 )
 @override_settings(
-    RELEASE_SYNC_ENABLED=True,
     RELEASE_SYNC_BUCKET="trusted",
     RELEASE_SYNC_PREFIX="app"
 )
@@ -74,10 +73,12 @@ class ReleaseSyncQueueTest(TransactionTestCase):
         )
         self.assertEqual(process_release_sync_queue(), [])
 
-    def test_disabled_and_changed_configuration_fail_closed(self):
-        with override_settings(RELEASE_SYNC_ENABLED=False), \
-                self.assertRaises(ValueError):
-            enqueue_release_sync("test-release")
+    def test_unconfigured_and_changed_configuration_fail_closed(self):
+        with override_settings(RELEASE_SYNC_BUCKET=""):
+            with self.assertRaises(ValueError):
+                enqueue_release_sync("test-release")
+            with self.assertRaises(ValueError):
+                process_release_sync_queue()
         attempt, _ = enqueue_release_sync("test-release")
         with override_settings(RELEASE_SYNC_BUCKET="different"):
             processed = process_release_sync_queue()

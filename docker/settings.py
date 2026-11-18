@@ -36,7 +36,6 @@ if ENV == "localdev":
     LIMIT_USER_ACCESS = False
     ALLOWED_USERS_GROUP = "u_test_group"
     ADMIN_USERS_GROUP = "u_test_group"
-    RELEASE_SYNC_ENABLED = False
     RELEASE_SYNC_BUCKET = ""
     RELEASE_SYNC_PREFIX = ""
     RELEASE_PROMOTION_MOCK = True
@@ -46,9 +45,10 @@ else:
     LIMIT_USER_ACCESS = os.getenv("ENV") == "eval"
     ALLOWED_USERS_GROUP = os.getenv("ACCESS_GROUP")
     ADMIN_USERS_GROUP = os.getenv("ADMIN_GROUP")
-    RELEASE_SYNC_ENABLED = True
     RELEASE_SYNC_BUCKET = f"uw-dawgpath-pipeline-artifacts-{ENV}"
-    RELEASE_SYNC_PREFIX = "releases"
+    # Release paths already start with releases/, so the pipeline publishes
+    # them at the bucket root.
+    RELEASE_SYNC_PREFIX = ""
     RELEASE_PROMOTION_MOCK = False
 
 # PDS config, default values are for localdev
