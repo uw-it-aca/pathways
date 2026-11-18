@@ -45,6 +45,8 @@ gcsCredentials:
 environmentVariables:
   - name: ENV
     value: test
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /gcs/credentials.json
   - name: AUTH
     value: SAML
   - name: SAML_ENTITY_ID
@@ -178,6 +180,3 @@ cronjob:
       schedule: "*/1 * * * *"  # Every 1 minute
       command: ["/scripts/management_command.sh"]
       args: ["process_release_sync_queue", "--limit", "1"]
-      environmentVariables:
-        - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: "/gcs/credentials.json"
