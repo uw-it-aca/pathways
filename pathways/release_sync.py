@@ -1,3 +1,6 @@
+# Copyright 2026 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
 import logging
 import re
 import tempfile
@@ -107,4 +110,3 @@ def execute_sync_attempt(attempt, *, temporary_root=None,
             "error_message"])
         raise ReleaseSyncError(attempt) from exc
     return attempt
-

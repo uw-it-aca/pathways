@@ -1,3 +1,6 @@
+# Copyright 2026 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
 from django.core.management.base import BaseCommand, CommandError
 
 from pathways.release_sync_queue import enqueue_release_sync
