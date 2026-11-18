@@ -68,26 +68,31 @@ def release_artifacts(manifest, release_id):
     ):
         raise ReleaseValidationError("Invalid release ID")
     version = manifest.get("schema_version")
-    files = RELEASE_FILES_BY_VERSION.get(version) if isinstance(version, str) else None
+    is_str_version = isinstance(version, str)
+    files = (RELEASE_FILES_BY_VERSION.get(version)
+             if is_str_version else None)
     if files is None:
         raise ReleaseValidationError("Unsupported release manifest version")
     if version == "2.0" and "search_index" in manifest:
-        raise ReleaseValidationError("Data-only release must not include search_index")
+        msg = "Data-only release must not include search_index"
+        raise ReleaseValidationError(msg)
     if manifest.get("release_id") != release_id:
         raise ReleaseValidationError("Release identity mismatch")
     artifacts = manifest.get("artifacts")
     if not isinstance(artifacts, dict) or set(artifacts) != files:
         raise ReleaseValidationError("Release artifact inventory mismatch")
     for name, info in artifacts.items():
-        if not _file_info(info) or info.get("version_path") != (
-            f"releases/{release_id}/{name}"
-        ):
-            raise ReleaseValidationError(f"Invalid release artifact metadata: {name}")
+        expected_path = f"releases/{release_id}/{name}"
+        if (not _file_info(info) or
+                info.get("version_path") != expected_path):
+            msg = f"Invalid release artifact metadata: {name}"
+            raise ReleaseValidationError(msg)
     return artifacts
 
 
 def verify_release(release_dir, *, release_id):
-    """Read verified bytes once so import never rereads unverified source files."""
+    """Read verified bytes once so import never rereads unverified
+    source files."""
     root = Path(release_dir)
     manifest = _json(_plain_file(root / "manifest.json"), "manifest.json")
     artifacts = release_artifacts(manifest, release_id)

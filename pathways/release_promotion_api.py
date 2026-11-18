@@ -17,12 +17,16 @@ logger = logging.getLogger(__name__)
 class ReleaseLister:
     """Discover finalized data releases from GCS bucket."""
 
-    def __init__(self, bucket_name: str | None = None, prefix: str | None = None):
-        self.bucket_name = bucket_name or getattr(settings, "RELEASE_SYNC_BUCKET", None)
+    def __init__(self, bucket_name: str | None = None,
+                 prefix: str | None = None):
+        self.bucket_name = (bucket_name or
+                            getattr(settings, "RELEASE_SYNC_BUCKET",
+                                    None))
         if not self.bucket_name:
             raise ValueError("RELEASE_SYNC_BUCKET must be configured")
         self.prefix = (
-            getattr(settings, "RELEASE_SYNC_PREFIX", "") if prefix is None else prefix
+            getattr(settings, "RELEASE_SYNC_PREFIX", "")
+            if prefix is None else prefix
         ).strip("/")
         self.client = storage.Client()
         self.bucket = self.client.bucket(self.bucket_name)
@@ -53,19 +57,26 @@ class ReleaseLister:
                         release_id = parts[-1]
                         manifest_blob_path = f"{prefix_item}manifest.json"
                         try:
-                            manifest_blob = self.bucket.get_blob(manifest_blob_path)
+                            manifest_blob = self.bucket.get_blob(
+                                manifest_blob_path)
                             if manifest_blob and manifest_blob.exists():
+                                updated = (
+                                    manifest_blob.updated.isoformat()
+                                    if manifest_blob.updated else None)
                                 releases.append({
                                     "release_id": release_id,
-                                    "manifest_path": manifest_blob_path,
-                                    "manifest_size": manifest_blob.size,
-                                    "manifest_checksum": manifest_blob.md5_hash,
-                                    "updated": manifest_blob.updated.isoformat()
-                                    if manifest_blob.updated else None,
+                                    "manifest_path":
+                                        manifest_blob_path,
+                                    "manifest_size":
+                                        manifest_blob.size,
+                                    "manifest_checksum":
+                                        manifest_blob.md5_hash,
+                                    "updated": updated,
                                 })
                         except GoogleAPIError as e:
                             logger.warning(
-                                "Error checking manifest for release %s: %s",
+                                "Error checking manifest for "
+                                "release %s: %s",
                                 release_id, e)
 
             # Sort by most recent first
@@ -74,11 +85,11 @@ class ReleaseLister:
 
         except GoogleAPIError as e:
             logger.error("Error listing releases from GCS: %s", e)
-            raise ValueError("Failed to list available releases from storage") from e
+            msg = "Failed to list available releases from storage"
+            raise ValueError(msg) from e
 
     def get_release_manifest(self, release_id: str) -> dict:
-        """
-        Fetch and parse the manifest for a specific release.
+        """Fetch and parse the manifest for a specific release.
 
         Args:
             release_id: The release ID to fetch
@@ -87,17 +98,20 @@ class ReleaseLister:
             Parsed manifest dict
 
         Raises:
-            ValueError: If release ID is invalid or manifest cannot be found/parsed
+            ValueError: If release ID is invalid or manifest
+                cannot be found/parsed
         """
         if not re.fullmatch(r"[A-Za-z0-9_-]+", release_id):
             raise ValueError("Invalid release ID")
 
         try:
-            manifest_path = (
-                f"{self.prefix}/releases/{release_id}/manifest.json"
-                if self.prefix
-                else f"releases/{release_id}/manifest.json"
-            )
+            if self.prefix:
+                manifest_path = (
+                    f"{self.prefix}/releases/{release_id}"
+                    "/manifest.json")
+            else:
+                manifest_path = (
+                    f"releases/{release_id}/manifest.json")
             manifest_path = manifest_path.lstrip("/")
 
             blob = self.bucket.get_blob(manifest_path)
@@ -109,16 +123,23 @@ class ReleaseLister:
 
             # Validate manifest structure
             if not isinstance(manifest, dict):
-                raise ValueError("Invalid manifest format")  # noqa: TRY004
+                # noqa: TRY004
+                raise ValueError("Invalid manifest format")
 
             return manifest
 
         except json.JSONDecodeError as e:
-            logger.error("Failed to parse manifest for release %s: %s", release_id, e)
-            raise ValueError(f"Invalid manifest for release {release_id}") from e
+            logger.error(
+                "Failed to parse manifest for release %s: %s",
+                release_id, e)
+            msg = f"Invalid manifest for release {release_id}"
+            raise ValueError(msg) from e
         except GoogleAPIError as e:
-            logger.error("Error fetching manifest for release %s: %s", release_id, e)
-            raise ValueError("Failed to fetch release manifest from storage") from e
+            logger.error(
+                "Error fetching manifest for release %s: %s",
+                release_id, e)
+            msg = "Failed to fetch release manifest from storage"
+            raise ValueError(msg) from e
 
 
 def queue_release_for_promotion(release_id: str, requested_by: str = "") -> dict:

@@ -1,7 +1,8 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-"""Explicit, generation-pinned downloads; no latest pointer or local fallback."""
+"""Explicit, generation-pinned downloads; no latest pointer
+or local fallback."""
 
 import os
 import re
@@ -21,18 +22,21 @@ from pathways.data_release import (
 MAX_MANIFEST_BYTES = 1024 * 1024
 
 
-def download_release(bucket_name, release_id, output_dir, *, prefix=""):
+def download_release(bucket_name, release_id, output_dir, *,
+                     prefix=""):
     if not bucket_name:
         raise ValueError("A GCS bucket is required.")
     if not isinstance(release_id, str) or not re.fullmatch(
             r"[A-Za-z0-9_-]+", release_id):
         raise ValueError("Invalid release ID.")
     prefix = prefix.strip("/")
-    if prefix and any(part in {"", ".", ".."} for part in prefix.split("/")):
+    if prefix and any(part in {"", ".", ".."}
+                      for part in prefix.split("/")):
         raise ValueError("Invalid GCS prefix.")
     output = Path(output_dir)
     if output.exists() or output.is_symlink():
-        raise FileExistsError(f"Output directory already exists: {output}")
+        msg = f"Output directory already exists: {output}"
+        raise FileExistsError(msg)
     bucket = storage.Client().bucket(bucket_name)
 
     def fetch(path, expected_size):
@@ -41,20 +45,26 @@ def download_release(bucket_name, release_id, output_dir, *, prefix=""):
         if blob is None:
             raise FileNotFoundError(f"Missing GCS release object: {key}")
         if blob.generation is None:
-            raise ReleaseValidationError(f"GCS object has no generation: {key}")
+            msg = f"GCS object has no generation: {key}"
+            raise ReleaseValidationError(msg)
         if blob.size is None or blob.size > expected_size:
-            raise ReleaseValidationError(f"GCS release object exceeds size limit: {key}")
-        content = blob.download_as_bytes(if_generation_match=blob.generation)
+            msg = f"GCS release object exceeds size limit: {key}"
+            raise ReleaseValidationError(msg)
+        content = blob.download_as_bytes(
+            if_generation_match=blob.generation)
         if len(content) > expected_size:
-            raise ReleaseValidationError(f"GCS release object exceeds size limit: {key}")
+            msg = f"GCS release object exceeds size limit: {key}"
+            raise ReleaseValidationError(msg)
         return content
 
-    manifest_bytes = fetch(f"releases/{release_id}/manifest.json", MAX_MANIFEST_BYTES)
+    manifest_bytes = fetch(
+        f"releases/{release_id}/manifest.json", MAX_MANIFEST_BYTES)
     manifest = _json(manifest_bytes, "manifest.json")
     artifacts = release_artifacts(manifest, release_id)
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(
-            prefix=".download-release-", dir=output.parent) as temporary:
+            prefix=".download-release-",
+            dir=output.parent) as temporary:
         staging = Path(temporary) / "release"
         staging.mkdir()
         for name, info in artifacts.items():
