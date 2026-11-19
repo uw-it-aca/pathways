@@ -144,6 +144,18 @@ class ReleaseSyncQueueTest(TransactionTestCase):
         call_command("process_release_sync_queue", stdout=output)
         self.assertIn("succeeded", output.getvalue())
 
+    def test_invalid_queue_requests_are_rejected(self):
+        with self.assertRaisesRegex(CommandError, "Invalid release ID"):
+            call_command("queue_data_release", release_id="../bad",
+                         confirm_replace_data=True)
+        for limit in (0, 101, "1"):
+            with self.subTest(limit=limit), self.assertRaises(ValueError):
+                process_release_sync_queue(limit=limit)
+        with patch.object(connection, "vendor", "sqlite"), \
+                self.assertRaisesRegex(ValueError, "requires PostgreSQL"):
+            process_release_sync_queue()
+        self.assertFalse(DataReleaseSyncAttempt.objects.exists())
+
     def test_overlapping_worker_does_not_claim_or_recover_live_attempt(self):
         entered = Event()
         release_worker = Event()

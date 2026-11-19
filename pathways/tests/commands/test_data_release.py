@@ -198,6 +198,18 @@ class DownloadReleaseTest(SimpleTestCase):
                 release_id="test-release", output_dir=str(self.output))
         self.assert_clean()
 
+    def test_missing_bucket_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "bucket is required"):
+            download_release("", "test-release", self.output)
+        self.client.assert_not_called()
+
+    def test_failed_final_move_removes_output_directory(self):
+        with patch("pathways.release_download.os.replace",
+                   side_effect=OSError("cross-device")), \
+                self.assertRaises(OSError):
+            self.download()
+        self.assert_clean()
+
     def test_legacy_downloads_verify_archive_bytes_without_opening_them(self):
         content = b"opaque legacy archive"
         self.manifest["artifacts"]["search-index.tar.gz"] = {
@@ -433,3 +445,58 @@ class ImportReleaseTest(TestCase):
             self.assertFalse(Major.objects.exists())
             (self.release / name).write_bytes(original)
             self.manifest["artifacts"][name] = original_info
+
+
+class ImportReleaseValidationTest(SimpleTestCase):
+    SIMILAR_HEADER = (b"credential_code,STEM_ind,similar_credential_code,"
+                      b"similar_STEM_ind,similarity,similarity_group\n")
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.release, self.manifest = write_release(Path(self.tmp.name))
+        self.contents = {
+            name: (self.release / name).read_bytes()
+            for name in RELEASE_FILES_BY_VERSION["2.0"]}
+
+    def import_with(self, release_id="test-release", **overrides):
+        contents = {**self.contents, **overrides}
+        with patch("pathways.release_import.verify_release",
+                   return_value=(self.manifest, contents)):
+            return import_release(self.release, release_id=release_id)
+
+    def test_invalid_release_content_is_rejected_before_import(self):
+        duplicate_row = b"INFO-40-1-6,1,INFO-40-1-6,1,0.8,High\n"
+        cases = (
+            ("coi_scores.csv", b"\xff\xfe", "invalid UTF-8 CSV"),
+            ("coi_scores.csv", b"course_id,score\nbad id,1\n",
+             "Invalid COI course ID"),
+            ("coi_scores.csv", b"course_id,score\nINFO 101,9\n",
+             "Invalid COI score"),
+            ("coi_scores.csv", b"course_id,score\nINFO 101,1\n",
+             "all four course levels"),
+            ("major_data.json", b"{}", "expected nonempty dict"),
+            ("gateway_courses.csv", b"a,b,c\nINFO201,INFO,201\n",
+             "gateway_courses.csv: invalid header"),
+            ("similar_majors.csv", self.SIMILAR_HEADER, "must not be empty"),
+            ("similar_majors.csv",
+             self.SIMILAR_HEADER + b"bad,1,INFO-40-1-6,1,0.8,High\n",
+             "credential/STEM flag"),
+            ("similar_majors.csv",
+             self.SIMILAR_HEADER + duplicate_row * 2,
+             "Duplicate similar-major pair"),
+        )
+        for name, content, message in cases:
+            with self.subTest(message=message), \
+                    self.assertRaisesRegex(ReleaseValidationError, message):
+                self.import_with(**{name: content})
+
+    def test_unsupported_schema_and_long_release_id_are_rejected(self):
+        self.manifest["schema_version"] = "1.0"
+        with self.assertRaisesRegex(ReleaseValidationError,
+                                    "requires release schema"):
+            self.import_with()
+        self.manifest["schema_version"] = "2.0"
+        with self.assertRaisesRegex(ReleaseValidationError,
+                                    "exceeds 128 characters"):
+            self.import_with(release_id="x" * 129)

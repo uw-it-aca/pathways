@@ -20,4 +20,9 @@ fi
 
 python manage.py migrate --noinput
 python manage.py check_search_backend
-python -Wd manage.py test "${tests[@]}" --noinput
+python -Wd -m coverage run --source=pathways manage.py test "${tests[@]}" --noinput
+
+# put generated coverage result where CI will combine it with the SQLite run
+if [ -d /coverage ]; then
+    cp .coverage.* /coverage
+fi

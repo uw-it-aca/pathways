@@ -9,6 +9,7 @@ from unittest.mock import MagicMock, patch
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import RequestFactory, TestCase, override_settings
+from google.api_core.exceptions import ServiceUnavailable
 
 from pathways.data_release import RELEASE_FILES, release_artifacts
 from pathways.models import DataReleaseImport, DataReleaseState
@@ -151,6 +152,33 @@ class ReleaseListerTestCase(TestCase):
             with self.assertRaises(ValueError) as cm:
                 lister.get_release_manifest(release_id)
             self.assertIn("Invalid release ID", str(cm.exception))
+
+    @override_settings(RELEASE_SYNC_BUCKET="test-bucket")
+    @patch("pathways.release_promotion_api.storage.Client")
+    def test_storage_and_manifest_errors(self, mock_client_class):
+        bucket = mock_client_class.return_value.bucket.return_value
+        lister = ReleaseLister()
+
+        bucket.list_blobs.side_effect = ServiceUnavailable("down")
+        with self.assertRaisesRegex(ValueError, "Failed to list"):
+            lister.list_available_releases()
+
+        bucket.get_blob.return_value = None
+        with self.assertRaisesRegex(ValueError, "Release not found"):
+            lister.get_release_manifest("release-001")
+
+        blob = bucket.get_blob.return_value = MagicMock()
+        blob.download_as_text.return_value = "not json"
+        with self.assertRaisesRegex(ValueError, "Invalid manifest"):
+            lister.get_release_manifest("release-001")
+
+        blob.download_as_text.return_value = "[]"
+        with self.assertRaisesRegex(TypeError, "Invalid manifest format"):
+            lister.get_release_manifest("release-001")
+
+        blob.download_as_text.side_effect = ServiceUnavailable("down")
+        with self.assertRaisesRegex(ValueError, "Failed to fetch"):
+            lister.get_release_manifest("release-001")
 
 
 @override_settings(RELEASE_PROMOTION_MOCK=False)
@@ -318,6 +346,57 @@ class ReleasePromotionAPITestCase(TestCase):
         self.assertEqual(response_data["manifest"]["release_id"],
         "test-release")
 
+    def _admin_login(self):
+        admin_user = get_user_model().objects.create_user(username="admin")
+        self.client.force_login(admin_user)
+
+    @patch("pathways.views.api.release_promotion.ReleaseLister")
+    def test_unexpected_errors_return_internal_error(self, mock_lister):
+        self._admin_login()
+        lister = mock_lister.return_value
+        lister.list_available_releases.side_effect = RuntimeError("boom")
+        lister.get_release_manifest.side_effect = RuntimeError("boom")
+
+        responses = (
+            self.client.get("/api/v1/admin/releases/"),
+            self.client.get("/api/v1/admin/releases/release-001/manifest/"),
+        )
+        with patch("pathways.views.api.release_promotion."
+                   "queue_release_for_promotion",
+                   side_effect=RuntimeError("boom")):
+            responses += (self.client.post(
+                "/api/v1/admin/releases/promote/",
+                data=json.dumps({"release_id": "release-001"}),
+                content_type="application/json"),)
+
+        for response in responses:
+            self.assertEqual(response.status_code, 500)
+            self.assertEqual(response.json()["error_code"], "internal_error")
+            self.assertNotIn("boom", response.json()["error"])
+
+    @patch("pathways.views.api.release_promotion.ReleaseLister")
+    def test_missing_manifest_returns_not_found(self, mock_lister):
+        self._admin_login()
+        mock_lister.return_value.get_release_manifest.side_effect = (
+            ValueError("Release not found: release-001"))
+        response = self.client.get(
+            "/api/v1/admin/releases/release-001/manifest/")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json()["error_code"], "not_found")
+
+    @patch("pathways.views.api.release_promotion.queue_release_for_promotion")
+    def test_promote_release_requires_release_id(self, mock_queue):
+        self._admin_login()
+        for body in ({}, {"release_id": "  "}):
+            with self.subTest(body=body):
+                response = self.client.post(
+                    "/api/v1/admin/releases/promote/",
+                    data=json.dumps(body), content_type="application/json")
+                self.assertEqual(response.status_code, 400)
+                self.assertEqual(response.json()["error_code"],
+                                 "missing_field")
+        mock_queue.assert_not_called()
+
 
 @override_settings(RELEASE_PROMOTION_MOCK=True)
 class MockReleasePromotionAPITestCase(TestCase):
@@ -432,6 +511,35 @@ class QueueReleaseTestCase(TestCase):
             queue_release_for_promotion("../../etc/passwd")
 
         self.assertIn("Invalid release ID", str(cm.exception))
+
+    @override_settings(RELEASE_SYNC_BUCKET="test-bucket")
+    @patch("pathways.release_sync_queue.enqueue_release_sync")
+    @patch("pathways.release_promotion_api.ReleaseLister")
+    def test_queue_release_rejects_incompatible_manifest(self, mock_lister,
+                                                         mock_enqueue):
+        for manifest, message in (
+                ({"release_id": "other", "schema_version": "2.0"},
+                 "Release ID mismatch"),
+                ({"release_id": "test-release", "schema_version": "1.0"},
+                 "requires release schema")):
+            mock_lister.return_value.get_release_manifest.return_value = (
+                manifest)
+            with self.subTest(message=message), \
+                    self.assertRaisesRegex(ValueError, message):
+                queue_release_for_promotion("test-release")
+        mock_enqueue.assert_not_called()
+
+    @override_settings(RELEASE_SYNC_BUCKET="test-bucket")
+    @patch("pathways.release_sync_queue.enqueue_release_sync")
+    @patch("pathways.release_promotion_api.ReleaseLister")
+    def test_queue_release_reports_existing_attempt(self, mock_lister,
+                                                    mock_enqueue):
+        mock_lister.return_value.get_release_manifest.return_value = {
+            "release_id": "test-release", "schema_version": "1.1"}
+        mock_enqueue.return_value = (MagicMock(pk=7), False)
+        result = queue_release_for_promotion("test-release")
+        self.assertEqual(result["message"],
+                         "Release test-release already queued (attempt 7)")
 
 
 class DataReleaseSpaToolViewTestCase(TestCase):

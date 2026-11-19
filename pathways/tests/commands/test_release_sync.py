@@ -170,6 +170,34 @@ class ReleaseSyncTest(TransactionTestCase):
         self.assertFalse(DataReleaseSyncAttempt.objects.exists())
         self.download.assert_not_called()
 
+    def test_invalid_bucket_and_requester_do_not_start_attempt(self):
+        for bucket, requested_by in (("", ""), (" bucket", ""), (None, ""),
+                                     ("bucket", "x" * 151)):
+            with self.subTest(bucket=bucket), self.assertRaises(ValueError):
+                sync_release(bucket, "test-release",
+                             requested_by=requested_by)
+        self.assertFalse(DataReleaseSyncAttempt.objects.exists())
+
+    def test_cleanup_failure_after_commit_keeps_successful_attempt(self):
+        class FailingCleanup(tempfile.TemporaryDirectory):
+            def __exit__(self, *args):
+                super().__exit__(*args)
+                raise OSError("cleanup failed")
+
+        with patch("pathways.release_sync.tempfile.TemporaryDirectory",
+                   FailingCleanup), \
+                self.assertLogs("pathways.release_sync", "WARNING"):
+            attempt = self.sync()
+        self.assertEqual(attempt.status, "succeeded")
+        self.assertEqual(DataReleaseState.objects.get().current_release_id,
+                         "test-release")
+
+    def test_command_reports_invalid_input(self):
+        with self.assertRaisesRegex(CommandError, "Invalid release ID"):
+            call_command("sync_data_release", bucket="trusted-bucket",
+                         release_id="../bad", confirm_replace_data=True)
+        self.assertFalse(DataReleaseSyncAttempt.objects.exists())
+
     def test_command_confirmation_and_result(self):
         options = {"bucket": "trusted-bucket", "release_id": "test-release",
                    "temporary_root": str(self.staging)}

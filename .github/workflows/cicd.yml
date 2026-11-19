@@ -154,6 +154,7 @@ jobs:
         shell: bash
         run: >-
           docker run -u root -t --network ${{ job.container.network }}
+          -v ${PWD}:/coverage
           -e "ENV=localdev" -e "AUTH=SAML_MOCK"
           -e "DB=postgres"
           -e "DATABASE_HOSTNAME=postgres"
