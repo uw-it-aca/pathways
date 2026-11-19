@@ -27,6 +27,24 @@ def eval_group_required(group_id):
     return decorator
 
 
+def support_group_required(group_id):
+    """
+    Like eval_group_required but enforced in every env, for support tools
+    """
+    def decorator(view_func):
+        def wrapper(request, *args, **kwargs):
+            if is_member_of_group(request, group_id):
+                return view_func(request, *args, **kwargs)
+
+            return render(request,
+                          'uw_saml/access_denied.html',
+                          status=401)
+
+        return login_required(function=wrapper)
+
+    return decorator
+
+
 def can_override_user(request):
     return is_member_of_group(request, settings.ADMIN_USERS_GROUP)
 

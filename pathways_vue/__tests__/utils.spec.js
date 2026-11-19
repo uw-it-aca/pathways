@@ -1,6 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { preventWidow } from "@/utils";
-import utils from "@/utils";
+import utils, { preventWidow } from "@/utils";
 
 describe("preventWidow", () => {
   it("replaces the last space with a non-breaking space", () => {

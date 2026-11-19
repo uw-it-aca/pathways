@@ -2,9 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import json
+from unittest import skipUnless
+from unittest.mock import patch
 
-from django.contrib.auth.models import User
-from django.test import RequestFactory
+from django.contrib.auth.models import AnonymousUser, User
+from django.db import connection
+from django.test import RequestFactory, TestCase
 from userservice.user import UserServiceMiddleware
 
 from pathways.models.curriculum import Curriculum
@@ -106,6 +109,7 @@ class TestUserPreferenceApi(ApiTest):
         self.assertEqual(response.status_code, 304)
 
 
+@skipUnless(connection.vendor == "postgresql", "PostgreSQL search required")
 class TestSearchApi(ApiTest):
     def _get_response(self, request_data):
         request = RequestFactory().get('/', data=request_data)
@@ -114,10 +118,12 @@ class TestSearchApi(ApiTest):
 
     def test_search(self):
         request_data = {
-            'search_string': 'transgenic bacterial',
+            'search_string': 'Southwestern Pottery',
         }
         search = self._get_response(request_data)
-        self.assertEqual(len(search['text_matches']), 8)
+        self.assertEqual(search['text_matches'][0]['id'], 'TRAIN 9')
+        self.assertEqual(search['text_matches'][0]['title'],
+                         'Southwestern Pottery')
 
     def test_no_results(self):
         request_data = {
@@ -125,6 +131,50 @@ class TestSearchApi(ApiTest):
         }
         search = self._get_response(request_data)
         self.assertEqual(len(search['text_matches']), 0)
+
+
+class TestSearchView(TestCase):
+    def _get(self, data):
+        request = RequestFactory().get('/', data=data)
+        request.user = User()
+        return Search.as_view()(request)
+
+    @patch('pathways.views.api.search.search')
+    def test_passes_parsed_params(self, mock_search):
+        mock_search.return_value = {'text_matches': [{'id': 'TRAIN 9'}]}
+        response = self._get({
+            'search_string': 'pottery',
+            'is_gateway': 'true',
+            'is_bottleneck': 'false',
+            'min_coi_score': '1.5',
+            'max_coi_score': '4',
+            'campus[]': ['seattle', 'bothell'],
+            'type[]': ['course'],
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content),
+                         {'text_matches': [{'id': 'TRAIN 9'}]})
+        mock_search.assert_called_once_with(
+            'pottery', ['seattle', 'bothell'], ['course'],
+            is_gateway=True, is_bottleneck=False,
+            min_coi_score='1.5', max_coi_score='4')
+
+    @patch('pathways.views.api.search.search')
+    def test_defaults_when_params_missing(self, mock_search):
+        mock_search.return_value = []
+        response = self._get({})
+
+        self.assertEqual(response.status_code, 200)
+        mock_search.assert_called_once_with(
+            None, [], [], is_gateway=False, is_bottleneck=False,
+            min_coi_score=None, max_coi_score=None)
+
+    def test_requires_login(self):
+        request = RequestFactory().get('/')
+        request.user = AnonymousUser()
+        response = Search.as_view()(request)
+        self.assertEqual(response.status_code, 302)
 
 
 class TestCurricApi(ApiTest):

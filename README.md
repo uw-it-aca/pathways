@@ -42,30 +42,235 @@ Update any .env variables for local development purposes
 Docker/Docker Compose is used to containerize your local build environment and deploy it to an 'app' container which is exposed to your localhost so you can view your application. Docker Compose creates a 'devtools' container - which is used for local development. Changes made locally are automatically syncd to the 'app' container.
 
 Local development uses the Compose PostgreSQL service for the Pathways catalog
-and defaults `PATHWAYS_SEARCH_BACKEND` to `postgres`. Startup applies Django
-migrations, checks the selected search backend, imports the checked-in catalog,
-and still builds the Whoosh index for easy rollback. To compare against Whoosh,
-set `PATHWAYS_SEARCH_BACKEND=whoosh` in `.env` before starting the app. Django's
-SQLite test database skips PostgreSQL-specific migration SQL; CI also runs the
-PostgreSQL-specific search integration tests against PostgreSQL.
-
-### Search Index
-
-PostgreSQL search is available for a test-environment trial. The default remains
-Whoosh; test deployment values select PostgreSQL and production retains Whoosh.
-See [PostgreSQL Search Trial](docs/postgres-search-rollout.md) for database
-privileges, migration/deploy behavior, verification, and rollback.
-
-The search index in `indexdir/` is automatically built when the docker container starts (via `docker/app_start.sh`).
-
-Note: `indexdir/` is ignored by Git. If Whoosh index files were previously tracked, they should be removed from the Git index using:
-`git rm -r --cached indexdir`
+and search. Startup applies Django migrations, checks PostgreSQL search
+readiness, and imports the checked-in catalog without contacting GCS.
+Search queries live PostgreSQL catalog tables; there is no Whoosh dependency,
+filesystem search index, bundle preparation, or index activation step.
 
         $ docker-compose up --build
 
 View your application using your specified port number in the .env file
 
         Demo: http://localhost:800?/
+
+In `ENV=localdev`, the release-promotion admin tool displays sample releases
+without connecting to Google Cloud Storage. Promotion is simulated: it does not
+queue a sync or import data. Other environments use the configured storage and
+sync queue.
+
+### Data Release Contract
+
+New pipeline releases use **manifest schema 2.0** with exactly ten artifacts:
+`course_data.json`, `curric_data.json`, `major_data.json`,
+`course_prereq_data.pkl`, `prereq_data.pkl`, `bottleneck_courses.csv`,
+`gateway_courses.csv`, `coi_scores.csv`, `admit_major_mapping.csv`, and
+`similar_majors.csv`. There is no `search_index` metadata or search bundle.
+
+The app validates release identity, exact artifact inventory, immutable
+`releases/<release-id>/<filename>` references, file sizes, and SHA-256 checksums.
+Local manifest/artifact symlinks are rejected. Only verified in-memory bytes are
+used for import. Obtain releases from a trusted source: checksums detect
+corruption but do not authenticate a manifest.
+
+Legacy schemas **1.0 and 1.1 remain supported for read-only download and
+verification** with their original exact inventories (ten and eleven artifacts,
+respectively). Their `search-index.tar.gz` bytes are size/checksum verified but
+never opened, extracted, validated as an index, built, or activated. Legacy
+`search_index` metadata is not interpreted. Pickle exports are only hashed,
+never deserialized. No `dawgpath_search` dependency is needed.
+
+### Explicit GCS download and database import
+
+These are explicit operator commands, **not automatic refresh hooks**.
+Localdev still imports checked-in data at startup without contacting GCS.
+Schedules and admin triggers are not provided by these commands.
+
+Download one completed, trusted release by its exact ID:
+
+```bash
+python manage.py download_data_release \
+  --bucket <trusted-release-bucket> \
+  --release-id <release-id> \
+  --output-dir /path/to/new-local-release
+```
+
+Use `--prefix <object-prefix>` if releases are under a bucket prefix.
+The command uses Google Application Default Credentials (workload identity in
+GKE, or locally configured ADC), needs object **get** permission, and never
+lists releases or follows `latest/`. It pins each read to its GCS generation,
+checks every artifact's size/hash, then exposes a fresh
+local directory. Missing objects, authentication failures, generation changes,
+or corruption fail without leaving a partial output or falling back to the
+checked-in snapshot. Keep downloads outside the repository.
+
+For an **isolated integration-test database or an operator-controlled maintenance
+window**, apply migrations and import the verified local release. Use the
+directory containing `manifest.json` and its artifacts, not its parent:
+
+```bash
+python manage.py migrate
+python manage.py import_data_release \
+  --release-dir /path/to/new-local-release \
+  --release-id <release-id> \
+  --confirm-replace-data
+```
+
+Database imports accept **schema 2.0 and legacy schema 1.1**, including
+`similar_majors.csv` fetched and frozen from Azure by the pipeline. There is no
+supplemental CSV fallback and no Azure fetch during import. Existing schema-1.0
+downloads can still be verified, but cannot be database-imported by
+this command.
+
+The importer verifies all artifact bytes before mutation, uses
+only those verified bytes, and reuses existing catalog/COI/flag/career/similar-
+major/STEM import semantics. Pickle artifacts are only hashed, not unpickled.
+Missing majors in similarity data retain the existing importer behavior:
+unavailable pairs are skipped and logged, available majors still get STEM flags.
+All table replacement, relationships, legacy file-hash markers, and the
+`DataReleaseImport` success record commit in one transaction. A failure rolls
+back all changes. A database row lock serializes these release imports on
+PostgreSQL; do not run legacy import commands concurrently.
+
+Repeating the currently imported release is a no-op when its manifest and
+import markers still match. Reusing a previously imported release ID with a
+different manifest is rejected. PostgreSQL search queries the committed catalog
+directly, so imported data becomes searchable transactionally without preparing
+or activating an external index. Multi-request workflows and operational
+scheduling still need normal maintenance coordination; do not run legacy
+imports concurrently with a release import.
+
+### Tracked explicit release sync
+
+Apply migrations before using the combined operator command:
+
+```bash
+python manage.py migrate
+python manage.py sync_data_release \
+        --bucket <trusted-release-bucket> \
+        --release-id <completed-release-id> \
+        --requested-by <operator-identifier> \
+        --confirm-replace-data
+python manage.py data_release_status --limit 10
+```
+
+`sync_data_release` downloads and verifies the exact release in a temporary
+directory, imports it, and removes the temporary files. Optional `--prefix`
+selects a bucket object prefix; `--temporary-root` selects an existing writable
+parent directory with sufficient space. It uses the same ADC credentials and
+object-get permissions as `download_data_release`. Bucket and release selection
+must come from a trusted operator; there is no discovery, latest pointer,
+promotion, or HTTP trigger. The command runs synchronously and bypasses the
+optional daemon queue below.
+Use an isolated database or a coordinated maintenance window and do not run
+legacy imports concurrently.
+
+Each accepted invocation creates a `DataReleaseSyncAttempt`: `downloading`,
+`importing`, then `succeeded`, `unchanged`, or `failed`. Records include the
+source, optional operator identifier, timestamps and sanitized failure metadata.
+`--requested-by` is audit metadata, not authentication. Failures report an
+attempt ID without storing raw exception messages that might contain credentials.
+Failed attempts remain recorded even when the catalog transaction rolls back.
+Catalog changes, the tracked current release, and a successful attempt outcome
+commit together. Downloads may overlap; PostgreSQL serializes imports using the
+existing release-marker row lock. Different releases are applied in lock order,
+not release creation order.
+
+The read-only `data_release_status` command returns JSON with the tracked current
+release and recent attempts (`--limit` accepts 1–100). Current release tracking
+also updates for direct `import_data_release` calls. Existing installations show
+an unknown current release until the next successful import or verified no-op;
+the migration does not infer it from historical timestamps. Legacy imports can
+invalidate that tracking and must be coordinated separately.
+
+To restore a prior compatible release, explicitly sync its original release ID
+again during a maintenance window. Retain its immutable objects and credentials
+needed to read them. This replaces the catalog using existing importer semantics;
+it is not a general database backup restore. A previously used ID with changed
+manifest bytes is rejected.
+
+An abruptly killed direct-sync process can leave an attempt in `downloading` or `importing`
+and temporary files behind. There is no heartbeat or automatic stale-attempt
+recovery yet; inspect the job/process before retrying or cleaning up. If cleanup
+alone fails after commit, the attempt remains successful and a sanitized warning
+is logged. The reusable `sync_release` service must run outside an enclosing
+transaction so progress and failures can persist independently.
+
+### Daemon release queue
+
+The queue is active wherever this code is deployed; rollout is controlled by
+merging to `develop` (test) and `main` (production). The `RELEASE_SYNC_BUCKET`
+and `RELEASE_SYNC_PREFIX` Django settings in `docker/settings.py` select the
+source. Outside local development they point at
+`uw-dawgpath-pipeline-artifacts-<ENV>` with an empty prefix, because the
+pipeline publishes `releases/<release-id>/` at the bucket root. Local
+development leaves the bucket empty, so queue submission and processing fail
+closed. Apply migration `0032`, provide ADC object-get access, and coordinate
+maintenance before deploying; the worker imports without another interactive
+confirmation.
+
+The admin release list needs GCS `storage.objects.list` and
+`storage.objects.get`; the worker needs `storage.objects.get`. Use a dedicated
+read-only identity with access limited to the intended bucket. The pipeline's
+publisher credentials may have write access and should not be reused by the
+Pathways web app. Configure ADC for both the app and worker before enabling the
+queue; the chart's `gcsCredentials` mount is one available mechanism.
+
+Before enabling test promotion:
+
+1. Provision and verify the read-only identity and its credential delivery in
+        the Pathways test namespace; confirm the app and worker can read the mount.
+2. Apply migrations through `0032` and verify the test database and existing
+        catalog. Stop or coordinate the `import-similar-majors` daemon so it cannot
+        overwrite release-managed data or race the release import.
+3. Deploy to test by merging to `develop`, which configures the bucket,
+        credentials, and `release-sync-queue-poller` CronJob. Do not merge to
+        `main` until the test workflow has been verified.
+4. Confirm the admin page can list releases and fetch a manifest. During a
+        coordinated maintenance window, promote a trusted test release, then check
+        `data_release_status` for a successful attempt and the new current release.
+        A queued request alone does not mean that the catalog has been imported.
+
+```bash
+python manage.py queue_data_release \
+        --release-id <completed-release-id> \
+        --requested-by <operator-identifier> \
+        --confirm-replace-data
+python manage.py process_release_sync_queue --limit 1
+python manage.py data_release_status
+```
+
+`enqueue_release_sync` is the reusable submission service for the
+operator-authorized API. It accepts no bucket/prefix override. A queued request
+freezes the configured source; changing that configuration causes the worker to
+fail old requests rather than download from another location. Repeated submission
+of the same still-queued release returns the existing attempt and preserves its
+original requester. Submitting after a claim creates another attempt, which can
+finish as an unchanged import. Requests are processed oldest first.
+
+The worker handles a bounded batch (`--limit` 1–100, default 1), then exits.
+Test/prod values enable the `release-sync-queue-poller` CronJob every minute,
+using `/scripts/management_command.sh process_release_sync_queue --limit 1`.
+Queued requests are processed automatically after deployment, with no separate
+activation step. Both values files remove the legacy `import-similar-majors`
+daemon. To pause processing, suspend the CronJob and coordinate any already-running
+job separately; keep the suspension in place across deployments.
+
+A PostgreSQL session advisory lock serializes queue workers across download and
+import, including overlapping rollout pods. A competing worker exits without
+claiming or recovering anything. The owner records a worker UUID and claim time,
+and checks that its database session is unchanged before importing. This requires
+a direct PostgreSQL connection or session-mode pooler, not transaction pooling.
+Direct sync commands still use the catalog row lock and may run between queued
+imports; avoid mixing these workflows during maintenance.
+
+Once a new worker acquires the lock, unfinished claims from previous queue workers
+are marked `failed` with `WorkerInterrupted`. There is no age-based takeover of a
+live worker and no automatic retry of interrupted requests. Inspect the outcome,
+then submit the release again if appropriate. Successful catalog/current-state/
+attempt changes commit together. A normal failed request does not block later
+queued requests. Abrupt termination can still leave temporary files behind; a
+hung worker holding its database session must be stopped before recovery occurs.
+The status command includes queue state, worker identity, and claim timestamp.
 
 ## Testing
 
@@ -111,3 +316,4 @@ Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 <http://www.apache.org/licenses/LICENSE-2.0>
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+

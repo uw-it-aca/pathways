@@ -1,30 +1,37 @@
-# PostgreSQL Search Trial
+# PostgreSQL Search Rollout
 
 ## Scope
 
-This is a Pathways-only trial based on `origin/develop` at `02b1c4c`. It does
-not include pipeline changes, release download/import commands, shared-chart
-changes, experimental benchmark tooling, or private query/judgment artifacts.
+This document covers the Pathways PostgreSQL-only search rollout. It does not
+cover pipeline changes, release download/import commands, shared-chart changes,
+experimental benchmark tooling, or private query/judgment artifacts.
 It searches the existing Course and Major rows already in the application DB.
 No new catalog release is required. Description completeness affects relevance
-but is not a prerequisite for enabling the backend.
+but is not a prerequisite for deploying search.
 
-`PATHWAYS_SEARCH_BACKEND` accepts `whoosh` or `postgres`, defaulting to `whoosh`.
-Test values explicitly select `postgres`; production values explicitly retain
-`whoosh`. The API still returns `course_matches`, `major_matches`, and
+PostgreSQL is the sole search backend in local, test, and production deployments.
+There is no backend environment selector. The API still returns
+`course_matches`, `major_matches`, and
 `text_matches`. The search API's previously crossed gateway/bottleneck arguments
 are corrected and covered by an integration test.
 
-Whoosh dependency installation, index building, imports, and existing scheduled
-jobs remain unchanged. This branch does not retire Whoosh or any pipeline bundle.
+The Whoosh dependency, startup index builder, CI index-build step, and local
+index volume are removed. Legacy local index files are excluded from the image
+build context. Existing catalog imports and scheduled jobs continue to run;
+search indexes are maintained by PostgreSQL rather than filesystem artifacts.
 
 ## Deployment Integration
 
 The existing deployment chart runs the shared image's `/scripts/deploy.sh`, which
 calls Django `migrate` and then sources `/scripts/app_deploy.sh`. This image now
 installs that application hook. It runs `manage.py check_search_backend` after
-migrations and exits nonzero if PostgreSQL search is selected but not ready.
+migrations and exits nonzero if PostgreSQL search is not ready.
 The hook uses fail-fast shell behavior; it does not swallow prerequisite errors.
+
+Local startup runs `migrate`, then `check_search_backend`, then `import_data`,
+stopping on failure. PostgreSQL CI runs `migrate --noinput` and
+`check_search_backend` before the focused database tests. No flow builds a
+filesystem search index.
 
 Migrations extend the current develop graph after `0026_major_program_verind_id`:
 
@@ -46,7 +53,7 @@ Migrations extend the current develop graph after `0026_major_program_verind_id`
    Adding the columns rewrites each table under an `ACCESS EXCLUSIVE` lock. That
    took about 3.5 seconds locally on the full catalog. Reads of these tables
    block briefly, and this happens on every environment that deploys the
-   migration, including Whoosh-backed production. Reverse migration restores the
+   migration, including production. Reverse migration restores the
    expression indexes before dropping the columns.
 
 All operations are limited to the `default` database, not the person datastore.
@@ -57,8 +64,8 @@ migrations and tested against each other and against the stored column values.
 The deploy gate checks PostgreSQL 12+, both public extensions, the text-search
 configuration's usability, the existence/validity/readiness of all six indexes,
 and the presence of the generated search columns.
-It does not issue sample user searches or change catalog rows. Whoosh selection
-skips the PostgreSQL gate so flag rollback does not depend on these indexes.
+It does not issue sample user searches or change catalog rows. All deployments
+must pass this gate; there is no alternate-backend bypass.
 
 ## Before Merging To Develop
 
@@ -87,11 +94,11 @@ skips the PostgreSQL gate so flag rollback does not depend on these indexes.
    not a new deployment target; merge to develop uses the existing test release.
    No manual cluster changes or automatic push are part of this implementation.
 
-Before enabling on another environment, do the same preparation there. Migrations
-are additive and apply when the code is deployed even when Whoosh is selected;
-the feature flag changes serving behavior, not migration history.
+Before deploying to another environment, do the same preparation there.
+Migrations apply when the code is deployed, and search requires the resulting
+database objects in every environment.
 
-## Verify The Trial
+## Verify The Rollout
 
 After the deploy job succeeds, run inside a new application pod:
 
@@ -113,26 +120,23 @@ Trigram fallback runs only when no full-text or ID-prefix match exists.
 
 The local judged pilot supported the lexical ranking changes, but is small.
 Some new results remain unjudged and the original holdout has already been used.
-Median latency was competitive locally; broad-query p95 remained worse than
-Whoosh. This is a develop trial, not a production cutover or a performance SLA.
+Median latency was competitive locally; broad-query p95 still needs validation
+under representative load. Pilot results are not a production performance SLA.
 
 Generated columns and indexes maintain themselves transactionally when the
 existing importer changes catalog rows. No new per-pod index watcher or
-background reindex task is needed for PostgreSQL search. The retained Whoosh
-workflow still runs for rollback.
+background reindex task is needed for PostgreSQL search.
 
 ## Rollback
 
-Set `PATHWAYS_SEARCH_BACKEND=whoosh` in test values and redeploy. Check that the
-retained Whoosh index matches the catalog and that a search succeeds. The existing
-Whoosh build path has not been disabled. A flag rollback needs no DB downgrade.
+There is no backend-switch rollback. Roll back application code only to a
+compatible PostgreSQL-search release, leaving extensions, configuration, generated
+columns, and indexes installed. If no compatible release exists, stop the rollout
+and coordinate recovery with the database owner before changing schema.
 
-Leave the additive extensions/config/indexes installed for immediate rollback.
-Only remove indexes during a separately approved cleanup after no pods use the
-PostgreSQL backend. If reverting the migration, stop/select away from PostgreSQL
-search first, then migrate to `0027_postgres_search_configuration`. That removes
-the generated search columns and the search indexes, not catalog rows or shared
-extensions/configuration.
+Schema reversal is a separately approved maintenance operation. Stop all search
+pods and jobs that depend on the generated columns or indexes before reversing
+their migrations. Shared extensions/configuration are deliberately retained.
 Do not roll back schema underneath running PostgreSQL search pods.
 
 ## Validation
@@ -155,7 +159,7 @@ The focused suite currently passes 22 tests. Full application validation ran
 received 0.3). The untouched develop baseline reproduces the same full-suite
 failure in its 67 tests, while that test passes in isolation on both versions.
 The COI endpoint uses no explicit ordering; this existing failure is not repaired
-as part of the search trial.
+as part of the search rollout.
 
 CI's pycodestyle check passes for touched Python modules. Ruff was also run using
 the user's repository skill, excluding migrations and applying no automatic

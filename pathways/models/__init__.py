@@ -6,9 +6,11 @@ from .course import Course
 from .course_level import CourseLevel
 from .curriculum import Curriculum
 from .data_import import DataImport
+from .data_release_import import DataReleaseImport
+from .data_release_sync import DataReleaseState, DataReleaseSyncAttempt
 from .major import Major
 
 __all__ = [
     "COIRange", "Course", "CourseLevel", "Curriculum", "DataImport",
-    "Major",
+    "DataReleaseImport", "DataReleaseState", "DataReleaseSyncAttempt", "Major",
 ]

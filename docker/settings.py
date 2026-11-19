@@ -23,7 +23,8 @@ TEMPLATES[0]["OPTIONS"]["context_processors"] += [
     "pathways.context_processors.persistent_messages",
 ]
 
-if os.getenv("ENV") == "localdev":
+ENV = os.getenv("ENV", "localdev")
+if ENV == "localdev":
     DEBUG = True
     VITE_MANIFEST_PATH = os.path.join(
         BASE_DIR, "pathways", "static", ".vite", "manifest.json"
@@ -35,13 +36,20 @@ if os.getenv("ENV") == "localdev":
     LIMIT_USER_ACCESS = False
     ALLOWED_USERS_GROUP = "u_test_group"
     ADMIN_USERS_GROUP = "u_test_group"
-
+    RELEASE_SYNC_BUCKET = ""
+    RELEASE_SYNC_PREFIX = ""
+    RELEASE_PROMOTION_MOCK = True
 else:
     CSRF_TRUSTED_ORIGINS = ["https://" + os.getenv("CLUSTER_CNAME")]
     VITE_MANIFEST_PATH = os.path.join(os.sep, "static", ".vite", "manifest.json")
     LIMIT_USER_ACCESS = os.getenv("ENV") == "eval"
     ALLOWED_USERS_GROUP = os.getenv("ACCESS_GROUP")
     ADMIN_USERS_GROUP = os.getenv("ADMIN_GROUP")
+    RELEASE_SYNC_BUCKET = f"uw-dawgpath-pipeline-artifacts-{ENV}"
+    # Release paths already start with releases/, so the pipeline publishes
+    # them at the bucket root.
+    RELEASE_SYNC_PREFIX = ""
+    RELEASE_PROMOTION_MOCK = False
 
 # PDS config, default values are for localdev
 DATABASES["uw_person"] = {
@@ -62,10 +70,28 @@ DATA_ROOT = os.path.join(BASE_DIR, "pathways/data")
 GOOGLE_ANALYTICS_KEY = os.getenv("GOOGLE_ANALYTICS_KEY", "")
 GOOGLE_FEEDBACK_FORM = os.getenv("GOOGLE_FEEDBACK_FORM", "")
 CLARITY_PROJECT_ID = os.getenv("CLARITY_PROJECT_ID", "")
-PATHWAYS_SEARCH_BACKEND = os.getenv("PATHWAYS_SEARCH_BACKEND", "whoosh")
 
 SUPPORTTOOLS_PARENT_APP = "DawgPath"
 SUPPORTTOOLS_PARENT_APP_URL = "/"
+
+# Enable Vue-powered supporttools navigation (required for SPA tools)
+SUPPORTTOOLS_VUE_ENABLED = True
+
+# Data release promotion SPA tool configuration
+SUPPORTTOOLS_DEFAULT_SPA_VIEW = "pathways.views.support.DataReleaseSpaToolView"
+SUPPORTTOOLS_VIEW_REGISTRY = [
+    {
+        "id": "data-release-promotion",
+        "section": "application",
+        "order": 10,
+        "label": "Release Promotion",
+        "url_name": "data_release_promotion",
+        "mode": "spa",
+        "route": "/support/data_release_promotion/",
+        "component_key": "data_release_promotion",
+        "vite_entry": "pathways_vue/support/data-release-promotion.js",
+    }
+]
 
 USERSERVICE_VALIDATION_MODULE = "pathways.dao.person.valid_uwnetid"
 USERSERVICE_OVERRIDE_AUTH_MODULE = "pathways.views.can_override_user"
@@ -130,3 +156,4 @@ LOGGING = {
 }
 
 AZURE_BLOB_STORAGE_URL = os.getenv("AZURE_BLOB_STORAGE_URL", default=None)
+

@@ -9,7 +9,6 @@ from unittest import skipUnless
 from unittest.mock import Mock, patch
 
 from django.contrib.auth.models import User
-from django.core.exceptions import ImproperlyConfigured
 from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.db import IntegrityError, connection
@@ -19,7 +18,6 @@ from django.test import (
     SimpleTestCase,
     TestCase,
     TransactionTestCase,
-    override_settings,
 )
 
 from pathways.models.course import Course
@@ -229,7 +227,6 @@ class PostgresSearchTests(TestCase):
         search("'; DROP TABLE pathways_course; --")
         self.assertEqual(Course.objects.count(), 3)
 
-    @override_settings(PATHWAYS_SEARCH_BACKEND="postgres")
     def test_real_api_response(self):
         request = RequestFactory().get("/api/v1/search/", {
             "search_string": "cse142", "campus[]": "seattle",
@@ -242,7 +239,6 @@ class PostgresSearchTests(TestCase):
             "course_matches", "major_matches", "text_matches"})
         self.assertEqual(payload["course_matches"][0]["id"], "CSE 142")
 
-    @override_settings(PATHWAYS_SEARCH_BACKEND="postgres")
     def test_api_gateway_and_bottleneck_are_not_swapped(self):
         for flag, expected in (("is_gateway", "CSE 142"),
                                ("is_bottleneck", "B CSE 142")):
@@ -255,7 +251,6 @@ class PostgresSearchTests(TestCase):
                 self.assertEqual(
                     [row["id"] for row in payload["text_matches"]], [expected])
 
-    @override_settings(PATHWAYS_SEARCH_BACKEND="postgres")
     def test_post_migrate_check(self):
         output = StringIO()
         call_command("check_search_backend", stdout=output)
@@ -263,26 +258,24 @@ class PostgresSearchTests(TestCase):
 
 
 class SearchBackendTests(SimpleTestCase):
-    @override_settings(PATHWAYS_SEARCH_BACKEND="postgres")
     @patch("pathways.postgres_search.search", return_value={"postgres": True})
-    def test_postgres_opt_in(self, backend):
+    def test_postgres_is_the_search_backend(self, backend):
         self.assertEqual(routed_search("CSE142", [], []), {"postgres": True})
-        backend.assert_called_once()
+        backend.assert_called_once_with(
+            "CSE142", [], [], None, None, None, None)
 
-    @override_settings(PATHWAYS_SEARCH_BACKEND="whoosh")
-    @patch("pathways.search.whoosh_search", return_value={"whoosh": True})
-    def test_whoosh_rollback(self, backend):
-        self.assertEqual(routed_search("CSE142", [], []), {"whoosh": True})
-        output = StringIO()
-        call_command("check_search_backend", stdout=output)
-        self.assertIn("skipped", output.getvalue())
-
-    @override_settings(PATHWAYS_SEARCH_BACKEND="invalid")
-    def test_unknown_backend_fails_explicitly(self):
-        with self.assertRaises(ImproperlyConfigured):
-            routed_search("CSE142", [], [])
+    @patch("pathways.management.commands.check_search_backend.connection")
+    def test_non_postgres_database_fails_explicitly(self, database):
+        database.vendor = "sqlite"
         with self.assertRaises(CommandError):
             call_command("check_search_backend")
+
+    @patch("pathways.postgres_search.search", return_value={"postgres": True})
+    def test_all_search_filters_are_forwarded(self, backend):
+        routed_search("programming", ["seattle"], ["course"],
+                      True, False, 1, 4)
+        backend.assert_called_once_with(
+            "programming", ["seattle"], ["course"], True, False, 1, 4)
 
     def test_migration_expressions_match_runtime_lookup(self):
         indexes = import_module(
@@ -304,7 +297,6 @@ class SearchBackendTests(SimpleTestCase):
 @skipUnless(connection.vendor == "postgresql",
             "PostgreSQL migration tests require PostgreSQL")
 class SearchMigrationTests(TransactionTestCase):
-    @override_settings(PATHWAYS_SEARCH_BACKEND="postgres")
     def test_rollback_and_retry_preserve_catalog(self):
         Course.objects.create(
             course_id="CSE 142", course_title="Programming",

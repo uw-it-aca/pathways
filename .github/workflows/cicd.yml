@@ -103,7 +103,6 @@ jobs:
         with:
           app_name: ${DJANGO_APP}
           exclude_paths: "migrations"
-          linter: "pycodestyle"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
@@ -151,10 +150,11 @@ jobs:
 
       # Exercise PostgreSQL-only search migrations and SQL separately from
       # the full SQLite suite. The PostgreSQL service is shared on this network.
-      - name: Run PostgreSQL Search Tests in Image
+      - name: Run PostgreSQL Tests in Image
         shell: bash
         run: >-
           docker run -u root -t --network ${{ job.container.network }}
+          -v ${PWD}:/coverage
           -e "ENV=localdev" -e "AUTH=SAML_MOCK"
           -e "DB=postgres"
           -e "DATABASE_HOSTNAME=postgres"
@@ -167,12 +167,14 @@ jobs:
           -e "UW_PERSON_DB_USER=postgres"
           -e "UW_PERSON_DB_PASSWORD=postgres"
           app-test-container
-          bash -c ". ./bin/activate && python -Wd manage.py test pathways.tests.test_postgres_search --noinput"
+          bash ./docker/test_postgres.sh
 
       # Run Python Coverage and Upload to Coveralls
       - name: Run Python Coverage and Upload to Coveralls
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_PARALLEL: "true"
+          COVERALLS_FLAG_NAME: pathways_python
         shell: bash
         run: |
           python -m pip install --upgrade pip coverage coveralls==3.3.1
@@ -211,19 +213,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
         continue-on-error: true
-
-      # Build Search Index
-      - name: Build Search Index
-        if: github.event_name == 'push'
-        id: search
-        shell: bash
-        run: >-
-          docker run -u root -t
-          -v ${PWD}:/coverage
-          -e DJANGO_APP="$DJANGO_APP"
-          -e "ENV=localdev" -e "AUTH=SAML_MOCK"
-          ${{ needs.context.outputs.image_tag }}
-          bash -c ". ./docker/build_index.sh"
 
       - name: Run vulnerability scan
         id: vuln-scan

@@ -1,7 +1,6 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.db import DatabaseError, connection
 
@@ -9,15 +8,9 @@ from pathways.postgres_search import CONFIG, SEARCH_COLUMNS, SEARCH_INDEXES
 
 
 class Command(BaseCommand):
-    help = "Verify the selected search backend after database migrations."
+    help = "Verify PostgreSQL search after database migrations."
 
     def handle(self, *args, **options):
-        backend = getattr(settings, "PATHWAYS_SEARCH_BACKEND", "whoosh")
-        if backend == "whoosh":
-            self.stdout.write("Whoosh selected; PostgreSQL checks skipped.")
-            return
-        if backend != "postgres":
-            raise CommandError(f"Unknown search backend: {backend}")
         if connection.vendor != "postgresql" or connection.pg_version < 120000:
             raise CommandError("PostgreSQL search requires PostgreSQL 12+.")
         try:
